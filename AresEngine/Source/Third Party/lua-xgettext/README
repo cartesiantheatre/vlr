@@ -1,0 +1,60 @@
+
+lua-xgettext
+============
+
+Copyright (c) Tuomo Valkonen 2006
+
+tuomov at iki.fi
+
+
+About
+-----
+
+`lua-xgettext` is a small program for extracting marked strings from
+Lua code, for translation to other languages. It is in function
+similar to GNU `xgettext`, but far more primitive; it just extracts
+the strings and prints them out, without any additional information.
+It was written, because GNU `xgettext` does not support Lua at the
+time of writing this README, and because implementing a Lua parser in
+the Parsec parser combinator library for Haskell was far more fun
+than the pain of writing one in C for GNU `xgettext`. The available
+Lua libraries for examining compiled Lua code etc. also didn't seem
+that comfortable to use, as the most appropriate of them, `ltokens`,
+wasn't available for Lua 5.1, and I'm not that comfortable depending
+on software that hasn't been "properly" packaged and distributed 
+and maintained -- unless it's written by me :).
+
+
+Compiling and installing
+------------------------
+
+Edit Makefile to change installation `PREFIX`, if need be, and the
+options to the GHC Haskell compiler, which you will need to build
+this program. (Another Haskell compiler might also work, but you
+would then have to write a Makefile that doesn't rely on GHC's
+`--make` functionality.) Then follow the usual `make` followed by
+`make install` routine.
+
+
+Usage
+-----
+
+See `lua-xgettext --help`. Similarly to GNU `xgettext`, if no keyword
+(function name) is explicitly given, it looks for strings in calls to
+the function `_` (underscore). Only the first parameter is considered
+a translatable string, although the other parameters are examined for
+other translation calls. `lua-xgettext` also supports the `..`
+concatenation operator, so calls like
+
+        _("This string" .. " is translatable")
+
+are understood to contain the translatable strings "This string is
+translatable", facilitating splitting the string on multiple lines
+without using the multi-line string syntax of Lua.
+
+
+Trivia
+------
+
+The name of the included Lua parser, Kuu, is Finnish for Lua,
+which is Portuguese for Moon.
