@@ -1,27 +1,30 @@
-Licensing of Avaneya's constituents is described below, based on category.
+Licensing of Avaneya's constituents is described below, based on 
+category.
 
 Category:   Art
-Affects:    Literary works, cinematics, models, audio and voice effects, 
-            textures, concept art, fonts, screenshots, and other relevant 
-            non-executable creative media.
-Licensed:   Copyright (C) 2010 Kshatra Corp under the terms of the Creative
-            Commons Attribution-NonCommercial-ShareAlike (BY-NC-SA) 3.0 
-            International.
+Affects:    Literary works, cinematics, models, audio and voice 
+            effects, textures, concept art, fonts, screenshots, and 
+            other relevant non-executable creative media.
+Licensed:   Copyright (C) 2010 Kshatra Corp under the terms of the 
+            Creative Commons Attribution-NonCommercial-ShareAlike 
+            (BY-NC-SA) 3.0 Unported.
 
 Category:   Code
 Affects:    AresEngine, shaders, and Lua scripts.
-Licensed:   Copyright (C) 2010 Kshatra Corp under the terms of the GNU General 
-            Public License v3.
+Licensed:   Copyright (C) 2010 Kshatra Corp under the terms of the GNU
+            General Public License v3.
 
 Category:   Documentation
-Affects:    UML and other design documents, doxygen output, man pages, and other
-            relevant data.
-Licensed:   Copyright (C) 2010 Kshatra Corp under the terms of the GNU Free 
-            Documentation License.
+Affects:    UML and other design documents, doxygen output, man pages, 
+            and other relevant data.
+Licensed:   Copyright (C) 2010 Kshatra Corp under the terms of the GNU 
+            Free Documentation License.
 
 Category:   Music
 Affects:    Music Ogg Vorbis, FLAC, and associated project files.
-Licensed:   Copyright (C) 2010 Kshatra Corp under the terms of the Creative
-            Commons Attribution-NonCommercial-ShareAlike (BY-NC-SA) 3.0 
-            International, unless denoted otherwise.
+Licensed:   Copyright (C) 2010 Kshatra Corp, or under the artist's 
+            name if denoted as such, under the terms of the Creative 
+            Commons Attribution-NonCommercial-ShareAlike (BY-NC-SA) 
+            3.0 Unported, unless denoted otherwise.
+
 
