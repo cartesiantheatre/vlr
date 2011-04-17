@@ -1,30 +1,57 @@
-Licensing of Avaneya's constituents is described below, based on 
-category.
+=== Introduction =====================================================
 
-Category:   Art
-Affects:    Literary works, cinematics, models, audio and voice 
-            effects, textures, concept art, fonts, screenshots, and 
-            other relevant non-executable creative media.
-Licensed:   Copyright (C) 2010 Kshatra Corp under the terms of the 
-            Creative Commons Attribution-NonCommercial-ShareAlike 
-            (BY-NC-SA) 3.0 Unported.
+    Licensing of Avaneya's constituents is described below, based on 
+    category.
 
-Category:   Code
-Affects:    AresEngine, shaders, and Lua scripts.
-Licensed:   Copyright (C) 2010 Kshatra Corp under the terms of the GNU
-            General Public License v3.
+=== Art ==============================================================
 
-Category:   Documentation
-Affects:    UML and other design documents, doxygen output, man pages, 
-            and other relevant data.
-Licensed:   Copyright (C) 2010 Kshatra Corp under the terms of the GNU 
-            Free Documentation License.
+    Affects:
 
-Category:   Music
-Affects:    Music Ogg Vorbis, FLAC, and associated project files.
-Licensed:   Copyright (C) 2010 Kshatra Corp, or under the artist's 
-            name if denoted as such, under the terms of the Creative 
-            Commons Attribution-NonCommercial-ShareAlike (BY-NC-SA) 
-            3.0 Unported, unless denoted otherwise.
+        Literary works, cinematics, models, audio and voice effects, 
+        textures, concept art, fonts, screenshots, and other relevant 
+        non-executable creative media.
+    
+    Licensed As:
+    
+        Copyright (C) 2010 Kshatra Corp under the terms of the 
+        Creative Commons Attribution-NonCommercial-ShareAlike 
+        (BY-NC-SA) 3.0 Unported.
 
+=== Code =============================================================
+
+    Affects:
+        
+        AresEngine, shaders, and Lua scripts.
+
+    Licensed As:
+
+        Copyright (C) 2010 Kshatra Corp under the terms of the GNU 
+        General Public License v3.
+
+=== Documentation ====================================================
+
+    Affects:
+    
+        UML and other design documents, doxygen output, man pages, 
+        and other relevant data.
+
+    Licensed As:
+        
+        Copyright (C) 2010 Kshatra Corp under the terms of the GNU 
+        Free Documentation License.
+
+=== Music ============================================================
+
+    Affects:
+    
+        Music Ogg Vorbis, FLAC, and associated project files.
+
+    Licensed As:
+
+        Copyright (C) 2010 Kshatra Corp, or under the artist's name if
+        denoted as such, under the terms of the Creative Commons 
+        Attribution-NonCommercial-ShareAlike (BY-NC-SA) 3.0 Unported, 
+        unless denoted otherwise.
+
+======================================================================
 
