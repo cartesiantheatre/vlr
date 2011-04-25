@@ -8,8 +8,8 @@
     Affects:
 
         Literary works, cinematics, models, audio and voice effects, 
-        textures, concept art, fonts, screenshots, and other relevant 
-        non-executable creative media.
+        textures, materials, concept art, fonts, screenshots, and 
+        other relevant non-executable creative media.
     
     Licensed As:
     
@@ -21,7 +21,8 @@
 
     Affects:
         
-        AresEngine, shaders, and Lua scripts.
+        AresEngine, shaders, Lua scripts, build environment scripts, 
+        and any other relevant executable data.
 
     Licensed As:
 
