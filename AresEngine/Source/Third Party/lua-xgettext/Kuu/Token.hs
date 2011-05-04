@@ -46,6 +46,7 @@ tokenize :: FilePath -> String -> Either ParseError TokenStream
 tokenize = parse pars
 
 pars = do
+    optional (try (string "#!" >> skipMany (noneOf "\n")))
     skipMany space
     choice[
         eof >> return [],
@@ -64,7 +65,7 @@ tok = identifier_or_operator
 -----------
 
 sp0 = ["...", ".", ":", ",", ";", "=", "(", ")", "[", "]", "{", "}"]
-op0 = ["+", "-", "*", "/", "^", "..", "<=", "<", ">=", ">", "==", "~=", "#"]
+op0 = ["+", "-", "*", "/", "%", "^", "..", "<=", "<", ">=", ">", "==", "~=", "#"]
 op1 = ["and", "or", "not"]
 
 reserved = ["end", "in", "repeat", "break", "false", "local", "return",
@@ -119,8 +120,7 @@ q_string q = do
 	    <|> do { c <- escaped <|> noneOf "\n"; s <- dcs; return (c:s) }
 	escaped = do
 	    char '\\'
-	    c_ <- anyChar
-	    unescape c_
+            (integer >>= return . toEnum) <|> (anyChar >>= unescape)
 
 unescape 'a' = return '\a'
 unescape 'b' = return '\b'
