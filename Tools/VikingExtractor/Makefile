@@ -19,7 +19,9 @@
 
 CPP         = g++
 CC          = gcc
-OBJ         = VikingExtractor.o
+OBJ         = VikingExtractor.o     \
+              VicarColourImage.o    \
+              LogicalRecord.o
 LIBS        = 
 INCS        =
 CXXINCS     =
@@ -27,7 +29,9 @@ BIN         = VikingExtractor
 CXXFLAGS    = $(CXXINCS) $(INCS) -g3 -Wall -Werror
 CFLAGS      = $(INCS) -g3 -Wall -Werror -std=c99
 
-SOURCES  = VikingExtractor.cpp
+SOURCES  = VikingExtractor.cpp  \
+           VicarColourImage.cpp \
+           LogicalRecord.cpp
 
 .PHONY: all
 all: $(BIN)

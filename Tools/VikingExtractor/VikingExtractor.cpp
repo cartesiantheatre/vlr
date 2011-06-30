@@ -21,6 +21,7 @@
 
 // Includes...
 #include "VikingExtractor.h"
+#include "VicarColourImage.h"
 #include <iostream>
 #include <string>
 #include <cstring>
@@ -30,18 +31,35 @@
 // Using the standard namespace...
 using namespace std;
 
-// Verbose flag...
-static bool VerboseFlag = false;
+// Show help...
+void ShowHelp()
+{
+    cout << "Usage: VikingExtractor [options] input output" << endl
+         << "Options:" << endl
+         << "  -h, --help               Show this help" << endl
+         << "  -V, --verbose            Be verbose" << endl
+         << "  -v, --version            Show version information" << endl;
+}
+
+// Show version information...
+void ShowVersion()
+{
+    cout << "VikingExtractor " VIKING_EXTRACTOR_VERSION << endl
+         << "Copyright (C) 2010, 2011 Kshatra Corp." << endl
+         << "This is free software; see the source for copying conditions.  There is NO" << endl
+         << "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE." << endl;
+}
 
 // Entry point...
 int main(int ArgumentCount, char *Arguments[])
 {
     // Variables...
-    int OptionCharacter = '\x0';
-    int OptionIndex     = 0;
+    int     OptionCharacter = '\x0';
+    int     OptionIndex     = 0;
+    bool    Verbose         = false;
 
     // Command line option structure...
-    struct option CommandLineOptions[] =
+    option CommandLineOptions[] =
     {
         /* These options set a flag. */
         {"help",    no_argument,    NULL,   'h'},
@@ -100,7 +118,7 @@ int main(int ArgumentCount, char *Arguments[])
             case 'V':
             {
                 // Set verbose flag...
-                VerboseFlag = true;
+                Verbose = true;
                 
                 // Done...
                 break;
@@ -141,28 +159,15 @@ int main(int ArgumentCount, char *Arguments[])
     if(OutputFile.find(".png") == string::npos)
         OutputFile += string(".png");
 
+    // Allocate a VICAR colour image object and read the header...
+    VicarColourImage    Image(InputFile, Verbose);
 
+if(Image.IsOk())
+    cout << "Image loaded ok..." << endl;
+else
+    cout << "Image load failed..." << endl;
 
     // Done...
     return 0;
-}
-
-// Show help...
-void ShowHelp()
-{
-    cout << "Usage: VikingExtractor [options] input output" << endl
-         << "Options:" << endl
-         << "  -h, --help               Show this help" << endl
-         << "  -V, --verbose            Be verbose" << endl
-         << "  -v, --version            Show version information" << endl;
-}
-
-// Show version information...
-void ShowVersion()
-{
-    cout << "VikingExtractor " VIKING_EXTRACTOR_VERSION << endl
-         << "Copyright (C) 2010, 2011 Kshatra Corp." << endl
-         << "This is free software; see the source for copying conditions.  There is NO" << endl
-         << "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE." << endl;
 }
 

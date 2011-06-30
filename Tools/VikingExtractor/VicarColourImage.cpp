@@ -19,24 +19,49 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Multiple include protection...
-#ifndef _VIKING_EXTRACTOR_H_
-#define _VIKING_EXTRACTOR_H_
-
-// Version...
-#define VIKING_EXTRACTOR_VERSION    "0.1"
-
 // Includes...
 #include "VicarColourImage.h"
+#include <iostream>
+#include <fstream>
 
-// Function prototypes...
+// Using the standard namespace...
+using namespace std;
 
-    // Show help...
-    void ShowHelp();
+// Constructor...
+VicarColourImage::VicarColourImage(
+    const std::string &InputFile, const bool Verbose)
+    : m_InputFile(InputFile),
+      m_Bands(0), 
+      m_Height(0),
+      m_Width(0),
+      m_BytesPerPixel(0),
+      m_Ok(false),
+      m_Verbose(Verbose)
+{
+    // Try to read the VICAR image header...
+    try
+    {
+        ReadHeader();
+    }
+        // Failed...
+        catch(const std::string & ErrorMessage)
+        {
+            // Alert...
+            cerr << ErrorMessage << endl;
+        }
+}
 
-    // Show version information...
-    void ShowVersion();
+// Read VICAR image header, or throw an error...
+void VicarColourImage::ReadHeader()
+{
+    // Open the file...
+    ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
+    
+        // Failed...
+        if(!InputFileStream.is_open())
+            throw std::string("Could not open input for reading...");
 
-// Multiple include protection...
-#endif
+    // Loaded ok...
+    m_Ok = true;
+}
 
