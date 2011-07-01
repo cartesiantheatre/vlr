@@ -33,7 +33,7 @@ class VicarColourImage
     // Public methods...
     public:
 
-        // Constructor...
+        // Construct and read the header, or throw an error...
         VicarColourImage(const std::string &InputFile, const bool Verbose = false);
         
         // Is the file accessible and the header ok?
@@ -44,6 +44,9 @@ class VicarColourImage
         
         // Set verbosity flag...
         void SetVerbose(const bool Verbose = true) { m_Verbose = Verbose; }
+
+        // Write the image out as a PNG, or throw an error...
+        void Write(const std::string &OutputFile) const;
 
     // Protected methods...
     protected:
@@ -65,7 +68,10 @@ class VicarColourImage
         int                 m_Width;
         
         // Bytes per pixel...
-        int                 m_BytesPerPixel;
+        int                 m_BytesPerColour;
+        
+        // Size of a physical record...
+        int                 m_PhysicalRecordSize;
         
         // True if the header appears to be ok...
         bool                m_Ok;

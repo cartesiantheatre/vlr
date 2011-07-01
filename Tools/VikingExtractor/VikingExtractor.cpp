@@ -34,11 +34,12 @@ using namespace std;
 // Show help...
 void ShowHelp()
 {
-    cout << "Usage: VikingExtractor [options] input output" << endl
+    cout << "Usage: VikingExtractor [options] input [output]" << endl
          << "Options:" << endl
          << "  -h, --help               Show this help" << endl
          << "  -V, --verbose            Be verbose" << endl
-         << "  -v, --version            Show version information" << endl;
+         << "  -v, --version            Show version information" << endl << endl
+         << "Converts 1970s Viking Lander era VICAR colour images to PNGs." << endl;
 }
 
 // Show version information...
@@ -57,6 +58,8 @@ int main(int ArgumentCount, char *Arguments[])
     int     OptionCharacter = '\x0';
     int     OptionIndex     = 0;
     bool    Verbose         = false;
+    string  InputFile;
+    string  OutputFile;
 
     // Command line option structure...
     option CommandLineOptions[] =
@@ -142,30 +145,51 @@ int main(int ArgumentCount, char *Arguments[])
         }
     }
     
-    // After any optional switches, there should be exactly two parameters
-    //  with one for the input and the other for the output...
-    if(optind + 2 != ArgumentCount)
-    {
-        // Alert, abort...
-        cerr << "Expected input and output files." << endl;
-        exit(1);
-    }
+    // We need at least one additional parameter, the input...
     
-    // Store the input and output file names...
-    const string InputFile  = Arguments[optind++];
-          string OutputFile = Arguments[optind++];
+        // Fetch...
+        if(optind + 1 <= ArgumentCount)
+            InputFile = Arguments[optind++];
+        
+        // Wasn't provided...
+        else
+        {
+            // Alert, abort...
+            cerr << "Error: Input expected..." << endl;
+            exit(1);
+        }
 
-    // Append png suffix to output, if it doesn't exist already...
+    // The output file is optional...
+    
+        // Fetch...
+        if(optind + 1 <= ArgumentCount)
+            OutputFile = Arguments[optind++];
+        
+        // Wasn't explicitly provided...
+        else
+        {
+            // Use same file name as input for output, but with .png extension...
+            OutputFile = InputFile + string(".png");
+        }
+
+    // Append .png suffix to output, if it doesn't exist already...
     if(OutputFile.find(".png") == string::npos)
         OutputFile += string(".png");
+
+    // Check for extraneous arguments...
+    if(optind + 1 <= ArgumentCount)
+    {
+        // Alert, abort...
+        cerr << "Error: Unknown parameter " << optind + 1 << "/" << ArgumentCount << endl;
+        exit(1);
+    }
 
     // Allocate a VICAR colour image object and read the header...
     VicarColourImage    Image(InputFile, Verbose);
 
-if(Image.IsOk())
-    cout << "Image loaded ok..." << endl;
-else
-    cout << "Image load failed..." << endl;
+    // Check for failed load, with error message already visible...
+    if(!Image.IsOk())
+        exit(1);
 
     // Done...
     return 0;

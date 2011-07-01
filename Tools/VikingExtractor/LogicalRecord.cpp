@@ -22,12 +22,13 @@
 // Includes...
 #include "LogicalRecord.h"
 #include <iostream>
+#include <cassert>
 #include <cstring>
 
 // Using the standard namespace...
 using namespace std;
 
-// Initialize constant arrays...
+// Initialize constants...
 
     // ASCII to EBCDIC table provided by Bob Stout...
     const uint8_t LogicalRecord::ms_AsciiToEbcdicTable[256] = {
@@ -76,6 +77,28 @@ LogicalRecord::LogicalRecord()
     Reset();
 }
 
+// Get a string or substring...
+string LogicalRecord::GetString(const size_t Start, const size_t Size) const
+{
+    // Use until we hit the null byte...
+    if(Size == 0)
+        return string(&(m_Buffer[Start]));
+
+    // Use only a specified amount...
+    else
+        return string(&(m_Buffer[Start]), Size);
+}
+
+// Constructor from an input stream...
+LogicalRecord::LogicalRecord(std::istream &InputStream)
+{
+    // Clear the buffer...
+    Reset();
+
+    // Load from stream...
+   *this << InputStream;
+}
+
 // Convert ASCII to EBCDIC encoded character...
 char LogicalRecord::AsciiToEbcdic(const uint8_t AsciiCharacter) const
 {
@@ -94,13 +117,13 @@ char LogicalRecord::EbcdicToAscii(const uint8_t EbcdicCharacter) const
 bool LogicalRecord::IsLastLabel() const
 {
     // Yes...
-    if(m_Buffer[sizeof(m_Buffer) - 1] == 'L')
+    if(m_Buffer[LOGICAL_RECORD_SIZE - 1] == 'L')
         return true;
-    
+
     // More follows...
-    else if(m_Buffer[sizeof(m_Buffer) - 1] == 'C')
+    else if(m_Buffer[LOGICAL_RECORD_SIZE - 1] == 'C')
         return false;
-    
+
     // Not a valid label...
     else
         throw std::string("Invalid logical record label...");
@@ -110,17 +133,39 @@ bool LogicalRecord::IsLastLabel() const
 void LogicalRecord::operator<<(std::istream &InputStream)
 {
     // Fill the whole buffer and check for error...
-    if(sizeof(m_Buffer) != InputStream.readsome(m_Buffer, sizeof(m_Buffer)))
+    if(LOGICAL_RECORD_SIZE != InputStream.readsome(m_Buffer, LOGICAL_RECORD_SIZE))
         throw std::string("Failed to read from input stream...");
 
     // Decode...
-    for(unsigned int Index = 0; Index < sizeof(m_Buffer); ++Index)
+    for(unsigned int Index = 0; Index < LOGICAL_RECORD_SIZE; ++Index)
         m_Buffer[Index] = EbcdicToAscii(m_Buffer[Index]);
+}
+
+// Index operator...
+char &LogicalRecord::operator[](const size_t Index)
+{
+    // Bounds check...
+    assert(Index >= 0 && Index < LOGICAL_RECORD_SIZE);
+
+    // Return reference...
+    return m_Buffer[Index];
+}
+
+// Read only index operator...
+const char &LogicalRecord::operator[](const size_t Index) const
+{
+    // Bounds check...
+    assert(Index >= 0 && Index < LOGICAL_RECORD_SIZE);
+
+    // Return reference...
+    return m_Buffer[Index];
 }
 
 // Reset the buffer...
 void LogicalRecord::Reset()
 {
-    memset(m_Buffer, '\x0', sizeof(m_Buffer));                
+    // Buffer is always 72 bytes long, but add one so always
+    //  safely NULL terminated...
+    memset(m_Buffer, '\x0', LOGICAL_RECORD_SIZE + 1);                
 }
 

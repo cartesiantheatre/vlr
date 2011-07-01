@@ -27,6 +27,9 @@
 #include <string>
 #include <stdint.h>
 
+// Logical buffer size...
+#define LOGICAL_RECORD_SIZE 72
+
 // Logical record...
 class LogicalRecord
 {
@@ -35,12 +38,23 @@ class LogicalRecord
         
         // Default constructor...
         LogicalRecord();
+        
+        // Constructor from an input stream...
+        LogicalRecord(std::istream &InputStream);
+
+        // Get a string or substring...
+        std::string GetString(
+            const size_t Start = 0, const size_t Size = 0) const;
 
         // Is this the last label or does more follow?
         bool IsLastLabel() const;
 
         // Load the buffer from a stream and decode, or throw an error...
         void operator<<(std::istream &InputStream);
+        
+        // Index operator...
+        char &operator[](const size_t Index);
+        const char &operator[](const size_t Index) const;
         
         // Reset the buffer...
         void Reset();
@@ -58,16 +72,17 @@ class LogicalRecord
     protected:
     
         // ASCII to EBCDIC table provided by Bob Stout...
-        static const uint8_t ms_AsciiToEbcdicTable[256];
+        static const uint8_t    ms_AsciiToEbcdicTable[256];
 
         // EBCDIC to ASCII table provided by Bob Stout...
-        static const uint8_t ms_EbcdicToAsciiTable[256];
-
+        static const uint8_t    ms_EbcdicToAsciiTable[256];
+        
     // Protected data...
     protected:
 
-        // Buffer is always 72 bytes long...
-        char m_Buffer[72];
+        // Buffer is always 72 bytes long, but add one so always
+        //  safely NULL terminated...
+        char m_Buffer[LOGICAL_RECORD_SIZE + 1];
 };
 
 // Multiple include protection...
