@@ -184,12 +184,25 @@ int main(int ArgumentCount, char *Arguments[])
         exit(1);
     }
 
-    // Allocate a VICAR colour image object and read the header...
-    VicarColourImage    Image(InputFile, Verbose);
+    // Write out the image...
+    try
+    {
+        // Try to load a VICAR colour image object and read the header...
+        VicarColourImage Image(InputFile, Verbose);
+        
+        // Write out the image...
+        Image.Write(OutputFile);
+    }
 
-    // Check for failed load, with error message already visible...
-    if(!Image.IsOk())
-        exit(1);
+        // Failed...
+        catch(const std::string &ErrorMessage)
+        {
+            // Alert...
+            cerr << std::string("Error: ") << ErrorMessage << endl;
+            
+            // Terminate...
+            exit(1);
+        }
 
     // Done...
     return 0;

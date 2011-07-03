@@ -52,21 +52,13 @@ VicarColourImage::VicarColourImage(
       m_Height(0),
       m_Width(0),
       m_BytesPerColour(0),
+      m_PhysicalRecordSize(0),
+      m_PhysicalRecordPadding(0),
       m_Ok(false),
       m_Verbose(Verbose)
 {
-    // Try to load the file...
-    try
-    {
-        // Read the VICAR image header...
-        ReadHeader();
-    }
-        // Failed...
-        catch(const std::string & ErrorMessage)
-        {
-            // Alert...
-            cerr << "Error: " << ErrorMessage << endl;
-        }
+    // Read the VICAR image header...
+    ReadHeader();
 }
 
 // Read VICAR image header, or throw an error...
@@ -123,7 +115,25 @@ void VicarColourImage::ReadHeader()
 
         // Calculate the physical record size which is either 5 logical 
         //  records or the image width, whichever is greater...
-        m_PhysicalRecordSize = max(m_Width, 5 * LOGICAL_RECORD_SIZE);
+
+            // Image width is greater than 5 logical records...
+            if(m_Width > 5 * LOGICAL_RECORD_SIZE)
+            {
+                // Use the width...
+                m_PhysicalRecordSize = m_Width;
+                
+                // But anything passed the last logical record is just padding...
+                m_PhysicalRecordPadding = m_Width - (5 * LOGICAL_RECORD_SIZE);
+            }
+            
+            else
+            {
+                // Only five logical records...
+                m_PhysicalRecordSize = 5 * LOGICAL_RECORD_SIZE;
+                
+                // With no following padding...
+                m_PhysicalRecordPadding = 0;
+            }
 
     // Perform sanity check on basic metadata...
     
@@ -149,12 +159,13 @@ void VicarColourImage::ReadHeader()
 
     // If verbosity is set, display basic metadata...
     if(m_Verbose)
-        clog << "  Bands:\t\t"              << m_Bands << endl
-             << "  Height:\t\t"             << m_Height << endl
-             << "  Width:\t\t"              << m_Width << endl
-             << "  Format:\t\t"             << "integral" << endl
-             << "  Bytes Per Colour:\t"     << m_BytesPerColour << endl
-             << "  Physical record size:\t" << m_PhysicalRecordSize << endl;
+        clog << "  Bands:\t\t\t"                << m_Bands << endl
+             << "  Height:\t\t\t"               << m_Height << endl
+             << "  Width:\t\t\t"                << m_Width << endl
+             << "  Format:\t\t\t"               << "integral" << endl
+             << "  Bytes Per Colour:\t\t"       << m_BytesPerColour << endl
+             << "  Physical record size:\t\t"   << m_PhysicalRecordSize << endl
+             << "  Physical record padding:\t"  << m_PhysicalRecordPadding << endl;
 
     // Loaded ok...
     m_Ok = true;
@@ -163,9 +174,48 @@ void VicarColourImage::ReadHeader()
 // Write the image out as a PNG, or throw an error...
 void VicarColourImage::Write(const std::string &OutputFile) const
 {
+    // Objects...
+    LogicalRecord Record;
+
     // Check if file was loaded ok...
     if(!IsOk())
-        cerr << "Input was not loaded...";
+        throw std::string("Input was not loaded...");
+
+    // Open the input file...
+    ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
+    
+        // Failed...
+        if(!InputFileStream.is_open())
+            throw std::string("Could not open input for reading...");
+
+    // Seek to start of raw image data's physical record boundary...
+    while(InputFileStream.good())
+    {
+        // Read this physical record's five logical labels...
+        for(unsigned int Index = 0; Index < 5; ++Index)
+            Record << InputFileStream;
+        
+        // If physical records are padded, add offset to seek to 
+        //  next boundary...
+        if(m_PhysicalRecordPadding > 0)
+            InputFileStream.seekg(m_PhysicalRecordPadding, ios_base::cur);
+
+        // Now check if the last logical record label we read within 
+        //  the physical record indicates there is more...
+        if(Record.IsLastLabel())
+        {
+            // Nope. Raw image data begins at next physical record boundary...
+            break;
+        }
+    }
+    
+    // Got to the end of the file and did not find the last label record...
+    if(!InputFileStream.good())
+        throw std::string("Unable to locate last logical record label...");
+
+    // Show the image offset if verbose mode enabled...
+    if(m_Verbose)
+        clog << "  Raw image offset:\t\t" << InputFileStream.tellg() << endl;
 
     // Allocate PNG object of the right size...
 
