@@ -37,6 +37,7 @@ void ShowHelp()
     cout << "Usage: VikingExtractor [options] input [output]" << endl
          << "Options:" << endl
          << "  -h, --help               Show this help" << endl
+         << "  -i, --interlace          Use interlacing on output" << endl
          << "  -V, --verbose            Be verbose" << endl
          << "  -v, --version            Show version information" << endl << endl
          << "Converts 1970s Viking Lander era VICAR colour images to PNGs." << endl;
@@ -58,6 +59,7 @@ int main(int ArgumentCount, char *Arguments[])
     int     OptionCharacter = '\x0';
     int     OptionIndex     = 0;
     bool    Verbose         = false;
+    bool    Interlace       = false;
     string  InputFile;
     string  OutputFile;
 
@@ -65,9 +67,10 @@ int main(int ArgumentCount, char *Arguments[])
     option CommandLineOptions[] =
     {
         /* These options set a flag. */
-        {"help",    no_argument,    NULL,   'h'},
-        {"verbose", no_argument,    NULL,   'V'},
-        {"version", no_argument,    NULL,   'v'},
+        {"help",        no_argument,    NULL,   'h'},
+        {"interlace",   no_argument,    NULL,   'i'},
+        {"verbose",     no_argument,    NULL,   'V'},
+        {"version",     no_argument,    NULL,   'v'},
         
         // End of array marker...
         {0, 0, 0, 0}
@@ -75,7 +78,7 @@ int main(int ArgumentCount, char *Arguments[])
 
     // Keep processing each option until there are none left...
     while((OptionCharacter = getopt_long(
-        ArgumentCount, Arguments, "hVv", CommandLineOptions, &OptionIndex)) != -1)
+        ArgumentCount, Arguments, "hiVv", CommandLineOptions, &OptionIndex)) != -1)
     {
         // Which option?
         switch(OptionCharacter)
@@ -105,6 +108,16 @@ int main(int ArgumentCount, char *Arguments[])
 
                 // Exit...
                 exit(0);
+            }
+
+            // Interlacing...
+            case 'i':
+            {
+                // Set interlace flag...
+                Interlace = true;
+                
+                // Done...
+                break;
             }
 
             // Version...
@@ -191,7 +204,7 @@ int main(int ArgumentCount, char *Arguments[])
         VicarColourImage Image(InputFile, Verbose);
         
         // Write out the image...
-        Image.Write(OutputFile);
+        Image.Write(OutputFile, Interlace);
     }
 
         // Failed...

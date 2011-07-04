@@ -18,16 +18,14 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 CPP         = g++
-CC          = gcc
 OBJ         = VikingExtractor.o     \
               VicarColourImage.o    \
               LogicalRecord.o
-LIBS        = 
+LIBS        = `libpng-config --ldflags`
 INCS        =
 CXXINCS     =
 BIN         = VikingExtractor
-CXXFLAGS    = $(CXXINCS) $(INCS) -g3 -Wall -Werror
-CFLAGS      = $(INCS) -g3 -Wall -Werror -std=c99
+CXXFLAGS    = $(CXXINCS) $(INCS) -g3 -Wall -Werror `libpng-config --cflags`
 
 SOURCES  = VikingExtractor.cpp  \
            VicarColourImage.cpp \
@@ -36,22 +34,14 @@ SOURCES  = VikingExtractor.cpp  \
 .PHONY: all
 all: $(BIN)
 
-.SUFFIXES: .c,.cpp
+.SUFFIXES: .cpp
 
 -include $(subst .c,.cpp,.d,$(SOURCES))
-
-%.d: %.c
-	@$(CC) -M $(CFLAGS) $< > $@.$$$$;                   \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
 
 %.d: %.cpp
 	@$(CPP) -M $(CXXFLAGS) $< > $@.$$$$;                \
 	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
-
-.c.o:
-	$(CC) -c $< $(CFLAGS)
 
 .cpp.o:
 	$(CPP) -c $< $(CXXFLAGS)

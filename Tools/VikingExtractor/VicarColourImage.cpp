@@ -32,6 +32,7 @@
     
     // Streams...
     #include <iostream>
+    #include <iomanip>
     #include <sstream>
     #include <fstream>
     
@@ -154,28 +155,30 @@ void VicarColourImage::ReadHeader()
             throw std::string("Unsupported pixel format...");
 
         // Check bytes per colour...
-        if(m_BytesPerColour != 1 && m_BytesPerColour != 3)
-            throw std::string("Unsupported bytes per colour...");
+        if(m_BytesPerColour != 1)
+            throw std::string("Unsupported colour bit depth...");
 
     // If verbosity is set, display basic metadata...
     if(m_Verbose)
-        clog << "  Bands:\t\t\t"                << m_Bands << endl
-             << "  Height:\t\t\t"               << m_Height << endl
-             << "  Width:\t\t\t"                << m_Width << endl
-             << "  Format:\t\t\t"               << "integral" << endl
-             << "  Bytes Per Colour:\t\t"       << m_BytesPerColour << endl
-             << "  Physical record size:\t\t"   << m_PhysicalRecordSize << endl
-             << "  Physical record padding:\t"  << m_PhysicalRecordPadding << endl;
+    {
+        clog << "  Bands:\t\t\t" << m_Bands << endl;
+        clog << "  Height:\t\t\t" << m_Height << endl;
+        clog << "  Width:\t\t\t" << m_Width << endl;
+        clog << "  Format:\t\t\t" << "integral" << endl;
+        clog << "  Bytes Per Colour:\t\t" << m_BytesPerColour << endl;
+        clog << "  Physical record size:\t\t" << m_PhysicalRecordSize << hex << showbase << " (" << m_PhysicalRecordSize<< ")" << endl;
+        clog << "  Physical record padding:\t"  << dec << m_PhysicalRecordPadding << hex << showbase << " (" << m_PhysicalRecordPadding<< ")" << dec << endl;
+    }
 
     // Loaded ok...
     m_Ok = true;
 }
 
 // Write the image out as a PNG, or throw an error...
-void VicarColourImage::Write(const std::string &OutputFile) const
+void VicarColourImage::Write(const std::string &OutputFile, const bool Interlace) const
 {
     // Objects...
-    LogicalRecord Record;
+    LogicalRecord   Record;
 
     // Check if file was loaded ok...
     if(!IsOk())
@@ -191,24 +194,51 @@ void VicarColourImage::Write(const std::string &OutputFile) const
     // Seek to start of raw image data's physical record boundary...
     while(InputFileStream.good())
     {
-        // Read this physical record's five logical labels...
-        for(unsigned int Index = 0; Index < 5; ++Index)
-            Record << InputFileStream;
+        // Local offset into the current physical record...
+        streampos LocalPhysicalRecordOffset = 0;
         
-        // If physical records are padded, add offset to seek to 
-        //  next boundary...
-        if(m_PhysicalRecordPadding > 0)
-            InputFileStream.seekg(m_PhysicalRecordPadding, ios_base::cur);
+        // True if the raw image data was found...
+        bool RawImageDataFound = false;
 
-        // Now check if the last logical record label we read within 
-        //  the physical record indicates there is more...
-        if(Record.IsLastLabel())
+        // Check each logical record of this physical record's five...
+        for(size_t Index = 0; Index < 5; ++Index)
         {
-            // Nope. Raw image data begins at next physical record boundary...
-            break;
+            // Extract a logical record...
+            Record << InputFileStream;
+
+            // Update local offset into the current physical record...
+            LocalPhysicalRecordOffset += LOGICAL_RECORD_SIZE;
+
+            // This is the last logical record of the record labels...
+            if(Record.IsLastLabel())
+            {
+                // Calculate the offset necessary to seek past any 
+                //  remaining logical records in this physical record, 
+                //  along with any padding to the next physical record 
+                //  boundary...
+                const streamoff RawImageDataRelativeOffset = 
+                    ((LOGICAL_RECORD_SIZE * 5) - LocalPhysicalRecordOffset) + 
+                    m_PhysicalRecordPadding;
+
+                // Seek to the raw image data...
+                InputFileStream.seekg(
+                    RawImageDataRelativeOffset, ios_base::cur);
+
+                // Done...
+                RawImageDataFound = true;
+                break;
+            }
         }
+        
+        // Raw image data was found, stop looking...
+        if(RawImageDataFound)
+            break;      
+
+        // Seek passed any padding that may have followed the logical 
+        //  record set to the next physical record boundary...
+        InputFileStream.seekg(m_PhysicalRecordPadding, ios_base::cur);
     }
-    
+
     // Got to the end of the file and did not find the last label record...
     if(!InputFileStream.good())
         throw std::string("Unable to locate last logical record label...");
@@ -217,11 +247,40 @@ void VicarColourImage::Write(const std::string &OutputFile) const
     if(m_Verbose)
         clog << "  Raw image offset:\t\t" << InputFileStream.tellg() << endl;
 
-    // Allocate PNG object of the right size...
+    // Single channel image...
+    if(m_Bands == 1)
+    {
+        // Allocate...
+        png::image<png::gray_pixel> PngImage(m_Width, m_Height);
 
-        /*
-            TODO: Figure out where the raw data starts and then pass 
-                  through PNG compressor.
-        */
+        // Toggle interlacing, if user selected...
+        if(Interlace)
+            PngImage.set_interlace_type(png::interlace_adam7);
+        else
+            PngImage.set_interlace_type(png::interlace_none);
+
+        // Pass raw image data through encoder, row by row...
+        for(size_t Y = 0; Y < PngImage.get_height(); ++Y)
+        {
+            // Pass raw image data through encoder, column by column...
+            for(size_t X = 0; X < PngImage.get_width(); ++X)
+            {
+                // Read a pixel / byte...
+                char Byte = '\x0';
+                InputFileStream.read(&Byte, 1);
+                
+                // Encode...
+                PngImage.set_pixel(X, Y, Byte);
+            }
+        }
+
+        // Write out the file and alert the user...
+        PngImage.write(OutputFile);
+        clog << OutputFile << endl;
+    }
+    
+    // Unsupported colour format...
+    else
+        throw std::string("Unsupported number of image bands...");
 }
 

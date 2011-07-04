@@ -46,7 +46,7 @@ class VicarColourImage
         void SetVerbose(const bool Verbose = true) { m_Verbose = Verbose; }
 
         // Write the image out as a PNG, or throw an error...
-        void Write(const std::string &OutputFile) const;
+        void Write(const std::string &OutputFile, const bool Interlace = true) const;
 
     // Protected methods...
     protected:
