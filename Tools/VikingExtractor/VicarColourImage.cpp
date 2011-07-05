@@ -86,8 +86,8 @@ void VicarColourImage::ReadHeader()
         // Load the first logical record...
         const LogicalRecord HeaderRecord(InputFileStream);
     
-        // First two bytes should be a zero and a one, and should have more records...
-        if(HeaderRecord[0] != '\x0' || HeaderRecord[1] != '\x1' || HeaderRecord[71] != 'C')
+        // Check for first end of logical record marker......
+        if(HeaderRecord[71] != 'C')
             throw std::string("Input does not appear to be a 1970s era VICAR format...");
 
     // Check second record just to double check that this is actually from
