@@ -37,7 +37,8 @@ void ShowHelp()
     cout << "Usage: VikingExtractor [options] input [output]" << endl
          << "Options:" << endl
          << "  -h, --help               Show this help" << endl
-         << "  -i, --interlace          Use interlacing on output" << endl
+         << "  -i, --interlace          Encode output with Adam7 interlacing" << endl
+         << "  -l, --save-record-labels Save VICAR record labels as text file" << endl
          << "  -V, --verbose            Be verbose" << endl
          << "  -v, --version            Show version information" << endl << endl
          << "Converts 1970s Viking Lander era VICAR colour images to PNGs." << endl;
@@ -60,17 +61,18 @@ int main(int ArgumentCount, char *Arguments[])
     int     OptionIndex     = 0;
     bool    Verbose         = false;
     bool    Interlace       = false;
+    bool    SaveLabels      = false;
     string  InputFile;
     string  OutputFile;
 
     // Command line option structure...
     option CommandLineOptions[] =
     {
-        /* These options set a flag. */
-        {"help",        no_argument,    NULL,   'h'},
-        {"interlace",   no_argument,    NULL,   'i'},
-        {"verbose",     no_argument,    NULL,   'V'},
-        {"version",     no_argument,    NULL,   'v'},
+        {"help",                no_argument,    NULL,   'h'},
+        {"interlace",           no_argument,    NULL,   'i'},
+        {"save-record-labels",  no_argument,    NULL,   'l'},
+        {"verbose",             no_argument,    NULL,   'V'},
+        {"version",             no_argument,    NULL,   'v'},
         
         // End of array marker...
         {0, 0, 0, 0}
@@ -78,7 +80,7 @@ int main(int ArgumentCount, char *Arguments[])
 
     // Keep processing each option until there are none left...
     while((OptionCharacter = getopt_long(
-        ArgumentCount, Arguments, "hiVv", CommandLineOptions, &OptionIndex)) != -1)
+        ArgumentCount, Arguments, "hilVv", CommandLineOptions, &OptionIndex)) != -1)
     {
         // Which option?
         switch(OptionCharacter)
@@ -116,6 +118,16 @@ int main(int ArgumentCount, char *Arguments[])
                 // Set interlace flag...
                 Interlace = true;
                 
+                // Done...
+                break;
+            }
+
+            // Save labels...
+            case 'l':
+            {
+                // Set save labels flag...
+                SaveLabels = true;
+
                 // Done...
                 break;
             }
@@ -168,7 +180,7 @@ int main(int ArgumentCount, char *Arguments[])
         else
         {
             // Alert, abort...
-            cerr << "Error: Input expected..." << endl;
+            cerr << "error: input expected" << endl;
             exit(1);
         }
 
@@ -193,7 +205,7 @@ int main(int ArgumentCount, char *Arguments[])
     if(optind + 1 <= ArgumentCount)
     {
         // Alert, abort...
-        cerr << "Error: Unknown parameter " << optind + 1 << "/" << ArgumentCount << endl;
+        cerr << "error: unknown parameter " << optind + 1 << "/" << ArgumentCount << endl;
         exit(1);
     }
 
@@ -203,6 +215,10 @@ int main(int ArgumentCount, char *Arguments[])
         // Try to load a VICAR colour image object and read the header...
         VicarColourImage Image(InputFile, Verbose);
         
+        // Set the save label flag, if user selected...
+        if(SaveLabels)
+            Image.SetSaveLabels(true);
+        
         // Write out the image...
         Image.Write(OutputFile, Interlace);
     }
@@ -211,7 +227,7 @@ int main(int ArgumentCount, char *Arguments[])
         catch(const std::string &ErrorMessage)
         {
             // Alert...
-            cerr << std::string("Error: ") << ErrorMessage << endl;
+            cerr << InputFile << std::string(": error: ") << ErrorMessage << endl;
             
             // Terminate...
             exit(1);

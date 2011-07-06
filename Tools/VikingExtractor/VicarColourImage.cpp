@@ -56,6 +56,7 @@ VicarColourImage::VicarColourImage(
       m_PhysicalRecordSize(0),
       m_PhysicalRecordPadding(0),
       m_Ok(false),
+      m_SaveLabels(false),
       m_Verbose(Verbose)
 {
     // Read the VICAR image header...
@@ -72,14 +73,14 @@ void VicarColourImage::ReadHeader()
 
     // If verbose, tell user we are opening the file...
     if(m_Verbose)
-        clog << "Opening " << m_InputFile << endl;
+        clog << "opening " << m_InputFile << endl;
 
     // Open the file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
     
         // Failed...
         if(!InputFileStream.is_open())
-            throw std::string("Could not open input for reading...");
+            throw std::string("could not open input for reading");
 
     // There isn't any "typical" file magic signature, so check for general...
 
@@ -88,7 +89,7 @@ void VicarColourImage::ReadHeader()
     
         // Check for first end of logical record marker......
         if(HeaderRecord[71] != 'C')
-            throw std::string("Input does not appear to be a 1970s era VICAR format...");
+            throw std::string("input does not appear to be a 1970s era VICAR format");
 
     // Check second record just to double check that this is actually from
     //  the Viking Lander...
@@ -98,7 +99,7 @@ void VicarColourImage::ReadHeader()
         
         // Check...
         if(Record.GetString().compare(0, strlen("VIKING LANDER "), "VIKING LANDER ") != 0)
-            throw std::string("Input does not appear to be from a Viking Lander...");
+            throw std::string("input does not appear to be from a Viking Lander");
 
     // Extract image metadata from header logical record, seeking 
     //  passed two byte marker...
@@ -140,34 +141,34 @@ void VicarColourImage::ReadHeader()
     
         // Check bands...
         if(m_Bands != 1 && m_Bands != 3)
-            throw std::string("Unsupported number of image bands...");
+            throw std::string("unsupported number of image bands");
 
         // Check height...
         if(m_Height <= 0)
-            throw std::string("Expected positive image height...");
+            throw std::string("expected positive image height");
             
         // Check width...
         if(m_Width <= 0)
-            throw std::string("Expected positive image width...");
+            throw std::string("expected positive image width");
 
         // Check pixel format...
         if(PixelFormat != 'I')
-            throw std::string("Unsupported pixel format...");
+            throw std::string("unsupported pixel format");
 
         // Check bytes per colour...
         if(m_BytesPerColour != 1)
-            throw std::string("Unsupported colour bit depth...");
+            throw std::string("unsupported colour bit depth");
 
     // If verbosity is set, display basic metadata...
     if(m_Verbose)
     {
-        clog << "  Bands:\t\t\t" << m_Bands << endl;
-        clog << "  Height:\t\t\t" << m_Height << endl;
-        clog << "  Width:\t\t\t" << m_Width << endl;
-        clog << "  Format:\t\t\t" << "integral" << endl;
-        clog << "  Bytes Per Colour:\t\t" << m_BytesPerColour << endl;
-        clog << "  Physical record size:\t\t" << m_PhysicalRecordSize << hex << showbase << " (" << m_PhysicalRecordSize<< ")" << endl;
-        clog << "  Physical record padding:\t"  << dec << m_PhysicalRecordPadding << hex << showbase << " (" << m_PhysicalRecordPadding<< ")" << dec << endl;
+        clog << "  bands:\t\t\t" << m_Bands << endl;
+        clog << "  height:\t\t\t" << m_Height << endl;
+        clog << "  width:\t\t\t" << m_Width << endl;
+        clog << "  format:\t\t\t" << "integral" << endl;
+        clog << "  bytes per colour:\t\t" << m_BytesPerColour << endl;
+        clog << "  physical record size:\t\t" << m_PhysicalRecordSize << hex << showbase << " (" << m_PhysicalRecordSize<< ")" << endl;
+        clog << "  physical record padding:\t"  << dec << m_PhysicalRecordPadding << hex << showbase << " (" << m_PhysicalRecordPadding<< ")" << dec << endl;
     }
 
     // Loaded ok...
@@ -179,17 +180,18 @@ void VicarColourImage::Write(const std::string &OutputFile, const bool Interlace
 {
     // Objects...
     LogicalRecord   Record;
+    std::string     SavedLabelsBuffer;
 
     // Check if file was loaded ok...
     if(!IsOk())
-        throw std::string("Input was not loaded...");
+        throw std::string("input was not loaded");
 
     // Open the input file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
     
         // Failed...
         if(!InputFileStream.is_open())
-            throw std::string("Could not open input for reading...");
+            throw std::string("could not open input for reading");
 
     // Seek to start of raw image data's physical record boundary...
     while(InputFileStream.good())
@@ -205,6 +207,13 @@ void VicarColourImage::Write(const std::string &OutputFile, const bool Interlace
         {
             // Extract a logical record...
             Record << InputFileStream;
+            
+            // Is it valid?
+            if(!Record.IsValidLabel())
+                throw std::string("invalid logical record label");
+
+            // Add to saved labels buffer...
+            SavedLabelsBuffer += Record.GetString() + '\n';
 
             // Update local offset into the current physical record...
             LocalPhysicalRecordOffset += LOGICAL_RECORD_SIZE;
@@ -241,12 +250,32 @@ void VicarColourImage::Write(const std::string &OutputFile, const bool Interlace
 
     // Got to the end of the file and did not find the last label record...
     if(!InputFileStream.good())
-        throw std::string("Unable to locate last logical record label...");
+        throw std::string("unable to locate last logical record label");
 
     // Show the image offset if verbose mode enabled...
     if(m_Verbose)
-        clog << "  Raw image offset:\t\t" << InputFileStream.tellg() << endl;
+        clog << "  raw image offset:\t\t" << InputFileStream.tellg() << endl;
 
+    // Write the saved label out, if user selected...
+    if(m_SaveLabels)
+    {
+        // Create label file name...
+        const std::string LabelFileName = m_InputFile + string(".txt");
+
+        // Open...
+        ofstream SavedLabelsStream(LabelFileName.c_str());
+        
+            // Failed...
+            if(!SavedLabelsStream.good())
+                throw std::string("unable to save record label");
+
+        // Write...
+        SavedLabelsStream << SavedLabelsBuffer;
+        
+        // Done...
+        SavedLabelsStream.close();
+    }
+    
     // Single channel image...
     if(m_Bands == 1)
     {
@@ -276,11 +305,11 @@ void VicarColourImage::Write(const std::string &OutputFile, const bool Interlace
 
         // Write out the file and alert the user...
         PngImage.write(OutputFile);
-        clog << OutputFile << endl;
+        clog << "writing " << OutputFile << endl;
     }
     
     // Unsupported colour format...
     else
-        throw std::string("Unsupported number of image bands...");
+        throw std::string("unsupported number of image bands");
 }
 

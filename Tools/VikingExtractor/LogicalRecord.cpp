@@ -77,16 +77,23 @@ LogicalRecord::LogicalRecord()
     Reset();
 }
 
-// Get a string or substring...
+// Get a string or substring, stripping non-friendly bytes...
 string LogicalRecord::GetString(const size_t Start, const size_t Size) const
 {
-    // Use until we hit the null byte...
-    if(Size == 0)
-        return string(&(m_Buffer[Start]));
+    // Calculate last byte index...
+    const size_t End = Size == 0 ? LOGICAL_RECORD_SIZE - 1 : Size;
 
-    // Use only a specified amount...
-    else
-        return string(&(m_Buffer[Start]), Size);
+    // Build string...
+    std::string Selection;
+    for(size_t Index = Start; Index <= End; ++Index)
+    {
+        // Only want printable characters...
+        if(isprint(m_Buffer[Index]))
+            Selection += m_Buffer[Index];
+    }
+
+    // Done...
+    return Selection;
 }
 
 // Constructor from an input stream...
@@ -113,20 +120,41 @@ char LogicalRecord::EbcdicToAscii(const uint8_t EbcdicCharacter) const
     return ms_EbcdicToAsciiTable[EbcdicCharacter];
 }
 
-// Is this the last label or does more follow?
+// Is this the last label or does more follow? Throws error...
 bool LogicalRecord::IsLastLabel() const
 {
-    // Yes...
-    if(m_Buffer[LOGICAL_RECORD_SIZE - 1] == 'L')
-        return true;
+    // Check...
+    switch(m_Buffer[LOGICAL_RECORD_SIZE - 1])
+    {
+        // No...
+        case 'C':
+            return false;
+        
+        // Yes...
+        case 'L':
+            return true;
 
-    // More follows...
-    else if(m_Buffer[LOGICAL_RECORD_SIZE - 1] == 'C')
-        return false;
+        // Not a valid label...
+        default:
+            throw std::string("invalid logical record label");
+    }
+}
 
-    // Not a valid label...
-    else
-        throw std::string("Invalid logical record label...");
+// Is this a valid label?
+bool LogicalRecord::IsValidLabel() const
+{
+    // Check...
+    switch(m_Buffer[LOGICAL_RECORD_SIZE - 1])
+    {
+        // Yes...
+        case 'C':
+        case 'L':
+            return true;
+        
+        // No...
+        default:
+            return false;
+    }
 }
 
 // Load the buffer from a stream and decode, or throw an error...
@@ -134,7 +162,7 @@ void LogicalRecord::operator<<(std::istream &InputStream)
 {
     // Fill the whole buffer and check for error...
     if(LOGICAL_RECORD_SIZE != InputStream.readsome(m_Buffer, LOGICAL_RECORD_SIZE))
-        throw std::string("Failed to read from input stream...");
+        throw std::string("failed to read from input stream");
 
     // Decode...
     for(unsigned int Index = 0; Index < LOGICAL_RECORD_SIZE; ++Index)

@@ -42,6 +42,9 @@ class VicarColourImage
         // Is verbosity set...
         bool IsVerbose() { return m_Verbose; }
         
+        // Set the save labels flag...
+        void SetSaveLabels(const bool SaveLabels = true) { m_SaveLabels = SaveLabels; }
+        
         // Set verbosity flag...
         void SetVerbose(const bool Verbose = true) { m_Verbose = Verbose; }
 
@@ -77,7 +80,8 @@ class VicarColourImage
         // True if the header appears to be ok...
         bool                m_Ok;
         
-        // Verbosity flag...
+        // Usage flags...
+        bool                m_SaveLabels;
         bool                m_Verbose;
 };
 

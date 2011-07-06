@@ -42,12 +42,15 @@ class LogicalRecord
         // Constructor from an input stream...
         LogicalRecord(std::istream &InputStream);
 
-        // Get a string or substring...
+        // Get a string or substring, stripping non-friendly bytes...
         std::string GetString(
             const size_t Start = 0, const size_t Size = 0) const;
 
-        // Is this the last label or does more follow?
+        // Is this the last label or does more follow? Throws error...
         bool IsLastLabel() const;
+
+        // Is this a valid label?
+        bool IsValidLabel() const;
 
         // Load the buffer from a stream and decode, or throw an error...
         void operator<<(std::istream &InputStream);
