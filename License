@@ -13,7 +13,7 @@
     
     Licensed As:
     
-        Copyright (C) 2010 Kshatra Corp under the terms of the 
+        Copyright (C) 2010, 2011 Kshatra Corp under the terms of the 
         Creative Commons Attribution-NonCommercial-ShareAlike 
         (BY-NC-SA) 3.0 Unported.
 
@@ -21,13 +21,13 @@
 
     Affects:
         
-        AresEngine, shaders, Lua scripts, build environment scripts, 
-        and any other relevant executable data.
+        AresEngine, VikingExtractor, shaders, Lua scripts, build 
+        environment scripts, and any other relevant executable data.
 
     Licensed As:
 
-        Copyright (C) 2010 Kshatra Corp under the terms of the GNU 
-        General Public License v3.
+        Copyright (C) 2010, 2011 Kshatra Corp under the terms of the 
+        GNU General Public License v3.
 
 === Documentation ====================================================
 
@@ -38,8 +38,8 @@
 
     Licensed As:
         
-        Copyright (C) 2010 Kshatra Corp under the terms of the GNU 
-        Free Documentation License.
+        Copyright (C) 2010, 2011 Kshatra Corp under the terms of the 
+        GNU Free Documentation License.
 
 === Music ============================================================
 
@@ -49,10 +49,10 @@
 
     Licensed As:
 
-        Copyright (C) 2010 Kshatra Corp, or under the artist's name if
-        denoted as such, under the terms of the Creative Commons 
-        Attribution-NonCommercial-ShareAlike (BY-NC-SA) 3.0 Unported, 
-        unless denoted otherwise.
+        Copyright (C) 2010, 2011 Kshatra Corp, or under the artist's 
+        name if denoted as such, under the terms of the Creative 
+        Commons Attribution-NonCommercial-ShareAlike (BY-NC-SA) 3.0 
+        Unported, unless denoted otherwise.
 
 ======================================================================
 
