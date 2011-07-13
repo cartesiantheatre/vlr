@@ -18,36 +18,38 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 CPP         = g++
-OBJ         = VikingExtractor.o     \
-              VicarColourImage.o    \
-              LogicalRecord.o
+OBJ         = LogicalRecord.o           \
+              VikingExtractor.o         \
+              VicarImageAssembler.o     \
+              VicarImageBand.o
 LIBS        = `libpng-config --ldflags`
 INCS        =
 CXXINCS     =
 BIN         = VikingExtractor
 CXXFLAGS    = $(CXXINCS) $(INCS) -g3 -Wall -Werror `libpng-config --cflags`
-
-SOURCES  = VikingExtractor.cpp  \
-           VicarColourImage.cpp \
-           LogicalRecord.cpp
+SOURCES     = LogicalRecord.cpp         \
+              VicarImageAssembler.cpp   \
+              VicarImageBand.cpp        \
+              VikingExtractor.cpp
 
 .PHONY: all
 all: $(BIN)
 
 .SUFFIXES: .cpp
 
--include $(subst .c,.cpp,.d,$(SOURCES))
+-include $(subst .cpp,.d,$(SOURCES))
 
 %.d: %.cpp
-	@$(CPP) -M $(CXXFLAGS) $< > $@.$$$$;                \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	@$(CPP) -M $(CXXFLAGS) $< > $@.$$$$;                    \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@;     \
 	rm -f $@.$$$$
 
 .cpp.o:
 	$(CPP) -c $< $(CXXFLAGS)
 
 clean:
-	@rm -fv $(OBJ) $(BIN) *~ *.d
+	@rm -f *.d
+	@rm -fv $(OBJ) $(BIN) *~
 
 $(BIN): $(OBJ)
 	$(CPP) $(OBJ) -o $(BIN) $(LIBS)

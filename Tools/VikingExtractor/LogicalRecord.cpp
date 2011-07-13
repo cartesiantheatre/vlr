@@ -77,8 +77,11 @@ LogicalRecord::LogicalRecord()
     Reset();
 }
 
-// Get a string or substring, stripping non-friendly bytes...
-string LogicalRecord::GetString(const size_t Start, const size_t Size) const
+// Get a string or substring, stripping non-friendly bytes. If trim is
+//  true will strip leading and trailing whitespace and logical record 
+//  markers...
+string LogicalRecord::GetString(
+    const bool Trim, const size_t Start, const size_t Size) const
 {
     // Calculate last byte index...
     const size_t End = Size == 0 ? LOGICAL_RECORD_SIZE - 1 : Size;
@@ -87,9 +90,28 @@ string LogicalRecord::GetString(const size_t Start, const size_t Size) const
     std::string Selection;
     for(size_t Index = Start; Index <= End; ++Index)
     {
+        // If trim was requested, skip trailing two byte logical 
+        //  record markers...
+        if(Trim && (Index >= LOGICAL_RECORD_SIZE - 2))
+            continue;
+
         // Only want printable characters...
         if(isprint(m_Buffer[Index]))
             Selection += m_Buffer[Index];
+    }
+
+    // If trim was enabled, trim leading and trailing white space...
+    if(Trim)
+    {
+        // Trim leading white space if some was found...
+        size_t StartIndex = Selection.find_first_not_of(" \t");
+        if(string::npos != StartIndex)
+            Selection = Selection.substr(StartIndex, Selection.length() - StartIndex);
+
+        // Trim trailing white space if some was found...
+        size_t EndIndex = Selection.find_last_not_of(" \t");
+        if(string::npos != EndIndex)
+            Selection = Selection.substr(0, EndIndex + 1);
     }
 
     // Done...

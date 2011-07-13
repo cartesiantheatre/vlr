@@ -19,24 +19,32 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Multiple include protection...
-#ifndef _VIKING_EXTRACTOR_H_
-#define _VIKING_EXTRACTOR_H_
-
-// Version...
-#define VIKING_EXTRACTOR_VERSION    "0.2a"
-
 // Includes...
-#include "VicarImageBand.h"
+    
+    // Ourself...    
+    #include "VicarColourImage.h"
 
-// Function prototypes...
+// Using the standard namespace...
+using namespace std;
 
-    // Show help...
-    void ShowHelp();
+// Construct and read the header, or throw an error...
+VicarImageAssembler::VicarImageAssembler(
+    const std::string &InputDirectory, const bool Verbose)
+    : m_InputDirectory(InputDirectory),
+      m_Verbose(Verbose)
+{
 
-    // Show version information...
-    void ShowVersion();
+}
 
-// Multiple include protection...
-#endif
+// Get the output stream to be verbose, if enabled...
+std::ostream &VicarImageAssembler::Verbose() const
+{
+    // Not enabled. Return the null stream...
+    if(!m_Verbose)
+        return m_DummyOutputStream;
+
+    // Otherwise use the usual standard logging stream...
+    else
+        return clog;
+}
 

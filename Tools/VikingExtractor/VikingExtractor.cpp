@@ -21,12 +21,15 @@
 
 // Includes...
 #include "VikingExtractor.h"
-#include "VicarColourImage.h"
+#include "VicarImageBand.h"
 #include <iostream>
 #include <string>
 #include <cstring>
 #include <cstdlib>
 #include <getopt.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <errno.h>
 
 // Using the standard namespace...
 using namespace std;
@@ -36,12 +39,16 @@ void ShowHelp()
 {
     cout << "Usage: VikingExtractor [options] input [output]" << endl
          << "Options:" << endl
+         << "  -d, --dry-run            Don't write anything" << endl
          << "  -h, --help               Show this help" << endl
          << "  -i, --interlace          Encode output with Adam7 interlacing" << endl
          << "  -l, --save-record-labels Save VICAR record labels as text file" << endl
          << "  -V, --verbose            Be verbose" << endl
          << "  -v, --version            Show version information" << endl << endl
-         << "Converts 1970s Viking Lander era VICAR colour images to PNGs." << endl;
+
+         << "Converts 1970s Viking Lander era VICAR colour images to PNGs." << endl
+         << "If 'input' is a directory, extract / assemble separate colour" << endl
+         << "bands into output directory. Otherwise operate on single file." << endl;
 }
 
 // Show version information...
@@ -57,17 +64,21 @@ void ShowVersion()
 int main(int ArgumentCount, char *Arguments[])
 {
     // Variables...
-    int     OptionCharacter = '\x0';
-    int     OptionIndex     = 0;
-    bool    Verbose         = false;
-    bool    Interlace       = false;
-    bool    SaveLabels      = false;
-    string  InputFile;
-    string  OutputFile;
+    int         OptionCharacter = '\x0';
+    int         OptionIndex     = 0;
+    bool        DryRun          = false;
+    bool        Verbose         = false;
+    bool        Interlace       = false;
+    bool        SaveLabels      = false;
+    struct stat FileAttributes;
+    bool        AssembleMode    = false;
+    string      InputFile;
+    string      OutputFile;
 
     // Command line option structure...
     option CommandLineOptions[] =
     {
+        {"dry-run",             no_argument,    NULL,   'd'},
         {"help",                no_argument,    NULL,   'h'},
         {"interlace",           no_argument,    NULL,   'i'},
         {"save-record-labels",  no_argument,    NULL,   'l'},
@@ -80,7 +91,7 @@ int main(int ArgumentCount, char *Arguments[])
 
     // Keep processing each option until there are none left...
     while((OptionCharacter = getopt_long(
-        ArgumentCount, Arguments, "hilVv", CommandLineOptions, &OptionIndex)) != -1)
+        ArgumentCount, Arguments, "dhilVv", CommandLineOptions, &OptionIndex)) != -1)
     {
         // Which option?
         switch(OptionCharacter)
@@ -99,6 +110,16 @@ int main(int ArgumentCount, char *Arguments[])
 
                 // Done...
                 cout << endl;
+                break;
+            }
+
+            // Dry run...
+            case 'd':
+            {
+                // Set dry run flag...
+                DryRun = true;
+
+                // Done...
                 break;
             }
 
@@ -174,32 +195,111 @@ int main(int ArgumentCount, char *Arguments[])
     
         // Fetch...
         if(optind + 1 <= ArgumentCount)
+        {
+            // Extract...
             InputFile = Arguments[optind++];
-        
+            
+            // Is this a file or a directory?
+            if(stat(InputFile.c_str(), &FileAttributes) != 0)
+            {
+                // Couldn't stat file...
+                cerr << "error: could not stat input " << InputFile << endl;
+                exit(1);
+            }
+            
+            // Directory...
+            if(S_ISDIR(FileAttributes.st_mode))
+                AssembleMode = true;
+            
+            // File...
+            else
+                AssembleMode = false;
+        }
+
         // Wasn't provided...
         else
         {
-            // Alert, abort...
-            cerr << "error: input expected" << endl;
+            // Show help...
+            ShowHelp();
             exit(1);
         }
 
     // The output file is optional...
-    
-        // Fetch...
+
+        // Output file was provided...
         if(optind + 1 <= ArgumentCount)
-            OutputFile = Arguments[optind++];
-        
-        // Wasn't explicitly provided...
-        else
         {
-            // Use same file name as input for output, but with .png extension...
-            OutputFile = InputFile + string(".png");
+            // Extract...
+            OutputFile = Arguments[optind++];
+
+            // If we are in assemble mode, make sure it is a directory...
+            if(AssembleMode)
+            {
+                // Failed to attributes...
+                if(stat(OutputFile.c_str(), &FileAttributes) != 0)
+                {
+                    // Doesn't exist, create...
+                    if(errno == ENOENT)
+                        mkdir(OutputFile.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
+
+                    // Some other error...
+                    else
+                    {
+                        cerr << "error: could not stat output directory " << OutputFile << endl;
+                        exit(1);
+                    }
+                }
+
+                // Get output directory attributes...
+                if(stat(OutputFile.c_str(), &FileAttributes) != 0)
+                {
+                    cerr << "error: could not stat output directory " << OutputFile << endl;
+                    exit(1);
+                }
+
+                // Still doesn't exist...
+                if(!S_ISDIR(FileAttributes.st_mode))
+                {
+                    cerr << "error: could not stat output directory " << OutputFile << endl;
+                    exit(1);
+                }
+
+                // Done...
+                AssembleMode = true;
+            }
+            
+            // Not in assembly mode, generating single output file...
+            else
+            {
+                // Append .png suffix to output, if it doesn't exist already...
+                if(OutputFile.find(".png") == string::npos)
+                    OutputFile += string(".png");
+            }
         }
 
-    // Append .png suffix to output, if it doesn't exist already...
-    if(OutputFile.find(".png") == string::npos)
-        OutputFile += string(".png");
+        // Output file was not provided, create...
+        else
+        {
+            // We are in assembly mode, use current working directory...
+            if(AssembleMode)
+            {
+                // Fetch...
+                char Temp[1024];
+                OutputFile = getcwd(Temp, 1024);
+            }
+
+            // Not in assembly mode, so create implicitly...
+            else
+            {
+                // Start with the input file's name with image suffix...
+                OutputFile = InputFile + string(".png");
+                
+                // Strip the path so only file name remains...
+                const size_t PathIndex = OutputFile.find_last_of("\\/");
+                if(PathIndex != string::npos)
+                    OutputFile.erase(0, PathIndex + 1);
+            }
+        }
 
     // Check for extraneous arguments...
     if(optind + 1 <= ArgumentCount)
@@ -209,18 +309,31 @@ int main(int ArgumentCount, char *Arguments[])
         exit(1);
     }
 
-    // Write out the image...
+    // Extract out the image or images...
     try
     {
-        // Try to load a VICAR colour image object and read the header...
-        VicarColourImage Image(InputFile, Verbose);
+        // Assemble mode...
+        if(AssembleMode)
+        {
+            VicarImageAssembler Assembler(InputFile, Verbose);
+            
+            for(VicarImageAssembler::const_iterator Index = Assembler.FirstImage();
+                Index !=
+        }
         
-        // Set the save label flag, if user selected...
-        if(SaveLabels)
-            Image.SetSaveLabels(true);
-        
-        // Write out the image...
-        Image.Write(OutputFile, Interlace);
+        // Just extract from a single file...
+        else
+        {
+            // Try to load a VICAR colour image object and read the header...
+            VicarImageBand Image(InputFile, Verbose);
+            
+            // Set user the save label flag, if user selected...
+            Image.SetSaveLabels(SaveLabels);
+            
+            // Write out the image, if not in dry mode...
+            if(!DryRun)
+                Image.Extract(OutputFile, Interlace);
+        }
     }
 
         // Failed...

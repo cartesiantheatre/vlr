@@ -42,9 +42,13 @@ class LogicalRecord
         // Constructor from an input stream...
         LogicalRecord(std::istream &InputStream);
 
-        // Get a string or substring, stripping non-friendly bytes...
+        // Get a string or substring, stripping non-friendly bytes. If
+        //  trim is true will strip leading and trailing whitespace 
+        //  and logical record markers...
         std::string GetString(
-            const size_t Start = 0, const size_t Size = 0) const;
+            const bool Trim = false,
+            const size_t Start = 0, 
+            const size_t Size = 0) const;
 
         // Is this the last label or does more follow? Throws error...
         bool IsLastLabel() const;
@@ -54,6 +58,9 @@ class LogicalRecord
 
         // Load the buffer from a stream and decode, or throw an error...
         void operator<<(std::istream &InputStream);
+        
+        // Convert to a string...
+        operator std::string() const { return GetString(); }
         
         // Index operator...
         char &operator[](const size_t Index);
