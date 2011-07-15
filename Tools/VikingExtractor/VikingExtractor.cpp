@@ -21,7 +21,9 @@
 
 // Includes...
 #include "VikingExtractor.h"
+#include "VicarImageAssembler.h"
 #include "VicarImageBand.h"
+#include <cassert>
 #include <iostream>
 #include <string>
 #include <cstring>
@@ -39,12 +41,15 @@ void ShowHelp()
 {
     cout << "Usage: VikingExtractor [options] input [output]" << endl
          << "Options:" << endl
-         << "  -d, --dry-run            Don't write anything" << endl
-         << "  -h, --help               Show this help" << endl
-         << "  -i, --interlace          Encode output with Adam7 interlacing" << endl
-         << "  -l, --save-record-labels Save VICAR record labels as text file" << endl
-         << "  -V, --verbose            Be verbose" << endl
-         << "  -v, --version            Show version information" << endl << endl
+         << "  -d, --dry-run             Don't write anything" << endl
+         << "  -f, --diode-filter <type> Process only VICAR files of given type" << endl
+         << "                             which are any, colour, infrared, or sun." << endl
+         << "                             Only available if input is a directory." << endl
+         << "  -h, --help                Show this help" << endl
+         << "  -i, --interlace           Encode output with Adam7 interlacing" << endl
+         << "  -l, --save-record-labels  Save VICAR record labels as text file" << endl
+         << "  -V, --verbose             Be verbose" << endl
+         << "  -v, --version             Show version information" << endl << endl
 
          << "Converts 1970s Viking Lander era VICAR colour images to PNGs." << endl
          << "If 'input' is a directory, extract / assemble separate colour" << endl
@@ -66,24 +71,28 @@ int main(int ArgumentCount, char *Arguments[])
     // Variables...
     int         OptionCharacter = '\x0';
     int         OptionIndex     = 0;
+    struct stat FileAttributes;
+    bool        AssemblyMode    = false;
+    string      InputFile;
+    string      OutputFile;
+    
+    // User switches...
+    string      DiodeFilter;
     bool        DryRun          = false;
     bool        Verbose         = false;
     bool        Interlace       = false;
     bool        SaveLabels      = false;
-    struct stat FileAttributes;
-    bool        AssembleMode    = false;
-    string      InputFile;
-    string      OutputFile;
 
     // Command line option structure...
     option CommandLineOptions[] =
     {
-        {"dry-run",             no_argument,    NULL,   'd'},
-        {"help",                no_argument,    NULL,   'h'},
-        {"interlace",           no_argument,    NULL,   'i'},
-        {"save-record-labels",  no_argument,    NULL,   'l'},
-        {"verbose",             no_argument,    NULL,   'V'},
-        {"version",             no_argument,    NULL,   'v'},
+        {"diode-filter",        required_argument,  NULL,   'f'},
+        {"dry-run",             no_argument,        NULL,   'd'},
+        {"help",                no_argument,        NULL,   'h'},
+        {"interlace",           no_argument,        NULL,   'i'},
+        {"save-record-labels",  no_argument,        NULL,   'l'},
+        {"verbose",             no_argument,        NULL,   'V'},
+        {"version",             no_argument,        NULL,   'v'},
         
         // End of array marker...
         {0, 0, 0, 0}
@@ -91,7 +100,7 @@ int main(int ArgumentCount, char *Arguments[])
 
     // Keep processing each option until there are none left...
     while((OptionCharacter = getopt_long(
-        ArgumentCount, Arguments, "dhilVv", CommandLineOptions, &OptionIndex)) != -1)
+        ArgumentCount, Arguments, "f:dhilVv", CommandLineOptions, &OptionIndex)) != -1)
     {
         // Which option?
         switch(OptionCharacter)
@@ -114,14 +123,10 @@ int main(int ArgumentCount, char *Arguments[])
             }
 
             // Dry run...
-            case 'd':
-            {
-                // Set dry run flag...
-                DryRun = true;
-
-                // Done...
-                break;
-            }
+            case 'd': { DryRun = true; break; }
+            
+            // Diode filter...
+            case 'f': { assert(optarg); DiodeFilter = optarg; break; }
 
             // Help...
             case 'h':
@@ -134,24 +139,10 @@ int main(int ArgumentCount, char *Arguments[])
             }
 
             // Interlacing...
-            case 'i':
-            {
-                // Set interlace flag...
-                Interlace = true;
-                
-                // Done...
-                break;
-            }
+            case 'i': { Interlace = true; break; }
 
             // Save labels...
-            case 'l':
-            {
-                // Set save labels flag...
-                SaveLabels = true;
-
-                // Done...
-                break;
-            }
+            case 'l': { SaveLabels = true; break; }
 
             // Version...
             case 'v':
@@ -164,14 +155,7 @@ int main(int ArgumentCount, char *Arguments[])
             }
 
             // Verbose...
-            case 'V':
-            {
-                // Set verbose flag...
-                Verbose = true;
-                
-                // Done...
-                break;
-            }
+            case 'V': { Verbose = true; break; }
             
             // Unknown option...
             case '?':
@@ -209,11 +193,11 @@ int main(int ArgumentCount, char *Arguments[])
             
             // Directory...
             if(S_ISDIR(FileAttributes.st_mode))
-                AssembleMode = true;
+                AssemblyMode = true;
             
             // File...
             else
-                AssembleMode = false;
+                AssemblyMode = false;
         }
 
         // Wasn't provided...
@@ -226,14 +210,14 @@ int main(int ArgumentCount, char *Arguments[])
 
     // The output file is optional...
 
-        // Output file was provided...
+        // Output file was explicitly provided...
         if(optind + 1 <= ArgumentCount)
         {
             // Extract...
             OutputFile = Arguments[optind++];
 
-            // If we are in assemble mode, make sure it is a directory...
-            if(AssembleMode)
+            // If we are in assembly mode, make sure it is a directory...
+            if(AssemblyMode)
             {
                 // Failed to attributes...
                 if(stat(OutputFile.c_str(), &FileAttributes) != 0)
@@ -265,7 +249,7 @@ int main(int ArgumentCount, char *Arguments[])
                 }
 
                 // Done...
-                AssembleMode = true;
+                AssemblyMode = true;
             }
             
             // Not in assembly mode, generating single output file...
@@ -281,7 +265,7 @@ int main(int ArgumentCount, char *Arguments[])
         else
         {
             // We are in assembly mode, use current working directory...
-            if(AssembleMode)
+            if(AssemblyMode)
             {
                 // Fetch...
                 char Temp[1024];
@@ -301,6 +285,19 @@ int main(int ArgumentCount, char *Arguments[])
             }
         }
 
+    // If in assembly mode (the output is a directory), make sure it 
+    //  ends with a path separator...
+    if(AssemblyMode)
+    {
+        // Search for the last path separator...
+        size_t Index = string::npos;
+        Index = OutputFile.find_last_of("/\\");
+
+        // If found and it's not the last character, append one...
+        if(Index != string::npos && (Index != OutputFile.length() - 1))
+            OutputFile += '/';
+    }
+
     // Check for extraneous arguments...
     if(optind + 1 <= ArgumentCount)
     {
@@ -309,21 +306,47 @@ int main(int ArgumentCount, char *Arguments[])
         exit(1);
     }
 
-    // Extract out the image or images...
+    // Extract from a set of VICAR images...
     try
     {
-        // Assemble mode...
-        if(AssembleMode)
+        // Assembly mode...
+        if(AssemblyMode)
         {
-            VicarImageAssembler Assembler(InputFile, Verbose);
+            // Create image assembler...
+            VicarImageAssembler Assembler(InputFile);
             
-            for(VicarImageAssembler::const_iterator Index = Assembler.FirstImage();
-                Index !=
+            // Set usage switches...
+            Assembler.SetVerbose(Verbose);
+            Assembler.SetDiodeFilter(DiodeFilter);
+            
+            // Index the input directory...
+            Assembler.Index();
+            
+            /*for(VicarImageAssembler::const_iterator Index = Assembler.FirstImage();
+                Index !=*/
         }
-        
-        // Just extract from a single file...
-        else
+    }
+
+        // Failed...
+        catch(const std::string &ErrorMessage)
         {
+            // Alert...
+            cerr << ErrorMessage << endl;
+            
+            // Terminate...
+            exit(1);
+        }
+
+    // Extract from a single image...
+    try
+    {
+        // Just extract from a single file...
+        if(!AssemblyMode)
+        {
+            // Diode filter type should not be set...
+            if(!DiodeFilter.empty())
+                throw std::string("diode filter cannot be set when extracting from single file");
+            
             // Try to load a VICAR colour image object and read the header...
             VicarImageBand Image(InputFile, Verbose);
             

@@ -92,8 +92,13 @@ class VicarImageBand
     // Protected methods...
     protected:
 
-        // Parse basic metadata, or throw an error...
+        // Parse basic metadata, or throw an error. Calls one of the 
+        //  implementations below...
         void ParseBasicMetadata(const LogicalRecord &Record);
+        
+        void ParseBasicMetadataImplementation_FormatA(const LogicalRecord &Record);
+        void ParseBasicMetadataImplementation_FormatB(const LogicalRecord &Record);
+        void ParseBasicMetadataImplementation_FormatC(const LogicalRecord &Record);
 
         // Parse extended metadata, if any, or throw an error...
         void ParseExtendedMetadata(const LogicalRecord &Record);

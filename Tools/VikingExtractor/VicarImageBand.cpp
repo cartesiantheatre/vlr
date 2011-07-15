@@ -47,7 +47,7 @@ using namespace std;
 
 // Construct and read the header, or throw an error...
 VicarImageBand::VicarImageBand(
-    const std::string &InputFile, const bool Verbose)
+    const string &InputFile, const bool Verbose)
     : m_InputFile(InputFile),
       m_Height(0),
       m_Width(0),
@@ -65,34 +65,34 @@ VicarImageBand::VicarImageBand(
 }
 
 // Extract the image out as a PNG, or throw an error...
-void VicarImageBand::Extract(const std::string &OutputFile, const bool Interlace) const
+void VicarImageBand::Extract(const string &OutputFile, const bool Interlace) const
 {
     // Objects...
     LogicalRecord   Record;
 
     // Check if file was loaded ok...
     if(!IsOk())
-        throw std::string("input was not loaded");
+        throw string("input was not loaded");
 
     // Open the input file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
     
         // Failed...
         if(!InputFileStream.is_open())
-            throw std::string("could not open input for reading");
+            throw string("could not open input for reading");
 
     // Write the saved label out, if user selected...
     if(m_SaveLabels)
     {
         // Create label file name...
-        const std::string LabelFileName = m_InputFile + string(".txt");
+        const string LabelFileName = m_InputFile + string(".txt");
 
         // Open...
         ofstream SavedLabelsStream(LabelFileName.c_str());
         
             // Failed...
             if(!SavedLabelsStream.good())
-                throw std::string("unable to save record label");
+                throw string("unable to save record label");
 
         // Write...
         SavedLabelsStream << m_SavedLabelsBuffer;
@@ -103,7 +103,7 @@ void VicarImageBand::Extract(const std::string &OutputFile, const bool Interlace
     
     // Seek to raw image offset and make sure it was successful...
     if(!InputFileStream.seekg(m_RawImageOffset, ios_base::beg).good())
-        throw std::string("file ended prematurely before raw image");
+        throw string("file ended prematurely before raw image");
     
     // Write out the image...
 
@@ -125,7 +125,7 @@ void VicarImageBand::Extract(const std::string &OutputFile, const bool Interlace
                 // Read a pixel / byte and check for error...
                 char Byte = '\x0';
                 if(!InputFileStream.read(&Byte, 1).good())
-                    throw std::string("raw image data ended prematurely");
+                    throw string("raw image data ended prematurely");
                 
                 // Encode...
                 PngImage.set_pixel(X, Y, Byte);
@@ -141,64 +141,120 @@ void VicarImageBand::Extract(const std::string &OutputFile, const bool Interlace
 void VicarImageBand::ParseBasicMetadata(const LogicalRecord &Record)
 {
     // Variables...
+    size_t  TokenCount      = 0;
+    string  Token;
+    char    Buffer[1024]    = {0};
     int     Bands           = 0;
     char    DummyCharacter  = 0;
     char    PixelFormat     = 0;
 
+    // Count how many tokens are there, seeking passed two byte binary 
+    //  marker. This is necessary to know since different label formats
+    //  can be distinguished by the number of whitespace separated 
+    //  tokens...
+    stringstream TokenCounter(Record.GetString(true, 2));
+    while(TokenCounter.good())
+    {
+        // Extract and count...
+        TokenCounter >> Token;
+      ++TokenCount;
+    }
+
     // Initialize a tokenizer, seeking passed two byte binary marker...
-    stringstream BasicMetadataTokenizer(Record.GetString(false, 2));
+    stringstream BasicMetadataTokenizer(Record.GetString(true, 2));
+
+    // Most common format should have five tokens...
+    if(TokenCount != 5)
+        throw string("unrecognized VICAR header label format");
+
+    // Extract number of image bands...
+    BasicMetadataTokenizer >> Token;
+    Bands = atoi(Token.c_str());
+
+    // Way more than is reasonable, assume alternate header representation...
+    if(Bands > 9)
+    {
+        // Bands is really just one and was actually the image height...
+        Bands = 1;
+        m_Height = Bands;
+        
+        // Next token is the width and height coallesced. Skip...
+        BasicMetadataTokenizer >> Token;
+        
+        // Next token should be the width...
+        BasicMetadataTokenizer >> m_Width;
+    }
     
-    // Extract...
-    BasicMetadataTokenizer >> Bands;
-    BasicMetadataTokenizer >> DummyCharacter;
-    BasicMetadataTokenizer >> m_Height;
-    BasicMetadataTokenizer >> m_Width;
-    BasicMetadataTokenizer >> PixelFormat;
-    BasicMetadataTokenizer >> m_BytesPerColour;
+    // Otherwise use more common representation...
+    else
+    {
+        // We don't know what this byte is for...
+        BasicMetadataTokenizer >> DummyCharacter;
 
-    // Calculate the physical record size which is either 5 logical 
-    //  records or the image width, whichever is greater...
-
-        // Image width is greater than 5 logical records...
-        if(m_Width > 5 * LOGICAL_RECORD_SIZE)
+        // Next token may be the height and width coallesced...
+        BasicMetadataTokenizer >> Token;
+        
+        // It's too long to be the height, so split. The reasoning being
+        //  that it's doubtful the PSA captured an image greater than 
+        //  9999 pixels in width or height...
+        if(Token.length() > 4)
         {
-            // Use the width...
-            m_PhysicalRecordSize = m_Width;
+            // Calculate length of first half... (height)
+            const size_t HeightLength = Token.length() / 2;
 
-            // But anything passed the last logical record is just padding...
-            m_PhysicalRecordPadding = m_Width - (5 * LOGICAL_RECORD_SIZE);
+            // Let the first half be the height...
+            Token.copy(Buffer, HeightLength);
+            Buffer[HeightLength] = '\x0';
+            m_Height = atoi(Buffer);
+            
+            // Let the second half be the width...
+            Token.copy(Buffer, Token.length() - HeightLength, HeightLength);
+            Buffer[Token.length() - HeightLength] = '\x0';
+            m_Width = atoi(Buffer);
         }
         
+        // It's short enough to be the actual height...
         else
         {
-            // Only five logical records...
-            m_PhysicalRecordSize = 5 * LOGICAL_RECORD_SIZE;
+            // Extract image height...
+            m_Height = atoi(Token.c_str());
 
-            // With no following padding...
-            m_PhysicalRecordPadding = 0;
+            // Extract image width...
+            BasicMetadataTokenizer >> m_Width;
         }
 
+        // Calculate the physical record size which is either 5 logical 
+        //  records or the image width, whichever is greater...
+        if(Token.length() <= 4)
+        {
+            // Image width is greater than 5 logical records...
+            if(m_Width > 5 * LOGICAL_RECORD_SIZE)
+            {
+                // Use the width...
+                m_PhysicalRecordSize = m_Width;
+
+                // But anything passed the last logical record is just padding...
+                m_PhysicalRecordPadding = m_Width - (5 * LOGICAL_RECORD_SIZE);
+            }
+            
+            else
+            {
+                // Only five logical records...
+                m_PhysicalRecordSize = 5 * LOGICAL_RECORD_SIZE;
+
+                // With no following padding...
+                m_PhysicalRecordPadding = 0;
+            }
+        }
+    }
+    
+    // Extract pixel format...
+    BasicMetadataTokenizer >> PixelFormat;
+    
+    // Extract bytes per colour...
+    BasicMetadataTokenizer >> m_BytesPerColour;
+
     // Perform sanity check on basic metadata...
-
-        // Check bands...
-        if(Bands != 1)
-            throw std::string("unsupported number of image bands");
-
-        // Check height...
-        if(m_Height <= 0)
-            throw std::string("expected positive image height");
-
-        // Check width...
-        if(m_Width <= 0)
-            throw std::string("expected positive image width");
-
-        // Check pixel format...
-        if(PixelFormat != 'I')
-            throw std::string("unsupported pixel format");
-
-        // Check bytes per colour...
-        if(m_BytesPerColour != 1)
-            throw std::string("unsupported colour bit depth");
 
     // If verbosity is set, display basic metadata...
     Verbose() << "  bands:\t\t\t" << Bands << endl;
@@ -209,17 +265,37 @@ void VicarImageBand::ParseBasicMetadata(const LogicalRecord &Record)
     Verbose() << "  bytes per colour:\t\t" << m_BytesPerColour << endl;
     Verbose() << "  physical record size:\t\t" << m_PhysicalRecordSize << hex << showbase << " (" << m_PhysicalRecordSize<< ")" << endl;
     Verbose() << "  physical record padding:\t"  << dec << m_PhysicalRecordPadding << hex << showbase << " (" << m_PhysicalRecordPadding<< ")" << dec << endl;
+
+        // Check bands...
+        if(Bands != 1)
+            throw string("unsupported number of image bands");
+
+        // Check height...
+        if(m_Height <= 0)
+            throw string("expected positive image height");
+
+        // Check width...
+        if(m_Width <= 0)
+            throw string("expected positive image width");
+
+        // Check pixel format is integral...
+        if(PixelFormat != 'I' && PixelFormat != 'L')
+            throw string("unsupported pixel format");
+
+        // Check bytes per colour...
+        if(m_BytesPerColour != 1)
+            throw string("unsupported colour bit depth");
 }
 
 // Parse extended metadata, if any, or throw an error...
 void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
 {
     // Variables...
-    std::string Token;
+    string Token;
     
     // Is it valid?
     if(!Record.IsValidLabel())
-        throw std::string("invalid logical record label");
+        throw string("invalid logical record label while parsing extended metadata");
 
     // Initialize tokenizer...
     stringstream Tokenizer(Record);
@@ -227,24 +303,58 @@ void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
     // Get first token...
     Tokenizer >> Token;
 
-    // Found band type...
+    // Found band, check photosensor type...
     if(Token == "DIODE")
     {
         // Extract band...
         Tokenizer >> Token;
         
+        /*
+            Note: Sometimes the narrow band photosensor array diodes
+            in the VICAR label were given inconsistent names when
+            taken as part of a triplet (e.g. RGB colour bands).
+            Sometimes you might see RED, sometimes RED/T (red channel
+            as part of triplet), and sometimes RED/S. We're not sure
+            what the /S might have stood for, but probably not
+            "single" since VICAR images vl_1553.00{7-9}, for instance,
+            have PSA diodes of colour/S form but appear to be separate
+            channels of the same image. We will assume colour ==
+            colour/S == colour/T for now since they were probably
+            added later in an inconsistent and hectic early work
+            environment.
+        */
+        
         // Narrow band for colours...
-        if(Token == "RED")      { m_BandType = Red; Verbose() << "  photosensor diode:\tred" << endl; }
-        else if(Token == "GRN") { m_BandType = Green; Verbose() << "  photosensor diode:\tgreen" << endl; }
-        else if(Token == "BLU") { m_BandType = Blue; Verbose() << "  photosensor diode:\tblue" << endl; }
+            
+            // Red triplet...
+            if(Token == "RED" || Token == "RED/S" || Token == "RED/T")
+                { m_BandType = Red; Verbose() << "  photosensor diode:\tred" << endl; }
+            
+            // Green triplet...
+            else if(Token == "GRN" || Token == "GRN/S" || Token == "GRN/T")
+                { m_BandType = Green; Verbose() << "  photosensor diode:\tgreen" << endl; }
+
+            // Blue triplet...
+            else if(Token == "BLU" || Token == "BLU/S" || Token == "BLU/T")
+                { m_BandType = Blue; Verbose() << "  photosensor diode:\tblue" << endl; }
 
         // Narrow band for infrared...
-        else if(Token == "IR1") { m_BandType = Infrared1; Verbose() << "  photosensor diode:\tinfrared 1" << endl; }
-        else if(Token == "IR2") { m_BandType = Infrared2; Verbose() << "  photosensor diode:\tinfrared 2" << endl; }
-        else if(Token == "IR3") { m_BandType = Infrared3; Verbose() << "  photosensor diode:\tinfrared 3" << endl; }
+        
+            // Infrared one...
+            else if(Token == "IR1" || Token == "IR1/S" || Token == "IR1/T")
+                { m_BandType = Infrared1; Verbose() << "  photosensor diode:\tinfrared 1" << endl; }
+                
+            // Infrared one...
+            else if(Token == "IR2" || Token == "IR2/S" || Token == "IR2/T")
+                { m_BandType = Infrared2; Verbose() << "  photosensor diode:\tinfrared 2" << endl; }
+            
+            // Infrared one...
+            else if(Token == "IR3" || Token == "IR3/S" || Token == "IR3/T")
+                { m_BandType = Infrared3; Verbose() << "  photosensor diode:\tinfrared 3" << endl; }
 
         // Narrow band for the Sun...
-        else if(Token == "SUN") { m_BandType = Sun; Verbose() << "  photosensor diode:\tsun" << endl; }
+        else if(Token == "SUN")
+            { m_BandType = Sun; Verbose() << "  photosensor diode:\tsun" << endl; }
 
         // Unknown...
         else { m_BandType = Invalid; Verbose() << "  photosensor diode:\t\tnon-imaging (" << Token << ")" << endl; }
@@ -281,7 +391,7 @@ void VicarImageBand::ReadHeader()
     
         // Failed...
         if(!InputFileStream.is_open())
-            throw std::string("could not open input for reading");
+            throw string("could not open input for reading");
 
     // There isn't any "typical" file magic signature, so check for general...
 
@@ -290,7 +400,7 @@ void VicarImageBand::ReadHeader()
     
         // Check for first end of logical record marker......
         if(HeaderRecord[71] != 'C')
-            throw std::string("input does not appear to be a 1970s era VICAR format");
+            throw string("input does not appear to be a 1970s era VICAR format");
 
     // Check second record just to double check that this is actually 
     //  from the Viking Lander EDR...
@@ -300,7 +410,7 @@ void VicarImageBand::ReadHeader()
         
         // Check...
         if(Record.GetString().compare(0, strlen("VIKING LANDER "), "VIKING LANDER ") != 0)
-            throw std::string("input does not appear to be from a Viking Lander");
+            throw string("input does not appear to be from a Viking Lander");
 
     // Extract basic image metadata from the very first label record...
     ParseBasicMetadata(HeaderRecord);
@@ -328,10 +438,14 @@ void VicarImageBand::ReadHeader()
         {
             // Extract a logical record...
             Record << InputFileStream;
+//Verbose() << "tellg() " << static_cast<int>(InputFileStream.tellg()) << endl;
             
             // Is it valid?
             if(!Record.IsValidLabel())
-                throw std::string("invalid logical record label");
+            {
+                Verbose() << "bad logical record terminator " << LocalLogicalRecordIndex << "/5 at " << static_cast<int>(InputFileStream.tellg()) + 71 << endl;
+                throw string("invalid logical record label while reading header at ");
+            }
 
             // Parse the extended metadata, if any...
             ParseExtendedMetadata(Record);
@@ -369,12 +483,13 @@ void VicarImageBand::ReadHeader()
 
         // Seek passed any padding that may have followed the logical 
         //  record set to the next physical record boundary...
+//Verbose() << "seeking passed " << m_PhysicalRecordPadding << " physical record padding" << endl;
         InputFileStream.seekg(m_PhysicalRecordPadding, ios_base::cur);
     }
 
     // Got to the end of the file and did not find the last label record...
     if(!InputFileStream.good())
-        throw std::string("unable to locate last logical record label");
+        throw string("unable to locate last logical record label");
 
     // Store raw image offset...
     m_RawImageOffset = InputFileStream.tellg();

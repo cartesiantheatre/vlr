@@ -37,6 +37,8 @@ all: $(BIN)
 
 .SUFFIXES: .cpp
 
+# Take the list of sources, replace extension with .d to include as
+#  additional makefiles...
 -include $(subst .cpp,.d,$(SOURCES))
 
 %.d: %.cpp

@@ -24,6 +24,8 @@
 #define _VICAR_IMAGE_ASSEMBLER_H_
 
 // Includes...
+#include <ostream>
+#include <vector>
 #include "VicarImageBand.h"
 
 // Assemble 1970s era VICAR colour images from individual VICAR images...
@@ -53,25 +55,63 @@ class VicarImageAssembler
             Sun
 
         }PSADiode;
-        
+
         // Null output stream...
         struct NullOutputStream : std::ostream
         {
             NullOutputStream() : std::ostream(0) { }
         };
 
+        // Reconstructable image...
+        class ReconstructableImage
+        {
+            // Public types...
+            public:
+
+                // Image band list and iterators...
+                typedef std::vector<VicarImageBand> ImageBandListType;
+                typedef ImageBandListType::iterator ImageBandListIterator;
+                typedef ImageBandListType::const_iterator ImageBandListConstIterator;
+
+            // Public methods...
+            public:
+
+                // Get the image band list...
+                ImageBandListConstIterator GetImageBandList() const { return m_ImageBands.begin(); }
+
+            // Protected data...
+            protected:
+
+                // All constituent image bands...
+                ImageBandListType   m_ImageBands;
+        };
+        
+        // Assembled image list and iterators...
+        typedef std::vector<ReconstructableImage>       ReconstructableImageListType;
+        typedef ReconstructableImageListType::iterator  ReconstructableImageListIterator;
+
     // Public methods...
     public:
 
-        VicarImageAssembler(
-            const std::string &InputDirectory, const bool Verbose = false);
+        // Constructor...
+        VicarImageAssembler(const std::string &InputDirectory);
 
+        // Get the size of the number of potentially reconstructable 
+        //  images indexed...
+        size_t GetSize() const { return m_ReconstructableImageList.size(); }
+        
         // Index the contents of the directory returning number of
         //  potentially reconstructable images or throw an error...
-        size_t Index();
+        void Index();
         
         // Reconstruct the ith image or throw an error...
-        void Reconstruct(const size_t Index, const std::string 
+        void Reconstruct(
+            const ReconstructableImageListIterator Iterator, 
+            const std::string &OutputFile);
+
+        // Set usage switches...
+        void SetVerbose(const bool Verbose = true) { m_Verbose = Verbose; }
+        void SetDiodeFilter(const std::string &DiodeFilter);
 
     // Protected methods...
     protected:
@@ -83,13 +123,17 @@ class VicarImageAssembler
     protected:
 
         // Input directory...
-        const std::string           m_InputDirectory;
+        const std::string               m_InputDirectory;
+
+        // Reconstructable image list...
+        ReconstructableImageListType    m_ReconstructableImageList;
 
         // Usage flags...
-        bool                        m_Verbose;
-        
+        bool                            m_Verbose;
+        std::string                     m_DiodeFilter;
+
         // Dummy output stream...
-        mutable NullOutputStream    m_DummyOutputStream;
+        mutable NullOutputStream        m_DummyOutputStream;
 };
 
 // Multiple include protection...
