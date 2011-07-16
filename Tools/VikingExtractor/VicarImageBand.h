@@ -65,7 +65,7 @@ class VicarImageBand
     // Public methods...
     public:
 
-        // Construct grayscale, or throw an error... (grayscale)
+        // Construct or throw an error...
         VicarImageBand(const std::string &InputFile, const bool Verbose = false);
 
         // Get the azimuth / elevation string...
@@ -74,11 +74,25 @@ class VicarImageBand
         // Get the band type...
         PSADiode GetBandType() const { return m_BandType; };
 
+        // Get the original file on the magnetic tape number, or zero if unknown...
+        size_t GetFileOnMagneticTapeNumber() const;
+
+        // Get the original magnetic tape number, or zero if unknown...
+        size_t GetMagneticTapeNumber() const;
+
+        // Check if the file is loadable. Note that this does a shallow
+        //  file integrity check and so it may succeed even though Load()
+        //  fails later...
+        bool IsLoadable() const;
+
         // Is the file accessible and the header ok?
         bool IsOk() const { return m_Ok; }
         
         // Is verbosity set...
         bool IsVerbose() { return m_Verbose; }
+
+        // Read VICAR header and calling all parse methods, or throw an error...
+        void Load();
 
         // Set the save labels flag...
         void SetSaveLabels(const bool SaveLabels = true) { m_SaveLabels = SaveLabels; }
@@ -93,18 +107,15 @@ class VicarImageBand
     protected:
 
         // Parse basic metadata, or throw an error. Calls one of the 
-        //  implementations below...
+        //  implementations below based on its formatting...
         void ParseBasicMetadata(const LogicalRecord &Record);
-        
-        void ParseBasicMetadataImplementation_FormatA(const LogicalRecord &Record);
-        void ParseBasicMetadataImplementation_FormatB(const LogicalRecord &Record);
-        void ParseBasicMetadataImplementation_FormatC(const LogicalRecord &Record);
+        void ParseBasicMetadataImplementation_Format1(const LogicalRecord &Record);
+        void ParseBasicMetadataImplementation_Format2(const LogicalRecord &Record);
+        void ParseBasicMetadataImplementation_Format3(const LogicalRecord &Record);
+        void ParseBasicMetadataImplementation_Format4(const LogicalRecord &Record);
 
         // Parse extended metadata, if any, or throw an error...
         void ParseExtendedMetadata(const LogicalRecord &Record);
-        
-        // Read VICAR header and calling all parse methods, or throw an error...
-        void ReadHeader();
         
         // Get the output stream to be verbose, if enabled...
         std::ostream &Verbose() const;
@@ -115,9 +126,15 @@ class VicarImageBand
         // Input file name...
         const std::string           m_InputFile;
         
+        // Number of image bands in this file. Should always be one...
+        size_t                      m_Bands;
+        
         // Image height and width in pixels...
         int                         m_Height;
         int                         m_Width;
+
+        // Pixel format... (e.g. 'I' -> integral)
+        char                        m_PixelFormat;
 
         // Bytes per pixel...
         int                         m_BytesPerColour;

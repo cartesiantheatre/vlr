@@ -41,10 +41,13 @@ void ShowHelp()
 {
     cout << "Usage: VikingExtractor [options] input [output]" << endl
          << "Options:" << endl
+         << "  -b, --ignore-bad-files    Don't stop on corrupt input file, but" << endl
+         << "                             continue extraction of other files" << endl
+         << "                             (assembly mode only)." << endl
          << "  -d, --dry-run             Don't write anything" << endl
          << "  -f, --diode-filter <type> Process only VICAR files of given type" << endl
-         << "                             which are any, colour, infrared, or sun." << endl
-         << "                             Only available if input is a directory." << endl
+         << "                             which are any, colour, infrared, or sun" << endl
+         << "                             (assembly mode only)." << endl
          << "  -h, --help                Show this help" << endl
          << "  -i, --interlace           Encode output with Adam7 interlacing" << endl
          << "  -l, --save-record-labels  Save VICAR record labels as text file" << endl
@@ -53,7 +56,8 @@ void ShowHelp()
 
          << "Converts 1970s Viking Lander era VICAR colour images to PNGs." << endl
          << "If 'input' is a directory, extract / assemble separate colour" << endl
-         << "bands into output directory. Otherwise operate on single file." << endl;
+         << "bands into output directory (assembly mode). Otherwise" << endl
+         << "operate on single file." << endl;
 }
 
 // Show version information...
@@ -79,6 +83,7 @@ int main(int ArgumentCount, char *Arguments[])
     // User switches...
     string      DiodeFilter;
     bool        DryRun          = false;
+    bool        IgnoreBadFiles  = false;
     bool        Verbose         = false;
     bool        Interlace       = false;
     bool        SaveLabels      = false;
@@ -86,6 +91,7 @@ int main(int ArgumentCount, char *Arguments[])
     // Command line option structure...
     option CommandLineOptions[] =
     {
+        {"ignore-bad-files",    no_argument,        NULL,   'b'},
         {"diode-filter",        required_argument,  NULL,   'f'},
         {"dry-run",             no_argument,        NULL,   'd'},
         {"help",                no_argument,        NULL,   'h'},
@@ -100,7 +106,7 @@ int main(int ArgumentCount, char *Arguments[])
 
     // Keep processing each option until there are none left...
     while((OptionCharacter = getopt_long(
-        ArgumentCount, Arguments, "f:dhilVv", CommandLineOptions, &OptionIndex)) != -1)
+        ArgumentCount, Arguments, "bf:dhilVv", CommandLineOptions, &OptionIndex)) != -1)
     {
         // Which option?
         switch(OptionCharacter)
@@ -121,6 +127,9 @@ int main(int ArgumentCount, char *Arguments[])
                 cout << endl;
                 break;
             }
+
+            // Ignore bad files...
+            case 'b': { IgnoreBadFiles = true; break; }
 
             // Dry run...
             case 'd': { DryRun = true; break; }
@@ -316,8 +325,9 @@ int main(int ArgumentCount, char *Arguments[])
             VicarImageAssembler Assembler(InputFile);
             
             // Set usage switches...
-            Assembler.SetVerbose(Verbose);
             Assembler.SetDiodeFilter(DiodeFilter);
+            Assembler.SetIgnoreBadFiles(IgnoreBadFiles);
+            Assembler.SetVerbose(Verbose);
             
             // Index the input directory...
             Assembler.Index();
@@ -345,13 +355,20 @@ int main(int ArgumentCount, char *Arguments[])
         {
             // Diode filter type should not be set...
             if(!DiodeFilter.empty())
-                throw std::string("diode filter cannot be set when extracting from single file");
+                throw std::string("diode filter available in assembly mode only");
+
+            // Ignore bad files should not be set...
+            if(IgnoreBadFiles)
+                throw std::string("ignore bad files available in assembly mode only");
             
-            // Try to load a VICAR colour image object and read the header...
+            // Construct a VICAR colour image object...
             VicarImageBand Image(InputFile, Verbose);
             
             // Set user the save label flag, if user selected...
             Image.SetSaveLabels(SaveLabels);
+            
+            // Load the image...
+            Image.Load();
             
             // Write out the image, if not in dry mode...
             if(!DryRun)

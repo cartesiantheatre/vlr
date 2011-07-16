@@ -31,9 +31,10 @@ using namespace std;
 
 // Construct and read the header, or throw an error...
 VicarImageAssembler::VicarImageAssembler(
-    const std::string &InputDirectory)
+    const string &InputDirectory)
     : m_InputDirectory(InputDirectory),
-      m_DiodeFilter("any")
+      m_DiodeFilter("any"),
+      m_IgnoreBadFiles(false)
 {
 
 }
@@ -45,11 +46,11 @@ void VicarImageAssembler::Index()
     DIR            *Directory       = NULL;
     struct  dirent *DirectoryEntry  = NULL;
     string          CurrentFile;
-    size_t          FilesIndexed    = 0;
+//    size_t          FilesIndexed    = 0;
 
     // Open directory and check for error...
     if(!(Directory = opendir(m_InputDirectory.c_str())))
-        throw std::string("unable to open input directory for indexing: ") + m_InputDirectory;
+        throw string("unable to open input directory for indexing: ") + m_InputDirectory;
 
     // Try to index the directory...
     try
@@ -72,8 +73,27 @@ void VicarImageAssembler::Index()
             // Construct an image band object...
             VicarImageBand ImageBand(CurrentFile, m_Verbose);
             
+            // Shallow integrity check to see if it is probably a loadable VICAR image...
+            if(!ImageBand.IsLoadable())
+            {
+                // User requested we just skip over bad files....
+                if(m_IgnoreBadFiles)
+                {
+                    // Alert and skip...
+                    Verbose() << CurrentFile << ": warning: bad file, skipping" << endl;
+                    continue;
+                }
+                
+                // Otherwise raise an error...
+                else
+                    throw string("input not a valid 1970s era VICAR format (-b to skip)");
+            }
+
+            // Load it...
+            ImageBand.Load();
+            
             // Show us indexing the VICAR files...
-            Verbose() << "\rfiles indexed " << ++FilesIndexed;
+//            Verbose() << "\rfiles indexed " << ++FilesIndexed;
         }
         
         // End last message with a new line since it only had a carriage return...
@@ -84,7 +104,7 @@ void VicarImageAssembler::Index()
     }
 
         // Failed...
-        catch(const std::string &ErrorMessage)
+        catch(const string &ErrorMessage)
         {
             // Close the directory...
             closedir(Directory);
@@ -95,7 +115,7 @@ void VicarImageAssembler::Index()
 }
 
 // Set the diode filter type or throw an error...
-void VicarImageAssembler::SetDiodeFilter(const std::string &DiodeFilter)
+void VicarImageAssembler::SetDiodeFilter(const string &DiodeFilter)
 {
     // Verify it matches one of the acceptable types...
     if(!DiodeFilter.empty()         && 
@@ -103,7 +123,7 @@ void VicarImageAssembler::SetDiodeFilter(const std::string &DiodeFilter)
        DiodeFilter != "colour"      &&
        DiodeFilter != "infrared"    &&
        DiodeFilter != "sun")
-        throw std::string("unknown diode filter type: ") + DiodeFilter;
+        throw string("unknown diode filter type: ") + DiodeFilter;
 
     // Store...
     m_DiodeFilter = DiodeFilter.empty() ? "any" : DiodeFilter;
@@ -113,7 +133,7 @@ void VicarImageAssembler::SetDiodeFilter(const std::string &DiodeFilter)
 }
 
 // Get the output stream to be verbose, if enabled...
-std::ostream &VicarImageAssembler::Verbose() const
+ostream &VicarImageAssembler::Verbose() const
 {
     // Not enabled. Return the null stream...
     if(!m_Verbose)

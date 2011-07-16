@@ -112,6 +112,7 @@ class VicarImageAssembler
         // Set usage switches...
         void SetVerbose(const bool Verbose = true) { m_Verbose = Verbose; }
         void SetDiodeFilter(const std::string &DiodeFilter);
+        void SetIgnoreBadFiles(const bool IgnoreBadFiles = true) { m_IgnoreBadFiles = IgnoreBadFiles; }
 
     // Protected methods...
     protected:
@@ -131,6 +132,7 @@ class VicarImageAssembler
         // Usage flags...
         bool                            m_Verbose;
         std::string                     m_DiodeFilter;
+        bool                            m_IgnoreBadFiles;
 
         // Dummy output stream...
         mutable NullOutputStream        m_DummyOutputStream;
