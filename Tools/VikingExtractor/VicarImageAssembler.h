@@ -26,6 +26,7 @@
 // Includes...
 #include <ostream>
 #include <vector>
+#include <set>
 #include "VicarImageBand.h"
 
 // Assemble 1970s era VICAR colour images from individual VICAR images...
@@ -111,8 +112,9 @@ class VicarImageAssembler
 
         // Set usage switches...
         void SetVerbose(const bool Verbose = true) { m_Verbose = Verbose; }
-        void SetDiodeFilter(const std::string &DiodeFilter);
+        void SetDiodeFilterClass(const std::string &DiodeFilterClass);
         void SetIgnoreBadFiles(const bool IgnoreBadFiles = true) { m_IgnoreBadFiles = IgnoreBadFiles; }
+        void SetLanderFilter(const std::string &LanderFilter);
 
     // Protected methods...
     protected:
@@ -124,18 +126,21 @@ class VicarImageAssembler
     protected:
 
         // Input directory...
-        const std::string               m_InputDirectory;
+        const std::string                   m_InputDirectory;
 
         // Reconstructable image list...
-        ReconstructableImageListType    m_ReconstructableImageList;
+        ReconstructableImageListType        m_ReconstructableImageList;
+
+        // Acceptable diode band filter set...
+        VicarDiodeBandFilterSet             m_DiodeBandFilterSet;
 
         // Usage flags...
-        bool                            m_Verbose;
-        std::string                     m_DiodeFilter;
-        bool                            m_IgnoreBadFiles;
+        bool                                m_Verbose;
+        bool                                m_IgnoreBadFiles;
+        int                                 m_LanderFilter;
 
         // Dummy output stream...
-        mutable NullOutputStream        m_DummyOutputStream;
+        mutable NullOutputStream            m_DummyOutputStream;
 };
 
 // Multiple include protection...

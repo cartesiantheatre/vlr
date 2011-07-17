@@ -33,16 +33,18 @@ using namespace std;
 VicarImageAssembler::VicarImageAssembler(
     const string &InputDirectory)
     : m_InputDirectory(InputDirectory),
-      m_DiodeFilter("any"),
-      m_IgnoreBadFiles(false)
+      m_IgnoreBadFiles(false),
+      m_LanderFilter(0)
 {
-
+    // Set the diode filter class...
+    SetDiodeFilterClass("any");
 }
 
 // Index the contents of the directory returning number of potentially
 //  reconstructable images or throw an error...
 void VicarImageAssembler::Index()
 {
+    // Variables...
     DIR            *Directory       = NULL;
     struct  dirent *DirectoryEntry  = NULL;
     string          CurrentFile;
@@ -73,14 +75,14 @@ void VicarImageAssembler::Index()
             // Construct an image band object...
             VicarImageBand ImageBand(CurrentFile, m_Verbose);
             
-            // Shallow integrity check to see if it is probably a loadable VICAR image...
-            if(!ImageBand.IsLoadable())
+            // Shallow integrity check to see if VICAR header is intact...
+            if(!ImageBand.IsHeaderIntact())
             {
                 // User requested we just skip over bad files....
                 if(m_IgnoreBadFiles)
                 {
                     // Alert and skip...
-                    Verbose() << CurrentFile << ": warning: bad file, skipping" << endl;
+                    clog << DirectoryEntry->d_name << "...bad file, skipping" << endl;
                     continue;
                 }
                 
@@ -89,8 +91,19 @@ void VicarImageAssembler::Index()
                     throw string("input not a valid 1970s era VICAR format (-b to skip)");
             }
 
-            // Load it...
-            ImageBand.Load();
+            // Load it, but only if diode filter matches...
+            ImageBand.LoadHeader(m_DiodeBandFilterSet);
+
+            // Not part of the diode filter set...
+            if(m_DiodeFilterSet.find(BandType) == set::end)
+            {
+                // Alert and skip...
+                clog << DirectoryEntry->d_name << "...diode band type filtered, skipping" << endl;
+                continue;
+            }
+
+            // Alert user...
+            clog << DirectoryEntry->d_name << "...ok" << endl;
             
             // Show us indexing the VICAR files...
 //            Verbose() << "\rfiles indexed " << ++FilesIndexed;
@@ -115,21 +128,75 @@ void VicarImageAssembler::Index()
 }
 
 // Set the diode filter type or throw an error...
-void VicarImageAssembler::SetDiodeFilter(const string &DiodeFilter)
+void VicarImageAssembler::SetDiodeFilterClass(const string &DiodeFilter)
 {
-    // Verify it matches one of the acceptable types...
-    if(!DiodeFilter.empty()         && 
-       DiodeFilter != "any"         &&
-       DiodeFilter != "colour"      &&
-       DiodeFilter != "infrared"    &&
-       DiodeFilter != "sun")
-        throw string("unknown diode filter type: ") + DiodeFilter;
+    // Clear the old set...
+    m_DiodeFilterSet.clear();
 
-    // Store...
-    m_DiodeFilter = DiodeFilter.empty() ? "any" : DiodeFilter;
+    // Use any supported type...
+    if(DiodeFilter.empty() || DiodeFilter == "any")
+    {
+        Verbose() << "using any supported diode filter class" << endl;
+        m_DiodeFilterSet.insert(VicarImageBand::Blue);
+        m_DiodeFilterSet.insert(VicarImageBand::Green);
+        m_DiodeFilterSet.insert(VicarImageBand::Red);
+        m_DiodeFilterSet.insert(VicarImageBand::Infrared1);
+        m_DiodeFilterSet.insert(VicarImageBand::Infrared2);
+        m_DiodeFilterSet.insert(VicarImageBand::Infrared3);
+        m_DiodeFilterSet.insert(VicarImageBand::Sun);
+    }
+    
+    // Colour band...
+    else if(DiodeFilter == "colour")
+    {
+        Verbose() << "using colour diode filter class" << endl;
+        m_DiodeFilterSet.insert(VicarImageBand::Blue);
+        m_DiodeFilterSet.insert(VicarImageBand::Green);
+        m_DiodeFilterSet.insert(VicarImageBand::Red);
+    }
+    
+    // Infrared band...
+    else if(DiodeFilter == "infrared")
+    {
+        Verbose() << "using infrared diode filter class" << endl;
+        m_DiodeFilterSet.insert(VicarImageBand::Infrared1);
+        m_DiodeFilterSet.insert(VicarImageBand::Infrared2);
+        m_DiodeFilterSet.insert(VicarImageBand::Infrared3);
+    }
+    
+    // Sun...
+    else if(DiodeFilter == "sun")
+    {
+        Verbose() << "using sun diode filter class" << endl;
+        m_DiodeFilterSet.insert(VicarImageBand::Sun);    
+    }
+    
+    // Unsupported...
+    else
+       throw string("unsupported diode filter class: ") + DiodeFilter;
+}
+
+// Set the lander filter or throw an error...
+void VicarImageAssembler::SetLanderFilter(const string &LanderFilter)
+{
+    // Use any...
+    if(LanderFilter.empty() || LanderFilter == "0" || LanderFilter == "any")
+        m_LanderFilter = 0;
+    
+    // Viking 1 lander...
+    else if(LanderFilter == "1")
+        m_LanderFilter = 1;
+
+    // Viking 2 lander...
+    else if(LanderFilter == "2")
+        m_LanderFilter = 2;
+    
+    // Unknown...
+    else
+        throw string("unknown lander filter: ") + LanderFilter;
     
     // Alert user...
-    Verbose() << "using diode filter for " << m_DiodeFilter << endl;
+    Verbose() << "filter for Viking lander " << m_LanderFilter << endl;
 }
 
 // Get the output stream to be verbose, if enabled...

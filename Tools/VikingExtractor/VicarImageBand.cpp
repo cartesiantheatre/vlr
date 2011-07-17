@@ -57,7 +57,7 @@ VicarImageBand::VicarImageBand(
       m_PhysicalRecordSize(0),
       m_PhysicalRecordPadding(0),
       m_RawImageOffset(0),
-      m_BandType(Invalid),
+      m_DiodeBandType(Unknown),
       m_Ok(false),
       m_SaveLabels(false),
       m_Verbose(Verbose)
@@ -139,9 +139,9 @@ void VicarImageBand::Extract(const string &OutputFile, const bool Interlace) con
 }
 
 // Check if the file is loadable. Note that this does a shallow
-//  file integrity check and so it may succeed even though Load()
-//  fails later...
-bool VicarImageBand::IsLoadable() const
+//  file integrity check and so it may succeed even though 
+//  LoadHeader() fails later...
+bool VicarImageBand::IsHeaderIntact() const
 {
     // Open the file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
@@ -152,7 +152,7 @@ bool VicarImageBand::IsLoadable() const
 
     // There isn't any "typical" file magic signature, so check for general...
 
-        // Load and save the first logical record...
+        // Load the first logical record...
         const LogicalRecord HeaderRecord(InputFileStream);
     
         // Check if valid first end of logical record marker......
@@ -164,8 +164,10 @@ bool VicarImageBand::IsLoadable() const
             return false;
 }
 
-// Read VICAR header and calling all parse methods, or throw an error...
-void VicarImageBand::Load()
+// Read VICAR header, calling all parse methods, but stop if 
+//  image is not one of the acceptable diode band types, or 
+//  throw an error...
+void VicarImageBand::LoadHeader(const DiodeBandFilterSet &AcceptableDiodes);
 {
     // Objects and variables...
     LogicalRecord   Record;
@@ -177,29 +179,10 @@ void VicarImageBand::Load()
         if(!InputFileStream.is_open())
             throw string("could not open input for reading");
 
-    // There isn't any "typical" file magic signature, so check for general...
+    // Extract the basic image metadata...
+    ParseBasicMetadata(InputFileStream);
 
-        // Load and save the first logical record...
-        const LogicalRecord HeaderRecord(InputFileStream);
-    
-        // Check for first end of logical record marker......
-        if(HeaderRecord[71] != 'C')
-            throw string("input not a valid 1970s era VICAR format");
-
-    // Check second record just to double check that this is actually 
-    //  from the Viking Lander EDR...
-
-        // Load record and save...
-        Record << InputFileStream;
-        
-        // Check...
-        if(Record.GetString().compare(0, strlen("VIKING LANDER "), "VIKING LANDER ") != 0)
-            throw string("input does not appear to be from a Viking Lander");
-
-    // Extract basic image metadata from the very first label record...
-    ParseBasicMetadata(HeaderRecord);
-
-    // Now rewind to start of file...
+    // Now rewind again to start of file...
     InputFileStream.seekg(0, ios_base::beg);
 
     // Clear saved labels buffer, in case it already had data in it...
@@ -222,7 +205,7 @@ void VicarImageBand::Load()
         {
             // Extract a logical record...
             Record << InputFileStream;
-Verbose() << "tellg() " << static_cast<int>(InputFileStream.tellg()) << endl;
+//Verbose() << "tellg() " << static_cast<int>(InputFileStream.tellg()) << endl;
             
             // Is it valid?
             if(!Record.IsValidLabel())
@@ -236,6 +219,14 @@ Verbose() << "tellg() " << static_cast<int>(InputFileStream.tellg()) << endl;
 
             // Add to saved labels buffer...
             m_SavedLabelsBuffer += Record.GetString() + '\n';
+
+            // Do we know the band type yet?
+            if(m_DiodeBandType != Unknown)
+            {
+                // Not in the acceptable types...
+                if(AcceptableDiodes.find(m_DiodeBandType) != set::end)
+                    return;
+            }
 
             // Update local offset into the current physical record...
             LocalPhysicalRecordOffset += LOGICAL_RECORD_SIZE;
@@ -276,7 +267,7 @@ Verbose() << "tellg() " << static_cast<int>(InputFileStream.tellg()) << endl;
             {
                 // It was, so rewind and carry on since there is no 
                 //  physical record padding...
-                Verbose() << "tangential physical record boundary detected, ignoring padding" << endl;
+//                Verbose() << "tangential physical record boundary detected, ignoring padding" << endl;
                 InputFileStream.seekg(CurrentPosition);
             }
             
@@ -285,7 +276,7 @@ Verbose() << "tellg() " << static_cast<int>(InputFileStream.tellg()) << endl;
             else
             {
                 // Alert and seek...
-                Verbose() << "seeking passed " << m_PhysicalRecordPadding << " physical record padding" << endl;
+//                Verbose() << "seeking passed " << m_PhysicalRecordPadding << " physical record padding" << endl;
                 InputFileStream.seekg(CurrentPosition);
                 InputFileStream.seekg(m_PhysicalRecordPadding, ios_base::cur);
             }
@@ -306,12 +297,35 @@ Verbose() << "tellg() " << static_cast<int>(InputFileStream.tellg()) << endl;
 }
 
 // Parse basic metadata, or throw an error...
-void VicarImageBand::ParseBasicMetadata(const LogicalRecord &Record)
+void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
 {
     // Variables...
-    string  Token;
-    size_t  TokenIndex          = 0;
-    size_t  TokenLength[32];
+    LogicalRecord   Record;
+    string          Token;
+    size_t          TokenIndex          = 0;
+    size_t          TokenLength[32];
+
+    // Stream should have already been validated...
+    assert(InputFileStream.good());
+
+    // There isn't any "typical" file magic signature, so check for general...
+
+        // Load and save the first logical record...
+        const LogicalRecord HeaderRecord(InputFileStream);
+    
+        // Check for first end of logical record marker......
+        if(HeaderRecord[71] != 'C')
+            throw string("input not a valid 1970s era VICAR format");
+
+    // Check second record just to double check that this is actually 
+    //  from the Viking Lander EDR...
+
+        // Load record and save...
+        Record << InputFileStream;
+        
+        // Check...
+        if(Record.GetString().compare(0, strlen("VIKING LANDER "), "VIKING LANDER ") != 0)
+            throw string("input does not appear to be from a Viking Lander");
 
     // Clear token length buffer...
     memset(TokenLength, 0, sizeof(TokenLength));
@@ -320,7 +334,7 @@ void VicarImageBand::ParseBasicMetadata(const LogicalRecord &Record)
     //  marker. This is necessary to know since different label formats
     //  can be distinguished by the number of whitespace separated 
     //  tokens...
-    stringstream TokenCounter(Record.GetString(true, 2));
+    stringstream TokenCounter(HeaderRecord.GetString(true, 2));
     for(TokenIndex = 0; 
         TokenCounter.good() && TokenIndex < sizeof(TokenLength) / sizeof(TokenLength[0]); 
       ++TokenIndex)
@@ -355,7 +369,7 @@ void VicarImageBand::ParseBasicMetadata(const LogicalRecord &Record)
            TokenLength[2] <= 4 &&
            TokenLength[3] == 1 &&
            TokenLength[4] == 1)
-            ParseBasicMetadataImplementation_Format1(Record);
+            ParseBasicMetadataImplementation_Format1(HeaderRecord);
 
         /* 
             Example: vl_0387.021
@@ -375,7 +389,7 @@ void VicarImageBand::ParseBasicMetadata(const LogicalRecord &Record)
            TokenLength[2] <= 8 &&
            TokenLength[3] == 1 &&
            TokenLength[4] == 1)
-            ParseBasicMetadataImplementation_Format2(Record);
+            ParseBasicMetadataImplementation_Format2(HeaderRecord);
 
         /* 
             Example: vl_1529.008
@@ -394,7 +408,7 @@ void VicarImageBand::ParseBasicMetadata(const LogicalRecord &Record)
            TokenLength[2] <= 4 &&
            TokenLength[3] == 1 &&
            TokenLength[4] == 1)
-            ParseBasicMetadataImplementation_Format3(Record);
+            ParseBasicMetadataImplementation_Format3(HeaderRecord);
 
         /* 
             Example: vl_0514.004
@@ -413,7 +427,7 @@ void VicarImageBand::ParseBasicMetadata(const LogicalRecord &Record)
            TokenLength[1] <= 9 &&
            TokenLength[2] == 1 &&
            TokenLength[3] == 1)
-            ParseBasicMetadataImplementation_Format2(Record);
+            ParseBasicMetadataImplementation_Format2(HeaderRecord);
 
         /* 
             Example: vl_1105.006
@@ -434,7 +448,7 @@ void VicarImageBand::ParseBasicMetadata(const LogicalRecord &Record)
            TokenLength[3] <= 4 &&
            TokenLength[4] == 1 &&
            TokenLength[5] == 1)
-            ParseBasicMetadataImplementation_Format1(Record);
+            ParseBasicMetadataImplementation_Format1(HeaderRecord);
 
         /* 
             Example: vl_2003.002
@@ -458,7 +472,7 @@ void VicarImageBand::ParseBasicMetadata(const LogicalRecord &Record)
            TokenLength[3] <= 4 &&
            TokenLength[4] == 1 &&
            TokenLength[5] == 1)
-            ParseBasicMetadataImplementation_Format4(Record);
+            ParseBasicMetadataImplementation_Format4(HeaderRecord);
 
         // Unknown format...
         else
@@ -486,6 +500,9 @@ void VicarImageBand::ParseBasicMetadata(const LogicalRecord &Record)
         if(m_BytesPerColour != 1)
             throw string("unsupported colour bit depth");
 
+    // Third record should contain the photosensor diode band type...
+***
+
     // If verbosity is set, display basic metadata...
     Verbose() << "  bands:\t\t\t\t" << m_Bands << endl;
     Verbose() << "  height:\t\t\t\t" << m_Height << endl;
@@ -499,7 +516,7 @@ void VicarImageBand::ParseBasicMetadata(const LogicalRecord &Record)
 
 // Parse the basic metadata using format 1...
 void VicarImageBand::ParseBasicMetadataImplementation_Format1(
-    const LogicalRecord &Record)
+    const LogicalRecord &HeaderRecord)
 {
     /* 
         (Most common format)
@@ -568,7 +585,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format1(
 
 // Parse the basic metadata using format 2...
 void VicarImageBand::ParseBasicMetadataImplementation_Format2(
-    const LogicalRecord &Record)
+    const LogicalRecord &HeaderRecord)
 {
     /* 
         Example: vl_0387.021
@@ -655,7 +672,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format2(
 
 // Parse the basic metadata using format 3...
 void VicarImageBand::ParseBasicMetadataImplementation_Format3(
-    const LogicalRecord &Record)
+    const LogicalRecord &HeaderRecord)
 {
     /* 
         Example: vl_1529.008
@@ -723,7 +740,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format3(
 
 // Parse the basic metadata using format 4...
 void VicarImageBand::ParseBasicMetadataImplementation_Format4(
-    const LogicalRecord &Record)
+    const LogicalRecord &HeaderRecord)
 {
     /* 
         Example: vl_2003.002

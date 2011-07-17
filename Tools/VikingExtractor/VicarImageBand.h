@@ -25,7 +25,9 @@
 
 // Includes...
 #include <string>
+#include <fstream>
 #include <ostream>
+#include <set>
 #include "LogicalRecord.h"
 
 // 1970s era VICAR image class...
@@ -37,7 +39,11 @@ class VicarImageBand
         // Lander's diode in the photosensor array...
         typedef enum
         {
-            Invalid = 0,
+            // Not known... (e.g. not read)
+            Unknown = 0,
+            
+            // Detected, but unsupported...
+            Invalid,
             
             // Narrow band low resolution colour diodes...
             Blue,
@@ -56,6 +62,9 @@ class VicarImageBand
 
         }PSADiode;
         
+        // A set of photosensor array diode band types...
+        typedef std::set<PSADiode>  VicarDiodeBandFilterSet;
+        
         // Null output stream...
         struct NullOutputStream : std::ostream
         {
@@ -71,8 +80,8 @@ class VicarImageBand
         // Get the azimuth / elevation string...
         const std::string &GetAzimuthElevation() const;
 
-        // Get the band type...
-        PSADiode GetBandType() const { return m_BandType; };
+        // Get the diode band type...
+        PSADiode GetDiodeBandType() const { return m_DiodeBandType; };
 
         // Get the original file on the magnetic tape number, or zero if unknown...
         size_t GetFileOnMagneticTapeNumber() const;
@@ -83,7 +92,7 @@ class VicarImageBand
         // Check if the file is loadable. Note that this does a shallow
         //  file integrity check and so it may succeed even though Load()
         //  fails later...
-        bool IsLoadable() const;
+        bool IsHeaderIntact() const;
 
         // Is the file accessible and the header ok?
         bool IsOk() const { return m_Ok; }
@@ -91,8 +100,10 @@ class VicarImageBand
         // Is verbosity set...
         bool IsVerbose() { return m_Verbose; }
 
-        // Read VICAR header and calling all parse methods, or throw an error...
-        void Load();
+        // Read VICAR header, calling all parse methods, but stop if 
+        //  image is not one of the acceptable diode band types, or 
+        //  throw an error...
+        void LoadHeader(const DiodeBandFilterSet &AcceptableDiodes);
 
         // Set the save labels flag...
         void SetSaveLabels(const bool SaveLabels = true) { m_SaveLabels = SaveLabels; }
@@ -108,11 +119,11 @@ class VicarImageBand
 
         // Parse basic metadata, or throw an error. Calls one of the 
         //  implementations below based on its formatting...
-        void ParseBasicMetadata(const LogicalRecord &Record);
-        void ParseBasicMetadataImplementation_Format1(const LogicalRecord &Record);
-        void ParseBasicMetadataImplementation_Format2(const LogicalRecord &Record);
-        void ParseBasicMetadataImplementation_Format3(const LogicalRecord &Record);
-        void ParseBasicMetadataImplementation_Format4(const LogicalRecord &Record);
+        void ParseBasicMetadata(std::ifstream &InputFileStream);
+        void ParseBasicMetadataImplementation_Format1(const LogicalRecord &HeaderRecord);
+        void ParseBasicMetadataImplementation_Format2(const LogicalRecord &HeaderRecord);
+        void ParseBasicMetadataImplementation_Format3(const LogicalRecord &HeaderRecord);
+        void ParseBasicMetadataImplementation_Format4(const LogicalRecord &HeaderRecord);
 
         // Parse extended metadata, if any, or throw an error...
         void ParseExtendedMetadata(const LogicalRecord &Record);
@@ -150,7 +161,7 @@ class VicarImageBand
         std::string                 m_AzimuthElevation;
         
         // Band type...
-        PSADiode                    m_BandType;
+        PSADiode                    m_DiodeBandType;
 
         // True if the header appears to be ok...
         bool                        m_Ok;

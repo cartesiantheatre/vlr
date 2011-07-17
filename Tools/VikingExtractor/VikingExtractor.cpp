@@ -44,13 +44,16 @@ void ShowHelp()
          << "  -b, --ignore-bad-files    Don't stop on corrupt input file, but" << endl
          << "                             continue extraction of other files" << endl
          << "                             (assembly mode only)." << endl
-         << "  -d, --dry-run             Don't write anything" << endl
-         << "  -f, --diode-filter <type> Process only VICAR files of given type" << endl
-         << "                             which are any, colour, infrared, or sun" << endl
-         << "                             (assembly mode only)." << endl
+         << "  -y, --dry-run             Don't write anything" << endl
+         << "  -f, --diode-filter <type> Extract from matching supported diode" << endl
+         << "                             filter classes which are any, colour," << endl
+         << "                              infrared, or sun (assembly mode only)." << endl
          << "  -h, --help                Show this help" << endl
          << "  -i, --interlace           Encode output with Adam7 interlacing" << endl
          << "  -l, --save-record-labels  Save VICAR record labels as text file" << endl
+         << "  -n, --lander-filter <#>   Extract from specific lander only which" << endl
+         << "                             are any (default), 1, or 2 (assembly" << endl
+         << "                             mode only)." << endl
          << "  -V, --verbose             Be verbose" << endl
          << "  -v, --version             Show version information" << endl << endl
 
@@ -81,11 +84,12 @@ int main(int ArgumentCount, char *Arguments[])
     string      OutputFile;
     
     // User switches...
-    string      DiodeFilter;
+    string      DiodeFilterClass;
     bool        DryRun          = false;
     bool        IgnoreBadFiles  = false;
     bool        Verbose         = false;
     bool        Interlace       = false;
+    string      LanderFilter;
     bool        SaveLabels      = false;
 
     // Command line option structure...
@@ -93,9 +97,10 @@ int main(int ArgumentCount, char *Arguments[])
     {
         {"ignore-bad-files",    no_argument,        NULL,   'b'},
         {"diode-filter",        required_argument,  NULL,   'f'},
-        {"dry-run",             no_argument,        NULL,   'd'},
+        {"dry-run",             no_argument,        NULL,   'y'},
         {"help",                no_argument,        NULL,   'h'},
         {"interlace",           no_argument,        NULL,   'i'},
+        {"lander-filter",       required_argument,  NULL,   'n'},
         {"save-record-labels",  no_argument,        NULL,   'l'},
         {"verbose",             no_argument,        NULL,   'V'},
         {"version",             no_argument,        NULL,   'v'},
@@ -106,7 +111,7 @@ int main(int ArgumentCount, char *Arguments[])
 
     // Keep processing each option until there are none left...
     while((OptionCharacter = getopt_long(
-        ArgumentCount, Arguments, "bf:dhilVv", CommandLineOptions, &OptionIndex)) != -1)
+        ArgumentCount, Arguments, "bf:yhin:lVv", CommandLineOptions, &OptionIndex)) != -1)
     {
         // Which option?
         switch(OptionCharacter)
@@ -130,12 +135,9 @@ int main(int ArgumentCount, char *Arguments[])
 
             // Ignore bad files...
             case 'b': { IgnoreBadFiles = true; break; }
-
-            // Dry run...
-            case 'd': { DryRun = true; break; }
-            
-            // Diode filter...
-            case 'f': { assert(optarg); DiodeFilter = optarg; break; }
+           
+            // Diode filter class...
+            case 'f': { assert(optarg); DiodeFilterClass = optarg; break; }
 
             // Help...
             case 'h':
@@ -153,6 +155,9 @@ int main(int ArgumentCount, char *Arguments[])
             // Save labels...
             case 'l': { SaveLabels = true; break; }
 
+            // Set lander filter...
+            case 'n': { assert(optarg); LanderFilter = optarg; break; }
+
             // Version...
             case 'v':
             {
@@ -165,7 +170,10 @@ int main(int ArgumentCount, char *Arguments[])
 
             // Verbose...
             case 'V': { Verbose = true; break; }
-            
+
+            // Dry run...
+            case 'y': { DryRun = true; break; }
+
             // Unknown option...
             case '?':
             {
@@ -325,8 +333,9 @@ int main(int ArgumentCount, char *Arguments[])
             VicarImageAssembler Assembler(InputFile);
             
             // Set usage switches...
-            Assembler.SetDiodeFilter(DiodeFilter);
+            Assembler.SetDiodeFilterClass(DiodeFilterClass);
             Assembler.SetIgnoreBadFiles(IgnoreBadFiles);
+            Assembler.SetLanderFilter(LanderFilter);
             Assembler.SetVerbose(Verbose);
             
             // Index the input directory...
@@ -353,13 +362,17 @@ int main(int ArgumentCount, char *Arguments[])
         // Just extract from a single file...
         if(!AssemblyMode)
         {
-            // Diode filter type should not be set...
-            if(!DiodeFilter.empty())
-                throw std::string("diode filter available in assembly mode only");
+            // Diode filter class should not be set...
+            if(!DiodeFilterClass.empty())
+                throw std::string("diode filter class available in assembly mode only");
 
             // Ignore bad files should not be set...
             if(IgnoreBadFiles)
                 throw std::string("ignore bad files available in assembly mode only");
+            
+            // Lander filter should not be set...
+            if(!LanderFilter.empty())
+                throw std::string("lander filter available in assembly mode only");
             
             // Construct a VICAR colour image object...
             VicarImageBand Image(InputFile, Verbose);
