@@ -48,6 +48,7 @@ void VicarImageAssembler::Index()
     DIR            *Directory       = NULL;
     struct  dirent *DirectoryEntry  = NULL;
     string          CurrentFile;
+    string          FileNameOnly;
 //    size_t          FilesIndexed    = 0;
 
     // Open directory and check for error...
@@ -68,12 +69,30 @@ void VicarImageAssembler::Index()
             if(fnmatch("*.[0-9][0-9][0-9]", DirectoryEntry->d_name, 0) != 0)
                 continue;
             
-            // Otherwise get the file name...
-            else
-                CurrentFile = m_InputDirectory + DirectoryEntry->d_name;
+            // Get the full path...
+            CurrentFile = m_InputDirectory + DirectoryEntry->d_name;
 
             // Construct an image band object...
             VicarImageBand ImageBand(CurrentFile, m_Verbose);
+
+            // Get just the file name as well...
+            FileNameOnly = ImageBand.GetInputFileNameOnly();
+            
+            // Don't bother with anything under 4 kilobytes...
+            if(ImageBand.GetFileSize() < (4 * 1024))
+            {
+                // User requested we just skip over bad files....
+                if(m_IgnoreBadFiles)
+                {
+                    // Alert and skip...
+                    clog << DirectoryEntry->d_name << "\033[1;31m: warning: file too small to likely contain band data, skipping\033[0m" << endl;
+                    continue;
+                }
+                
+                // Otherwise raise an error...
+                else
+                    throw string("file too small to likely contain band data (-b to skip)");
+            }
             
             // Shallow integrity check to see if VICAR header is intact...
             if(!ImageBand.IsHeaderIntact())
@@ -82,7 +101,7 @@ void VicarImageAssembler::Index()
                 if(m_IgnoreBadFiles)
                 {
                     // Alert and skip...
-                    clog << DirectoryEntry->d_name << "...bad file, skipping" << endl;
+                    clog << DirectoryEntry->d_name << "\033[1;31m: warning: unreadable header, skipping\033[0m" << endl;
                     continue;
                 }
                 
@@ -91,19 +110,52 @@ void VicarImageAssembler::Index()
                     throw string("input not a valid 1970s era VICAR format (-b to skip)");
             }
 
-            // Load it, but only if diode filter matches...
-            ImageBand.LoadHeader(m_DiodeBandFilterSet);
+            // Check to see if from Viking Lander...
+            if(!ImageBand.IsFromVikingLander())
+            {
+                // User requested we just skip over bad files....
+                if(m_IgnoreBadFiles)
+                {
+                    // Alert and skip...
+                    clog << DirectoryEntry->d_name << "\033[1;31m: info: non-Viking Lander file, skipping\033[0m" << endl;
+                    continue;
+                }
+
+                // Otherwise raise an error...
+                else
+                    throw string("input does not appear to be from a Viking Lander (-b to skip)");
+            }
+
+            // Shallow load to read basic metadata only...
+            ImageBand.LoadHeaderShallow();
 
             // Not part of the diode filter set...
-            if(m_DiodeFilterSet.find(BandType) == set::end)
+            if(m_DiodeBandFilterSet.find(ImageBand.GetDiodeBandType()) == 
+                m_DiodeBandFilterSet.end())
             {
                 // Alert and skip...
-                clog << DirectoryEntry->d_name << "...diode band type filtered, skipping" << endl;
+                clog << DirectoryEntry->d_name << "\033[1;33m: info: skipping " << ImageBand.GetDiodeBandTypeString() << " type diode band\033[0m" << endl;
                 continue;
             }
 
+            // Check to see if band data is within file...
+            if(!ImageBand.IsBandDataPresent())
+            {
+                // User requested we just skip over bad files....
+                if(m_IgnoreBadFiles)
+                {
+                    // Alert and skip...
+                    clog << DirectoryEntry->d_name << "\033[1;31m: info: no band data present, skipping\033[0m" << endl;
+                    continue;
+                }
+
+                // Otherwise raise an error...
+                else
+                    throw string("input does not appear to be from a Viking Lander (-b to skip)");
+            }
+
             // Alert user...
-            clog << DirectoryEntry->d_name << "...ok" << endl;
+            clog << DirectoryEntry->d_name << "\033[1;32m: ok\033[0m" << endl;
             
             // Show us indexing the VICAR files...
 //            Verbose() << "\rfiles indexed " << ++FilesIndexed;
@@ -123,7 +175,7 @@ void VicarImageAssembler::Index()
             closedir(Directory);
 
             // Propagate up the chain...
-            throw CurrentFile + ": error: " + ErrorMessage;;
+            throw FileNameOnly + ": error: " + ErrorMessage;;
         }
 }
 
@@ -131,44 +183,44 @@ void VicarImageAssembler::Index()
 void VicarImageAssembler::SetDiodeFilterClass(const string &DiodeFilter)
 {
     // Clear the old set...
-    m_DiodeFilterSet.clear();
+    m_DiodeBandFilterSet.clear();
 
     // Use any supported type...
     if(DiodeFilter.empty() || DiodeFilter == "any")
     {
         Verbose() << "using any supported diode filter class" << endl;
-        m_DiodeFilterSet.insert(VicarImageBand::Blue);
-        m_DiodeFilterSet.insert(VicarImageBand::Green);
-        m_DiodeFilterSet.insert(VicarImageBand::Red);
-        m_DiodeFilterSet.insert(VicarImageBand::Infrared1);
-        m_DiodeFilterSet.insert(VicarImageBand::Infrared2);
-        m_DiodeFilterSet.insert(VicarImageBand::Infrared3);
-        m_DiodeFilterSet.insert(VicarImageBand::Sun);
+        m_DiodeBandFilterSet.insert(VicarImageBand::Blue);
+        m_DiodeBandFilterSet.insert(VicarImageBand::Green);
+        m_DiodeBandFilterSet.insert(VicarImageBand::Red);
+        m_DiodeBandFilterSet.insert(VicarImageBand::Infrared1);
+        m_DiodeBandFilterSet.insert(VicarImageBand::Infrared2);
+        m_DiodeBandFilterSet.insert(VicarImageBand::Infrared3);
+        m_DiodeBandFilterSet.insert(VicarImageBand::Sun);
     }
     
     // Colour band...
     else if(DiodeFilter == "colour")
     {
         Verbose() << "using colour diode filter class" << endl;
-        m_DiodeFilterSet.insert(VicarImageBand::Blue);
-        m_DiodeFilterSet.insert(VicarImageBand::Green);
-        m_DiodeFilterSet.insert(VicarImageBand::Red);
+        m_DiodeBandFilterSet.insert(VicarImageBand::Blue);
+        m_DiodeBandFilterSet.insert(VicarImageBand::Green);
+        m_DiodeBandFilterSet.insert(VicarImageBand::Red);
     }
     
     // Infrared band...
     else if(DiodeFilter == "infrared")
     {
         Verbose() << "using infrared diode filter class" << endl;
-        m_DiodeFilterSet.insert(VicarImageBand::Infrared1);
-        m_DiodeFilterSet.insert(VicarImageBand::Infrared2);
-        m_DiodeFilterSet.insert(VicarImageBand::Infrared3);
+        m_DiodeBandFilterSet.insert(VicarImageBand::Infrared1);
+        m_DiodeBandFilterSet.insert(VicarImageBand::Infrared2);
+        m_DiodeBandFilterSet.insert(VicarImageBand::Infrared3);
     }
     
     // Sun...
     else if(DiodeFilter == "sun")
     {
         Verbose() << "using sun diode filter class" << endl;
-        m_DiodeFilterSet.insert(VicarImageBand::Sun);    
+        m_DiodeBandFilterSet.insert(VicarImageBand::Sun);    
     }
     
     // Unsupported...

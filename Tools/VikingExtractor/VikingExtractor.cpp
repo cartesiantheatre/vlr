@@ -350,7 +350,7 @@ int main(int ArgumentCount, char *Arguments[])
         catch(const std::string &ErrorMessage)
         {
             // Alert...
-            cerr << ErrorMessage << endl;
+            cerr << "\033[1;31m" << ErrorMessage << "\033[0m" << endl;
             
             // Terminate...
             exit(1);
@@ -381,7 +381,7 @@ int main(int ArgumentCount, char *Arguments[])
             Image.SetSaveLabels(SaveLabels);
             
             // Load the image...
-            Image.Load();
+            Image.LoadHeader();
             
             // Write out the image, if not in dry mode...
             if(!DryRun)

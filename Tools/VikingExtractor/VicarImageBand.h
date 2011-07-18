@@ -63,7 +63,7 @@ class VicarImageBand
         }PSADiode;
         
         // A set of photosensor array diode band types...
-        typedef std::set<PSADiode>  VicarDiodeBandFilterSet;
+        typedef std::set<PSADiode>  DiodeBandFilterSet;
         
         // Null output stream...
         struct NullOutputStream : std::ostream
@@ -83,11 +83,30 @@ class VicarImageBand
         // Get the diode band type...
         PSADiode GetDiodeBandType() const { return m_DiodeBandType; };
 
+        // Get the diode band type as a human friendly string...
+        std::string GetDiodeBandTypeString() const;
+
         // Get the original file on the magnetic tape number, or zero if unknown...
         size_t GetFileOnMagneticTapeNumber() const;
 
+        // Get the file size or throw an error...
+        int GetFileSize() const;
+
+        // Get the input file name only without path...
+        std::string GetInputFileNameOnly() const;
+        
+        // Return the label identifier...
+        const std::string &GetLabelIdentifier() const;
+
         // Get the original magnetic tape number, or zero if unknown...
         size_t GetMagneticTapeNumber() const;
+
+        // Check if the image band data is most likely present by file size...
+        bool IsBandDataPresent() const;
+
+        // Check second record just to double check that this is actually 
+        //  from the Viking Lander EDR...
+        bool IsFromVikingLander() const;
 
         // Check if the file is loadable. Note that this does a shallow
         //  file integrity check and so it may succeed even though Load()
@@ -100,10 +119,16 @@ class VicarImageBand
         // Is verbosity set...
         bool IsVerbose() { return m_Verbose; }
 
-        // Read VICAR header, calling all parse methods, but stop if 
-        //  image is not one of the acceptable diode band types, or 
-        //  throw an error...
-        void LoadHeader(const DiodeBandFilterSet &AcceptableDiodes);
+        // Read VICAR header, calling all parse methods, or throw an error...
+        void LoadHeader();
+
+        // Read VICAR header's basic metadata only. Does not throw an 
+        //  error, but reads the most of what it can...
+        void LoadHeaderShallow();
+
+        // Set the photosensor diode band type from VICAR style 
+        //  string, or throw an error... (e.g. "RED/T")
+        void SetDiodeBandTypeFromVicarToken(const std::string &DiodeBandType);
 
         // Set the save labels flag...
         void SetSaveLabels(const bool SaveLabels = true) { m_SaveLabels = SaveLabels; }
@@ -118,14 +143,19 @@ class VicarImageBand
     protected:
 
         // Parse basic metadata, or throw an error. Calls one of the 
-        //  implementations below based on its formatting...
+        //  implementations below based on its formatting. Basic
+        //  metadata includes bands, dimensions, pixel format, bytes
+        //  per colour, photosensor diode band type, etc...
         void ParseBasicMetadata(std::ifstream &InputFileStream);
         void ParseBasicMetadataImplementation_Format1(const LogicalRecord &HeaderRecord);
         void ParseBasicMetadataImplementation_Format2(const LogicalRecord &HeaderRecord);
         void ParseBasicMetadataImplementation_Format3(const LogicalRecord &HeaderRecord);
         void ParseBasicMetadataImplementation_Format4(const LogicalRecord &HeaderRecord);
+        void ParseBasicMetadataImplementation_Format5(const LogicalRecord &HeaderRecord);
+        void ParseBasicMetadataImplementation_Format6(const LogicalRecord &HeaderRecord);
 
-        // Parse extended metadata, if any, or throw an error...
+        // Parse extended metadata, if any, or throw an error. Extended 
+        //  metadata includes the azimuth and elevation...
         void ParseExtendedMetadata(const LogicalRecord &Record);
         
         // Get the output stream to be verbose, if enabled...

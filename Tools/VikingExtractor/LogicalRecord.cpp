@@ -165,7 +165,12 @@ bool LogicalRecord::IsLastLabel() const
 // Is this a valid label?
 bool LogicalRecord::IsValidLabel() const
 {
-    // Check...
+    // It should only contain printable characters past the first two bytes...
+    for(size_t Index = 2; Index < LOGICAL_RECORD_SIZE; ++Index)
+        if(!isprint(m_Buffer[Index]))
+            return false;
+
+    // Check for delimeter...
     switch(m_Buffer[LOGICAL_RECORD_SIZE - 1])
     {
         // Yes...

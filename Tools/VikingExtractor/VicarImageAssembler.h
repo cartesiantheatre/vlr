@@ -132,7 +132,7 @@ class VicarImageAssembler
         ReconstructableImageListType        m_ReconstructableImageList;
 
         // Acceptable diode band filter set...
-        VicarDiodeBandFilterSet             m_DiodeBandFilterSet;
+        VicarImageBand::DiodeBandFilterSet  m_DiodeBandFilterSet;
 
         // Usage flags...
         bool                                m_Verbose;
