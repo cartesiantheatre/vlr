@@ -28,6 +28,7 @@
 #include <fstream>
 #include <ostream>
 #include <set>
+#include <map>
 #include "LogicalRecord.h"
 
 // 1970s era VICAR image class...
@@ -39,11 +40,8 @@ class VicarImageBand
         // Lander's diode in the photosensor array...
         typedef enum
         {
-            // Not known... (e.g. not read)
+            // Not known... (e.g. or could be just not read)
             Unknown = 0,
-            
-            // Detected, but unsupported...
-            Invalid,
             
             // Narrow band low resolution colour diodes...
             Blue,
@@ -58,10 +56,21 @@ class VicarImageBand
             Infrared3,
             
             // Narrow band low resolution sun diode...
-            Sun
+            Sun,
+            
+            // Survey diode...
+            Survey
 
         }PSADiode;
-        
+
+        // Token to band type map and pair types...
+        typedef std::map<const std::string, PSADiode>   TokenToBandTypeMap;
+        typedef std::pair<const std::string, PSADiode>  TokenToBandTypeMapPair;
+
+        // Band type to friendly map and pair types...
+        typedef std::map<const PSADiode, std::string>   BandTypeToFriendlyMap;
+        typedef std::pair<const PSADiode, std::string>  BandTypeToFriendlyMapPair;
+
         // A set of photosensor array diode band types...
         typedef std::set<PSADiode>  DiodeBandFilterSet;
         
@@ -74,8 +83,12 @@ class VicarImageBand
     // Public methods...
     public:
 
-        // Construct or throw an error...
+        // Construct...
         VicarImageBand(const std::string &InputFile, const bool Verbose = false);
+
+        // Extract the image out as a PNG, but most be loaded first...
+        void Extract(
+            const std::string &OutputFile, const size_t DataBandIndex = 0);
 
         // Get the azimuth / elevation string...
         const std::string &GetAzimuthElevation() const;
@@ -84,12 +97,15 @@ class VicarImageBand
         PSADiode GetDiodeBandType() const { return m_DiodeBandType; };
 
         // Get the diode band type as a human friendly string...
-        std::string GetDiodeBandTypeString() const;
+        const std::string &GetDiodeBandTypeFriendlyString() const;
 
         // Get the original file on the magnetic tape number, or zero if unknown...
         size_t GetFileOnMagneticTapeNumber() const;
 
-        // Get the file size or throw an error...
+        // Get the error message...
+        const std::string &GetErrorMessage() const { return m_ErrorMessage; }
+
+        // Get the file size, or -1 on error...
         int GetFileSize() const;
 
         // Get the input file name only without path...
@@ -101,17 +117,8 @@ class VicarImageBand
         // Get the original magnetic tape number, or zero if unknown...
         size_t GetMagneticTapeNumber() const;
 
-        // Check if the image band data is most likely present by file size...
-        bool IsBandDataPresent() const;
-
-        // Check second record just to double check that this is actually 
-        //  from the Viking Lander EDR...
-        bool IsFromVikingLander() const;
-
-        // Check if the file is loadable. Note that this does a shallow
-        //  file integrity check and so it may succeed even though Load()
-        //  fails later...
-        bool IsHeaderIntact() const;
+        // Check if an error is present...
+        bool IsError() const { return !m_ErrorMessage.empty(); }
 
         // Is the file accessible and the header ok?
         bool IsOk() const { return m_Ok; }
@@ -119,16 +126,12 @@ class VicarImageBand
         // Is verbosity set...
         bool IsVerbose() { return m_Verbose; }
 
-        // Read VICAR header, calling all parse methods, or throw an error...
-        void LoadHeader();
+        // Load as much of the file as possible, setting error on 
+        //  failure...
+        void Load();
 
-        // Read VICAR header's basic metadata only. Does not throw an 
-        //  error, but reads the most of what it can...
-        void LoadHeaderShallow();
-
-        // Set the photosensor diode band type from VICAR style 
-        //  string, or throw an error... (e.g. "RED/T")
-        void SetDiodeBandTypeFromVicarToken(const std::string &DiodeBandType);
+        // Set Adam7 interlacing...
+        void SetInterlace(const bool Interlace = true) { m_Interlace = Interlace; }
 
         // Set the save labels flag...
         void SetSaveLabels(const bool SaveLabels = true) { m_SaveLabels = SaveLabels; }
@@ -136,16 +139,24 @@ class VicarImageBand
         // Set verbosity flag...
         void SetVerbose(const bool Verbose = true) { m_Verbose = Verbose; }
 
-        // Extract the image out as a PNG, or throw an error...
-        void Extract(const std::string &OutputFile, const bool Interlace = true) const;
-
     // Protected methods...
     protected:
 
-        // Parse basic metadata, or throw an error. Calls one of the 
-        //  implementations below based on its formatting. Basic
-        //  metadata includes bands, dimensions, pixel format, bytes
-        //  per colour, photosensor diode band type, etc...
+        // Set the photosensor diode band type from VICAR token... (e.g. "RED/T")
+        PSADiode GetDiodeBandTypeFromVicarToken(const std::string &DiodeBandTypeToken) const;
+
+        // Check if the header is at least readable...
+        bool IsHeaderIntact() const;
+
+        // Is the token a valid VICAR diode band type?
+        bool IsVicarTokenDiodeBandType(const std::string &DiodeBandTypeToken) const;
+
+        // Check ifthis is actually from the Viking Lander EDR...
+        bool IsVikingLanderOrigin() const;
+
+        // Parse basic metadata. Calls one of the implementations below based on its 
+        //  formatting. Basic metadata includes bands, dimensions, pixel format, 
+        //  bytes per colour, photosensor diode band type, etc...
         void ParseBasicMetadata(std::ifstream &InputFileStream);
         void ParseBasicMetadataImplementation_Format1(const LogicalRecord &HeaderRecord);
         void ParseBasicMetadataImplementation_Format2(const LogicalRecord &HeaderRecord);
@@ -154,19 +165,34 @@ class VicarImageBand
         void ParseBasicMetadataImplementation_Format5(const LogicalRecord &HeaderRecord);
         void ParseBasicMetadataImplementation_Format6(const LogicalRecord &HeaderRecord);
 
-        // Parse extended metadata, if any, or throw an error. Extended 
-        //  metadata includes the azimuth and elevation...
+        // Parse extended metadata, if any. Extended metadata includes the
+        //  azimuth and elevation...
         void ParseExtendedMetadata(const LogicalRecord &Record);
-        
+
+        // Perform a deep probe on the file to check for the photosensor diode
+        //  band type, returning Unknown if couldn't detect it or unsupported.
+        //  The parameter can be used for callee to store for caller the token
+        //  that probably denotes an unsupported diode type...
+        PSADiode ProbeDiodeBandType(std::string &VicarTokenFound) const;
+
+        // Set the error message...
+        void SetErrorMessage(const std::string &ErrorMessage) { m_Ok = false; m_ErrorMessage = ErrorMessage; }
+
         // Get the output stream to be verbose, if enabled...
         std::ostream &Verbose() const;
 
     // Protected data...
     protected:
 
+        // Token to band type map...
+        TokenToBandTypeMap          m_TokenToBandTypeMap;
+
+        // Band type to friendly map...
+        BandTypeToFriendlyMap       m_BandTypeToFriendlyMap;
+
         // Input file name...
         const std::string           m_InputFile;
-        
+
         // Number of image bands in this file. Should always be one...
         size_t                      m_Bands;
         
@@ -193,13 +219,17 @@ class VicarImageBand
         // Band type...
         PSADiode                    m_DiodeBandType;
 
-        // True if the header appears to be ok...
+        // True if the file is probably extractable...
         bool                        m_Ok;
+        
+        // If m_Ok is false, this is the error message...
+        std::string                 m_ErrorMessage;
 
         // Saved labels buffer...
         std::string                 m_SavedLabelsBuffer;
         
         // Usage flags...
+        bool                        m_Interlace;
         bool                        m_SaveLabels;
         bool                        m_Verbose;
         

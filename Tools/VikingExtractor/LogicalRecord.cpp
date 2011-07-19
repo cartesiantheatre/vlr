@@ -167,8 +167,11 @@ bool LogicalRecord::IsValidLabel() const
 {
     // It should only contain printable characters past the first two bytes...
     for(size_t Index = 2; Index < LOGICAL_RECORD_SIZE; ++Index)
+    {
+        // Binary junk found, probably not a valid label record...
         if(!isprint(m_Buffer[Index]))
             return false;
+    }
 
     // Check for delimeter...
     switch(m_Buffer[LOGICAL_RECORD_SIZE - 1])
@@ -184,7 +187,8 @@ bool LogicalRecord::IsValidLabel() const
     }
 }
 
-// Load the buffer from a stream and decode, or throw an error...
+// Load the buffer from a stream and decode, or throw an error. Always 
+//  consumes exactly LOGICAL_RECORD_SIZE bytes when successful...
 void LogicalRecord::operator<<(std::istream &InputStream)
 {
     // Fill the whole buffer and check for error...
@@ -192,7 +196,7 @@ void LogicalRecord::operator<<(std::istream &InputStream)
         throw std::string("failed to read from input stream");
 
     // Decode...
-    for(unsigned int Index = 0; Index < LOGICAL_RECORD_SIZE; ++Index)
+    for(size_t Index = 0; Index < LOGICAL_RECORD_SIZE; ++Index)
         m_Buffer[Index] = EbcdicToAscii(m_Buffer[Index]);
 }
 

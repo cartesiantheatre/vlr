@@ -21,6 +21,7 @@
 
 // Includes...
 #include "VicarImageAssembler.h"
+#include <cassert>
 #include <iostream>
 #include <dirent.h>
 #include <sys/types.h>
@@ -36,6 +37,13 @@ VicarImageAssembler::VicarImageAssembler(
       m_IgnoreBadFiles(false),
       m_LanderFilter(0)
 {
+    // We should have been provided with an input directory...
+    assert(!m_InputDirectory.empty());
+    
+    // The input directory should end with a path delimeter...
+    if(m_InputDirectory.find_last_of("/\\") != (m_InputDirectory.length() - 1))
+        m_InputDirectory += "/";
+
     // Set the diode filter class...
     SetDiodeFilterClass("any");
 }
@@ -49,6 +57,7 @@ void VicarImageAssembler::Index()
     struct  dirent *DirectoryEntry  = NULL;
     string          CurrentFile;
     string          FileNameOnly;
+    string          ErrorMessage;
 //    size_t          FilesIndexed    = 0;
 
     // Open directory and check for error...
@@ -78,84 +87,54 @@ void VicarImageAssembler::Index()
             // Get just the file name as well...
             FileNameOnly = ImageBand.GetInputFileNameOnly();
             
-            // Don't bother with anything under 4 kilobytes...
-            if(ImageBand.GetFileSize() < (4 * 1024))
-            {
-                // User requested we just skip over bad files....
-                if(m_IgnoreBadFiles)
-                {
-                    // Alert and skip...
-                    clog << DirectoryEntry->d_name << "\033[1;31m: warning: file too small to likely contain band data, skipping\033[0m" << endl;
-                    continue;
-                }
-                
-                // Otherwise raise an error...
-                else
-                    throw string("file too small to likely contain band data (-b to skip)");
-            }
-            
-            // Shallow integrity check to see if VICAR header is intact...
-            if(!ImageBand.IsHeaderIntact())
-            {
-                // User requested we just skip over bad files....
-                if(m_IgnoreBadFiles)
-                {
-                    // Alert and skip...
-                    clog << DirectoryEntry->d_name << "\033[1;31m: warning: unreadable header, skipping\033[0m" << endl;
-                    continue;
-                }
-                
-                // Otherwise raise an error...
-                else
-                    throw string("input not a valid 1970s era VICAR format (-b to skip)");
-            }
+            // Attempt to load the file...
+            ImageBand.Load();
 
-            // Check to see if from Viking Lander...
-            if(!ImageBand.IsFromVikingLander())
-            {
-                // User requested we just skip over bad files....
-                if(m_IgnoreBadFiles)
+                // Failed...
+                if(ImageBand.IsError())
                 {
-                    // Alert and skip...
-                    clog << DirectoryEntry->d_name << "\033[1;31m: info: non-Viking Lander file, skipping\033[0m" << endl;
-                    continue;
+                    // User requested we just skip over bad files....
+                    if(m_IgnoreBadFiles)
+                    {
+                        // Alert and skip...
+                        clog 
+                            << DirectoryEntry->d_name 
+                            << "\033[1;31m: error: " 
+                            << ImageBand.GetErrorMessage() 
+                            << ", skipping\033[0m"
+                            << endl;
+                        continue;
+                    }
+                    
+                    // Otherwise raise an error...
+                    else
+                    {
+                        // Alert and abort...
+                        ErrorMessage = 
+//                            DirectoryEntry->d_name +
+                            //string("\033[1;31m: error: ") +
+                            ImageBand.GetErrorMessage() +
+                            string(" (-b to skip)");
+                        throw ErrorMessage;
+                    }
                 }
-
-                // Otherwise raise an error...
-                else
-                    throw string("input does not appear to be from a Viking Lander (-b to skip)");
-            }
-
-            // Shallow load to read basic metadata only...
-            ImageBand.LoadHeaderShallow();
 
             // Not part of the diode filter set...
             if(m_DiodeBandFilterSet.find(ImageBand.GetDiodeBandType()) == 
                 m_DiodeBandFilterSet.end())
             {
                 // Alert and skip...
-                clog << DirectoryEntry->d_name << "\033[1;33m: info: skipping " << ImageBand.GetDiodeBandTypeString() << " type diode band\033[0m" << endl;
+                clog 
+//                    << DirectoryEntry->d_name 
+                    << "\033[1;33m: info: filtering " 
+                    << ImageBand.GetDiodeBandTypeFriendlyString()
+                    << " type diode bands\033[0m" 
+                    << endl;
                 continue;
             }
 
-            // Check to see if band data is within file...
-            if(!ImageBand.IsBandDataPresent())
-            {
-                // User requested we just skip over bad files....
-                if(m_IgnoreBadFiles)
-                {
-                    // Alert and skip...
-                    clog << DirectoryEntry->d_name << "\033[1;31m: info: no band data present, skipping\033[0m" << endl;
-                    continue;
-                }
-
-                // Otherwise raise an error...
-                else
-                    throw string("input does not appear to be from a Viking Lander (-b to skip)");
-            }
-
             // Alert user...
-            clog << DirectoryEntry->d_name << "\033[1;32m: ok\033[0m" << endl;
+            clog << DirectoryEntry->d_name << "\033[1;32m" << ": ok" << "\033[0m" << endl;
             
             // Show us indexing the VICAR files...
 //            Verbose() << "\rfiles indexed " << ++FilesIndexed;
@@ -251,7 +230,7 @@ void VicarImageAssembler::SetLanderFilter(const string &LanderFilter)
     Verbose() << "filter for Viking lander " << m_LanderFilter << endl;
 }
 
-// Get the output stream to be verbose, if enabled...
+// Get a verbose output stream, if enabled, or dummy stream otherwise...
 ostream &VicarImageAssembler::Verbose() const
 {
     // Not enabled. Return the null stream...

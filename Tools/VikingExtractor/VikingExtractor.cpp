@@ -39,28 +39,27 @@ using namespace std;
 // Show help...
 void ShowHelp()
 {
-    cout << "Usage: VikingExtractor [options] input [output]" << endl
-         << "Options:" << endl
-         << "  -b, --ignore-bad-files    Don't stop on corrupt input file, but" << endl
-         << "                             continue extraction of other files" << endl
-         << "                             (assembly mode only)." << endl
-         << "  -y, --dry-run             Don't write anything" << endl
-         << "  -f, --diode-filter <type> Extract from matching supported diode" << endl
-         << "                             filter classes which are any, colour," << endl
-         << "                              infrared, or sun (assembly mode only)." << endl
-         << "  -h, --help                Show this help" << endl
-         << "  -i, --interlace           Encode output with Adam7 interlacing" << endl
-         << "  -l, --save-record-labels  Save VICAR record labels as text file" << endl
-         << "  -n, --lander-filter <#>   Extract from specific lander only which" << endl
-         << "                             are any (default), 1, or 2 (assembly" << endl
-         << "                             mode only)." << endl
-         << "  -V, --verbose             Be verbose" << endl
-         << "  -v, --version             Show version information" << endl << endl
+    cout << "Usage: VikingExtractor [options] input [output]"                                   << endl
+         << "Options:"                                                                          << endl
+         << "  -b, --ignore-bad-files      Don't stop on corrupt input file, but continue"      << endl
+         << "                              extraction of other files (assembly mode only)."     << endl
+         << "  -y, --dry-run               Don't write anything"                                << endl
+         << "  -f, --diode-filter <type>   Extract from matching supported diode filter"        << endl
+         << "                              classes which are any (default), colour, infrared,"  << endl
+         << "                              sun, or survey (assembly mode only)."                << endl
+         << "  -h, --help                  Show this help"                                      << endl
+         << "  -i, --interlace             Encode output with Adam7 interlacing"                << endl
+         << "  -l, --save-record-labels    Save VICAR record labels as text file"               << endl
+         << "  -n, --lander-filter <#>     Extract from specific lander only which are any"     << endl
+         << "                              (default), 1, or 2 (assembly mode only)."            << endl
+         << "  -V, --verbose               Be verbose"                                          << endl
+         << "  -v, --version               Show version information"                            << endl << endl
 
-         << "Converts 1970s Viking Lander era VICAR colour images to PNGs." << endl
-         << "If 'input' is a directory, extract / assemble separate colour" << endl
-         << "bands into output directory (assembly mode). Otherwise" << endl
-         << "operate on single file." << endl;
+         << "Converts 1970s Viking Lander era VICAR colour images to PNGs. If 'input' is a"     << endl
+         << "directory, extract / assemble separate colour bands into output directory"         << endl
+         << "(assembly mode). Otherwise operate on single file."                                << endl << endl
+         
+         << "Report bugs to <https://bugs.launchpad.net/avaneya>" << endl;
 }
 
 // Show version information...
@@ -326,7 +325,6 @@ int main(int ArgumentCount, char *Arguments[])
     // Extract from a set of VICAR images...
     try
     {
-        // Assembly mode...
         if(AssemblyMode)
         {
             // Create image assembler...
@@ -359,7 +357,6 @@ int main(int ArgumentCount, char *Arguments[])
     // Extract from a single image...
     try
     {
-        // Just extract from a single file...
         if(!AssemblyMode)
         {
             // Diode filter class should not be set...
@@ -377,15 +374,20 @@ int main(int ArgumentCount, char *Arguments[])
             // Construct a VICAR colour image object...
             VicarImageBand Image(InputFile, Verbose);
             
-            // Set user the save label flag, if user selected...
+            // Set user flags
+            Image.SetInterlace(Interlace);
             Image.SetSaveLabels(SaveLabels);
             
             // Load the image...
-            Image.LoadHeader();
+            Image.Load();
+            
+            // Check for an error...
+            if(Image.IsError())
+                throw Image.GetErrorMessage();
             
             // Write out the image, if not in dry mode...
             if(!DryRun)
-                Image.Extract(OutputFile, Interlace);
+                Image.Extract(OutputFile);
         }
     }
 

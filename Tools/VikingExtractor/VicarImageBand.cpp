@@ -20,32 +20,36 @@
 */
 
 // Includes...
-    
+
     // Ourself...    
     #include "VicarImageBand.h"
-    
+
     // Logical record access...
     #include "LogicalRecord.h"
-    
+
     // PNG writing...
     #include <png++/png.hpp>
-    
+
     // Streams...
     #include <iostream>
     #include <iomanip>
     #include <sstream>
     #include <fstream>
-    
+
     // String access and manipulation...
     #include <cstring>
-    
+
     // max()...
     #include <algorithm>
+
+// Helpful macro...
+#define SetErrorAndReturn(Message)      { SetErrorMessage((Message)); return; }
+#define SetErrorAndReturnFalse(Message) { SetErrorMessage((Message)); return false; }
 
 // Using the standard namespace...
 using namespace std;
 
-// Construct or throw an error...
+// Construct...
 VicarImageBand::VicarImageBand(
     const string &InputFile, const bool Verbose)
     : m_InputFile(InputFile),
@@ -59,28 +63,108 @@ VicarImageBand::VicarImageBand(
       m_RawImageOffset(0),
       m_DiodeBandType(Unknown),
       m_Ok(false),
+      m_Interlace(false),
       m_SaveLabels(false),
       m_Verbose(Verbose)
 {
+    // Initialize the token to diode band type dictionary...
 
+        /*
+            Note: Sometimes the narrow band photosensor array diodes
+            in the VICAR label were given inconsistent names when
+            taken as part of a triplet (e.g. RGB colour bands).
+            Sometimes you might see RED, sometimes RED/T (red channel
+            as part of triplet), and sometimes RED/S. We're not sure
+            what the /S might have stood for, but probably not
+            "single" since VICAR images vl_1553.00{7-9}, for instance,
+            have PSA diodes of colour/S form but appear to be separate
+            channels of the same image. We will assume colour ==
+            colour/S == colour/T for now since they were probably
+            added later in an inconsistent and hectic early work
+            environment.
+        */
+
+        // Narrow band for colour...
+
+            // Red...
+            m_TokenToBandTypeMap["RED"]     = Red;
+            m_TokenToBandTypeMap["RED/S"]   = Red;
+            m_TokenToBandTypeMap["RED/T"]   = Red;
+            
+            // Green...
+            m_TokenToBandTypeMap["GRN"]     = Green;
+            m_TokenToBandTypeMap["GRN/S"]   = Green;
+            m_TokenToBandTypeMap["GRN/T"]   = Green;
+            
+            // Blue...
+            m_TokenToBandTypeMap["BLU"]     = Blue;
+            m_TokenToBandTypeMap["BLU/S"]   = Blue;
+            m_TokenToBandTypeMap["BLU/T"]   = Blue;
+
+        // Narrow band for infrared...
+        
+            // Infrared one...
+            m_TokenToBandTypeMap["IR1"]     = Infrared1;
+            m_TokenToBandTypeMap["IR1/T"]   = Infrared1;
+                
+            // Infrared two...
+            m_TokenToBandTypeMap["IR2"]     = Infrared2;
+            m_TokenToBandTypeMap["IR2/T"]   = Infrared2;
+            
+            // Infrared three...
+            m_TokenToBandTypeMap["IR3"]     = Infrared3;
+            m_TokenToBandTypeMap["IR3/T"]   = Infrared3;
+
+        // Narrow band for the Sun...
+        m_TokenToBandTypeMap["SUN"]         = Sun;
+    
+        // Broad band for survey...
+        m_TokenToBandTypeMap["SURVEY"]      = Survey;
+
+        // Unsupported are the remaining broad band diodes...
+        m_TokenToBandTypeMap["BB1"]         = Unknown;
+        m_TokenToBandTypeMap["BB2"]         = Unknown;
+        m_TokenToBandTypeMap["BB3"]         = Unknown;
+        m_TokenToBandTypeMap["BB4"]         = Unknown;
+
+    // Initialize the diode band to friendly dictionary...
+
+        // Unknown...
+        m_BandTypeToFriendlyMap[Unknown]    = "unknown";
+
+        // Narrow band for colour...
+        m_BandTypeToFriendlyMap[Red]        = "red";
+        m_BandTypeToFriendlyMap[Green]      = "green";
+        m_BandTypeToFriendlyMap[Blue]       = "blue";
+            
+        // Narrow band for infrared...
+        m_BandTypeToFriendlyMap[Infrared1]  = "infrared 1";
+        m_BandTypeToFriendlyMap[Infrared2]  = "infrared 2";
+        m_BandTypeToFriendlyMap[Infrared3]  = "infrared 3";
+
+        // Narrow band for the Sun...
+        m_BandTypeToFriendlyMap[Sun]        = "sun";
+    
+        // Broad band for survey...
+        m_BandTypeToFriendlyMap[Survey]     = "survey";
 }
 
-// Extract the image out as a PNG, or throw an error...
-void VicarImageBand::Extract(const string &OutputFile, const bool Interlace) const
+// Extract the image out as a PNG, but most be loaded first...
+void VicarImageBand::Extract(const string &OutputFile, const size_t DataBandIndex)
 {
     // Objects...
     LogicalRecord   Record;
 
     // Check if file was loaded ok...
     if(!IsOk())
-        throw string("input was not loaded");
+        SetErrorAndReturn("input was not loaded");
 
     // Open the input file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
     
         // Failed...
         if(!InputFileStream.is_open())
-            throw string("could not open input for reading");
+            SetErrorAndReturn("could not open input for reading");
 
     // Write the saved label out, if user selected...
     if(m_SaveLabels)
@@ -93,7 +177,7 @@ void VicarImageBand::Extract(const string &OutputFile, const bool Interlace) con
         
             // Failed...
             if(!SavedLabelsStream.good())
-                throw string("unable to save record label");
+                SetErrorAndReturn("unable to save record label");
 
         // Write...
         SavedLabelsStream << m_SavedLabelsBuffer;
@@ -104,7 +188,7 @@ void VicarImageBand::Extract(const string &OutputFile, const bool Interlace) con
     
     // Seek to raw image offset and make sure it was successful...
     if(!InputFileStream.seekg(m_RawImageOffset, ios_base::beg).good())
-        throw string("file ended prematurely before raw image");
+        SetErrorAndReturn("file ended prematurely before raw image");
     
     // Write out the image...
 
@@ -112,7 +196,7 @@ void VicarImageBand::Extract(const string &OutputFile, const bool Interlace) con
         png::image<png::gray_pixel> PngImage(m_Width, m_Height);
 
         // Toggle interlacing, if user selected...
-        if(Interlace)
+        if(m_Interlace)
             PngImage.set_interlace_type(png::interlace_adam7);
         else
             PngImage.set_interlace_type(png::interlace_none);
@@ -126,7 +210,7 @@ void VicarImageBand::Extract(const string &OutputFile, const bool Interlace) con
                 // Read a pixel / byte and check for error...
                 char Byte = '\x0';
                 if(!InputFileStream.read(&Byte, 1).good())
-                    throw string("raw image data ended prematurely");
+                    SetErrorAndReturn("raw image data ended prematurely");
                 
                 // Encode...
                 PngImage.set_pixel(X, Y, Byte);
@@ -139,33 +223,20 @@ void VicarImageBand::Extract(const string &OutputFile, const bool Interlace) con
 }
 
 // Get the diode band type as a human friendly string...
-string VicarImageBand::GetDiodeBandTypeString() const
+const string &VicarImageBand::GetDiodeBandTypeFriendlyString() const
 {
-    switch(m_DiodeBandType)
-    {
-        // Unknown...
-        case Unknown:   return string("unknown");
-        
-        // Narrow band for colours...
-        case Red:       return string("red");
-        case Green:     return string("green");
-        case Blue:      return string("blue");
-        
-        // Narrow band for infrared...
-        case Infrared1: return string("infrared 1");
-        case Infrared2: return string("infrared 2");
-        case Infrared3: return string("infrared 3");
+    // Lookup the diode band type in the band type to friendly map...
+    const BandTypeToFriendlyMap::const_iterator Iterator =
+        m_BandTypeToFriendlyMap.find(GetDiodeBandType());
 
-        // Narrow band for the Sun...
-        case Sun:       return string("sun");
-        
-        // Invalid... (fall through)
-        case Invalid:
-        default:        return string("invalid");
-    }
+    // Should always have been found...
+    assert(Iterator != m_BandTypeToFriendlyMap.end());
+
+    // Return the friendly string...
+    return Iterator->second;
 }
 
-// Get the file size or throw an error...
+// Get the file size, or -1 on error...
 int VicarImageBand::GetFileSize() const
 {
     // Open the file...
@@ -173,7 +244,7 @@ int VicarImageBand::GetFileSize() const
     
         // Failed...
         if(!InputFileStream.is_open())
-            throw string("could not open input for reading");
+            return -1;
 
     // Seek to the end and return the size...
     InputFileStream.seekg(0, ios_base::end);
@@ -198,25 +269,18 @@ string VicarImageBand::GetInputFileNameOnly() const
     return FileNameOnly;
 }
 
-// Check if the image band data is most likely present by file size...
-bool VicarImageBand::IsBandDataPresent() const
+// Is the token a valid VICAR diode band type?
+bool VicarImageBand::IsVicarTokenDiodeBandType(const string &DiodeBandTypeToken) const
 {
-    // Basic metadata should have been read already...
-    assert(m_Ok);
+    // Lookup the VICAR token in the token to band type map...
+    const TokenToBandTypeMap::const_iterator Iterator =
+        m_TokenToBandTypeMap.find(DiodeBandTypeToken);
 
-    // Probably, if the file is at least large enough to contain the 
-    //  band data and one physical record...
-    if(GetFileSize() >= ((m_Width * m_Height * m_BytesPerColour) + (5 * LOGICAL_RECORD_SIZE)))
-        return true;
-    
-    // Otherwise probably not...
-    else
-        return false;
+    // Check if found...
+    return (Iterator != m_TokenToBandTypeMap.end());
 }
 
-// Check if the file is loadable. Note that this does a shallow
-//  file integrity check and so it may succeed even though 
-//  LoadHeader() fails later...
+// Check if the header is at least readable...
 bool VicarImageBand::IsHeaderIntact() const
 {
     // Check to make sure it contains at least three logical records...
@@ -225,16 +289,15 @@ bool VicarImageBand::IsHeaderIntact() const
 
     // Open the file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
-    
-        // Failed...
-        if(!InputFileStream.is_open())
-            throw string("could not open input for reading");
+
+        // Load() already succeeded in opening, so this shouldn't ever happen...
+        assert(InputFileStream.is_open());
 
     // There isn't any "typical" file magic signature, so check for general...
 
         // Load the first logical record...
         const LogicalRecord HeaderRecord(InputFileStream);
-    
+
         // Check if valid first end of logical record marker......
         if(HeaderRecord.IsValidLabel())
             return true;
@@ -244,9 +307,8 @@ bool VicarImageBand::IsHeaderIntact() const
             return false;
 }
 
-// Check second record just to double check that this is actually 
-//  from the Viking Lander EDR...
-bool VicarImageBand::IsFromVikingLander() const
+// Check ifthis is actually from the Viking Lander EDR...
+bool VicarImageBand::IsVikingLanderOrigin() const
 {
     // A logical record...
     LogicalRecord   Record;
@@ -254,9 +316,8 @@ bool VicarImageBand::IsFromVikingLander() const
     // Open the file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
     
-        // Failed...
-        if(!InputFileStream.is_open())
-            throw string("could not open input for reading");
+        // Load() already succeeded in opening, so this shouldn't ever happen...
+        assert(InputFileStream.is_open());
 
     // Load the second record...
     Record << InputFileStream;
@@ -269,25 +330,33 @@ bool VicarImageBand::IsFromVikingLander() const
         return true;
 }
 
-// Read VICAR header, calling all parse methods, or throw an error...
-void VicarImageBand::LoadHeader()
+// Load as much of the file as possible, setting error on failure...
+void VicarImageBand::Load()
 {
     // Objects and variables...
     LogicalRecord   Record;
 
-    // Check if the header is intact...
-    if(!IsHeaderIntact())
-        throw string("header is not intact");
-
     // Open the file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
-    
+
         // Failed...
         if(!InputFileStream.is_open())
-            throw string("could not open input for reading");
+            SetErrorAndReturn("could not open input for reading");
+
+    // Check if the header is intact...
+    if(!IsHeaderIntact())
+        SetErrorAndReturn("header is not intact");
+
+    // Verify it's from one of the Viking Landers...
+    if(!IsVikingLanderOrigin())
+        SetErrorAndReturn("input did not originate from a Viking Lander");
 
     // Extract the basic image metadata...
     ParseBasicMetadata(InputFileStream);
+    
+        // Error occured, stop...
+        if(IsError())
+            return;
 
     // Now rewind again to start of file...
     InputFileStream.seekg(0, ios_base::beg);
@@ -310,19 +379,24 @@ void VicarImageBand::LoadHeader()
             LocalLogicalRecordIndex < 5; 
           ++LocalLogicalRecordIndex)
         {
+Verbose() << "extracting logical record " << LocalLogicalRecordIndex + 1 << "/5 starting at " << static_cast<int>(InputFileStream.tellg()) << endl;
+
             // Extract a logical record...
             Record << InputFileStream;
-//Verbose() << "tellg() " << static_cast<int>(InputFileStream.tellg()) << endl;
             
             // Is it valid?
             if(!Record.IsValidLabel())
             {
-                Verbose() << "bad logical record terminator " << LocalLogicalRecordIndex << "/5 at " << static_cast<int>(InputFileStream.tellg()) + 71 << endl;
-                throw string("invalid logical record label");
+                Verbose() << "bad logical record terminator " << LocalLogicalRecordIndex + 1 << "/5 starting at " << static_cast<int>(InputFileStream.tellg()) << endl;
+                SetErrorAndReturn("invalid logical record label");
             }
 
             // Parse the extended metadata, if any...
             ParseExtendedMetadata(Record);
+            
+                // Error occured, stop...
+                if(IsError())
+                    return;
 
             // Add to saved labels buffer...
             m_SavedLabelsBuffer += Record.GetString() + '\n';
@@ -366,7 +440,7 @@ void VicarImageBand::LoadHeader()
             {
                 // It was, so rewind and carry on since there is no 
                 //  physical record padding...
-//                Verbose() << "tangential physical record boundary detected, ignoring padding" << endl;
+                Verbose() << "tangential physical record boundary detected, ignoring padding" << endl;
                 InputFileStream.seekg(CurrentPosition);
             }
             
@@ -375,7 +449,7 @@ void VicarImageBand::LoadHeader()
             else
             {
                 // Alert and seek...
-//                Verbose() << "seeking passed " << m_PhysicalRecordPadding << " physical record padding" << endl;
+                Verbose() << "seeking passed " << m_PhysicalRecordPadding << " physical record padding" << endl;
                 InputFileStream.seekg(CurrentPosition);
                 InputFileStream.seekg(m_PhysicalRecordPadding, ios_base::cur);
             }
@@ -383,7 +457,7 @@ void VicarImageBand::LoadHeader()
 
     // Got to the end of the file and did not find the last label record...
     if(!InputFileStream.good())
-        throw string("unable to locate last logical record label");
+        SetErrorAndReturn("unable to locate last logical record label");
 
     // Store raw image offset...
     m_RawImageOffset = InputFileStream.tellg();
@@ -395,31 +469,11 @@ void VicarImageBand::LoadHeader()
     m_Ok = true;
 }
 
-// Read VICAR header's basic metadata only. Does not throw an error, 
-//  but reads the most of what it can...
-void VicarImageBand::LoadHeaderShallow()
-{
-    // Objects and variables...
-    LogicalRecord   Record;
-
-    // Open the file...
-    ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
-    
-        // Failed...
-        if(!InputFileStream.is_open())
-            throw string("could not open input for reading");
-
-    // Extract the basic image metadata...
-    ParseBasicMetadata(InputFileStream);
-}
-
-// Parse basic metadata, or throw an error. Basic metadata includes 
-//  bands, dimensions, pixel format, bytes per colour, photosensor 
-//  diode band type, etc...
+// Parse basic metadata. Basic metadata includes bands, dimensions, 
+//  pixel format, bytes per colour, photosensor diode band type, etc...
 void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
 {
     // Variables...
-    LogicalRecord   Record;
     string          Token;
     size_t          TokenIndex          = 0;
     size_t          TokenLength[32];
@@ -427,27 +481,27 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
     // Stream should have already been validated...
     assert(InputFileStream.good());
 
-    // There isn't any "typical" file magic signature, so check for general...
+    // Probe for the photosensor diode band type...
+    m_DiodeBandType = ProbeDiodeBandType(Token);
 
-        // Load and save the first logical record...
-        const LogicalRecord HeaderRecord(InputFileStream);
-    
-        // Check for first end of logical record marker......
-        if(!HeaderRecord.IsValidLabel())
-            throw string("input not a valid 1970s era VICAR format");
+        // Not a supported band type...
+        if(m_DiodeBandType == Unknown)
+            SetErrorAndReturn(string("unsupported photosensor diode band type ") + Token);
 
-    // Check that it is from a Viking Lander...
-    if(!IsFromVikingLander())
-        throw string("input does not appear to be from a Viking Lander");
+    // Extract the header record...
+    const LogicalRecord HeaderRecord(InputFileStream);
 
     // Clear token length buffer...
     memset(TokenLength, 0, sizeof(TokenLength));
+
+    // Initialize the token counter, skipping past the first two 
+    //  magnetic tape marker bytes...
+    stringstream TokenCounter(HeaderRecord.GetString(true, 2));
 
     // Count how many tokens are there, seeking passed two byte binary 
     //  marker. This is necessary to know since different label formats
     //  can be distinguished by the number of whitespace separated 
     //  tokens...
-    stringstream TokenCounter(HeaderRecord.GetString(true, 2));
     for(TokenIndex = 0; 
         TokenCounter.good() && TokenIndex < sizeof(TokenLength) / sizeof(TokenLength[0]); 
       ++TokenIndex)
@@ -629,58 +683,30 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
 
         // Unknown format...
         else
-            throw string("heuristics couldn't determine how to parse basic metadata");
-
-    // Third record usually contains the photosensor diode band type...
-
-        // Load it...
-        Record << InputFileStream;  /* Skips second one which was checked in IsFromVikingLander() */
-        Record << InputFileStream;
-        
-        // Is it valid?
-        if(!Record.IsValidLabel())
-            throw string("invalid logical record label while looking for diode band type");
-
-        // Initialize tokenizer...
-        stringstream DiodeTokenizer(Record);
-        
-        // Get first token...
-        DiodeTokenizer >> Token;
-
-        // Not the logical record beginning with the diode photosensor type...
-        if(Token != "DIODE")
-            clog << GetInputFileNameOnly() << "\033[1;31m" << ": warning: photosensor diode band type missing" << "\033[0m" << endl;
-        
-        // Otherwise set it...
-        else
-        {
-            // Extract and set photosensor band type...
-            DiodeTokenizer >> Token;
-            SetDiodeBandTypeFromVicarToken(Token);
-        }
+            SetErrorAndReturn("heuristics couldn't determine how to parse basic metadata");
 
     // Perform sanity check on basic metadata...
 
         // Check bands...
         if(m_Bands != 1)
-            throw string("unsupported number of image bands");
+            SetErrorAndReturn("unsupported number of image bands");
 
         // Check height...
         if(m_Height <= 0)
-            throw string("expected positive image height");
+            SetErrorAndReturn("expected positive image height");
 
         // Check width...
         if(m_Width <= 0)
-            throw string("expected positive image width");
+            SetErrorAndReturn("expected positive image width");
 
         // Check pixel format is integral...
         if(m_PixelFormat != 'I' && /* Definitely integral */
            m_PixelFormat != 'L')   /* Guessing integral */
-            throw string("unsupported pixel format");
+            SetErrorAndReturn("unsupported pixel format");
 
         // Check bytes per colour...
         if(m_BytesPerColour != 1)
-            throw string("unsupported colour bit depth");
+            SetErrorAndReturn("unsupported colour bit depth");
 
     // If verbosity is set, display basic metadata...
     Verbose() << "  bands:\t\t\t\t" << m_Bands << endl;
@@ -690,7 +716,7 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
     Verbose() << "  file size:\t\t\t\t" << GetFileSize() << " bytes" << endl;
     Verbose() << "  format:\t\t\t\t" << "integral" << endl;
     Verbose() << "  bytes per colour:\t\t\t" << m_BytesPerColour << endl;
-    Verbose() << "  photosensor diode band type:\t\t" << GetDiodeBandTypeString() << endl;
+    Verbose() << "  photosensor diode band type:\t\t" << GetDiodeBandTypeFriendlyString() << endl;
     Verbose() << "  physical record size:\t\t\t" << m_PhysicalRecordSize << hex << showbase << " (" << m_PhysicalRecordSize<< ")" << endl;
     Verbose() << "  possible physical record padding:\t"  << dec << m_PhysicalRecordPadding << hex << showbase << " (" << m_PhysicalRecordPadding<< ")" << dec << endl;
 
@@ -1132,8 +1158,8 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format6(
     Tokenizer >> m_BytesPerColour;
 }
 
-// Parse extended metadata, if any, or throw an error. Extended metadata
-//  includes the azimuth and elevation...
+// Parse extended metadata, if any. Extended metadata includes the 
+//  azimuth and elevation...
 void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
 {
     // Variables...
@@ -1141,7 +1167,7 @@ void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
     
     // Is it valid?
     if(!Record.IsValidLabel())
-        throw string("invalid logical record label while parsing extended metadata");
+        SetErrorAndReturn("invalid logical record label while parsing extended metadata");
 
     // Initialize tokenizer...
     stringstream Tokenizer(Record);
@@ -1166,65 +1192,110 @@ void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
     }
 }
 
-// Set the photosensor diode band type from VICAR style 
-//  string, or throw an error... (e.g. "RED/T")
-void VicarImageBand::SetDiodeBandTypeFromVicarToken(
-    const std::string &DiodeBandType)
+// Perform a deep probe on the file to check for the photosensor diode band type, 
+//  returning Unknown if couldn't detect it or unsupported. The parameter can be
+//  used for callee to store for caller the token that probably denotes an 
+//  unsupported diode type...
+VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &VicarTokenFound) const
 {
-    /*
-        Note: Sometimes the narrow band photosensor array diodes
-        in the VICAR label were given inconsistent names when
-        taken as part of a triplet (e.g. RGB colour bands).
-        Sometimes you might see RED, sometimes RED/T (red channel
-        as part of triplet), and sometimes RED/S. We're not sure
-        what the /S might have stood for, but probably not
-        "single" since VICAR images vl_1553.00{7-9}, for instance,
-        have PSA diodes of colour/S form but appear to be separate
-        channels of the same image. We will assume colour ==
-        colour/S == colour/T for now since they were probably
-        added later in an inconsistent and hectic early work
-        environment.
-    */
+    // Open the file...
+    ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
     
-    // Narrow band for colours...
+        // Should have already been openable, since we did so in Load()...
+        assert(InputFileStream.is_open());
 
-        // Red triplet...
-        if(DiodeBandType == "RED" || DiodeBandType == "RED/S" || DiodeBandType == "RED/T")
-            m_DiodeBandType = Red;
-        
-        // Green triplet...
-        else if(DiodeBandType == "GRN" || DiodeBandType == "GRN/S" || DiodeBandType == "GRN/T")
-            m_DiodeBandType = Green;
+    // Check anywhere within the first physical record...
+    for(size_t LogicalRecordIndex = 0; LogicalRecordIndex < 5; ++LogicalRecordIndex)
+    {
+        // Variables...
+        string  PreviousToken;
+        string  CurrentToken;
 
-        // Blue triplet...
-        else if(DiodeBandType == "BLU" || DiodeBandType == "BLU/S" || DiodeBandType == "BLU/T")
-            m_DiodeBandType = Blue;
+        // Extract record...
+        LogicalRecord Record(InputFileStream);
 
-    // Narrow band for infrared...
-    
-        // Infrared one...
-        else if(DiodeBandType == "IR1" || DiodeBandType == "IR1/S" || DiodeBandType == "IR1/T")
-            m_DiodeBandType = Infrared1;
+        // Initialize tokenizer, skipping first two magnetic tape marker 
+        //  bytes if first record...
+        stringstream Tokenizer(Record.GetString(false, LogicalRecordIndex > 0 ? 0 : 2));
+
+        // Keep extracting tokens while there are some in this record...
+        while(Tokenizer.good())
+        {
+            // Remember the last read token...
+            PreviousToken = CurrentToken;
             
-        // Infrared one...
-        else if(DiodeBandType == "IR2" || DiodeBandType == "IR2/S" || DiodeBandType == "IR2/T")
-            m_DiodeBandType = Infrared2;
-        
-        // Infrared one...
-        else if(DiodeBandType == "IR3" || DiodeBandType == "IR3/S" || DiodeBandType == "IR3/T")
-            m_DiodeBandType = Infrared3;
+            // Extract a new token...
+            Tokenizer >> CurrentToken;
 
-    // Narrow band for the Sun...
-    else if(DiodeBandType == "SUN")
-        m_DiodeBandType = Sun;
+            // Found probably a diode marker token...
+            if(CurrentToken == "DIODE")
+            {
+                // End of token stream...
+                if(!Tokenizer.good())
+                {
+                    // Check the token before DIODE marker...
+                    if(IsVicarTokenDiodeBandType(PreviousToken))
+                    {
+                        VicarTokenFound = PreviousToken;
+                        return GetDiodeBandTypeFromVicarToken(PreviousToken);
+                    }
 
-    // Invalid...
-    else 
-        m_DiodeBandType = Invalid;
+                    // Otherwise we got to the end of this logical record and 
+                    //  found nothing. Try next one...
+                    else
+                        break;
+                }
+
+                // Otherwise extract what may be the diode type...
+                Tokenizer >> CurrentToken;
+
+                // Check if it is a supported diode type...
+                if(IsVicarTokenDiodeBandType(CurrentToken))
+                {
+                    VicarTokenFound = CurrentToken;
+                    return GetDiodeBandTypeFromVicarToken(CurrentToken);
+                }
+
+                // Otherwise try the token before it...
+                else if(IsVicarTokenDiodeBandType(PreviousToken))
+                {
+                    VicarTokenFound = PreviousToken;
+                    return GetDiodeBandTypeFromVicarToken(PreviousToken);
+                }
+            }
+        }
+    }
+
+    // Alert user if no diode type found...
+    Verbose() << GetInputFileNameOnly() 
+              << "\033[1;31m" 
+              << ": warning: no photosensor diode band type found" 
+              << "\033[0m" 
+              << endl;
+
+    // Return unknown...
+    return Unknown;
+}
+
+// Set the photosensor diode band type from VICAR token... (e.g. "RED/T")
+VicarImageBand::PSADiode VicarImageBand::GetDiodeBandTypeFromVicarToken(
+    const string &DiodeBandTypeToken) const
+{
+    // Lookup the VICAR token in the token to band type map...
+    const TokenToBandTypeMap::const_iterator Iterator =
+        m_TokenToBandTypeMap.find(DiodeBandTypeToken);
+
+    // Found...
+    if(Iterator != m_TokenToBandTypeMap.end())
+        return Iterator->second;
+
+    // Not found...
+    else
+        return Unknown;
 }
 
 // Get the output stream to be verbose, if enabled...
-std::ostream &VicarImageBand::Verbose() const
+ostream &VicarImageBand::Verbose() const
 {
     // Not enabled. Return the null stream...
     if(!m_Verbose)

@@ -35,28 +35,6 @@ class VicarImageAssembler
     // Public types...
     public:
     
-        // Lander's diode in the photosensor array...
-        typedef enum
-        {
-            Invalid = 0,
-            
-            // Narrow band low resolution colour diodes...
-            Blue,
-            Green,
-            Red,
-            
-            // Narrow band low resolution infrared diodes. These 
-            //  deteriorated slowly due to neutron radiation from the 
-            //  RTG...
-            Infrared1,
-            Infrared2,
-            Infrared3,
-            
-            // Narrow band low resolution sun diode...
-            Sun
-
-        }PSADiode;
-
         // Null output stream...
         struct NullOutputStream : std::ostream
         {
@@ -119,14 +97,14 @@ class VicarImageAssembler
     // Protected methods...
     protected:
 
-        // Get the output stream to be verbose, if enabled...
+        // Get a verbose output stream, if enabled, or dummy stream otherwise...
         std::ostream &Verbose() const;
 
     // Protected data...
     protected:
 
         // Input directory...
-        const std::string                   m_InputDirectory;
+        std::string                         m_InputDirectory;
 
         // Reconstructable image list...
         ReconstructableImageListType        m_ReconstructableImageList;
