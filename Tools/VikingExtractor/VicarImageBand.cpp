@@ -87,45 +87,54 @@ VicarImageBand::VicarImageBand(
         // Narrow band for colour...
 
             // Red...
-            m_TokenToBandTypeMap["RED"]     = Red;
-            m_TokenToBandTypeMap["RED/S"]   = Red;
-            m_TokenToBandTypeMap["RED/T"]   = Red;
+            m_TokenToBandTypeMap["RED"]         = Red;
+            m_TokenToBandTypeMap["RED/S"]       = Red;
+            m_TokenToBandTypeMap["RED/T"]       = Red;
             
             // Green...
-            m_TokenToBandTypeMap["GRN"]     = Green;
-            m_TokenToBandTypeMap["GRN/S"]   = Green;
-            m_TokenToBandTypeMap["GRN/T"]   = Green;
+            m_TokenToBandTypeMap["GRN"]         = Green;
+            m_TokenToBandTypeMap["GREEN"]       = Green;
+            m_TokenToBandTypeMap["GRN/S"]       = Green;
+            m_TokenToBandTypeMap["GRN/T"]       = Green;
             
             // Blue...
-            m_TokenToBandTypeMap["BLU"]     = Blue;
-            m_TokenToBandTypeMap["BLU/S"]   = Blue;
-            m_TokenToBandTypeMap["BLU/T"]   = Blue;
+            m_TokenToBandTypeMap["BLU"]         = Blue;
+            m_TokenToBandTypeMap["BLUE"]        = Blue;
+            m_TokenToBandTypeMap["BLU/S"]       = Blue;
+            m_TokenToBandTypeMap["BLU/T"]       = Blue;
 
         // Narrow band for infrared...
         
             // Infrared one...
-            m_TokenToBandTypeMap["IR1"]     = Infrared1;
-            m_TokenToBandTypeMap["IR1/T"]   = Infrared1;
+            m_TokenToBandTypeMap["IR1"]         = Infrared1;
+            m_TokenToBandTypeMap["IR1/T"]       = Infrared1;
                 
             // Infrared two...
-            m_TokenToBandTypeMap["IR2"]     = Infrared2;
-            m_TokenToBandTypeMap["IR2/T"]   = Infrared2;
+            m_TokenToBandTypeMap["IR2"]         = Infrared2;
+            m_TokenToBandTypeMap["IR2/T"]       = Infrared2;
             
             // Infrared three...
-            m_TokenToBandTypeMap["IR3"]     = Infrared3;
-            m_TokenToBandTypeMap["IR3/T"]   = Infrared3;
+            m_TokenToBandTypeMap["IR3"]         = Infrared3;
+            m_TokenToBandTypeMap["IR3/T"]       = Infrared3;
 
         // Narrow band for the Sun...
-        m_TokenToBandTypeMap["SUN"]         = Sun;
+        m_TokenToBandTypeMap["SUN"]             = Sun;
     
         // Broad band for survey...
-        m_TokenToBandTypeMap["SURVEY"]      = Survey;
-
-        // Unsupported are the remaining broad band diodes...
-        m_TokenToBandTypeMap["BB1"]         = Unknown;
-        m_TokenToBandTypeMap["BB2"]         = Unknown;
-        m_TokenToBandTypeMap["BB3"]         = Unknown;
-        m_TokenToBandTypeMap["BB4"]         = Unknown;
+        m_TokenToBandTypeMap["SUR"]             = Survey;
+        m_TokenToBandTypeMap["SURV"]            = Survey;
+        m_TokenToBandTypeMap["SURV/S"]          = Survey;
+        m_TokenToBandTypeMap["SURVEY"]          = Survey;
+        
+        // Identifiable, but unsupported broad band diodes...
+        m_TokenToBandTypeMap["BB1"]             = Unknown;
+        m_TokenToBandTypeMap["BB1/S"]           = Unknown;
+        m_TokenToBandTypeMap["BB2"]             = Unknown;
+        m_TokenToBandTypeMap["BB2/S"]           = Unknown;
+        m_TokenToBandTypeMap["BB3"]             = Unknown;
+        m_TokenToBandTypeMap["BB3/S"]           = Unknown;
+        m_TokenToBandTypeMap["BB4"]             = Unknown;
+        m_TokenToBandTypeMap["BB4/S"]           = Unknown;
 
     // Initialize the diode band to friendly dictionary...
 
@@ -157,14 +166,14 @@ void VicarImageBand::Extract(const string &OutputFile, const size_t DataBandInde
 
     // Check if file was loaded ok...
     if(!IsOk())
-        SetErrorAndReturn("input was not loaded");
+        SetErrorAndReturn("input was not loaded")
 
     // Open the input file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
     
         // Failed...
         if(!InputFileStream.is_open())
-            SetErrorAndReturn("could not open input for reading");
+            SetErrorAndReturn("could not open input for reading")
 
     // Write the saved label out, if user selected...
     if(m_SaveLabels)
@@ -177,7 +186,7 @@ void VicarImageBand::Extract(const string &OutputFile, const size_t DataBandInde
         
             // Failed...
             if(!SavedLabelsStream.good())
-                SetErrorAndReturn("unable to save record label");
+                SetErrorAndReturn("unable to save record label")
 
         // Write...
         SavedLabelsStream << m_SavedLabelsBuffer;
@@ -188,7 +197,7 @@ void VicarImageBand::Extract(const string &OutputFile, const size_t DataBandInde
     
     // Seek to raw image offset and make sure it was successful...
     if(!InputFileStream.seekg(m_RawImageOffset, ios_base::beg).good())
-        SetErrorAndReturn("file ended prematurely before raw image");
+        SetErrorAndReturn("file ended prematurely before raw image")
     
     // Write out the image...
 
@@ -210,7 +219,7 @@ void VicarImageBand::Extract(const string &OutputFile, const size_t DataBandInde
                 // Read a pixel / byte and check for error...
                 char Byte = '\x0';
                 if(!InputFileStream.read(&Byte, 1).good())
-                    SetErrorAndReturn("raw image data ended prematurely");
+                    SetErrorAndReturn("raw image data ended prematurely")
                 
                 // Encode...
                 PngImage.set_pixel(X, Y, Byte);
@@ -283,10 +292,6 @@ bool VicarImageBand::IsVicarTokenDiodeBandType(const string &DiodeBandTypeToken)
 // Check if the header is at least readable...
 bool VicarImageBand::IsHeaderIntact() const
 {
-    // Check to make sure it contains at least three logical records...
-    if(GetFileSize() < (3 * LOGICAL_RECORD_SIZE))
-        return false;
-
     // Open the file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
 
@@ -341,15 +346,26 @@ void VicarImageBand::Load()
 
         // Failed...
         if(!InputFileStream.is_open())
-            SetErrorAndReturn("could not open input for reading");
+            SetErrorAndReturn("could not open input for reading")
+
+    // Check size...
+    const int FileSize = GetFileSize();
+    
+        // Empty...
+        if(FileSize == 0)
+            SetErrorAndReturn("empty file")
+
+        // Check to make sure it contains more than just one physical record...
+        else if(FileSize <= (5 * LOGICAL_RECORD_SIZE))
+            SetErrorAndReturn("too small to be interesting, probably corrupt")
 
     // Check if the header is intact...
     if(!IsHeaderIntact())
-        SetErrorAndReturn("header is not intact");
+        SetErrorAndReturn("header is not intact")
 
     // Verify it's from one of the Viking Landers...
     if(!IsVikingLanderOrigin())
-        SetErrorAndReturn("input did not originate from a Viking Lander");
+        SetErrorAndReturn("input did not originate from a Viking Lander")
 
     // Extract the basic image metadata...
     ParseBasicMetadata(InputFileStream);
@@ -366,8 +382,10 @@ void VicarImageBand::Load()
 
     // Go through all physical / logical records and make note of the 
     //  raw image data's physical record boundary start...
-    while(InputFileStream.good())
+    for(size_t PhysicalRecordIndex = 0; InputFileStream.good(); ++PhysicalRecordIndex)
     {
+Verbose() << "entering physical record " << PhysicalRecordIndex + 1 << " starting at " << static_cast<int>(InputFileStream.tellg()) << endl;
+
         // Local offset into the current physical record...
         streampos LocalPhysicalRecordOffset = 0;
         
@@ -384,11 +402,16 @@ Verbose() << "extracting logical record " << LocalLogicalRecordIndex + 1 << "/5 
             // Extract a logical record...
             Record << InputFileStream;
             
-            // Is it valid?
+            // Record isn't valid...
             if(!Record.IsValidLabel())
             {
                 Verbose() << "bad logical record terminator " << LocalLogicalRecordIndex + 1 << "/5 starting at " << static_cast<int>(InputFileStream.tellg()) << endl;
-                SetErrorAndReturn("invalid logical record label");
+                
+                // Give a hint if this was suppose to be a physical record boundary...
+                if(LocalLogicalRecordIndex == 0)
+                    SetErrorAndReturn("invalid logical record label, possibly from out of phase boundary")
+                else
+                    SetErrorAndReturn("invalid logical record label")
             }
 
             // Parse the extended metadata, if any...
@@ -457,7 +480,7 @@ Verbose() << "extracting logical record " << LocalLogicalRecordIndex + 1 << "/5 
 
     // Got to the end of the file and did not find the last label record...
     if(!InputFileStream.good())
-        SetErrorAndReturn("unable to locate last logical record label");
+        SetErrorAndReturn("unable to locate last logical record label")
 
     // Store raw image offset...
     m_RawImageOffset = InputFileStream.tellg();
@@ -486,7 +509,21 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
 
         // Not a supported band type...
         if(m_DiodeBandType == Unknown)
-            SetErrorAndReturn(string("unsupported photosensor diode band type ") + Token);
+        {
+            // This was probably just an internal radiometric / geometric 
+            //  calibration shot and not meant to be interesting...
+            if(Token.find("CAL") != string::npos)
+                SetErrorAndReturn(
+                    string("internal radio/geometric calibration (") + 
+                    Token + 
+                    string(")"))
+
+            // Some other...
+            else
+                SetErrorAndReturn(string("unsupported photosensor diode band type (") + 
+                    Token + 
+                    string(")"))
+        }
 
     // Extract the header record...
     const LogicalRecord HeaderRecord(InputFileStream);
@@ -683,30 +720,30 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
 
         // Unknown format...
         else
-            SetErrorAndReturn("heuristics couldn't determine how to parse basic metadata");
+            SetErrorAndReturn("exhausted basic metadata parser heuristics")
 
     // Perform sanity check on basic metadata...
 
         // Check bands...
         if(m_Bands != 1)
-            SetErrorAndReturn("unsupported number of image bands");
+            SetErrorAndReturn("unsupported number of image bands")
 
         // Check height...
         if(m_Height <= 0)
-            SetErrorAndReturn("expected positive image height");
+            SetErrorAndReturn("expected positive image height")
 
         // Check width...
         if(m_Width <= 0)
-            SetErrorAndReturn("expected positive image width");
+            SetErrorAndReturn("expected positive image width")
 
         // Check pixel format is integral...
         if(m_PixelFormat != 'I' && /* Definitely integral */
            m_PixelFormat != 'L')   /* Guessing integral */
-            SetErrorAndReturn("unsupported pixel format");
+            SetErrorAndReturn("unsupported pixel format")
 
         // Check bytes per colour...
         if(m_BytesPerColour != 1)
-            SetErrorAndReturn("unsupported colour bit depth");
+            SetErrorAndReturn("unsupported colour bit depth")
 
     // If verbosity is set, display basic metadata...
     Verbose() << "  bands:\t\t\t\t" << m_Bands << endl;
@@ -1167,7 +1204,7 @@ void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
     
     // Is it valid?
     if(!Record.IsValidLabel())
-        SetErrorAndReturn("invalid logical record label while parsing extended metadata");
+        SetErrorAndReturn("invalid logical record label while parsing extended metadata")
 
     // Initialize tokenizer...
     stringstream Tokenizer(Record);
@@ -1180,15 +1217,9 @@ void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
     {
         // Extract without surrounding whitespace...
         m_AzimuthElevation = Record.GetString(true);
-        string FriendlyAzimuthElevation = m_AzimuthElevation;
-
-        // Make a friendly version for printing out to console in verbose mode...
-        size_t ElevationIndex = FriendlyAzimuthElevation.find("ELEVATION");
-        if(ElevationIndex != string::npos)
-            FriendlyAzimuthElevation.insert(ElevationIndex, "\n\t\t\t\t\t");
 
         // Alert user if verbose mode enabled...
-        Verbose() << "  PSA directional vector:\t\t" << FriendlyAzimuthElevation << endl;
+        Verbose() << "  PSA directional vector:\t\t" << m_AzimuthElevation << endl;
     }
 }
 
@@ -1203,6 +1234,9 @@ VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &VicarTokenFo
     
         // Should have already been openable, since we did so in Load()...
         assert(InputFileStream.is_open());
+
+    // Setup caller's default return value...
+    VicarTokenFound = "unknown";
 
     // Check anywhere within the first physical record...
     for(size_t LogicalRecordIndex = 0; LogicalRecordIndex < 5; ++LogicalRecordIndex)
@@ -1219,7 +1253,7 @@ VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &VicarTokenFo
         stringstream Tokenizer(Record.GetString(false, LogicalRecordIndex > 0 ? 0 : 2));
 
         // Keep extracting tokens while there are some in this record...
-        while(Tokenizer.good())
+        for(size_t TokenIndex = 0; Tokenizer.good(); ++TokenIndex)
         {
             // Remember the last read token...
             PreviousToken = CurrentToken;
@@ -1227,41 +1261,57 @@ VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &VicarTokenFo
             // Extract a new token...
             Tokenizer >> CurrentToken;
 
-            // Found probably a diode marker token...
-            if(CurrentToken == "DIODE")
+            // Some kind of broad band diode that won't likely identify itself...
+            if(CurrentToken == "BROADBAND")
             {
-                // End of token stream...
-                if(!Tokenizer.good())
-                {
-                    // Check the token before DIODE marker...
-                    if(IsVicarTokenDiodeBandType(PreviousToken))
-                    {
-                        VicarTokenFound = PreviousToken;
-                        return GetDiodeBandTypeFromVicarToken(PreviousToken);
-                    }
+                // Set caller hint and return unsupported...
+                VicarTokenFound = "unidenfiable broadband";
+                return Unknown;
+            }
 
-                    // Otherwise we got to the end of this logical record and 
-                    //  found nothing. Try next one...
-                    else
-                        break;
-                }
+            // Not a diode marker token, skip...
+            if(CurrentToken != "DIODE")
+                continue;
 
-                // Otherwise extract what may be the diode type...
-                Tokenizer >> CurrentToken;
-
-                // Check if it is a supported diode type...
-                if(IsVicarTokenDiodeBandType(CurrentToken))
-                {
-                    VicarTokenFound = CurrentToken;
-                    return GetDiodeBandTypeFromVicarToken(CurrentToken);
-                }
-
-                // Otherwise try the token before it...
-                else if(IsVicarTokenDiodeBandType(PreviousToken))
+            // End of token stream...
+            if(!Tokenizer.good())
+            {
+                // Recognized the token before DIODE marker...
+                if(IsVicarTokenDiodeBandType(PreviousToken))
                 {
                     VicarTokenFound = PreviousToken;
                     return GetDiodeBandTypeFromVicarToken(PreviousToken);
                 }
+
+                // Otherwise we got to the end of this logical record and 
+                //  found nothing. Try next one...
+                else
+                    break;
+            }
+
+            // Otherwise extract next token which may be the diode type...
+            Tokenizer >> CurrentToken;
+
+            // Check if it is a diode type...
+            if(IsVicarTokenDiodeBandType(CurrentToken))
+            {
+                VicarTokenFound = CurrentToken;
+                return GetDiodeBandTypeFromVicarToken(CurrentToken);
+            }
+
+            // Otherwise try the token before the diode marker...
+            else if(IsVicarTokenDiodeBandType(PreviousToken))
+            {
+                VicarTokenFound = PreviousToken;
+                return GetDiodeBandTypeFromVicarToken(PreviousToken);
+            }
+            
+            // Neither recognized on either side of the diode marker...
+            else
+            {
+                // Save hint for caller and return unknown...
+                VicarTokenFound = CurrentToken;
+                return Unknown;
             }
         }
     }
