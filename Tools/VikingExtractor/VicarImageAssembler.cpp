@@ -99,7 +99,7 @@ void VicarImageAssembler::Index()
                         // Alert and skip...
                         clog 
                             << DirectoryEntry->d_name 
-                            << "\033[1;31m: error: " 
+                            << "\033[1;31m: warning: " 
                             << ImageBand.GetErrorMessage() 
                             << ", skipping\033[0m"
                             << endl;
@@ -134,7 +134,7 @@ void VicarImageAssembler::Index()
             }
 
             // Alert user...
-            clog << DirectoryEntry->d_name << "\033[1;32m" << ": ok" << "\033[0m" << endl;
+            clog << DirectoryEntry->d_name << "\033[1;32m" << ": ok " << ImageBand.GetCameraEventIdentifier() << "\033[0m" << endl;
             
             // Show us indexing the VICAR files...
 //            Verbose() << "\rfiles indexed " << ++FilesIndexed;

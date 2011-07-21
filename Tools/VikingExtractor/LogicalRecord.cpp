@@ -84,7 +84,8 @@ string LogicalRecord::GetString(
     const bool Trim, const size_t Start, const size_t Size) const
 {
     // Calculate last byte index...
-    const size_t End = Size == 0 ? LOGICAL_RECORD_SIZE - 1 : Size;
+    const size_t End = (Size == 0) ? LOGICAL_RECORD_SIZE - 1 
+                                   : Size;
 
     // Build string...
     std::string Selection;

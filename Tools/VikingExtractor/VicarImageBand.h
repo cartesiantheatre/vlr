@@ -93,6 +93,9 @@ class VicarImageBand
         // Get the azimuth / elevation string...
         const std::string &GetAzimuthElevation() const;
 
+        // Get the camera event identifier...
+        const std::string &GetCameraEventIdentifier() const { return m_CameraEventIdentifier; }
+
         // Get the diode band type...
         PSADiode GetDiodeBandType() const { return m_DiodeBandType; };
 
@@ -111,9 +114,6 @@ class VicarImageBand
         // Get the input file name only without path...
         std::string GetInputFileNameOnly() const;
         
-        // Return the label identifier...
-        const std::string &GetLabelIdentifier() const;
-
         // Get the original magnetic tape number, or zero if unknown...
         size_t GetMagneticTapeNumber() const;
 
@@ -145,8 +145,9 @@ class VicarImageBand
         // Set the photosensor diode band type from VICAR token... (e.g. "RED/T")
         PSADiode GetDiodeBandTypeFromVicarToken(const std::string &DiodeBandTypeToken) const;
 
-        // Check if the header is at least readable...
-        bool IsHeaderIntact() const;
+        // Check if the header is at least readable, and if so, phase offset 
+        //  required to decode file...
+        bool IsHeaderIntact(size_t &PhaseOffsetRequired) const;
 
         // Is the token a valid VICAR diode band type?
         bool IsVicarTokenDiodeBandType(const std::string &DiodeBandTypeToken) const;
@@ -173,7 +174,7 @@ class VicarImageBand
         //  band type, returning Unknown if couldn't detect it or unsupported.
         //  The parameter can be used for callee to store for caller the token
         //  that probably denotes an unsupported diode type...
-        PSADiode ProbeDiodeBandType(std::string &VicarTokenFound) const;
+        PSADiode ProbeDiodeBandType(std::string &DiodeBandTypeHint) const;
 
         // Set the error message...
         void SetErrorMessage(const std::string &ErrorMessage) { m_Ok = false; m_ErrorMessage = ErrorMessage; }
@@ -192,6 +193,11 @@ class VicarImageBand
 
         // Input file name...
         const std::string           m_InputFile;
+
+        // Sometimes the records are out of phase due to being preceeded 
+        //  with VAX/VMS prefix bytes. This is the offset required to 
+        //  decode file...
+        size_t                      m_PhaseOffsetRequired;
 
         // Number of image bands in this file. Should always be one...
         size_t                      m_Bands;
@@ -215,6 +221,9 @@ class VicarImageBand
         
         // Azimuth / elevation string...
         std::string                 m_AzimuthElevation;
+        
+        // Camera event identifier...
+        std::string                 m_CameraEventIdentifier;
         
         // Band type...
         PSADiode                    m_DiodeBandType;

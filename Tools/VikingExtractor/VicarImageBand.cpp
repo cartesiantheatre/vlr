@@ -39,8 +39,9 @@
     // String access and manipulation...
     #include <cstring>
 
-    // max()...
+    // Connecting and operating on useful containers...
     #include <algorithm>
+    #include <iterator>
 
 // Helpful macro...
 #define SetErrorAndReturn(Message)      { SetErrorMessage((Message)); return; }
@@ -53,6 +54,7 @@ using namespace std;
 VicarImageBand::VicarImageBand(
     const string &InputFile, const bool Verbose)
     : m_InputFile(InputFile),
+      m_PhaseOffsetRequired(0),
       m_Bands(0),
       m_Height(0),
       m_Width(0),
@@ -289,8 +291,9 @@ bool VicarImageBand::IsVicarTokenDiodeBandType(const string &DiodeBandTypeToken)
     return (Iterator != m_TokenToBandTypeMap.end());
 }
 
-// Check if the header is at least readable...
-bool VicarImageBand::IsHeaderIntact() const
+// Check if the header is at least readable, and if so, phase offset 
+//  required to decode file...
+bool VicarImageBand::IsHeaderIntact(size_t &PhaseOffsetRequired) const
 {
     // Open the file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
@@ -298,7 +301,13 @@ bool VicarImageBand::IsHeaderIntact() const
         // Load() already succeeded in opening, so this shouldn't ever happen...
         assert(InputFileStream.is_open());
 
-    // There isn't any "typical" file magic signature, so check for general...
+    // Sometimes the records are out of phase due to being preceeded 
+    //  with VAX/VMS prefix bytes, so check for threshold of at most
+    //  four bytes...
+    for(PhaseOffsetRequired = 0; PhaseOffsetRequired < 4; ++PhaseOffsetRequired)
+    {
+        // Seek to offset...
+        InputFileStream.seekg(PhaseOffsetRequired);
 
         // Load the first logical record...
         const LogicalRecord HeaderRecord(InputFileStream);
@@ -306,33 +315,49 @@ bool VicarImageBand::IsHeaderIntact() const
         // Check if valid first end of logical record marker......
         if(HeaderRecord.IsValidLabel())
             return true;
+    }
 
-        // Nope...
-        else
-            return false;
+    // Tried even with a phase offset and still didn't work...
+    PhaseOffsetRequired = 0;
+    return false;
 }
 
 // Check ifthis is actually from the Viking Lander EDR...
 bool VicarImageBand::IsVikingLanderOrigin() const
 {
-    // A logical record...
-    LogicalRecord   Record;
+    // Buffer to hold first 256 bytes of file...
+    vector<char>    Buffer(256, 0x00);
 
     // Open the file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
-    
+
         // Load() already succeeded in opening, so this shouldn't ever happen...
         assert(InputFileStream.is_open());
 
-    // Load the second record...
-    Record << InputFileStream;
-    Record << InputFileStream;
-    
-    // Check...
-    if(Record.GetString().compare(0, strlen("VIKING LANDER "), "VIKING LANDER ") != 0)
-        return false;
-    else
+    // Don't skip white space... (implicit if opening in binary mode?)
+    InputFileStream >> std::noskipws;
+
+    // Fully fill the buffer with the first 256 bytes of the file...
+    InputFileStream.read(&Buffer.front(), Buffer.size());
+    assert(InputFileStream.gcount() == static_cast<signed>(Buffer.size()));
+
+    // Signature to search for in EBCDIC ("VIKING LANDER " in ASCII)
+    const char Signature[] = {
+        0xE5, 0xC9, 0xD2, 0xC9, 0xD5, 0xC7, 0x40, 
+        0xD3, 0xC1, 0xD5, 0xC4, 0xC5, 0xD9, 0x40
+    };
+
+    // Scan for Viking Lander signature...
+    vector<char>::const_iterator SearchIterator = search(
+        Buffer.begin(), Buffer.end(), Signature, Signature + sizeof(Signature));
+
+    // Found...
+    if(SearchIterator != Buffer.end())
         return true;
+
+    // Not found...
+    else
+        return false;
 }
 
 // Load as much of the file as possible, setting error on failure...
@@ -350,22 +375,25 @@ void VicarImageBand::Load()
 
     // Check size...
     const int FileSize = GetFileSize();
-    
+
         // Empty...
         if(FileSize == 0)
-            SetErrorAndReturn("empty file")
+            SetErrorAndReturn("empty file, probably blank magnetic tape")
 
-        // Check to make sure it contains more than just one physical record...
-        else if(FileSize <= (5 * LOGICAL_RECORD_SIZE))
-            SetErrorAndReturn("too small to be interesting, probably corrupt")
+        // Check to make sure it is at least four kilobytes...
+        else if(FileSize < (4 * 1024))
+            SetErrorAndReturn("too small to be interesting (< 4 KB)")
 
-    // Check if the header is intact...
-    if(!IsHeaderIntact())
-        SetErrorAndReturn("header is not intact")
+    // Check if the header is at least readable, and if so, retrieve
+    //  phase offset required to decode the file...
+    if(!IsHeaderIntact(m_PhaseOffsetRequired))
+        SetErrorAndReturn("header is not intact, or not a VICAR file")
+    else if(m_PhaseOffsetRequired > 0)
+        Verbose() << "header intact, but requires " << m_PhaseOffsetRequired << " byte phase offset" << endl;
 
     // Verify it's from one of the Viking Landers...
     if(!IsVikingLanderOrigin())
-        SetErrorAndReturn("input did not originate from a Viking Lander")
+        SetErrorAndReturn("did not originate from a Viking Lander")
 
     // Extract the basic image metadata...
     ParseBasicMetadata(InputFileStream);
@@ -374,14 +402,15 @@ void VicarImageBand::Load()
         if(IsError())
             return;
 
-    // Now rewind again to start of file...
-    InputFileStream.seekg(0, ios_base::beg);
+    // Now rewind again to start of file, plus any phase offset necessary...
+    InputFileStream.seekg(0 + m_PhaseOffsetRequired, ios_base::beg);
 
     // Clear saved labels buffer, in case it already had data in it...
     m_SavedLabelsBuffer.clear();
 
-    // Go through all physical / logical records and make note of the 
-    //  raw image data's physical record boundary start...
+    // Go through all physical records, parsing extended metadata, skipping past
+    //  padding between physical records, and calculating the raw image data's 
+    //  absolute offset...
     for(size_t PhysicalRecordIndex = 0; InputFileStream.good(); ++PhysicalRecordIndex)
     {
 Verbose() << "entering physical record " << PhysicalRecordIndex + 1 << " starting at " << static_cast<int>(InputFileStream.tellg()) << endl;
@@ -392,7 +421,7 @@ Verbose() << "entering physical record " << PhysicalRecordIndex + 1 << " startin
         // True if the raw image data was found...
         bool RawImageDataFound = false;
 
-        // Check each logical record of this physical record's five.
+        // Examine each of the five logical records of this physical record...
         for(size_t LocalLogicalRecordIndex = 0; 
             LocalLogicalRecordIndex < 5; 
           ++LocalLogicalRecordIndex)
@@ -409,7 +438,7 @@ Verbose() << "extracting logical record " << LocalLogicalRecordIndex + 1 << "/5 
                 
                 // Give a hint if this was suppose to be a physical record boundary...
                 if(LocalLogicalRecordIndex == 0)
-                    SetErrorAndReturn("invalid logical record label, possibly from out of phase boundary")
+                    SetErrorAndReturn("invalid logical record label possibly from out of phase physical boundary")
                 else
                     SetErrorAndReturn("invalid logical record label")
             }
@@ -427,7 +456,7 @@ Verbose() << "extracting logical record " << LocalLogicalRecordIndex + 1 << "/5 
             // Update local offset into the current physical record...
             LocalPhysicalRecordOffset += LOGICAL_RECORD_SIZE;
 
-            // This is the last logical record of the record labels...
+            // This is the last logical record of all record labels...
             if(Record.IsLastLabel())
             {
                 // Calculate the offset necessary to seek past any 
@@ -498,6 +527,7 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
 {
     // Variables...
     string          Token;
+    string          DiodeBandTypeHint;
     size_t          TokenIndex          = 0;
     size_t          TokenLength[32];
 
@@ -505,23 +535,23 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
     assert(InputFileStream.good());
 
     // Probe for the photosensor diode band type...
-    m_DiodeBandType = ProbeDiodeBandType(Token);
+    m_DiodeBandType = ProbeDiodeBandType(DiodeBandTypeHint);
 
         // Not a supported band type...
         if(m_DiodeBandType == Unknown)
         {
             // This was probably just an internal radiometric / geometric 
             //  calibration shot and not meant to be interesting...
-            if(Token.find("CAL") != string::npos)
+            if(DiodeBandTypeHint.find("CAL") != string::npos)
                 SetErrorAndReturn(
                     string("internal radio/geometric calibration (") + 
-                    Token + 
+                    DiodeBandTypeHint + 
                     string(")"))
 
             // Some other...
             else
                 SetErrorAndReturn(string("unsupported photosensor diode band type (") + 
-                    Token + 
+                    DiodeBandTypeHint + 
                     string(")"))
         }
 
@@ -1209,17 +1239,40 @@ void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
     // Initialize tokenizer...
     stringstream Tokenizer(Record);
     
-    // Get first token...
-    Tokenizer >> Token;
-
-    // Found azimuth and elevation...
-    if(Token == "AZIMUTH")
+    // Keep scanning until no more tokens...
+    for(size_t TokenIndex = 0; Tokenizer.good(); ++TokenIndex)
     {
-        // Extract without surrounding whitespace...
-        m_AzimuthElevation = Record.GetString(true);
+        // Get first token...
+        Tokenizer >> Token;
 
-        // Alert user if verbose mode enabled...
-        Verbose() << "  PSA directional vector:\t\t" << m_AzimuthElevation << endl;
+        // Found azimuth and elevation, which seems to always occupy whole record...
+        if(Token == "AZIMUTH" && (TokenIndex == 0))
+        {
+            // Extract without surrounding whitespace...
+            m_AzimuthElevation = Record.GetString(true);
+
+            // Alert user if verbose mode enabled...
+            Verbose() << "  psa directional vector:\t\t" << m_AzimuthElevation << endl;
+        }
+        
+        // Possibly camera event identifier...
+        else if(Token == "CE")
+        {
+            // Check...
+            Tokenizer >> Token;
+            
+            // Confirmed...
+            if(Token == "LABEL")
+            {
+                // Store the identifier...
+                Tokenizer >> m_CameraEventIdentifier;
+                Verbose() << "  camera event identifier:\t\t" << m_CameraEventIdentifier << endl;
+            }
+            
+            // Not a camera event, restore the token...
+            else
+                Tokenizer << Token;
+        }
     }
 }
 
@@ -1227,7 +1280,7 @@ void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
 //  returning Unknown if couldn't detect it or unsupported. The parameter can be
 //  used for callee to store for caller the token that probably denotes an 
 //  unsupported diode type...
-VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &VicarTokenFound) const
+VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &DiodeBandTypeHint) const
 {
     // Open the file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
@@ -1235,8 +1288,11 @@ VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &VicarTokenFo
         // Should have already been openable, since we did so in Load()...
         assert(InputFileStream.is_open());
 
+    // Account for any required phase offset...
+    InputFileStream.seekg(m_PhaseOffsetRequired);
+
     // Setup caller's default return value...
-    VicarTokenFound = "unknown";
+    DiodeBandTypeHint = "unknown";
 
     // Check anywhere within the first physical record...
     for(size_t LogicalRecordIndex = 0; LogicalRecordIndex < 5; ++LogicalRecordIndex)
@@ -1261,11 +1317,19 @@ VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &VicarTokenFo
             // Extract a new token...
             Tokenizer >> CurrentToken;
 
-            // Some kind of broad band diode that won't likely identify itself...
+            // We don't know how to deal with these yet...
+            if(CurrentToken == "MONOCOLOR")
+            {
+                // Set caller hint and return unsupported...
+                DiodeBandTypeHint = "monocolour unsupported";
+                return Unknown;            
+            }
+
+            // Some kind of broad band diode that may or may not identify itself...
             if(CurrentToken == "BROADBAND")
             {
                 // Set caller hint and return unsupported...
-                VicarTokenFound = "unidenfiable broadband";
+                DiodeBandTypeHint = "unidenfiable broadband";
                 return Unknown;
             }
 
@@ -1279,7 +1343,7 @@ VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &VicarTokenFo
                 // Recognized the token before DIODE marker...
                 if(IsVicarTokenDiodeBandType(PreviousToken))
                 {
-                    VicarTokenFound = PreviousToken;
+                    DiodeBandTypeHint = PreviousToken;
                     return GetDiodeBandTypeFromVicarToken(PreviousToken);
                 }
 
@@ -1295,14 +1359,14 @@ VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &VicarTokenFo
             // Check if it is a diode type...
             if(IsVicarTokenDiodeBandType(CurrentToken))
             {
-                VicarTokenFound = CurrentToken;
+                DiodeBandTypeHint = CurrentToken;
                 return GetDiodeBandTypeFromVicarToken(CurrentToken);
             }
 
             // Otherwise try the token before the diode marker...
             else if(IsVicarTokenDiodeBandType(PreviousToken))
             {
-                VicarTokenFound = PreviousToken;
+                DiodeBandTypeHint = PreviousToken;
                 return GetDiodeBandTypeFromVicarToken(PreviousToken);
             }
             
@@ -1310,20 +1374,14 @@ VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &VicarTokenFo
             else
             {
                 // Save hint for caller and return unknown...
-                VicarTokenFound = CurrentToken;
+                DiodeBandTypeHint = CurrentToken;
                 return Unknown;
             }
         }
     }
 
-    // Alert user if no diode type found...
-    Verbose() << GetInputFileNameOnly() 
-              << "\033[1;31m" 
-              << ": warning: no photosensor diode band type found" 
-              << "\033[0m" 
-              << endl;
-
-    // Return unknown...
+    // Set hint and return unknown...
+    DiodeBandTypeHint = "none detected";
     return Unknown;
 }
 

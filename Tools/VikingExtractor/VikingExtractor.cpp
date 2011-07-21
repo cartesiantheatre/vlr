@@ -41,8 +41,9 @@ void ShowHelp()
 {
     cout << "Usage: VikingExtractor [options] input [output]"                                   << endl
          << "Options:"                                                                          << endl
-         << "  -b, --ignore-bad-files      Don't stop on corrupt input file, but continue"      << endl
-         << "                              extraction of other files (assembly mode only)."     << endl
+         << "  -b, --ignore-bad-files      Don't stop on corrupt or problematic input file,"    << endl
+         << "                              but continue extraction of other files (assembly"    << endl
+         << "                              mode only)."                                         << endl
          << "  -y, --dry-run               Don't write anything"                                << endl
          << "  -f, --diode-filter <type>   Extract from matching supported diode filter"        << endl
          << "                              classes which are any (default), colour, infrared,"  << endl
