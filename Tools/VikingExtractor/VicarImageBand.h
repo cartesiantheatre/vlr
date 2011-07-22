@@ -24,6 +24,7 @@
 #define _VICAR_COLOUR_IMAGE_H_
 
 // Includes...
+#include <cassert>
 #include <string>
 #include <fstream>
 #include <ostream>
@@ -73,18 +74,12 @@ class VicarImageBand
 
         // A set of photosensor array diode band types...
         typedef std::set<PSADiode>  DiodeBandFilterSet;
-        
-        // Null output stream...
-        struct NullOutputStream : std::ostream
-        {
-            NullOutputStream() : std::ostream(0) { }
-        };
 
     // Public methods...
     public:
 
         // Construct...
-        VicarImageBand(const std::string &InputFile, const bool Verbose = false);
+        VicarImageBand(const std::string &InputFile);
 
         // Extract the image out as a PNG, but most be loaded first...
         void Extract(
@@ -117,15 +112,17 @@ class VicarImageBand
         // Get the original magnetic tape number, or zero if unknown...
         size_t GetMagneticTapeNumber() const;
 
+        // Check if the file came with a camera event identifier...
+        bool IsCameraEventIdentifierPresent() const 
+            { assert(m_Ok); return !m_CameraEventIdentifier.empty(); }
+        
         // Check if an error is present...
-        bool IsError() const { return !m_ErrorMessage.empty(); }
+        bool IsError() const
+            { return !m_ErrorMessage.empty(); }
 
         // Is the file accessible and the header ok?
         bool IsOk() const { return m_Ok; }
         
-        // Is verbosity set...
-        bool IsVerbose() { return m_Verbose; }
-
         // Load as much of the file as possible, setting error on 
         //  failure...
         void Load();
@@ -136,9 +133,6 @@ class VicarImageBand
         // Set the save labels flag...
         void SetSaveLabels(const bool SaveLabels = true) { m_SaveLabels = SaveLabels; }
         
-        // Set verbosity flag...
-        void SetVerbose(const bool Verbose = true) { m_Verbose = Verbose; }
-
     // Protected methods...
     protected:
 
@@ -178,9 +172,6 @@ class VicarImageBand
 
         // Set the error message...
         void SetErrorMessage(const std::string &ErrorMessage) { m_Ok = false; m_ErrorMessage = ErrorMessage; }
-
-        // Get the output stream to be verbose, if enabled...
-        std::ostream &Verbose() const;
 
     // Protected data...
     protected:
@@ -240,10 +231,6 @@ class VicarImageBand
         // Usage flags...
         bool                        m_Interlace;
         bool                        m_SaveLabels;
-        bool                        m_Verbose;
-        
-        // Dummy output stream...
-        mutable NullOutputStream    m_DummyOutputStream;
 };
 
 // Multiple include protection...

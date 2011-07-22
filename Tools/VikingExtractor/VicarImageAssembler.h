@@ -35,12 +35,6 @@ class VicarImageAssembler
     // Public types...
     public:
     
-        // Null output stream...
-        struct NullOutputStream : std::ostream
-        {
-            NullOutputStream() : std::ostream(0) { }
-        };
-
         // Reconstructable image...
         class ReconstructableImage
         {
@@ -89,16 +83,9 @@ class VicarImageAssembler
             const std::string &OutputFile);
 
         // Set usage switches...
-        void SetVerbose(const bool Verbose = true) { m_Verbose = Verbose; }
         void SetDiodeFilterClass(const std::string &DiodeFilterClass);
         void SetIgnoreBadFiles(const bool IgnoreBadFiles = true) { m_IgnoreBadFiles = IgnoreBadFiles; }
         void SetLanderFilter(const std::string &LanderFilter);
-
-    // Protected methods...
-    protected:
-
-        // Get a verbose output stream, if enabled, or dummy stream otherwise...
-        std::ostream &Verbose() const;
 
     // Protected data...
     protected:
@@ -113,12 +100,8 @@ class VicarImageAssembler
         VicarImageBand::DiodeBandFilterSet  m_DiodeBandFilterSet;
 
         // Usage flags...
-        bool                                m_Verbose;
         bool                                m_IgnoreBadFiles;
         int                                 m_LanderFilter;
-
-        // Dummy output stream...
-        mutable NullOutputStream            m_DummyOutputStream;
 };
 
 // Multiple include protection...

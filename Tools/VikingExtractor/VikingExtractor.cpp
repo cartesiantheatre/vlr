@@ -20,6 +20,7 @@
 */
 
 // Includes...
+#include "Console.h"
 #include "VikingExtractor.h"
 #include "VicarImageAssembler.h"
 #include "VicarImageBand.h"
@@ -87,7 +88,7 @@ int main(int ArgumentCount, char *Arguments[])
     string      DiodeFilterClass;
     bool        DryRun          = false;
     bool        IgnoreBadFiles  = false;
-    bool        Verbose         = false;
+    bool        VerboseConsole  = false;
     bool        Interlace       = false;
     string      LanderFilter;
     bool        SaveLabels      = false;
@@ -169,7 +170,7 @@ int main(int ArgumentCount, char *Arguments[])
             }
 
             // Verbose...
-            case 'V': { Verbose = true; break; }
+            case 'V': { VerboseConsole = true; break; }
 
             // Dry run...
             case 'y': { DryRun = true; break; }
@@ -191,7 +192,10 @@ int main(int ArgumentCount, char *Arguments[])
             }
         }
     }
-    
+
+    // Set console verbosity...
+    Console::GetInstance().SetChannelEnabled(Console::Verbose, VerboseConsole);
+
     // We need at least one additional parameter, the input...
     
         // Fetch...
@@ -204,7 +208,7 @@ int main(int ArgumentCount, char *Arguments[])
             if(stat(InputFile.c_str(), &FileAttributes) != 0)
             {
                 // Couldn't stat file...
-                cerr << "error: could not stat input " << InputFile << endl;
+                Message(Console::Error) << "could not stat input " << InputFile << endl;
                 exit(1);
             }
             
@@ -246,7 +250,7 @@ int main(int ArgumentCount, char *Arguments[])
                     // Some other error...
                     else
                     {
-                        cerr << "error: could not stat output directory " << OutputFile << endl;
+                        Message(Console::Error) << "could not stat output directory " << OutputFile << endl;
                         exit(1);
                     }
                 }
@@ -254,14 +258,14 @@ int main(int ArgumentCount, char *Arguments[])
                 // Get output directory attributes...
                 if(stat(OutputFile.c_str(), &FileAttributes) != 0)
                 {
-                    cerr << "error: could not stat output directory " << OutputFile << endl;
+                    Message(Console::Error) << "could not stat output directory " << OutputFile << endl;
                     exit(1);
                 }
 
                 // Still doesn't exist...
                 if(!S_ISDIR(FileAttributes.st_mode))
                 {
-                    cerr << "error: could not stat output directory " << OutputFile << endl;
+                    Message(Console::Error) << "could not stat output directory " << OutputFile << endl;
                     exit(1);
                 }
 
@@ -319,7 +323,7 @@ int main(int ArgumentCount, char *Arguments[])
     if(optind + 1 <= ArgumentCount)
     {
         // Alert, abort...
-        cerr << "error: unknown parameter " << optind + 1 << "/" << ArgumentCount << endl;
+        Message(Console::Error) << "unknown parameter " << optind + 1 << "/" << ArgumentCount << endl;
         exit(1);
     }
 
@@ -335,7 +339,6 @@ int main(int ArgumentCount, char *Arguments[])
             Assembler.SetDiodeFilterClass(DiodeFilterClass);
             Assembler.SetIgnoreBadFiles(IgnoreBadFiles);
             Assembler.SetLanderFilter(LanderFilter);
-            Assembler.SetVerbose(Verbose);
             
             // Index the input directory...
             Assembler.Index();
@@ -349,7 +352,7 @@ int main(int ArgumentCount, char *Arguments[])
         catch(const std::string &ErrorMessage)
         {
             // Alert...
-            cerr << "\033[1;31m" << ErrorMessage << "\033[0m" << endl;
+            Message(Console::Error) << ErrorMessage << endl;
             
             // Terminate...
             exit(1);
@@ -373,7 +376,7 @@ int main(int ArgumentCount, char *Arguments[])
                 throw std::string("lander filter available in assembly mode only");
             
             // Construct a VICAR colour image object...
-            VicarImageBand Image(InputFile, Verbose);
+            VicarImageBand Image(InputFile);
             
             // Set user flags
             Image.SetInterlace(Interlace);
@@ -396,8 +399,8 @@ int main(int ArgumentCount, char *Arguments[])
         catch(const std::string &ErrorMessage)
         {
             // Alert...
-            cerr << InputFile << std::string(": error: ") << ErrorMessage << endl;
-            
+            Message(Console::Error) << ErrorMessage << endl;
+
             // Terminate...
             exit(1);
         }

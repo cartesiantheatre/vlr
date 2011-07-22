@@ -21,6 +21,7 @@
 
 // Includes...
 #include "VicarImageAssembler.h"
+#include "Console.h"
 #include <cassert>
 #include <iostream>
 #include <dirent.h>
@@ -82,7 +83,7 @@ void VicarImageAssembler::Index()
             CurrentFile = m_InputDirectory + DirectoryEntry->d_name;
 
             // Construct an image band object...
-            VicarImageBand ImageBand(CurrentFile, m_Verbose);
+            VicarImageBand ImageBand(CurrentFile);
 
             // Get just the file name as well...
             FileNameOnly = ImageBand.GetInputFileNameOnly();
@@ -97,11 +98,9 @@ void VicarImageAssembler::Index()
                     if(m_IgnoreBadFiles)
                     {
                         // Alert and skip...
-                        clog 
-                            << DirectoryEntry->d_name 
-                            << "\033[1;31m: warning: " 
+                        Message(Console::Warning)
                             << ImageBand.GetErrorMessage() 
-                            << ", skipping\033[0m"
+                            << ", skipping"
                             << endl;
                         continue;
                     }
@@ -111,8 +110,6 @@ void VicarImageAssembler::Index()
                     {
                         // Alert and abort...
                         ErrorMessage = 
-//                            DirectoryEntry->d_name +
-                            //string("\033[1;31m: error: ") +
                             ImageBand.GetErrorMessage() +
                             string(" (-b to skip)");
                         throw ErrorMessage;
@@ -124,24 +121,26 @@ void VicarImageAssembler::Index()
                 m_DiodeBandFilterSet.end())
             {
                 // Alert and skip...
-                clog 
-                    << DirectoryEntry->d_name 
-                    << "\033[1;33m: info: filtering " 
+                Message(Console::Info) 
+                    << "filtering " 
                     << ImageBand.GetDiodeBandTypeFriendlyString()
-                    << " type diode bands (-f to change)\033[0m" 
+                    << " type diode bands (-f to change)"
                     << endl;
                 continue;
             }
 
             // Alert user...
-            clog << DirectoryEntry->d_name << "\033[1;32m" << ": ok " << ImageBand.GetCameraEventIdentifier() << "\033[0m" << endl;
+            Message(Console::Info)
+                << "ok " 
+                << ImageBand.GetCameraEventIdentifier() 
+                << endl;
             
             // Show us indexing the VICAR files...
-//            Verbose() << "\rfiles indexed " << ++FilesIndexed;
+//            Message(Console::Info) << "\rfiles indexed " << ++FilesIndexed;
         }
         
         // End last message with a new line since it only had a carriage return...
-        Verbose() << endl;
+//        Message(Console::Verbose) << endl;
         
         // Done with the directory...
         closedir(Directory);
@@ -154,7 +153,7 @@ void VicarImageAssembler::Index()
             closedir(Directory);
 
             // Propagate up the chain...
-            throw FileNameOnly + ": error: " + ErrorMessage;;
+            throw ErrorMessage;
         }
 }
 
@@ -167,6 +166,7 @@ void VicarImageAssembler::SetDiodeFilterClass(const string &DiodeFilter)
     // Use any supported type...
     if(DiodeFilter.empty() || DiodeFilter == "any")
     {
+        Message(Console::Info) << "using any supported diode filter" << endl;
         m_DiodeBandFilterSet.insert(VicarImageBand::Blue);
         m_DiodeBandFilterSet.insert(VicarImageBand::Green);
         m_DiodeBandFilterSet.insert(VicarImageBand::Red);
@@ -180,6 +180,7 @@ void VicarImageAssembler::SetDiodeFilterClass(const string &DiodeFilter)
     // Colour band...
     else if(DiodeFilter == "colour")
     {
+        Message(Console::Info) << "using colour diode filter" << endl;
         m_DiodeBandFilterSet.insert(VicarImageBand::Blue);
         m_DiodeBandFilterSet.insert(VicarImageBand::Green);
         m_DiodeBandFilterSet.insert(VicarImageBand::Red);
@@ -188,6 +189,7 @@ void VicarImageAssembler::SetDiodeFilterClass(const string &DiodeFilter)
     // Infrared band...
     else if(DiodeFilter == "infrared")
     {
+        Message(Console::Info) << "using infrared diode filter" << endl;
         m_DiodeBandFilterSet.insert(VicarImageBand::Infrared1);
         m_DiodeBandFilterSet.insert(VicarImageBand::Infrared2);
         m_DiodeBandFilterSet.insert(VicarImageBand::Infrared3);
@@ -196,21 +198,20 @@ void VicarImageAssembler::SetDiodeFilterClass(const string &DiodeFilter)
     // Sun...
     else if(DiodeFilter == "sun")
     {
+        Message(Console::Info) << "using sun diode filter" << endl;
         m_DiodeBandFilterSet.insert(VicarImageBand::Sun);    
     }
     
     // Survey...
     else if(DiodeFilter == "survey")
     {
-        m_DiodeBandFilterSet.insert(VicarImageBand::Survey);    
+        Message(Console::Info) << "using survey diode filter" << endl;
+        m_DiodeBandFilterSet.insert(VicarImageBand::Survey);
     }
     
     // Unsupported...
     else
        throw string("unsupported diode filter class: ") + DiodeFilter;
-
-    // Alert user...
-    Verbose() << "using " << DiodeFilter << " diode filter class" << endl;
 }
 
 // Set the lander filter or throw an error...
@@ -218,33 +219,27 @@ void VicarImageAssembler::SetLanderFilter(const string &LanderFilter)
 {
     // Use any...
     if(LanderFilter.empty() || LanderFilter == "0" || LanderFilter == "any")
+    {
+        Message(Console::Info) << "filtering for either Viking Lander" << endl;
         m_LanderFilter = 0;
+    }
     
     // Viking 1 lander...
     else if(LanderFilter == "1")
+    {
+        Message(Console::Info) << "filtering for either Viking Lander 1" << endl;
         m_LanderFilter = 1;
+    }
 
     // Viking 2 lander...
     else if(LanderFilter == "2")
+    {
+        Message(Console::Info) << "filtering for either Viking Lander 2" << endl;
         m_LanderFilter = 2;
+    }
     
     // Unknown...
     else
         throw string("unknown lander filter: ") + LanderFilter;
-    
-    // Alert user...
-    Verbose() << "filter for Viking lander " << m_LanderFilter << endl;
-}
-
-// Get a verbose output stream, if enabled, or dummy stream otherwise...
-ostream &VicarImageAssembler::Verbose() const
-{
-    // Not enabled. Return the null stream...
-    if(!m_Verbose)
-        return m_DummyOutputStream;
-
-    // Otherwise use the usual standard logging stream...
-    else
-        return clog;
 }
 

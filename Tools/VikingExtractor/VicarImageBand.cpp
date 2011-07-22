@@ -23,6 +23,9 @@
 
     // Ourself...    
     #include "VicarImageBand.h"
+    
+    // Console output...
+    #include "Console.h"
 
     // Logical record access...
     #include "LogicalRecord.h"
@@ -52,7 +55,7 @@ using namespace std;
 
 // Construct...
 VicarImageBand::VicarImageBand(
-    const string &InputFile, const bool Verbose)
+    const string &InputFile)
     : m_InputFile(InputFile),
       m_PhaseOffsetRequired(0),
       m_Bands(0),
@@ -66,8 +69,7 @@ VicarImageBand::VicarImageBand(
       m_DiodeBandType(Unknown),
       m_Ok(false),
       m_Interlace(false),
-      m_SaveLabels(false),
-      m_Verbose(Verbose)
+      m_SaveLabels(false)
 {
     // Initialize the token to diode band type dictionary...
 
@@ -366,6 +368,9 @@ void VicarImageBand::Load()
     // Objects and variables...
     LogicalRecord   Record;
 
+    // Be verbose...
+    Message(Console::Verbose) << "opening " << m_InputFile << endl;
+
     // Open the file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
 
@@ -389,7 +394,7 @@ void VicarImageBand::Load()
     if(!IsHeaderIntact(m_PhaseOffsetRequired))
         SetErrorAndReturn("header is not intact, or not a VICAR file")
     else if(m_PhaseOffsetRequired > 0)
-        Verbose() << "header intact, but requires " << m_PhaseOffsetRequired << " byte phase offset" << endl;
+        Message(Console::Verbose) << "header intact, but requires " << m_PhaseOffsetRequired << " byte phase offset" << endl;
 
     // Verify it's from one of the Viking Landers...
     if(!IsVikingLanderOrigin())
@@ -413,7 +418,13 @@ void VicarImageBand::Load()
     //  absolute offset...
     for(size_t PhysicalRecordIndex = 0; InputFileStream.good(); ++PhysicalRecordIndex)
     {
-Verbose() << "entering physical record " << PhysicalRecordIndex + 1 << " starting at " << static_cast<int>(InputFileStream.tellg()) << endl;
+        // Verbosity...
+        Message(Console::Verbose)
+            << "entering physical record " 
+            << PhysicalRecordIndex + 1 
+            << " starting at " 
+            << static_cast<int>(InputFileStream.tellg()) 
+            << endl;
 
         // Local offset into the current physical record...
         streampos LocalPhysicalRecordOffset = 0;
@@ -426,7 +437,13 @@ Verbose() << "entering physical record " << PhysicalRecordIndex + 1 << " startin
             LocalLogicalRecordIndex < 5; 
           ++LocalLogicalRecordIndex)
         {
-Verbose() << "extracting logical record " << LocalLogicalRecordIndex + 1 << "/5 starting at " << static_cast<int>(InputFileStream.tellg()) << endl;
+            // Verbosity...
+            Message(Console::Verbose) 
+                << "extracting logical record " 
+                << LocalLogicalRecordIndex + 1 
+                << "/5 starting at " 
+                << static_cast<int>(InputFileStream.tellg()) 
+                << endl;
 
             // Extract a logical record...
             Record << InputFileStream;
@@ -434,7 +451,13 @@ Verbose() << "extracting logical record " << LocalLogicalRecordIndex + 1 << "/5 
             // Record isn't valid...
             if(!Record.IsValidLabel())
             {
-                Verbose() << "bad logical record terminator " << LocalLogicalRecordIndex + 1 << "/5 starting at " << static_cast<int>(InputFileStream.tellg()) << endl;
+                // Verbosity...
+                Message(Console::Verbose) 
+                    << "bad logical record terminator " 
+                    << LocalLogicalRecordIndex + 1 
+                    << "/5 starting at " 
+                    << static_cast<int>(InputFileStream.tellg()) 
+                    << endl;
                 
                 // Give a hint if this was suppose to be a physical record boundary...
                 if(LocalLogicalRecordIndex == 0)
@@ -492,7 +515,7 @@ Verbose() << "extracting logical record " << LocalLogicalRecordIndex + 1 << "/5 
             {
                 // It was, so rewind and carry on since there is no 
                 //  physical record padding...
-                Verbose() << "tangential physical record boundary detected, ignoring padding" << endl;
+                Message(Console::Verbose) << "tangential physical record boundary detected, ignoring padding" << endl;
                 InputFileStream.seekg(CurrentPosition);
             }
             
@@ -501,7 +524,7 @@ Verbose() << "extracting logical record " << LocalLogicalRecordIndex + 1 << "/5 
             else
             {
                 // Alert and seek...
-                Verbose() << "seeking passed " << m_PhysicalRecordPadding << " physical record padding" << endl;
+                Message(Console::Verbose) << "seeking passed " << m_PhysicalRecordPadding << " physical record padding" << endl;
                 InputFileStream.seekg(CurrentPosition);
                 InputFileStream.seekg(m_PhysicalRecordPadding, ios_base::cur);
             }
@@ -515,7 +538,7 @@ Verbose() << "extracting logical record " << LocalLogicalRecordIndex + 1 << "/5 
     m_RawImageOffset = InputFileStream.tellg();
 
     // Show user, if requested...
-    Verbose() << "  raw image offset:\t\t\t" << m_RawImageOffset << hex << showbase << " (" << m_RawImageOffset<< ")" << dec << endl;
+    Message(Console::Verbose) << "  raw image offset:\t\t\t" << m_RawImageOffset << hex << showbase << " (" << m_RawImageOffset<< ")" << dec << endl;
 
     // Loaded ok...
     m_Ok = true;
@@ -776,16 +799,16 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
             SetErrorAndReturn("unsupported colour bit depth")
 
     // If verbosity is set, display basic metadata...
-    Verbose() << "  bands:\t\t\t\t" << m_Bands << endl;
-    Verbose() << "  height:\t\t\t\t" << m_Height << endl;
-    Verbose() << "  width:\t\t\t\t" << m_Width << endl;
-    Verbose() << "  raw band data size:\t\t\t" << m_Width * m_Height * m_BytesPerColour << " bytes" << endl;
-    Verbose() << "  file size:\t\t\t\t" << GetFileSize() << " bytes" << endl;
-    Verbose() << "  format:\t\t\t\t" << "integral" << endl;
-    Verbose() << "  bytes per colour:\t\t\t" << m_BytesPerColour << endl;
-    Verbose() << "  photosensor diode band type:\t\t" << GetDiodeBandTypeFriendlyString() << endl;
-    Verbose() << "  physical record size:\t\t\t" << m_PhysicalRecordSize << hex << showbase << " (" << m_PhysicalRecordSize<< ")" << endl;
-    Verbose() << "  possible physical record padding:\t"  << dec << m_PhysicalRecordPadding << hex << showbase << " (" << m_PhysicalRecordPadding<< ")" << dec << endl;
+    Message(Console::Verbose) << "  bands:\t\t\t\t" << m_Bands << endl;
+    Message(Console::Verbose) << "  height:\t\t\t\t" << m_Height << endl;
+    Message(Console::Verbose) << "  width:\t\t\t\t" << m_Width << endl;
+    Message(Console::Verbose) << "  raw band data size:\t\t\t" << m_Width * m_Height * m_BytesPerColour << " bytes" << endl;
+    Message(Console::Verbose) << "  file size:\t\t\t\t" << GetFileSize() << " bytes" << endl;
+    Message(Console::Verbose) << "  format:\t\t\t\t" << "integral" << endl;
+    Message(Console::Verbose) << "  bytes per colour:\t\t\t" << m_BytesPerColour << endl;
+    Message(Console::Verbose) << "  photosensor diode band type:\t\t" << GetDiodeBandTypeFriendlyString() << endl;
+    Message(Console::Verbose) << "  physical record size:\t\t\t" << m_PhysicalRecordSize << hex << showbase << " (" << m_PhysicalRecordSize<< ")" << endl;
+    Message(Console::Verbose) << "  possible physical record padding:\t"  << dec << m_PhysicalRecordPadding << hex << showbase << " (" << m_PhysicalRecordPadding<< ")" << dec << endl;
 
     // Basic metadata in theory should be enough to extract the band data...
     m_Ok = true;
@@ -812,7 +835,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format1(
     char    DummyCharacter  = 0;
 
     // Alert user if verbose enabled...
-    Verbose() << "heuristics selected format 1 basic metadata parser" << endl;
+    Message(Console::Verbose) << "heuristics selected format 1 basic metadata parser" << endl;
 
     // Initialize a tokenizer, seeking passed two byte binary marker...
     stringstream Tokenizer(HeaderRecord.GetString(true, 2));
@@ -883,7 +906,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format2(
     char    DummyCharacter  = 0;
 
     // Alert user if verbose enabled...
-    Verbose() << "heuristics selected format 2 basic metadata parser" << endl;
+    Message(Console::Verbose) << "heuristics selected format 2 basic metadata parser" << endl;
 
     // Initialize a tokenizer, seeking passed two byte binary marker...
     stringstream Tokenizer(HeaderRecord.GetString(true, 2));
@@ -967,7 +990,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format3(
     string  Token;
 
     // Alert user if verbose enabled...
-    Verbose() << "heuristics selected format 3 basic metadata parser" << endl;
+    Message(Console::Verbose) << "heuristics selected format 3 basic metadata parser" << endl;
 
     // Initialize a tokenizer, seeking passed two byte binary marker...
     stringstream Tokenizer(HeaderRecord.GetString(true, 2));
@@ -1035,7 +1058,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format4(
     string  Token;
 
     // Alert user if verbose enabled...
-    Verbose() << "heuristics selected format 4 basic metadata parser" << endl;
+    Message(Console::Verbose) << "heuristics selected format 4 basic metadata parser" << endl;
 
     // Initialize a tokenizer, seeking passed two byte binary marker...
     stringstream Tokenizer(HeaderRecord.GetString(true, 2));
@@ -1104,7 +1127,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format5(
     string  Token;
 
     // Alert user if verbose enabled...
-    Verbose() << "heuristics selected format 5 basic metadata parser" << endl;
+    Message(Console::Verbose) << "heuristics selected format 5 basic metadata parser" << endl;
 
     // Initialize a tokenizer, seeking passed two byte binary marker...
     stringstream Tokenizer(HeaderRecord.GetString(true, 2));
@@ -1173,7 +1196,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format6(
     char    Buffer[1024] = {0};
 
     // Alert user if verbose enabled...
-    Verbose() << "heuristics selected format 6 basic metadata parser" << endl;
+    Message(Console::Verbose) << "heuristics selected format 6 basic metadata parser" << endl;
 
     // Initialize a tokenizer, seeking passed two byte binary marker...
     stringstream Tokenizer(HeaderRecord.GetString(true, 2));
@@ -1252,7 +1275,7 @@ void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
             m_AzimuthElevation = Record.GetString(true);
 
             // Alert user if verbose mode enabled...
-            Verbose() << "  psa directional vector:\t\t" << m_AzimuthElevation << endl;
+            Message(Console::Verbose) << "  psa directional vector:\t\t" << m_AzimuthElevation << endl;
         }
         
         // Possibly camera event identifier...
@@ -1266,7 +1289,7 @@ void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
             {
                 // Store the identifier...
                 Tokenizer >> m_CameraEventIdentifier;
-                Verbose() << "  camera event identifier:\t\t" << m_CameraEventIdentifier << endl;
+                Message(Console::Verbose) << "  camera event identifier:\t\t" << m_CameraEventIdentifier << endl;
             }
             
             // Not a camera event, restore the token...
@@ -1400,17 +1423,5 @@ VicarImageBand::PSADiode VicarImageBand::GetDiodeBandTypeFromVicarToken(
     // Not found...
     else
         return Unknown;
-}
-
-// Get the output stream to be verbose, if enabled...
-ostream &VicarImageBand::Verbose() const
-{
-    // Not enabled. Return the null stream...
-    if(!m_Verbose)
-        return m_DummyOutputStream;
-
-    // Otherwise use the usual standard logging stream...
-    else
-        return clog;
 }
 

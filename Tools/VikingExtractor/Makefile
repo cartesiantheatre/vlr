@@ -18,7 +18,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 CPP         = g++
-OBJ         = LogicalRecord.o           \
+OBJ         = Console.o                 \
+              LogicalRecord.o           \
               VikingExtractor.o         \
               VicarImageAssembler.o     \
               VicarImageBand.o
@@ -27,7 +28,8 @@ INCS        =
 CXXINCS     =
 BIN         = VikingExtractor
 CXXFLAGS    = $(CXXINCS) $(INCS) -g3 -Wall -Werror `libpng-config --cflags`
-SOURCES     = LogicalRecord.cpp         \
+SOURCES     = Console.cpp               \
+              LogicalRecord.cpp         \
               VicarImageAssembler.cpp   \
               VicarImageBand.cpp        \
               VikingExtractor.cpp
