@@ -368,8 +368,11 @@ void VicarImageBand::Load()
     // Objects and variables...
     LogicalRecord   Record;
 
+    // Set the file name for console messages to be preceded with...
+    Console::GetInstance().SetCurrentFileName(GetInputFileNameOnly());
+
     // Be verbose...
-    Message(Console::Verbose) << "opening " << m_InputFile << endl;
+    Message(Console::Verbose) << "opening" << endl;
 
     // Open the file...
     ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
@@ -452,7 +455,7 @@ void VicarImageBand::Load()
             if(!Record.IsValidLabel())
             {
                 // Verbosity...
-                Message(Console::Verbose) 
+                Message(Console::Error) 
                     << "bad logical record terminator " 
                     << LocalLogicalRecordIndex + 1 
                     << "/5 starting at " 
@@ -538,7 +541,7 @@ void VicarImageBand::Load()
     m_RawImageOffset = InputFileStream.tellg();
 
     // Show user, if requested...
-    Message(Console::Verbose) << "  raw image offset:\t\t\t" << m_RawImageOffset << hex << showbase << " (" << m_RawImageOffset<< ")" << dec << endl;
+    Message(Console::Verbose) << "raw image offset: " << m_RawImageOffset << hex << showbase << " (" << m_RawImageOffset<< ")" << dec << endl;
 
     // Loaded ok...
     m_Ok = true;
@@ -799,16 +802,16 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
             SetErrorAndReturn("unsupported colour bit depth")
 
     // If verbosity is set, display basic metadata...
-    Message(Console::Verbose) << "  bands:\t\t\t\t" << m_Bands << endl;
-    Message(Console::Verbose) << "  height:\t\t\t\t" << m_Height << endl;
-    Message(Console::Verbose) << "  width:\t\t\t\t" << m_Width << endl;
-    Message(Console::Verbose) << "  raw band data size:\t\t\t" << m_Width * m_Height * m_BytesPerColour << " bytes" << endl;
-    Message(Console::Verbose) << "  file size:\t\t\t\t" << GetFileSize() << " bytes" << endl;
-    Message(Console::Verbose) << "  format:\t\t\t\t" << "integral" << endl;
-    Message(Console::Verbose) << "  bytes per colour:\t\t\t" << m_BytesPerColour << endl;
-    Message(Console::Verbose) << "  photosensor diode band type:\t\t" << GetDiodeBandTypeFriendlyString() << endl;
-    Message(Console::Verbose) << "  physical record size:\t\t\t" << m_PhysicalRecordSize << hex << showbase << " (" << m_PhysicalRecordSize<< ")" << endl;
-    Message(Console::Verbose) << "  possible physical record padding:\t"  << dec << m_PhysicalRecordPadding << hex << showbase << " (" << m_PhysicalRecordPadding<< ")" << dec << endl;
+    Message(Console::Verbose) << "bands: " << m_Bands << endl;
+    Message(Console::Verbose) << "height: " << m_Height << endl;
+    Message(Console::Verbose) << "width: " << m_Width << endl;
+    Message(Console::Verbose) << "raw band data size: " << m_Width * m_Height * m_BytesPerColour << " bytes" << endl;
+    Message(Console::Verbose) << "file size: " << GetFileSize() << " bytes" << endl;
+    Message(Console::Verbose) << "format: " << "integral" << endl;
+    Message(Console::Verbose) << "bytes per colour: " << m_BytesPerColour << endl;
+    Message(Console::Verbose) << "photosensor diode band type: " << GetDiodeBandTypeFriendlyString() << endl;
+    Message(Console::Verbose) << "physical record size: " << m_PhysicalRecordSize << hex << showbase << " (" << m_PhysicalRecordSize<< ")" << endl;
+    Message(Console::Verbose) << "possible physical record padding: "  << dec << m_PhysicalRecordPadding << hex << showbase << " (" << m_PhysicalRecordPadding<< ")" << dec << endl;
 
     // Basic metadata in theory should be enough to extract the band data...
     m_Ok = true;
@@ -1275,7 +1278,7 @@ void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
             m_AzimuthElevation = Record.GetString(true);
 
             // Alert user if verbose mode enabled...
-            Message(Console::Verbose) << "  psa directional vector:\t\t" << m_AzimuthElevation << endl;
+            Message(Console::Verbose) << "psa directional vector: " << m_AzimuthElevation << endl;
         }
         
         // Possibly camera event identifier...
@@ -1289,7 +1292,7 @@ void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
             {
                 // Store the identifier...
                 Tokenizer >> m_CameraEventIdentifier;
-                Message(Console::Verbose) << "  camera event identifier:\t\t" << m_CameraEventIdentifier << endl;
+                Message(Console::Verbose) << "camera event identifier: " << m_CameraEventIdentifier << endl;
             }
             
             // Not a camera event, restore the token...

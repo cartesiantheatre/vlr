@@ -51,6 +51,10 @@ class Console
         // Get an output stream, if enabled, or dummy stream otherwise...
         std::ostream &Message(const Console::ChannelID ID);
 
+        // Enable or disable the use of VT100 ANSI colours...
+        void SetUseColours(const bool UseColours = true) 
+            { m_UseColours = UseColours; }
+        
         // Enable or suppress a given channel...
         void SetChannelEnabled(const ChannelID ID, const bool Enabled);
 
@@ -125,6 +129,9 @@ class Console
         
         // Dummy output stream...
         NullOutputStream    m_DummyOutputStream;
+        
+        // Use VT100 ANSI colours or not...
+        bool                m_UseColours;
 
     // Private data...
     private:

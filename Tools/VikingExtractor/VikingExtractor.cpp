@@ -42,18 +42,19 @@ void ShowHelp()
 {
     cout << "Usage: VikingExtractor [options] input [output]"                                   << endl
          << "Options:"                                                                          << endl
-         << "  -b, --ignore-bad-files      Don't stop on corrupt or problematic input file,"    << endl
-         << "                              but continue extraction of other files (assembly"    << endl
-         << "                              mode only)."                                         << endl
-         << "  -y, --dry-run               Don't write anything"                                << endl
          << "  -f, --diode-filter <type>   Extract from matching supported diode filter"        << endl
          << "                              classes which are any (default), colour, infrared,"  << endl
          << "                              sun, or survey (assembly mode only)."                << endl
+         << "  -y, --dry-run               Don't write anything"                                << endl
          << "  -h, --help                  Show this help"                                      << endl
+         << "  -b, --ignore-bad-files      Don't stop on corrupt or problematic input file,"    << endl
+         << "                              but continue extraction of other files (assembly"    << endl
+         << "                              mode only)."                                         << endl
          << "  -i, --interlace             Encode output with Adam7 interlacing"                << endl
-         << "  -l, --save-record-labels    Save VICAR record labels as text file"               << endl
+         << "  -r, --no-colours            Disable VT/100 ANSI coloured terminal output."       << endl
          << "  -n, --lander-filter <#>     Extract from specific lander only which are any"     << endl
          << "                              (default), 1, or 2 (assembly mode only)."            << endl
+         << "  -l, --save-record-labels    Save VICAR record labels as text file"               << endl
          << "  -V, --verbose               Be verbose"                                          << endl
          << "  -v, --version               Show version information"                            << endl << endl
 
@@ -77,21 +78,22 @@ void ShowVersion()
 int main(int ArgumentCount, char *Arguments[])
 {
     // Variables...
-    int         OptionCharacter = '\x0';
-    int         OptionIndex     = 0;
+    int         OptionCharacter     = '\x0';
+    int         OptionIndex         = 0;
     struct stat FileAttributes;
-    bool        AssemblyMode    = false;
+    bool        AssemblyMode        = false;
     string      InputFile;
     string      OutputFile;
     
-    // User switches...
+    // User switches and defaults...
     string      DiodeFilterClass;
-    bool        DryRun          = false;
-    bool        IgnoreBadFiles  = false;
-    bool        VerboseConsole  = false;
-    bool        Interlace       = false;
+    bool        DryRun              = false;
+    bool        IgnoreBadFiles      = false;
+    bool        UseColours          = true;
+    bool        VerboseConsole      = false;
+    bool        Interlace           = false;
     string      LanderFilter;
-    bool        SaveLabels      = false;
+    bool        SaveLabels          = false;
 
     // Command line option structure...
     option CommandLineOptions[] =
@@ -102,6 +104,7 @@ int main(int ArgumentCount, char *Arguments[])
         {"help",                no_argument,        NULL,   'h'},
         {"interlace",           no_argument,        NULL,   'i'},
         {"lander-filter",       required_argument,  NULL,   'n'},
+        {"no-colours",          no_argument,        NULL,   'r'},
         {"save-record-labels",  no_argument,        NULL,   'l'},
         {"verbose",             no_argument,        NULL,   'V'},
         {"version",             no_argument,        NULL,   'v'},
@@ -112,7 +115,7 @@ int main(int ArgumentCount, char *Arguments[])
 
     // Keep processing each option until there are none left...
     while((OptionCharacter = getopt_long(
-        ArgumentCount, Arguments, "bf:yhin:lVv", CommandLineOptions, &OptionIndex)) != -1)
+        ArgumentCount, Arguments, "bf:yhin:rlVv", CommandLineOptions, &OptionIndex)) != -1)
     {
         // Which option?
         switch(OptionCharacter)
@@ -159,6 +162,9 @@ int main(int ArgumentCount, char *Arguments[])
             // Set lander filter...
             case 'n': { assert(optarg); LanderFilter = optarg; break; }
 
+            // Set no terminal colour...
+            case 'r': { UseColours = false; break; }
+
             // Version...
             case 'v':
             {
@@ -193,7 +199,8 @@ int main(int ArgumentCount, char *Arguments[])
         }
     }
 
-    // Set console verbosity...
+    // Set console no colours and verbosity flags...
+    Console::GetInstance().SetUseColours(UseColours);
     Console::GetInstance().SetChannelEnabled(Console::Verbose, VerboseConsole);
 
     // We need at least one additional parameter, the input...

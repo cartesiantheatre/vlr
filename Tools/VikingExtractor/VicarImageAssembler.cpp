@@ -44,9 +44,6 @@ VicarImageAssembler::VicarImageAssembler(
     // The input directory should end with a path delimeter...
     if(m_InputDirectory.find_last_of("/\\") != (m_InputDirectory.length() - 1))
         m_InputDirectory += "/";
-
-    // Set the diode filter class...
-    SetDiodeFilterClass("any");
 }
 
 // Index the contents of the directory returning number of potentially
@@ -58,8 +55,11 @@ void VicarImageAssembler::Index()
     struct  dirent *DirectoryEntry  = NULL;
     string          CurrentFile;
     string          FileNameOnly;
+    VicarImageBand *ImageBand       = NULL;
     string          ErrorMessage;
-//    size_t          FilesIndexed    = 0;
+
+    // Reset assembler state...
+    Reset();
 
     // Open directory and check for error...
     if(!(Directory = opendir(m_InputDirectory.c_str())))
@@ -83,67 +83,104 @@ void VicarImageAssembler::Index()
             CurrentFile = m_InputDirectory + DirectoryEntry->d_name;
 
             // Construct an image band object...
-            VicarImageBand ImageBand(CurrentFile);
+            ImageBand = new VicarImageBand(CurrentFile);
 
             // Get just the file name as well...
-            FileNameOnly = ImageBand.GetInputFileNameOnly();
+            FileNameOnly = ImageBand->GetInputFileNameOnly();
             
             // Attempt to load the file...
-            ImageBand.Load();
+            ImageBand->Load();
 
                 // Failed...
-                if(ImageBand.IsError())
+                if(ImageBand->IsError())
                 {
                     // User requested we just skip over bad files....
                     if(m_IgnoreBadFiles)
                     {
-                        // Alert and skip...
+                        // Alert...
                         Message(Console::Warning)
-                            << ImageBand.GetErrorMessage() 
+                            << ImageBand->GetErrorMessage() 
                             << ", skipping"
                             << endl;
+
+                        // Cleanup...
+                        delete ImageBand;
+                        ImageBand = NULL;
+                        
+                        // Skip...
                         continue;
                     }
                     
                     // Otherwise raise an error...
                     else
                     {
-                        // Alert and abort...
+                        // Alert...
                         ErrorMessage = 
-                            ImageBand.GetErrorMessage() +
+                            ImageBand->GetErrorMessage() +
                             string(" (-b to skip)");
+
+                        // Cleanup...
+                        delete ImageBand;
+                        ImageBand = NULL;
+                        
+                        // Abort..
                         throw ErrorMessage;
                     }
                 }
 
             // Not part of the diode filter set...
-            if(m_DiodeBandFilterSet.find(ImageBand.GetDiodeBandType()) == 
+            if(m_DiodeBandFilterSet.find(ImageBand->GetDiodeBandType()) == 
                 m_DiodeBandFilterSet.end())
             {
-                // Alert and skip...
+                // Alert...
                 Message(Console::Info) 
                     << "filtering " 
-                    << ImageBand.GetDiodeBandTypeFriendlyString()
+                    << ImageBand->GetDiodeBandTypeFriendlyString()
                     << " type diode bands (-f to change)"
                     << endl;
+
+                // Cleanup...
+                delete ImageBand;
+                ImageBand = NULL;
+                
+                // Skip...
                 continue;
             }
 
+            // Drop if no camera event identifier...
+            if(!ImageBand->IsCameraEventIdentifierPresent())
+            {
+                // Alert user...
+                Message(Console::Info)
+                    << "camera event doesn't identify itself, cannot index" 
+                    << endl;
+
+                // Cleanup...
+                delete ImageBand;
+                ImageBand = NULL;
+
+                // Skip...
+                continue;
+            }
+
+            // Add image band to the camera event dictionary multimap...
+            CameraEventDictionaryPair Item(ImageBand->GetCameraEventIdentifier(), ImageBand);
+            m_CameraEventDictionary.insert(Item);
+
             // Alert user...
             Message(Console::Info)
-                << "ok " 
-                << ImageBand.GetCameraEventIdentifier() 
+                << "successfully indexed camera event " 
+                << ImageBand->GetCameraEventIdentifier() 
                 << endl;
-            
-            // Show us indexing the VICAR files...
-//            Message(Console::Info) << "\rfiles indexed " << ++FilesIndexed;
+
+            // Now sort the camera event dictionary 
         }
-        
-        // End last message with a new line since it only had a carriage return...
-//        Message(Console::Verbose) << endl;
         
         // Done with the directory...
         closedir(Directory);
+
+        // Reset assembler state...
+        Reset();
     }
 
         // Failed...
@@ -151,10 +188,30 @@ void VicarImageAssembler::Index()
         {
             // Close the directory...
             closedir(Directory);
+            
+            // Reset assembler state...
+            Reset();
 
             // Propagate up the chain...
             throw ErrorMessage;
         }
+}
+
+// Reset the assembler state...
+void VicarImageAssembler::Reset()
+{
+    // Cleanup camera event dictionary multimap...
+    for(CameraEventDictionaryType::iterator Iterator = m_CameraEventDictionary.begin();
+        Iterator != m_CameraEventDictionary.end();
+      ++Iterator)
+    {
+        // Fetch...
+        const VicarImageBand *CurrentImageBand = (*Iterator).second;
+
+        // Deallocate...
+        delete CurrentImageBand;
+        m_CameraEventDictionary.erase(Iterator);
+    }
 }
 
 // Set the diode filter type or throw an error...
@@ -241,5 +298,12 @@ void VicarImageAssembler::SetLanderFilter(const string &LanderFilter)
     // Unknown...
     else
         throw string("unknown lander filter: ") + LanderFilter;
+}
+
+// Deconstructor...
+VicarImageAssembler::~VicarImageAssembler()
+{
+    // Reset assembler state...
+    Reset();
 }
 

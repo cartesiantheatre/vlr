@@ -32,6 +32,7 @@ Console *Console::m_SingletonInstance = NULL;
 
 // Default constructor...
 Console::Console()
+    : m_UseColours(true)
 {
     // Initialize the channel map...
     m_ChannelMap[Error]     = new Channel(Red,     "error: ");
@@ -61,7 +62,8 @@ ostream &Console::Message(const Console::ChannelID ID)
     assert(Iterator != m_ChannelMap.end());
 
     // Reset the terminal settings...
-    cout << "\033[0m";
+    if(m_UseColours)
+        cout << "\033[0m";
     
     // Get the channel structure...
     Channel &RequestedChannel = *(Iterator->second);
@@ -70,8 +72,9 @@ ostream &Console::Message(const Console::ChannelID ID)
     if(!RequestedChannel.m_Enabled)
         return m_DummyOutputStream;
 
-    // Set to the requested foreground colour and output the prefix...
-    cout << "\033[1;" << RequestedChannel.m_ForegroundColour << "m";
+    // Set to the requested foreground colour...
+    if(m_UseColours)
+        cout << "\033[1;" << RequestedChannel.m_ForegroundColour << "m";
     
     // Begin message with current file name, if known...
     if(!m_CurrentFileName.empty())

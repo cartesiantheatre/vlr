@@ -27,6 +27,8 @@
 #include <ostream>
 #include <vector>
 #include <set>
+#include <map>
+#include <string>
 #include "VicarImageBand.h"
 
 // Assemble 1970s era VICAR colour images from individual VICAR images...
@@ -34,7 +36,7 @@ class VicarImageAssembler
 {
     // Public types...
     public:
-    
+
         // Reconstructable image...
         class ReconstructableImage
         {
@@ -69,26 +71,45 @@ class VicarImageAssembler
         // Constructor...
         VicarImageAssembler(const std::string &InputDirectory);
 
-        // Get the size of the number of potentially reconstructable 
+        /* Get the size of the number of potentially reconstructable 
         //  images indexed...
-        size_t GetSize() const { return m_ReconstructableImageList.size(); }
+        size_t GetSize() const { return m_ReconstructableImageList.size(); }*/
         
         // Index the contents of the directory returning number of
         //  potentially reconstructable images or throw an error...
         void Index();
         
-        // Reconstruct the ith image or throw an error...
+        /* Reconstruct the ith image or throw an error...
         void Reconstruct(
             const ReconstructableImageListIterator Iterator, 
-            const std::string &OutputFile);
+            const std::string &OutputFile);*/
 
         // Set usage switches...
         void SetDiodeFilterClass(const std::string &DiodeFilterClass);
         void SetIgnoreBadFiles(const bool IgnoreBadFiles = true) { m_IgnoreBadFiles = IgnoreBadFiles; }
         void SetLanderFilter(const std::string &LanderFilter);
 
+        // Deconstructor...
+       ~VicarImageAssembler();
+
+    // Protected methods...
+    protected:
+
+        // Reset the assembler state...
+        void Reset();
+
+    // Protected types...
+    protected:
+
+        // Camera event identifier to image band multimap...
+        typedef std::multimap<std::string, const VicarImageBand *>  CameraEventDictionaryType;
+        typedef std::pair<std::string, const VicarImageBand *>      CameraEventDictionaryPair;
+
     // Protected data...
     protected:
+
+        // Camera event dictionary multimap...
+        CameraEventDictionaryType           m_CameraEventDictionary;
 
         // Input directory...
         std::string                         m_InputDirectory;
