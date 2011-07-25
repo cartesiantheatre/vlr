@@ -339,8 +339,9 @@ int main(int ArgumentCount, char *Arguments[])
     {
         if(AssemblyMode)
         {
-            // Create image assembler...
-            VicarImageAssembler Assembler(InputFile);
+            // Create image assembler where input and output "files" are just
+            //  the input directory and the root output directory respectively...
+            VicarImageAssembler Assembler(InputFile, OutputFile);
             
             // Set usage switches...
             Assembler.SetDiodeFilterClass(DiodeFilterClass);

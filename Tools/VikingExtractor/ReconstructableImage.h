@@ -36,50 +36,59 @@ class ReconstructableImage
     public:
 
         // Constructor...
-        ReconstructableImage(const std::string &CameraEventIdentifier);
+        ReconstructableImage(
+            const std::string &OutputRootDirectory, 
+            const std::string &CameraEventLabel);
 
         // Add an image band...
         void AddImageBand(const VicarImageBand &ImageBand);
 
-        // Get the camera event identifier...
-        const std::string &GetCameraEventIdentifier() const 
-            { return m_CameraEventIdentifier; }
+        // Get the camera event label...
+        const std::string &GetCameraEventLabel() const 
+            { return m_CameraEventLabel; }
 
         // Get an error message, if set...
         const std::string &GetErrorMessage() const 
             { return m_ErrorMessage; }
-
-        // Get a suggested file name for the reconstructed image...
-        std::string GetSuggestedFileName() const;
 
         // Was an error set?
         bool IsError() const
             { return !m_ErrorMessage.empty(); }
         
         // Extract the image out as a PNG, or return false if failed...
-        bool Reconstruct(const string &OutputFile) const;
+        bool Reconstruct();
 
     // Protected types...
     protected:
 
         // Image band list type and iterator...
-        typedef std::vector<const VicarImageBand>   ImageBandListType;
-        typedef ImageBandListType::iterator         ImageBandListIterator;
+        typedef std::vector<VicarImageBand> ImageBandListType;
+        typedef ImageBandListType::iterator ImageBandListIterator;
 
     // Protected methods...
     protected:
 
+        // Set the error message...
+        void SetErrorMessage(const std::string &ErrorMessage)
+            { m_ErrorMessage = ErrorMessage; }
+
     // Protected data...
     protected:
 
-        // Image band lists for different colour types...
+        // Root output directory...
+        const std::string   m_OutputRootDirectory;
+
+        // Image band lists for different colour and infrared types...
         ImageBandListType   m_RedImageBandList;
         ImageBandListType   m_GreenImageBandList;
         ImageBandListType   m_BlueImageBandList;
+        ImageBandListType   m_Infrared1ImageBandList;
+        ImageBandListType   m_Infrared2ImageBandList;
+        ImageBandListType   m_Infrared3ImageBandList;
         ImageBandListType   m_GrayImageBandList;
         
-        // Camera event identifier...
-        std::string         m_CameraEventIdentifier;
+        // Camera event label...
+        const std::string   m_CameraEventLabel;
         
         // Error message...
         std::string         m_ErrorMessage;

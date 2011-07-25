@@ -33,8 +33,10 @@ using namespace std;
 
 // Construct and read the header, or throw an error...
 VicarImageAssembler::VicarImageAssembler(
-    const string &InputDirectory)
+    const string &InputDirectory,
+    const string &OutputDirectory)
     : m_InputDirectory(InputDirectory),
+      m_OutputDirectory(OutputDirectory),
       m_IgnoreBadFiles(false),
       m_LanderFilter(0)
 {
@@ -55,7 +57,6 @@ void VicarImageAssembler::Index()
     struct  dirent *DirectoryEntry  = NULL;
     string          CurrentFile;
     string          FileNameOnly;
-    VicarImageBand *ImageBand       = NULL;
     string          ErrorMessage;
 
     // Reset assembler state...
@@ -83,104 +84,172 @@ void VicarImageAssembler::Index()
             CurrentFile = m_InputDirectory + DirectoryEntry->d_name;
 
             // Construct an image band object...
-            ImageBand = new VicarImageBand(CurrentFile);
+            VicarImageBand ImageBand(CurrentFile);
 
             // Get just the file name as well...
-            FileNameOnly = ImageBand->GetInputFileNameOnly();
+            FileNameOnly = ImageBand.GetInputFileNameOnly();
             
             // Attempt to load the file...
-            ImageBand->Load();
+            ImageBand.Load();
 
                 // Failed...
-                if(ImageBand->IsError())
+                if(ImageBand.IsError())
                 {
                     // User requested we just skip over bad files....
                     if(m_IgnoreBadFiles)
                     {
-                        // Alert...
+                        // Alert and skip...
                         Message(Console::Warning)
-                            << ImageBand->GetErrorMessage() 
+                            << ImageBand.GetErrorMessage() 
                             << ", skipping"
                             << endl;
-
-                        // Cleanup...
-                        delete ImageBand;
-                        ImageBand = NULL;
-                        
-                        // Skip...
                         continue;
                     }
                     
                     // Otherwise raise an error...
                     else
                     {
-                        // Alert...
+                        // Alert and abort...
                         ErrorMessage = 
-                            ImageBand->GetErrorMessage() +
+                            ImageBand.GetErrorMessage() +
                             string(" (-b to skip)");
-
-                        // Cleanup...
-                        delete ImageBand;
-                        ImageBand = NULL;
-                        
-                        // Abort..
                         throw ErrorMessage;
                     }
                 }
 
             // Not part of the diode filter set...
-            if(m_DiodeBandFilterSet.find(ImageBand->GetDiodeBandType()) == 
+            if(m_DiodeBandFilterSet.find(ImageBand.GetDiodeBandType()) == 
                 m_DiodeBandFilterSet.end())
             {
-                // Alert...
+                // Alert, skip...
                 Message(Console::Info) 
                     << "filtering " 
-                    << ImageBand->GetDiodeBandTypeFriendlyString()
+                    << ImageBand.GetDiodeBandTypeFriendlyString()
                     << " type diode bands (-f to change)"
                     << endl;
-
-                // Cleanup...
-                delete ImageBand;
-                ImageBand = NULL;
-                
-                // Skip...
                 continue;
             }
 
-            // Drop if no camera event identifier...
-            if(!ImageBand->IsCameraEventIdentifierPresent())
+            // Drop if no camera event label...
+            if(!ImageBand.IsCameraEventLabelPresent())
             {
-                // Alert user...
+                // Alert user, skip...
                 Message(Console::Info)
                     << "camera event doesn't identify itself, cannot index" 
                     << endl;
-
-                // Cleanup...
-                delete ImageBand;
-                ImageBand = NULL;
-
-                // Skip...
                 continue;
             }
+            
+            // Get the camera event label...
+            const string CameraEventLabel = ImageBand.GetCameraEventLabel();
 
-            // Add image band to the camera event dictionary multimap...
-            CameraEventDictionaryPair Item(ImageBand->GetCameraEventIdentifier(), ImageBand);
-            m_CameraEventDictionary.insert(Item);
+            // Check if a reconstructable object already exists for this event...
+            CameraEventDictionaryIterator EventIterator = 
+                m_CameraEventDictionary.find(CameraEventLabel);
 
-            // Alert user...
-            Message(Console::Info)
-                << "successfully indexed camera event " 
-                << ImageBand->GetCameraEventIdentifier() 
-                << endl;
+            // Place for the reconstructable image object...
+            ReconstructableImage *Reconstructable = NULL;
 
-            // Now sort the camera event dictionary 
+                // No, construct a new one...
+                if(EventIterator == m_CameraEventDictionary.end())
+                {
+                    // Alert user...
+                    Message(Console::Info)
+                        << CameraEventLabel
+                        << " is a new camera event, indexing" 
+                        << endl;
+
+                    // Construct a new reconstructable image...
+                    Reconstructable = new ReconstructableImage(
+                        m_OutputDirectory, CameraEventLabel);
+
+                    // Insert the reconstructable image into the event dictionary.
+                    //  We use the previous failed find iterator as a possible 
+                    //  amortized constant performance optimization...
+                    m_CameraEventDictionary.insert(EventIterator,
+                        CameraEventDictionaryPair(CameraEventLabel, Reconstructable));
+                }
+
+                // Yes, add image band to existing one...
+                else
+                {
+                    // Alert user...
+                    Message(Console::Info)
+                        << CameraEventLabel
+                        << " is a known camera event, indexing"
+                        << endl;
+
+                    // Get the reconstructable image object...
+                    Reconstructable = EventIterator->second;
+                    assert(Reconstructable);
+                }
+
+            // Add the image band to the reconstructable image...
+            Reconstructable->AddImageBand(ImageBand);
+
+            // Check for error...
+            if(Reconstructable->IsError())
+            {
+                // User requested we just skip over bad files....
+                if(m_IgnoreBadFiles)
+                {
+                    // Alert and skip...
+                    Message(Console::Warning)
+                        << Reconstructable->GetErrorMessage() 
+                        << ", skipping"
+                        << endl;
+                    continue;
+                }
+                
+                // Otherwise raise an error...
+                else
+                {
+                    // Alert and abort...
+                    ErrorMessage = 
+                        Reconstructable->GetErrorMessage() +
+                        string(" (-b to skip)");
+                    throw ErrorMessage;
+                }
+            }
         }
-        
+
         // Done with the directory...
         closedir(Directory);
 
-        // Reset assembler state...
-        Reset();
+        // Reconstruct each image...
+        for(CameraEventDictionaryIterator Iterator = m_CameraEventDictionary.begin();
+            Iterator != m_CameraEventDictionary.end();
+          ++Iterator)
+        {
+            // Get the reconstructable image object...
+            Reconstructable = EventIterator->second;
+            assert(Reconstructable);
+
+            // Reconstruct the image object and check for error...
+            if(!Reconstructable->Reconstruct())
+            {
+                // User requested we just skip over bad files....
+                if(m_IgnoreBadFiles)
+                {
+                    // Alert and skip...
+                    Message(Console::Warning)
+                        << Reconstructable->GetErrorMessage() 
+                        << ", skipping"
+                        << endl;
+                    continue;
+                }
+                
+                // Otherwise raise an error...
+                else
+                {
+                    // Alert and abort...
+                    ErrorMessage = 
+                        Reconstructable->GetErrorMessage() +
+                        string(" (-b to skip)");
+                    throw ErrorMessage;
+                }
+            }
+        }
     }
 
         // Failed...
@@ -200,18 +269,17 @@ void VicarImageAssembler::Index()
 // Reset the assembler state...
 void VicarImageAssembler::Reset()
 {
-    // Cleanup camera event dictionary multimap...
-    for(CameraEventDictionaryType::iterator Iterator = m_CameraEventDictionary.begin();
+    // Cleanup camera event dictionary multi...
+    for(CameraEventDictionaryIterator Iterator = m_CameraEventDictionary.begin();
         Iterator != m_CameraEventDictionary.end();
       ++Iterator)
     {
-        // Fetch...
-        const VicarImageBand *CurrentImageBand = (*Iterator).second;
-
-        // Deallocate...
-        delete CurrentImageBand;
-        m_CameraEventDictionary.erase(Iterator);
+        // Deconstruct the reconstructable image object...
+        delete Iterator->second;        
     }
+    
+    // Cleanup dangling pointers...
+    m_CameraEventDictionary.clear();
 }
 
 // Set the diode filter type or throw an error...
@@ -303,7 +371,7 @@ void VicarImageAssembler::SetLanderFilter(const string &LanderFilter)
 // Deconstructor...
 VicarImageAssembler::~VicarImageAssembler()
 {
-    // Reset assembler state...
+    // Cleanup assembler...
     Reset();
 }
 

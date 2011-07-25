@@ -30,59 +30,22 @@
 #include <map>
 #include <string>
 #include "VicarImageBand.h"
+#include "ReconstructableImage.h"
 
 // Assemble 1970s era VICAR colour images from individual VICAR images...
 class VicarImageAssembler
 {
-    // Public types...
-    public:
-
-        // Reconstructable image...
-        class ReconstructableImage
-        {
-            // Public types...
-            public:
-
-                // Image band list and iterators...
-                typedef std::vector<VicarImageBand> ImageBandListType;
-                typedef ImageBandListType::iterator ImageBandListIterator;
-                typedef ImageBandListType::const_iterator ImageBandListConstIterator;
-
-            // Public methods...
-            public:
-
-                // Get the image band list...
-                ImageBandListConstIterator GetImageBandList() const { return m_ImageBands.begin(); }
-
-            // Protected data...
-            protected:
-
-                // All constituent image bands...
-                ImageBandListType   m_ImageBands;
-        };
-        
-        // Assembled image list and iterators...
-        typedef std::vector<ReconstructableImage>       ReconstructableImageListType;
-        typedef ReconstructableImageListType::iterator  ReconstructableImageListIterator;
-
     // Public methods...
     public:
 
         // Constructor...
-        VicarImageAssembler(const std::string &InputDirectory);
+        VicarImageAssembler(
+            const std::string &InputDirectory,
+            const std::string &OutputDirectory);
 
-        /* Get the size of the number of potentially reconstructable 
-        //  images indexed...
-        size_t GetSize() const { return m_ReconstructableImageList.size(); }*/
-        
         // Index the contents of the directory returning number of
         //  potentially reconstructable images or throw an error...
         void Index();
-        
-        /* Reconstruct the ith image or throw an error...
-        void Reconstruct(
-            const ReconstructableImageListIterator Iterator, 
-            const std::string &OutputFile);*/
 
         // Set usage switches...
         void SetDiodeFilterClass(const std::string &DiodeFilterClass);
@@ -101,28 +64,32 @@ class VicarImageAssembler
     // Protected types...
     protected:
 
-        // Camera event identifier to image band multimap...
-        typedef std::multimap<std::string, const VicarImageBand *>  CameraEventDictionaryType;
-        typedef std::pair<std::string, const VicarImageBand *>      CameraEventDictionaryPair;
+        // Camera event label to image band map...
+        typedef std::map<std::string, ReconstructableImage *>   CameraEventDictionaryType;
+        typedef CameraEventDictionaryType::iterator             CameraEventDictionaryIterator;
+        typedef std::pair<std::string, ReconstructableImage *>  CameraEventDictionaryPair;
+        
+        // A set of photosensor array diode band types...
+        typedef std::set<VicarImageBand::PSADiode>              DiodeBandFilterSet;
 
     // Protected data...
     protected:
 
         // Camera event dictionary multimap...
-        CameraEventDictionaryType           m_CameraEventDictionary;
+        CameraEventDictionaryType       m_CameraEventDictionary;
 
         // Input directory...
-        std::string                         m_InputDirectory;
-
-        // Reconstructable image list...
-        ReconstructableImageListType        m_ReconstructableImageList;
+        std::string                     m_InputDirectory;
+        
+        // Output directory...
+        std::string                     m_OutputDirectory;
 
         // Acceptable diode band filter set...
-        VicarImageBand::DiodeBandFilterSet  m_DiodeBandFilterSet;
+        DiodeBandFilterSet              m_DiodeBandFilterSet;
 
         // Usage flags...
-        bool                                m_IgnoreBadFiles;
-        int                                 m_LanderFilter;
+        bool                            m_IgnoreBadFiles;
+        int                             m_LanderFilter;
 };
 
 // Multiple include protection...
