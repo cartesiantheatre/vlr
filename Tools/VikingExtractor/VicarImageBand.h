@@ -174,60 +174,60 @@ class VicarImageBand
     protected:
 
         // Token to band type map...
-        TokenToBandTypeMap          m_TokenToBandTypeMap;
+        TokenToBandTypeMap      m_TokenToBandTypeMap;
 
         // Band type to friendly map...
-        BandTypeToFriendlyMap       m_BandTypeToFriendlyMap;
+        BandTypeToFriendlyMap   m_BandTypeToFriendlyMap;
 
         // Input file name...
-        const std::string           m_InputFile;
+        std::string             m_InputFile;
 
         // Sometimes the records are out of phase due to being preceeded 
         //  with VAX/VMS prefix bytes. This is the offset required to 
         //  decode file...
-        size_t                      m_PhaseOffsetRequired;
+        size_t                  m_PhaseOffsetRequired;
 
         // Number of image bands in this file. Should always be one...
-        size_t                      m_Bands;
+        size_t                  m_Bands;
         
         // Image height and width in pixels...
-        int                         m_Height;
-        int                         m_Width;
+        int                     m_Height;
+        int                     m_Width;
 
         // Pixel format... (e.g. 'I' -> integral)
-        char                        m_PixelFormat;
+        char                    m_PixelFormat;
 
         // Bytes per pixel...
-        int                         m_BytesPerColour;
+        int                     m_BytesPerColour;
         
         // Size of a physical record and padding...
-        size_t                      m_PhysicalRecordSize;
-        size_t                      m_PhysicalRecordPadding;
+        size_t                  m_PhysicalRecordSize;
+        size_t                  m_PhysicalRecordPadding;
         
         // Raw image offset...
-        size_t                      m_RawImageOffset;
+        size_t                  m_RawImageOffset;
         
         // Azimuth / elevation string...
-        std::string                 m_AzimuthElevation;
+        std::string             m_AzimuthElevation;
         
         // Camera event label...
-        std::string                 m_CameraEventLabel;
+        std::string             m_CameraEventLabel;
         
         // Band type...
-        PSADiode                    m_DiodeBandType;
+        PSADiode                m_DiodeBandType;
 
         // True if the file is probably extractable...
-        bool                        m_Ok;
+        bool                    m_Ok;
         
         // If m_Ok is false, this is the error message...
-        std::string                 m_ErrorMessage;
+        std::string             m_ErrorMessage;
 
         // Saved labels buffer...
-        std::string                 m_SavedLabelsBuffer;
+        std::string             m_SavedLabelsBuffer;
         
         // Usage flags...
-        bool                        m_Interlace;
-        bool                        m_SaveLabels;
+        bool                    m_Interlace;
+        bool                    m_SaveLabels;
 };
 
 // Multiple include protection...

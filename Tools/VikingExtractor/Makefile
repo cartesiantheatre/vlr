@@ -27,7 +27,7 @@ OBJ         = Console.o                 \
 LIBS        = `libpng-config --ldflags`
 INCS        =
 CXXINCS     =
-BIN         = VikingExtractor
+BIN         = viking-extractor
 CXXFLAGS    = $(CXXINCS) $(INCS) -g3 -Wall -Werror `libpng-config --cflags`
 SOURCES     = Console.cpp               \
               LogicalRecord.cpp         \

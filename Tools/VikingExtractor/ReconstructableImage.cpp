@@ -24,6 +24,7 @@
 #include "Console.h"
 #include <cassert>
 #include <iostream>
+#include <fstream>
 #include <dirent.h>
 #include <sys/stat.h>
 #include <errno.h>
@@ -32,8 +33,9 @@
 using namespace std;
 
 // Helpful macro...
-#define SetErrorAndReturn(Message)      { SetErrorMessage((Message)); return; }
-#define SetErrorAndReturnFalse(Message) { SetErrorMessage((Message)); return false; }
+#define SetErrorAndReturn(Message)              { SetErrorMessage((Message)); return; }
+#define SetErrorAndReturnNullStream(Message)    { SetErrorMessage((Message)); return ostream(0); }
+#define SetErrorAndReturnFalse(Message)         { SetErrorMessage((Message)); return false; }
 
 // Constructor...
 ReconstructableImage::ReconstructableImage(
@@ -97,50 +99,77 @@ void ReconstructableImage::AddImageBand(const VicarImageBand &ImageBand)
     }
 }
 
+// Create the necessary path to the output file and return a path...
+string ReconstructableImage::GetOutputFileName()
+{
+    // Identifier and solar day this image was taken on...
+    string Identifier   = "unknown";
+    string SolarDay     = "unknown";
+    
+    // Extract solar day out of camera event label...
+    const size_t SolarDayOffset = m_CameraEventLabel.find_last_of("/\\");
+    if(SolarDayOffset != string::npos && (SolarDayOffset + 1 < m_CameraEventLabel.length()))
+    {
+        // Copy the identifier and solar day out of the label...
+        Identifier.assign(m_CameraEventLabel, 0, SolarDayOffset);
+        SolarDay.assign(m_CameraEventLabel, SolarDayOffset + 1, 4);
+
+        // Remove initial zeros, if any, from solar day...
+        while(SolarDay.length() > 1 && SolarDay.at(0) == '0')
+            SolarDay.erase(0, 1);
+    }
+
+    // Images are reconstructed in subfolder of solar day it was 
+    //  taken on, so create the subfolder...
+    
+        // Create full path to subfolder...
+        const string FullDirectory = m_OutputRootDirectory + "/" + SolarDay + "/";
+        
+        // Create and check for error...
+        if(mkdir(FullDirectory.c_str(), S_IRWXU | S_IRWXG | S_IRWXO) != 0 && errno != EEXIST)
+        {
+            // Set the error message and abort...
+            SetErrorMessage("could not create output subdirectory for solar day");
+            return string();
+        }
+
+    // Now have enough information to create full path to output file name...
+    return FullDirectory + Identifier + ".png";
+}
+
 // Extract the image out as a PNG, or return false if failed...
 bool ReconstructableImage::Reconstruct()
 {
     // Create full path to output file...
+    const string OutputFileName = GetOutputFileName();
 
-        // Identifier and solar day this image was taken on...
-        string Identifier   = "unknown";
-        string SolarDay     = "unknown";
-        
-        // Extract solar day out of camera event label...
-        const size_t SolarDayOffset = m_CameraEventLabel.find_last_of("/\\");
-        if(SolarDayOffset != string::npos && (SolarDayOffset + 1 < m_CameraEventLabel.length()))
-        {
-            // Copy the identifier and solar day out of the label...
-            Identifier.assign(m_CameraEventLabel, m_CameraEventLabel.length() - SolarDayOffset - 1, 0);
-            SolarDay.assign(m_CameraEventLabel, SolarDayOffset + 1, 4);
-            
-            // Remove initial zeros, if any, from solar day...
-            while(SolarDay.at(0) == '0' && SolarDay.length() >= 1)
-                SolarDay.erase(0);
-        }
+        // Failed...
+        if(IsError())
+            return false;
 
-        // Images are reconstructed in subfolder of solar day it was 
-        //  taken on, so create the subfolder...
-        
-            // Create full path to subfolder...
-            const string FullDirectory = m_OutputRootDirectory + "/" + SolarDay + "/";
-            
-            // Create...
-            const int MkdirStatus = mkdir(FullDirectory.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
+    // Open the stream...
+    ofstream OutputFileStream(OutputFileName.c_str(), ios_base::binary | ios_base::trunc);
 
-                // Failed for non-recoverable reason...
-                if(MkdirStatus != 0 && MkdirStatus != EEXIST)
-                    SetErrorAndReturnFalse("could not create output subdirectory for solar day");
-
-        // Now have enough information to create full path to output file name...
-        const string OutputFileName = FullDirectory + Identifier + ".png";
+        // Failed...
+        if(!OutputFileStream.good())
+            SetErrorAndReturnNullStream("could not create output image");
 
     // Set file name for console messages to begin with...
     Console::GetInstance().SetCurrentFileName(OutputFileName);
 
+Message(Console::Info)
+     << m_RedImageBandList.size() << " "
+     << m_GreenImageBandList.size() << " "
+     << m_BlueImageBandList.size() << " "
+     << m_Infrared1ImageBandList.size() << " "
+     << m_Infrared2ImageBandList.size() << " "
+     << m_Infrared3ImageBandList.size() << " "
+     << m_GrayImageBandList.size() << endl;
+
     // Alert user...
-    Message(Console::Info) << "reconstructed successfully" << endl;
+//    Message(Console::Info) << "reconstructed successfully" << endl;
     
+    // Done reconstructing image...
     return true;
 }
 

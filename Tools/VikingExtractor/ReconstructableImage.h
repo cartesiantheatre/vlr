@@ -27,6 +27,7 @@
 #include <ostream>
 #include <vector>
 #include <string>
+#include <fstream>
 #include "VicarImageBand.h"
 
 // Reconstructable image...
@@ -50,6 +51,9 @@ class ReconstructableImage
         // Get an error message, if set...
         const std::string &GetErrorMessage() const 
             { return m_ErrorMessage; }
+
+        // Create the necessary path to the output file and return a path...
+        std::string GetOutputFileName();
 
         // Was an error set?
         bool IsError() const

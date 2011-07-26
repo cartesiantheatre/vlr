@@ -217,12 +217,12 @@ void VicarImageAssembler::Index()
         closedir(Directory);
 
         // Reconstruct each image...
-        for(CameraEventDictionaryIterator Iterator = m_CameraEventDictionary.begin();
-            Iterator != m_CameraEventDictionary.end();
-          ++Iterator)
+        for(CameraEventDictionaryIterator EventIterator = m_CameraEventDictionary.begin();
+            EventIterator != m_CameraEventDictionary.end();
+          ++EventIterator)
         {
             // Get the reconstructable image object...
-            Reconstructable = EventIterator->second;
+            ReconstructableImage *Reconstructable = EventIterator->second;
             assert(Reconstructable);
 
             // Reconstruct the image object and check for error...
