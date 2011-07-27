@@ -32,11 +32,13 @@ Console *Console::m_SingletonInstance = NULL;
 
 // Default constructor...
 Console::Console()
-    : m_UseColours(true)
+    : m_UseColours(true),
+      m_UseCurrentFileName(true)
 {
     // Initialize the channel map...
     m_ChannelMap[Error]     = new Channel(Red,     "error: ");
     m_ChannelMap[Info]      = new Channel(Blue,    "info: ");
+    m_ChannelMap[Summary]   = new Channel(Blue,    "");
     m_ChannelMap[Warning]   = new Channel(Yellow,  "warning: ");
     m_ChannelMap[Verbose]   = new Channel(Default, "");
 }
@@ -76,8 +78,8 @@ ostream &Console::Message(const Console::ChannelID ID)
     if(m_UseColours)
         cout << "\033[1;" << RequestedChannel.m_ForegroundColour << "m";
     
-    // Begin message with current file name, if known...
-    if(!m_CurrentFileName.empty())
+    // Begin message with current file name, if known, and enabled...
+    if(!m_CurrentFileName.empty() && m_UseCurrentFileName)
         cout << m_CurrentFileName << ": ";
     
     // Prepend client's message with channel prefix...

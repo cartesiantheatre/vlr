@@ -38,6 +38,7 @@ class Console
         {
             Error,
             Info,
+            Summary,
             Warning,
             Verbose
         }ChannelID;
@@ -54,6 +55,10 @@ class Console
         // Enable or disable the use of VT100 ANSI colours...
         void SetUseColours(const bool UseColours = true) 
             { m_UseColours = UseColours; }
+
+        // Enable or disable preceding output with current file name...
+        void SetUseCurrentFileName(const bool UseCurrentFileName = true)
+            { m_UseCurrentFileName = UseCurrentFileName; }
         
         // Enable or suppress a given channel...
         void SetChannelEnabled(const ChannelID ID, const bool Enabled);
@@ -132,6 +137,9 @@ class Console
         
         // Use VT100 ANSI colours or not...
         bool                m_UseColours;
+        
+        // Precede output with current file name...
+        bool                m_UseCurrentFileName;
 
     // Private data...
     private:

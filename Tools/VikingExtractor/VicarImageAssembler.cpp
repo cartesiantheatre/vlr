@@ -37,8 +37,11 @@ VicarImageAssembler::VicarImageAssembler(
     const string &OutputDirectory)
     : m_InputDirectory(InputDirectory),
       m_OutputDirectory(OutputDirectory),
+      m_AutoRotate(true),
       m_IgnoreBadFiles(false),
-      m_LanderFilter(0)
+      m_LanderFilter(0),
+      m_SolDirectorize(false),
+      m_SummarizeOnly(false)
 {
     // We should have been provided with an input directory...
     assert(!m_InputDirectory.empty());
@@ -53,11 +56,21 @@ VicarImageAssembler::VicarImageAssembler(
 void VicarImageAssembler::Index()
 {
     // Variables...
+    size_t          TotalFiles      = 0;
     DIR            *Directory       = NULL;
     struct  dirent *DirectoryEntry  = NULL;
     string          CurrentFile;
     string          FileNameOnly;
     string          ErrorMessage;
+
+    // If summarize only mode is enabled, mute current file name, warnings, info, and errors...
+    if(m_SummarizeOnly)
+    {
+        Console::GetInstance().SetUseCurrentFileName(false);
+        Console::GetInstance().SetChannelEnabled(Console::Error, false);
+        Console::GetInstance().SetChannelEnabled(Console::Info, false);
+        Console::GetInstance().SetChannelEnabled(Console::Warning, false);
+    }
 
     // Reset assembler state...
     Reset();
@@ -69,6 +82,23 @@ void VicarImageAssembler::Index()
     // Try to index the directory...
     try
     {
+        // Count total number of files...
+        while((DirectoryEntry = readdir(Directory)))
+        {
+            // Not a regular file, skip...
+            if(DirectoryEntry->d_type != DT_REG)
+                continue;
+            
+            // Increment...
+          ++TotalFiles;
+        }
+        
+        // Rewind directory back to the beginning now...
+        rewinddir(Directory);
+
+        // Total files examined so far...
+        size_t FilesExamined = 0;
+
         // Keep reading entries while there are some...
         while((DirectoryEntry = readdir(Directory)))
         {
@@ -76,9 +106,19 @@ void VicarImageAssembler::Index()
             if(DirectoryEntry->d_type != DT_REG)
                 continue;
             
+            // Update number of files examined...
+          ++FilesExamined;
+
             // Skip if extension doesn't match...
             if(fnmatch("*.[0-9][0-9][0-9]", DirectoryEntry->d_name, 0) != 0)
                 continue;
+
+            // Update summary, if enabled...
+            if(m_SummarizeOnly)
+                Message(Console::Summary) 
+                    << "\rexamined " 
+                    << FilesExamined << "/" << TotalFiles 
+                    << " files, please wait...";
             
             // Get the full path...
             CurrentFile = m_InputDirectory + DirectoryEntry->d_name;
@@ -161,7 +201,11 @@ void VicarImageAssembler::Index()
 
                     // Construct a new reconstructable image...
                     Reconstructable = new ReconstructableImage(
-                        m_OutputDirectory, CameraEventLabel);
+                        m_AutoRotate, 
+                        m_Interlace, 
+                        m_SolDirectorize, 
+                        m_OutputDirectory, 
+                        CameraEventLabel);
 
                     // Insert the reconstructable image into the event dictionary.
                     //  We use the previous failed find iterator as a possible 
@@ -213,14 +257,32 @@ void VicarImageAssembler::Index()
             }
         }
 
+        // Update summary, if enabled, beginning with new line since last was \r only...
+        if(m_SummarizeOnly)
+            Message(Console::Summary) << endl;
+
         // Done with the directory...
         closedir(Directory);
+
+        // Total attempted reconstructions and total successful...
+        size_t AttemptedReconstruction      = 0;
+        size_t SuccessfullyReconstructed    = 0;
 
         // Reconstruct each image...
         for(CameraEventDictionaryIterator EventIterator = m_CameraEventDictionary.begin();
             EventIterator != m_CameraEventDictionary.end();
           ++EventIterator)
         {
+            // Note one more attempted reconstruction effort...
+          ++AttemptedReconstruction;
+
+            // Update summary, if enabled...
+            if(m_SummarizeOnly)
+                Message(Console::Summary) 
+                    << "\rattempted reconstruction " 
+                    << AttemptedReconstruction << "/" << m_CameraEventDictionary.size()
+                    << " files, please wait...";
+
             // Get the reconstructable image object...
             ReconstructableImage *Reconstructable = EventIterator->second;
             assert(Reconstructable);
@@ -249,12 +311,28 @@ void VicarImageAssembler::Index()
                     throw ErrorMessage;
                 }
             }
+            
+            // Otherwise, take note that we recovered one more...
+            else
+              ++SuccessfullyReconstructed;
         }
+
+        // Update summary, if enabled, beginning with new line since last was \r only...
+        if(m_SummarizeOnly)
+            Message(Console::Summary) 
+                << endl
+                << "successfully reconstructed "
+                << SuccessfullyReconstructed << "/" << m_CameraEventDictionary.size()
+                << endl;
     }
 
         // Failed...
         catch(const string &ErrorMessage)
         {
+            // Update summary, if enabled, beginning with new line since last was \r only...
+            if(m_SummarizeOnly)
+                Message(Console::Summary) << endl;
+
             // Close the directory...
             closedir(Directory);
             

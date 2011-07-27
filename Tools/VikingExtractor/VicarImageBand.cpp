@@ -68,6 +68,7 @@ VicarImageBand::VicarImageBand(
       m_RawImageOffset(0),
       m_DiodeBandType(Unknown),
       m_Ok(false),
+      m_AutoRotate(true),
       m_Interlace(false),
       m_SaveLabels(false)
 {
@@ -162,22 +163,13 @@ VicarImageBand::VicarImageBand(
         m_BandTypeToFriendlyMap[Survey]     = "survey";
 }
 
-// Extract the image out as a PNG, but most be loaded first...
-void VicarImageBand::Extract(const string &OutputFile, const size_t DataBandIndex)
+// Extract the single image band out as a PNG, but must be loaded first...
+bool VicarImageBand::Extract(const string &OutputFile)
 {
-    // Objects...
-    LogicalRecord   Record;
-
-    // Check if file was loaded ok...
-    if(!IsOk())
-        SetErrorAndReturn("input was not loaded")
-
-    // Open the input file...
-    ifstream InputFileStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
-    
-        // Failed...
-        if(!InputFileStream.is_open())
-            SetErrorAndReturn("could not open input for reading")
+    // Get the extraction stream and check for error...
+    ifstream ExtractionStream;
+    if(!GetExtractionStream(ExtractionStream))
+        return false;
 
     // Write the saved label out, if user selected...
     if(m_SaveLabels)
@@ -190,7 +182,7 @@ void VicarImageBand::Extract(const string &OutputFile, const size_t DataBandInde
         
             // Failed...
             if(!SavedLabelsStream.good())
-                SetErrorAndReturn("unable to save record label")
+                SetErrorAndReturnFalse("unable to save record label")
 
         // Write...
         SavedLabelsStream << m_SavedLabelsBuffer;
@@ -198,41 +190,38 @@ void VicarImageBand::Extract(const string &OutputFile, const size_t DataBandInde
         // Done...
         SavedLabelsStream.close();
     }
-    
-    // Seek to raw image offset and make sure it was successful...
-    if(!InputFileStream.seekg(m_RawImageOffset, ios_base::beg).good())
-        SetErrorAndReturn("file ended prematurely before raw image")
-    
-    // Write out the image...
 
-        // Allocate...
-        png::image<png::gray_pixel> PngImage(m_Width, m_Height);
+    // Allocate PNG image...
+    png::image<png::gray_pixel> PngImage(m_Width, m_Height);
 
-        // Toggle interlacing, if user selected...
-        if(m_Interlace)
-            PngImage.set_interlace_type(png::interlace_adam7);
-        else
-            PngImage.set_interlace_type(png::interlace_none);
+    // Toggle interlacing, if user selected...
+    if(m_Interlace)
+        PngImage.set_interlace_type(png::interlace_adam7);
+    else
+        PngImage.set_interlace_type(png::interlace_none);
 
-        // Pass raw image data through encoder, row by row...
-        for(size_t Y = 0; Y < PngImage.get_height(); ++Y)
+    // Pass raw image data through encoder, row by row...
+    for(size_t Y = 0; Y < PngImage.get_height(); ++Y)
+    {
+        // Pass raw image data through encoder, column by column...
+        for(size_t X = 0; X < PngImage.get_width(); ++X)
         {
-            // Pass raw image data through encoder, column by column...
-            for(size_t X = 0; X < PngImage.get_width(); ++X)
-            {
-                // Read a pixel / byte and check for error...
-                char Byte = '\x0';
-                if(!InputFileStream.read(&Byte, 1).good())
-                    SetErrorAndReturn("raw image data ended prematurely")
-                
-                // Encode...
-                PngImage.set_pixel(X, Y, Byte);
-            }
+            // Read a pixel / byte and check for error...
+            char Byte = '\x0';
+            if(!ExtractionStream.read(&Byte, 1).good())
+                SetErrorAndReturnFalse("raw image data ended prematurely or i/o error")
+            
+            // Encode...
+            PngImage.set_pixel(X, Y, Byte);
         }
+    }
 
-        // Write out the file and alert the user...
-        PngImage.write(OutputFile);
-        clog << "writing " << OutputFile << endl;
+    // Write out the file and alert the user...
+    PngImage.write(OutputFile);
+    clog << "extracted image band to " << OutputFile << endl;
+    
+    // Done...
+    return true;
 }
 
 // Get the diode band type as a human friendly string...
@@ -247,6 +236,37 @@ const string &VicarImageBand::GetDiodeBandTypeFriendlyString() const
 
     // Return the friendly string...
     return Iterator->second;
+}
+
+// Get a stream opened and ready to extract where raw image data 
+//  begins. Must be loaded first. Argument is streams to use...
+bool VicarImageBand::GetExtractionStream(std::ifstream &ExtractionStream)
+{
+    // Check if file was loaded ok...
+    if(!IsOk())
+        SetErrorAndReturnFalse("input was not loaded")
+
+    // Stream should not be opened...
+    assert(!ExtractionStream.is_open());
+
+    // Open the input file...
+    ExtractionStream.open(m_InputFile.c_str(), ifstream::in | ifstream::binary);
+    
+        // Failed...
+        if(!ExtractionStream.is_open())
+        {
+            // Alert, cleanup, and abort...
+            SetErrorMessage("could not open input for reading");
+            ExtractionStream.close();
+            return false;
+        }
+
+    // Seek to raw image offset and make sure it was successful...
+    if(!ExtractionStream.seekg(m_RawImageOffset, ios_base::beg).good())
+        SetErrorAndReturnFalse("file ended prematurely before raw image");
+
+    // Done...
+    return true;
 }
 
 // Get the file size, or -1 on error...
@@ -543,8 +563,22 @@ void VicarImageBand::Load()
     // Show user, if requested...
     Message(Console::Verbose) << "raw image offset: " << m_RawImageOffset << hex << showbase << " (" << m_RawImageOffset<< ")" << dec << endl;
 
+    // Now we know an absolute lower bound for file size, check...
+    const int RequiredMinimumSize = m_RawImageOffset + (m_Bands * m_Height * m_Width * m_BytesPerColour);
+    if(FileSize < RequiredMinimumSize)
+        SetErrorAndReturn("file too small to contain self described band data payload");
+
     // Loaded ok...
     m_Ok = true;
+}
+
+// For comparing quality between images of the same camera event 
+//  and same band type...
+bool VicarImageBand::operator<(const VicarImageBand &RightSide) const
+{
+// Stub for now...
+
+    return true;
 }
 
 // Parse basic metadata. Basic metadata includes bands, dimensions, 

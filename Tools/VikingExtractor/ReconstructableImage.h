@@ -38,6 +38,9 @@ class ReconstructableImage
 
         // Constructor...
         ReconstructableImage(
+            const bool AutoRotate,
+            const bool Interlace,
+            const bool SolDirectorize,
             const std::string &OutputRootDirectory, 
             const std::string &CameraEventLabel);
 
@@ -72,6 +75,13 @@ class ReconstructableImage
     // Protected methods...
     protected:
 
+        // Reconstruct a colour image from requested image bands which can be NULL...
+        bool ReconstructColourImage(
+            const std::string &OutputFileName, 
+            VicarImageBand *BestRedImageBand, 
+            VicarImageBand *BestGreenImageBand, 
+            VicarImageBand *BestBlueImageBand);
+
         // Set the error message...
         void SetErrorMessage(const std::string &ErrorMessage)
             { m_ErrorMessage = ErrorMessage; }
@@ -93,9 +103,18 @@ class ReconstructableImage
         
         // Camera event label...
         const std::string   m_CameraEventLabel;
-        
+
         // Error message...
         std::string         m_ErrorMessage;
+        
+        // Auto rotation correction...
+        bool                m_AutoRotate;
+
+        // Use Adam7 interlacing...
+        bool                m_Interlace;
+        
+        // Sol directorize...
+        bool                m_SolDirectorize;
 };
 
 // Multiple include protection...

@@ -48,9 +48,13 @@ class VicarImageAssembler
         void Index();
 
         // Set usage switches...
+        void SetAutoRotate(const bool AutoRotate = true) { m_AutoRotate = AutoRotate; }
         void SetDiodeFilterClass(const std::string &DiodeFilterClass);
         void SetIgnoreBadFiles(const bool IgnoreBadFiles = true) { m_IgnoreBadFiles = IgnoreBadFiles; }
+        void SetInterlace(const bool Interlace = true) { m_Interlace = Interlace; }
         void SetLanderFilter(const std::string &LanderFilter);
+        void SetSolDirectorize(const bool SolDirectorize = true) { m_SolDirectorize = SolDirectorize; }
+        void SetSummarizeOnly(const bool SummarizeOnly = true) { m_SummarizeOnly = SummarizeOnly; }
 
         // Deconstructor...
        ~VicarImageAssembler();
@@ -88,8 +92,12 @@ class VicarImageAssembler
         DiodeBandFilterSet              m_DiodeBandFilterSet;
 
         // Usage flags...
+        bool                            m_AutoRotate;
         bool                            m_IgnoreBadFiles;
+        bool                            m_Interlace;
         int                             m_LanderFilter;
+        bool                            m_SolDirectorize;
+        bool                            m_SummarizeOnly;
 };
 
 // Multiple include protection...

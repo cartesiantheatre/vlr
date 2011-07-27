@@ -78,9 +78,8 @@ class VicarImageBand
         // Construct...
         VicarImageBand(const std::string &InputFile);
 
-        // Extract the image out as a PNG, but most be loaded first...
-        void Extract(
-            const std::string &OutputFile, const size_t DataBandIndex = 0);
+        // Extract the single image band out as a PNG, but must be loaded first...
+        bool Extract(const std::string &OutputFile);
 
         // Get the azimuth / elevation string...
         const std::string &GetAzimuthElevation() const;
@@ -94,6 +93,10 @@ class VicarImageBand
         // Get the diode band type as a human friendly string...
         const std::string &GetDiodeBandTypeFriendlyString() const;
 
+        // Get a stream opened and ready to extract where raw image data 
+        //  begins. Must be loaded first. Argument is streams to use...
+        bool GetExtractionStream(std::ifstream &ExtractionStream);
+
         // Get the original file on the magnetic tape number, or zero if unknown...
         size_t GetFileOnMagneticTapeNumber() const;
 
@@ -103,11 +106,17 @@ class VicarImageBand
         // Get the file size, or -1 on error...
         int GetFileSize() const;
 
+        // Get image height...
+        int GetHeight() const { return m_Height; }
+
         // Get the input file name only without path...
         std::string GetInputFileNameOnly() const;
         
         // Get the original magnetic tape number, or zero if unknown...
         size_t GetMagneticTapeNumber() const;
+
+        // Get image width...
+        int GetWidth() const { return m_Width; }
 
         // Check if the file came with a camera event label...
         bool IsCameraEventLabelPresent() const 
@@ -123,6 +132,13 @@ class VicarImageBand
         // Load as much of the file as possible, setting error on 
         //  failure...
         void Load();
+        
+        // For comparing quality between images of the same camera event 
+        //  and same band type...
+        bool operator<(const VicarImageBand &RightSide) const;
+
+        // Set auto rotate...
+        void SetAutoRotate(const bool AutoRotate = true) { m_AutoRotate = AutoRotate; }
 
         // Set Adam7 interlacing...
         void SetInterlace(const bool Interlace = true) { m_Interlace = Interlace; }
@@ -226,6 +242,7 @@ class VicarImageBand
         std::string             m_SavedLabelsBuffer;
         
         // Usage flags...
+        bool                    m_AutoRotate;
         bool                    m_Interlace;
         bool                    m_SaveLabels;
 };

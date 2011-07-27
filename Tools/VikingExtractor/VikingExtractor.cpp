@@ -42,7 +42,7 @@ void ShowHelp()
 {
     cout << "Usage: VikingExtractor [options] input [output]"                                   << endl
          << "Options:"                                                                          << endl
-         << "  -f, --diode-filter <type>   Extract from matching supported diode filter"        << endl
+         << "  -f, --diode-filter[=type]   Extract from matching supported diode filter"        << endl
          << "                              classes which are any (default), colour, infrared,"  << endl
          << "                              sun, or survey (assembly mode only)."                << endl
          << "  -y, --dry-run               Don't write anything"                                << endl
@@ -51,10 +51,20 @@ void ShowHelp()
          << "                              but continue extraction of other files (assembly"    << endl
          << "                              mode only)."                                         << endl
          << "  -i, --interlace             Encode output with Adam7 interlacing"                << endl
-         << "  -r, --no-colours            Disable VT/100 ANSI coloured terminal output."       << endl
+         << "  -j, --jobs[=threads]        Number of threads to run parallelized. One if"       << endl
+         << "                              -j option provided, auto if threads not"             << endl
+         << "                              specified."                                          << endl
+         << "  -l, --save-record-labels    Save VICAR record labels as text file"               << endl
          << "  -n, --lander-filter <#>     Extract from specific lander only which are any"     << endl
          << "                              (default), 1, or 2 (assembly mode only)."            << endl
-         << "  -l, --save-record-labels    Save VICAR record labels as text file"               << endl
+         << "  -a, --summary-only          No warnings or errors displayed, summary only"       << endl
+         << "                              (assembly mode only)"                                << endl
+         << "  -r, --no-colours            Disable VT/100 ANSI coloured terminal output."       << endl
+         << "  -R, --no-rotate             Don't apply automatic 90 degree counter"             << endl
+         << "                              clockwise rotation."                                 << endl
+         << "  -s, --sol-directorize       Put reconstructed images into subdirectories"        << endl
+         << "                              numbered by camera event solar day (assembly"        << endl
+         << "                              mode only)."                                         << endl
          << "  -V, --verbose               Be verbose"                                          << endl
          << "  -v, --version               Show version information"                            << endl << endl
 
@@ -90,10 +100,14 @@ int main(int ArgumentCount, char *Arguments[])
     bool        DryRun              = false;
     bool        IgnoreBadFiles      = false;
     bool        UseColours          = true;
+    bool        AutoRotate          = true;
     bool        VerboseConsole      = false;
     bool        Interlace           = false;
+    size_t      Jobs                = 0;
     string      LanderFilter;
     bool        SaveLabels          = false;
+    bool        SolDirectorize      = false;
+    bool        SummarizeOnly       = false;
 
     // Command line option structure...
     option CommandLineOptions[] =
@@ -103,9 +117,13 @@ int main(int ArgumentCount, char *Arguments[])
         {"dry-run",             no_argument,        NULL,   'y'},
         {"help",                no_argument,        NULL,   'h'},
         {"interlace",           no_argument,        NULL,   'i'},
+        {"jobs",                optional_argument,  NULL,   'j'},
         {"lander-filter",       required_argument,  NULL,   'n'},
+        {"summarize-only",      no_argument,        NULL,   'a'},
         {"no-colours",          no_argument,        NULL,   'r'},
+        {"no-rotate",           no_argument,        NULL,   'R'},
         {"save-record-labels",  no_argument,        NULL,   'l'},
+        {"sol-directorize",     no_argument,        NULL,   's'},
         {"verbose",             no_argument,        NULL,   'V'},
         {"version",             no_argument,        NULL,   'v'},
         
@@ -115,7 +133,7 @@ int main(int ArgumentCount, char *Arguments[])
 
     // Keep processing each option until there are none left...
     while((OptionCharacter = getopt_long(
-        ArgumentCount, Arguments, "bf:yhin:rlVv", CommandLineOptions, &OptionIndex)) != -1)
+        ArgumentCount, Arguments, "bf:yhij::n:arRslVv", CommandLineOptions, &OptionIndex)) != -1)
     {
         // Which option?
         switch(OptionCharacter)
@@ -137,6 +155,9 @@ int main(int ArgumentCount, char *Arguments[])
                 break;
             }
 
+            // Summarize only...
+            case 'a': { SummarizeOnly = true; break; }
+            
             // Ignore bad files...
             case 'b': { IgnoreBadFiles = true; break; }
            
@@ -155,6 +176,21 @@ int main(int ArgumentCount, char *Arguments[])
 
             // Interlacing...
             case 'i': { Interlace = true; break; }
+            
+            // Jobs...
+            case 'j': 
+            {
+                // Number of threads provided...
+                if(optarg)
+                    Jobs = atoi(optarg);
+                
+                // Number of threads not provided, use auto...
+                else
+                    Jobs = 0;
+
+                // Done...
+                break;
+            }
 
             // Save labels...
             case 'l': { SaveLabels = true; break; }
@@ -164,6 +200,12 @@ int main(int ArgumentCount, char *Arguments[])
 
             // Set no terminal colour...
             case 'r': { UseColours = false; break; }
+            
+            // Set no automatic image rotation correction...
+            case 'R': { AutoRotate = false; break; }
+            
+            // Set solar directory mode...
+            case 's': { SolDirectorize = true; break; }
 
             // Version...
             case 'v':
@@ -344,9 +386,13 @@ int main(int ArgumentCount, char *Arguments[])
             VicarImageAssembler Assembler(InputFile, OutputFile);
             
             // Set usage switches...
+            Assembler.SetAutoRotate(AutoRotate);
             Assembler.SetDiodeFilterClass(DiodeFilterClass);
             Assembler.SetIgnoreBadFiles(IgnoreBadFiles);
+            Assembler.SetInterlace(Interlace);
             Assembler.SetLanderFilter(LanderFilter);
+            Assembler.SetSolDirectorize(SolDirectorize);
+            Assembler.SetSummarizeOnly(SummarizeOnly);
             
             // Index the input directory...
             Assembler.Index();
@@ -382,11 +428,20 @@ int main(int ArgumentCount, char *Arguments[])
             // Lander filter should not be set...
             if(!LanderFilter.empty())
                 throw std::string("lander filter available in assembly mode only");
+
+            // Sol directorize should not be set...
+            if(SolDirectorize)
+                throw std::string("sol directorize available in assembly mode only");
+
+            // Summarize only should not be set...
+            if(SummarizeOnly)
+                throw std::string("summarize only available in assembly mode only");
             
             // Construct a VICAR colour image object...
             VicarImageBand Image(InputFile);
             
             // Set user flags
+            Image.SetAutoRotate(AutoRotate);
             Image.SetInterlace(Interlace);
             Image.SetSaveLabels(SaveLabels);
             
@@ -399,7 +454,11 @@ int main(int ArgumentCount, char *Arguments[])
             
             // Write out the image, if not in dry mode...
             if(!DryRun)
-                Image.Extract(OutputFile);
+            {
+                // Check for error...
+                if(!Image.Extract(OutputFile))
+                    throw Image.GetErrorMessage();
+            }
         }
     }
 
