@@ -67,10 +67,7 @@ VicarImageBand::VicarImageBand(
       m_PhysicalRecordPadding(0),
       m_RawImageOffset(0),
       m_DiodeBandType(Unknown),
-      m_Ok(false),
-      m_AutoRotate(true),
-      m_Interlace(false),
-      m_SaveLabels(false)
+      m_Ok(false)
 {
     // Initialize the token to diode band type dictionary...
 
@@ -161,67 +158,6 @@ VicarImageBand::VicarImageBand(
     
         // Broad band for survey...
         m_BandTypeToFriendlyMap[Survey]     = "survey";
-}
-
-// Extract the single image band out as a PNG, but must be loaded first...
-bool VicarImageBand::Extract(const string &OutputFile)
-{
-    // Get the extraction stream and check for error...
-    ifstream ExtractionStream;
-    if(!GetExtractionStream(ExtractionStream))
-        return false;
-
-    // Write the saved label out, if user selected...
-    if(m_SaveLabels)
-    {
-        // Create label file name...
-        const string LabelFileName = m_InputFile + string(".txt");
-
-        // Open...
-        ofstream SavedLabelsStream(LabelFileName.c_str());
-        
-            // Failed...
-            if(!SavedLabelsStream.good())
-                SetErrorAndReturnFalse("unable to save record label")
-
-        // Write...
-        SavedLabelsStream << m_SavedLabelsBuffer;
-        
-        // Done...
-        SavedLabelsStream.close();
-    }
-
-    // Allocate PNG image...
-    png::image<png::gray_pixel> PngImage(m_Width, m_Height);
-
-    // Toggle interlacing, if user selected...
-    if(m_Interlace)
-        PngImage.set_interlace_type(png::interlace_adam7);
-    else
-        PngImage.set_interlace_type(png::interlace_none);
-
-    // Pass raw image data through encoder, row by row...
-    for(size_t Y = 0; Y < PngImage.get_height(); ++Y)
-    {
-        // Pass raw image data through encoder, column by column...
-        for(size_t X = 0; X < PngImage.get_width(); ++X)
-        {
-            // Read a pixel / byte and check for error...
-            char Byte = '\x0';
-            if(!ExtractionStream.read(&Byte, 1).good())
-                SetErrorAndReturnFalse("raw image data ended prematurely or i/o error")
-            
-            // Encode...
-            PngImage.set_pixel(X, Y, Byte);
-        }
-    }
-
-    // Write out the file and alert the user...
-    PngImage.write(OutputFile);
-    clog << "extracted image band to " << OutputFile << endl;
-    
-    // Done...
-    return true;
 }
 
 // Get the diode band type as a human friendly string...

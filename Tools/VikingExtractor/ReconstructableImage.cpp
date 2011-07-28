@@ -21,14 +21,12 @@
 
 // Includes...
 #include "ReconstructableImage.h"
+#include "Miscellaneous.h"
 #include "Console.h"
 #include <cassert>
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <errno.h>
 #include <png++/png.hpp>
 
 // Using the standard namespace...
@@ -45,16 +43,13 @@ template<class T> const T &max(const T &A, const T &B, const T &C) { return max(
 
 // Constructor...
 ReconstructableImage::ReconstructableImage(
-    const bool AutoRotate,
-    const bool Interlace,
-    const bool SolDirectorize,
     const std::string &OutputRootDirectory, 
     const std::string &CameraEventLabel)
     : m_OutputRootDirectory(OutputRootDirectory),
       m_CameraEventLabel(CameraEventLabel),
-      m_AutoRotate(AutoRotate),
-      m_Interlace(Interlace),
-      m_SolDirectorize(SolDirectorize)
+      m_AutoRotate(true),
+      m_Interlace(false),
+      m_SolDirectorize(false)
 {
     // Always need an label...
     assert(!CameraEventLabel.empty());
@@ -139,7 +134,7 @@ string ReconstructableImage::GetOutputFileName()
         const string FullDirectory = m_OutputRootDirectory + "/" + SolarDay + "/";
         
         // Create and check for error...
-        if(mkdir(FullDirectory.c_str(), S_IRWXU | S_IRWXG | S_IRWXO) != 0 && errno != EEXIST)
+        if(!CreateDirectoryRecursively(FullDirectory))
         {
             // Set the error message and abort...
             SetErrorMessage("could not create output subdirectory for solar day");
@@ -221,6 +216,10 @@ bool ReconstructableImage::Reconstruct()
         // Attempt to reconstruct...
         return ReconstructColourImage(OutputFileName, BestRed, BestGreen, BestBlue);
     }
+
+/*
+    TODO: Complete reconstruction recipes for below.
+*/
 
     /* Colour image... (only all colour bands present)
     if((min(Reds, Greens, Blues) >= 1) && 

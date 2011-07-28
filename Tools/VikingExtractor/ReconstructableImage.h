@@ -38,9 +38,6 @@ class ReconstructableImage
 
         // Constructor...
         ReconstructableImage(
-            const bool AutoRotate,
-            const bool Interlace,
-            const bool SolDirectorize,
             const std::string &OutputRootDirectory, 
             const std::string &CameraEventLabel);
 
@@ -85,6 +82,11 @@ class ReconstructableImage
         // Set the error message...
         void SetErrorMessage(const std::string &ErrorMessage)
             { m_ErrorMessage = ErrorMessage; }
+
+        // Set user preferences...
+        void SetAutoRotate(const bool AutoRotate) { m_AutoRotate = AutoRotate; }
+        void SetInterlace(const bool Interlace) { m_Interlace = Interlace; }
+        void SetSolDirectorize(const bool SolDirectorize) { m_SolDirectorize = SolDirectorize; }
 
     // Protected data...
     protected:

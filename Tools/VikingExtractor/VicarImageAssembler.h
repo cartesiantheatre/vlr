@@ -40,12 +40,12 @@ class VicarImageAssembler
 
         // Constructor...
         VicarImageAssembler(
-            const std::string &InputDirectory,
-            const std::string &OutputDirectory);
+            const std::string &InputFileOrRootDirectory,
+            const std::string &OutputRootDirectory);
 
-        // Index the contents of the directory returning number of
-        //  potentially reconstructable images or throw an error...
-        void Index();
+        // Reconstruct all possible images found of either the input 
+        //  file or a directory into the output directory...
+        void Reconstruct();
 
         // Set usage switches...
         void SetAutoRotate(const bool AutoRotate = true) { m_AutoRotate = AutoRotate; }
@@ -61,6 +61,10 @@ class VicarImageAssembler
 
     // Protected methods...
     protected:
+
+        // Generate input file list from the input file or directory, or 
+        //  throw an error... (recursive)
+        void GenerateProspectiveFileList(const std::string &InputFileOrDirectory);
 
         // Reset the assembler state...
         void Reset();
@@ -82,11 +86,14 @@ class VicarImageAssembler
         // Camera event dictionary multimap...
         CameraEventDictionaryType       m_CameraEventDictionary;
 
-        // Input directory...
-        std::string                     m_InputDirectory;
+        // Input file or directory...
+        std::string                     m_InputFileOrRootDirectory;
         
-        // Output directory...
-        std::string                     m_OutputDirectory;
+        // List of all potential files to examine...
+        std::vector<std::string>        m_ProspectiveFiles;
+        
+        // Output root directory...
+        std::string                     m_OutputRootDirectory;
 
         // Acceptable diode band filter set...
         DiodeBandFilterSet              m_DiodeBandFilterSet;

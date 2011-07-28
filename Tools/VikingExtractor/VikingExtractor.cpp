@@ -30,9 +30,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <getopt.h>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <errno.h>
+#include <unistd.h>
 
 // Using the standard namespace...
 using namespace std;
@@ -44,34 +42,31 @@ void ShowHelp()
          << "Options:"                                                                          << endl
          << "  -f, --diode-filter[=type]   Extract from matching supported diode filter"        << endl
          << "                              classes which are any (default), colour, infrared,"  << endl
-         << "                              sun, or survey (assembly mode only)."                << endl
+         << "                              sun, or survey."                                     << endl
          << "  -y, --dry-run               Don't write anything"                                << endl
          << "  -h, --help                  Show this help"                                      << endl
          << "  -b, --ignore-bad-files      Don't stop on corrupt or problematic input file,"    << endl
-         << "                              but continue extraction of other files (assembly"    << endl
-         << "                              mode only)."                                         << endl
+         << "                              but continue extraction of other files."             << endl
          << "  -i, --interlace             Encode output with Adam7 interlacing"                << endl
          << "  -j, --jobs[=threads]        Number of threads to run parallelized. One if"       << endl
-         << "                              -j option provided, auto if threads not"             << endl
+         << "                              -j not provided or auto if threads argument not"             << endl
          << "                              specified."                                          << endl
          << "  -l, --save-record-labels    Save VICAR record labels as text file"               << endl
          << "  -n, --lander-filter <#>     Extract from specific lander only which are any"     << endl
-         << "                              (default), 1, or 2 (assembly mode only)."            << endl
-         << "  -a, --summary-only          No warnings or errors displayed, summary only"       << endl
-         << "                              (assembly mode only)"                                << endl
+         << "                              (default), 1, or 2."                                 << endl
+         << "  -a, --summary-only          No warnings or errors displayed, summary only."       << endl
          << "  -r, --no-colours            Disable VT/100 ANSI coloured terminal output."       << endl
          << "  -R, --no-rotate             Don't apply automatic 90 degree counter"             << endl
          << "                              clockwise rotation."                                 << endl
          << "  -s, --sol-directorize       Put reconstructed images into subdirectories"        << endl
-         << "                              numbered by camera event solar day (assembly"        << endl
-         << "                              mode only)."                                         << endl
+         << "                              numbered by camera event solar day."                 << endl
          << "  -V, --verbose               Be verbose"                                          << endl
          << "  -v, --version               Show version information"                            << endl << endl
 
-         << "Converts 1970s Viking Lander era VICAR colour images to PNGs. If 'input' is a"     << endl
-         << "directory, extract / assemble separate colour bands into output directory"         << endl
-         << "(assembly mode). Otherwise operate on single file."                                << endl << endl
-         
+         << "Converts 1970s Viking Lander era VICAR colour images to PNGs. The value of"        << endl
+         << "'input' can be either a single VICAR file or a directory containing VICAR files"   << endl
+         << "to attempt reconstruction into the provided output directory."                     << endl << endl
+
          << "Report bugs to <https://bugs.launchpad.net/avaneya>" << endl;
 }
 
@@ -88,26 +83,24 @@ void ShowVersion()
 int main(int ArgumentCount, char *Arguments[])
 {
     // Variables...
-    int         OptionCharacter     = '\x0';
-    int         OptionIndex         = 0;
-    struct stat FileAttributes;
-    bool        AssemblyMode        = false;
-    string      InputFile;
-    string      OutputFile;
+    int         OptionCharacter         = '\x0';
+    int         OptionIndex             = 0;
+    string      InputFileOrRootDirectory;
+    string      OutputRootDirectory;
     
     // User switches and defaults...
     string      DiodeFilterClass;
-    bool        DryRun              = false;
-    bool        IgnoreBadFiles      = false;
-    bool        UseColours          = true;
-    bool        AutoRotate          = true;
-    bool        VerboseConsole      = false;
-    bool        Interlace           = false;
-    size_t      Jobs                = 0;
+    bool        DryRun                  = false;
+    bool        IgnoreBadFiles          = false;
+    bool        UseColours              = true;
+    bool        AutoRotate              = true;
+    bool        VerboseConsole          = false;
+    bool        Interlace               = false;
+    size_t      Jobs                    = 1;
     string      LanderFilter;
-    bool        SaveLabels          = false;
-    bool        SolDirectorize      = false;
-    bool        SummarizeOnly       = false;
+    bool        SaveLabels              = false;
+    bool        SolDirectorize          = false;
+    bool        SummarizeOnly           = false;
 
     // Command line option structure...
     option CommandLineOptions[] =
@@ -180,13 +173,22 @@ int main(int ArgumentCount, char *Arguments[])
             // Jobs...
             case 'j': 
             {
+/*
+    TODO: Seems to ignore threads parameter if provided.
+*/
+
                 // Number of threads provided...
                 if(optarg)
                     Jobs = atoi(optarg);
                 
-                // Number of threads not provided, use auto...
+                // Number of threads not provided...
                 else
                     Jobs = 0;
+
+                // Automatic number of jobs explicitly or implicitly 
+                //  requested, query number of cpus online...
+                if(Jobs == 0)
+                    Jobs = sysconf(_SC_NPROCESSORS_ONLN);
 
                 // Done...
                 break;
@@ -241,34 +243,18 @@ int main(int ArgumentCount, char *Arguments[])
         }
     }
 
-    // Set console no colours and verbosity flags...
+    // Toggle console colours and verbosity to user preference...
     Console::GetInstance().SetUseColours(UseColours);
     Console::GetInstance().SetChannelEnabled(Console::Verbose, VerboseConsole);
+
+clog << "jobs " << Jobs << endl;
+exit(0);
 
     // We need at least one additional parameter, the input...
     
         // Fetch...
         if(optind + 1 <= ArgumentCount)
-        {
-            // Extract...
-            InputFile = Arguments[optind++];
-            
-            // Is this a file or a directory?
-            if(stat(InputFile.c_str(), &FileAttributes) != 0)
-            {
-                // Couldn't stat file...
-                Message(Console::Error) << "could not stat input " << InputFile << endl;
-                exit(1);
-            }
-            
-            // Directory...
-            if(S_ISDIR(FileAttributes.st_mode))
-                AssemblyMode = true;
-            
-            // File...
-            else
-                AssemblyMode = false;
-        }
+            InputFileOrRootDirectory = Arguments[optind++];
 
         // Wasn't provided...
         else
@@ -278,95 +264,9 @@ int main(int ArgumentCount, char *Arguments[])
             exit(1);
         }
 
-    // The output file is optional...
-
-        // Output file was explicitly provided...
-        if(optind + 1 <= ArgumentCount)
-        {
-            // Extract...
-            OutputFile = Arguments[optind++];
-
-            // If we are in assembly mode, make sure it is a directory...
-            if(AssemblyMode)
-            {
-                // Failed to attributes...
-                if(stat(OutputFile.c_str(), &FileAttributes) != 0)
-                {
-                    // Doesn't exist, create...
-                    if(errno == ENOENT)
-                        mkdir(OutputFile.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
-
-                    // Some other error...
-                    else
-                    {
-                        Message(Console::Error) << "could not stat output directory " << OutputFile << endl;
-                        exit(1);
-                    }
-                }
-
-                // Get output directory attributes...
-                if(stat(OutputFile.c_str(), &FileAttributes) != 0)
-                {
-                    Message(Console::Error) << "could not stat output directory " << OutputFile << endl;
-                    exit(1);
-                }
-
-                // Still doesn't exist...
-                if(!S_ISDIR(FileAttributes.st_mode))
-                {
-                    Message(Console::Error) << "could not stat output directory " << OutputFile << endl;
-                    exit(1);
-                }
-
-                // Done...
-                AssemblyMode = true;
-            }
-            
-            // Not in assembly mode, generating single output file...
-            else
-            {
-                // Append .png suffix to output, if it doesn't exist already...
-                if(OutputFile.find(".png") == string::npos)
-                    OutputFile += string(".png");
-            }
-        }
-
-        // Output file was not provided, create...
-        else
-        {
-            // We are in assembly mode, use current working directory...
-            if(AssemblyMode)
-            {
-                // Fetch...
-                char Temp[1024];
-                OutputFile = getcwd(Temp, 1024);
-            }
-
-            // Not in assembly mode, so create implicitly...
-            else
-            {
-                // Start with the input file's name with image suffix...
-                OutputFile = InputFile + string(".png");
-                
-                // Strip the path so only file name remains...
-                const size_t PathIndex = OutputFile.find_last_of("\\/");
-                if(PathIndex != string::npos)
-                    OutputFile.erase(0, PathIndex + 1);
-            }
-        }
-
-    // If in assembly mode (the output is a directory), make sure it 
-    //  ends with a path separator...
-    if(AssemblyMode)
-    {
-        // Search for the last path separator...
-        size_t Index = string::npos;
-        Index = OutputFile.find_last_of("/\\");
-
-        // If found and it's not the last character, append one...
-        if(Index != string::npos && (Index != OutputFile.length() - 1))
-            OutputFile += '/';
-    }
+    // The output directory is optional, but check if explicitly provided...
+    if(optind + 1 <= ArgumentCount)
+        OutputRootDirectory = Arguments[optind++];
 
     // Check for extraneous arguments...
     if(optind + 1 <= ArgumentCount)
@@ -379,27 +279,22 @@ int main(int ArgumentCount, char *Arguments[])
     // Extract from a set of VICAR images...
     try
     {
-        if(AssemblyMode)
-        {
-            // Create image assembler where input and output "files" are just
-            //  the input directory and the root output directory respectively...
-            VicarImageAssembler Assembler(InputFile, OutputFile);
-            
-            // Set usage switches...
-            Assembler.SetAutoRotate(AutoRotate);
-            Assembler.SetDiodeFilterClass(DiodeFilterClass);
-            Assembler.SetIgnoreBadFiles(IgnoreBadFiles);
-            Assembler.SetInterlace(Interlace);
-            Assembler.SetLanderFilter(LanderFilter);
-            Assembler.SetSolDirectorize(SolDirectorize);
-            Assembler.SetSummarizeOnly(SummarizeOnly);
-            
-            // Index the input directory...
-            Assembler.Index();
-            
-            /*for(VicarImageAssembler::const_iterator Index = Assembler.FirstImage();
-                Index !=*/
-        }
+        // Create image assembler where input and output "files" are just
+        //  the input directory and the root output directory respectively...
+        VicarImageAssembler Assembler(InputFileOrRootDirectory, OutputRootDirectory);
+        
+        // Set usage switches...
+        Assembler.SetAutoRotate(AutoRotate);
+        Assembler.SetDiodeFilterClass(DiodeFilterClass);
+        Assembler.SetIgnoreBadFiles(IgnoreBadFiles);
+        Assembler.SetInterlace(Interlace);
+        Assembler.SetLanderFilter(LanderFilter);
+        Assembler.SetSolDirectorize(SolDirectorize);
+        Assembler.SetSummarizeOnly(SummarizeOnly);
+        
+        // Reconstruct all possible images found of either the input 
+        //  file or a directory into the output directory...
+        Assembler.Reconstruct();
     }
 
         // Failed...
@@ -408,66 +303,6 @@ int main(int ArgumentCount, char *Arguments[])
             // Alert...
             Message(Console::Error) << ErrorMessage << endl;
             
-            // Terminate...
-            exit(1);
-        }
-
-    // Extract from a single image...
-    try
-    {
-        if(!AssemblyMode)
-        {
-            // Diode filter class should not be set...
-            if(!DiodeFilterClass.empty())
-                throw std::string("diode filter class available in assembly mode only");
-
-            // Ignore bad files should not be set...
-            if(IgnoreBadFiles)
-                throw std::string("ignore bad files available in assembly mode only");
-            
-            // Lander filter should not be set...
-            if(!LanderFilter.empty())
-                throw std::string("lander filter available in assembly mode only");
-
-            // Sol directorize should not be set...
-            if(SolDirectorize)
-                throw std::string("sol directorize available in assembly mode only");
-
-            // Summarize only should not be set...
-            if(SummarizeOnly)
-                throw std::string("summarize only available in assembly mode only");
-            
-            // Construct a VICAR colour image object...
-            VicarImageBand Image(InputFile);
-            
-            // Set user flags
-            Image.SetAutoRotate(AutoRotate);
-            Image.SetInterlace(Interlace);
-            Image.SetSaveLabels(SaveLabels);
-            
-            // Load the image...
-            Image.Load();
-            
-            // Check for an error...
-            if(Image.IsError())
-                throw Image.GetErrorMessage();
-            
-            // Write out the image, if not in dry mode...
-            if(!DryRun)
-            {
-                // Check for error...
-                if(!Image.Extract(OutputFile))
-                    throw Image.GetErrorMessage();
-            }
-        }
-    }
-
-        // Failed...
-        catch(const std::string &ErrorMessage)
-        {
-            // Alert...
-            Message(Console::Error) << ErrorMessage << endl;
-
             // Terminate...
             exit(1);
         }

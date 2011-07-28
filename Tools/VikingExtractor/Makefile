@@ -20,6 +20,7 @@
 CPP         = g++
 OBJ         = Console.o                 \
               LogicalRecord.o           \
+              Miscellaneous.o           \
               ReconstructableImage.o    \
               VikingExtractor.o         \
               VicarImageAssembler.o     \
@@ -31,6 +32,7 @@ BIN         = viking-extractor
 CXXFLAGS    = $(CXXINCS) $(INCS) -g3 -Wall -Werror `libpng-config --cflags`
 SOURCES     = Console.cpp               \
               LogicalRecord.cpp         \
+              Miscellaneous.cpp         \
               ReconstructableImage.cpp  \
               VicarImageAssembler.cpp   \
               VicarImageBand.cpp        \

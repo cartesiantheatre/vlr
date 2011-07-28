@@ -78,9 +78,6 @@ class VicarImageBand
         // Construct...
         VicarImageBand(const std::string &InputFile);
 
-        // Extract the single image band out as a PNG, but must be loaded first...
-        bool Extract(const std::string &OutputFile);
-
         // Get the azimuth / elevation string...
         const std::string &GetAzimuthElevation() const;
 
@@ -136,15 +133,6 @@ class VicarImageBand
         // For comparing quality between images of the same camera event 
         //  and same band type...
         bool operator<(const VicarImageBand &RightSide) const;
-
-        // Set auto rotate...
-        void SetAutoRotate(const bool AutoRotate = true) { m_AutoRotate = AutoRotate; }
-
-        // Set Adam7 interlacing...
-        void SetInterlace(const bool Interlace = true) { m_Interlace = Interlace; }
-
-        // Set the save labels flag...
-        void SetSaveLabels(const bool SaveLabels = true) { m_SaveLabels = SaveLabels; }
         
     // Protected methods...
     protected:
@@ -240,11 +228,6 @@ class VicarImageBand
 
         // Saved labels buffer...
         std::string             m_SavedLabelsBuffer;
-        
-        // Usage flags...
-        bool                    m_AutoRotate;
-        bool                    m_Interlace;
-        bool                    m_SaveLabels;
 };
 
 // Multiple include protection...

@@ -1,7 +1,7 @@
 /*
     VikingExtractor, to recover images from Viking Lander operations.
     Copyright (C) 2010, 2011 Kshatra Corp <kip@thevertigo.com>.
-    
+
     Public discussion on IRC available at #avaneya (irc.freenode.net) 
     or on the mailing list <avaneya@lists.avaneya.com>.
 
@@ -25,6 +25,8 @@
 #include <cassert>
 #include <iostream>
 #include <dirent.h>
+#include <sys/stat.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <fnmatch.h>
 
@@ -33,35 +35,114 @@ using namespace std;
 
 // Construct and read the header, or throw an error...
 VicarImageAssembler::VicarImageAssembler(
-    const string &InputDirectory,
-    const string &OutputDirectory)
-    : m_InputDirectory(InputDirectory),
-      m_OutputDirectory(OutputDirectory),
+    const string &InputFileOrRootDirectory,
+    const string &OutputRootDirectory)
+    : m_InputFileOrRootDirectory(InputFileOrRootDirectory),
+      m_OutputRootDirectory(OutputRootDirectory),
       m_AutoRotate(true),
       m_IgnoreBadFiles(false),
+      m_Interlace(false),
       m_LanderFilter(0),
       m_SolDirectorize(false),
       m_SummarizeOnly(false)
 {
     // We should have been provided with an input directory...
-    assert(!m_InputDirectory.empty());
-    
-    // The input directory should end with a path delimeter...
-    if(m_InputDirectory.find_last_of("/\\") != (m_InputDirectory.length() - 1))
-        m_InputDirectory += "/";
+    assert(!m_InputFileOrRootDirectory.empty());
+
+    // Output root directory not provided...
+    if(m_OutputRootDirectory.empty())
+    {
+        // Use current working directory...
+        char Temp[1024];
+        m_OutputRootDirectory = getcwd(Temp, 1024);
+    }
+
+    // Make sure output root directory ends with a path separator...
+
+        // Search for the last path separator...
+        size_t Index = string::npos;
+        Index = m_OutputRootDirectory.find_last_of("/\\");
+
+        // If found and it's not the last character, append one...
+        if(Index != string::npos && (Index != m_OutputRootDirectory.length() - 1))
+            m_OutputRootDirectory += '/';
 }
 
-// Index the contents of the directory returning number of potentially
-//  reconstructable images or throw an error...
-void VicarImageAssembler::Index()
+// Generate input file list from the input file or directory, or throw an error... (recursive)
+void VicarImageAssembler::GenerateProspectiveFileList(const string &InputFileOrDirectory)
 {
     // Variables...
-    size_t          TotalFiles      = 0;
     DIR            *Directory       = NULL;
-    struct  dirent *DirectoryEntry  = NULL;
-    string          CurrentFile;
-    string          FileNameOnly;
-    string          ErrorMessage;
+    struct dirent  *DirectoryEntry  = NULL;
+    
+    // Is this just a file?
+
+        // Fetch attributes...
+        struct stat FileAttributes;
+        if(stat(InputFileOrDirectory.c_str(), &FileAttributes) != 0)
+            throw string("could not stat ") + InputFileOrDirectory;
+
+        // Yes, just a file...
+        if(S_ISREG(FileAttributes.st_mode))
+        {
+            // Add to list and done...
+            m_ProspectiveFiles.push_back(InputFileOrDirectory);
+            return;
+        }
+
+    // Make an editable copy of the original input file or directory...
+    string InputDirectory = InputFileOrDirectory;
+
+    // Path should end with path separator which is needed for recursing...
+    if(InputDirectory.at(InputDirectory.length() - 1) != '/')
+        InputDirectory += '/';
+
+    // Open directory and check for error...
+    if(!(Directory = opendir(InputDirectory.c_str())))
+        throw string("unable to open input directory for indexing ") + InputDirectory;
+
+    // Add all files found and recurse through subdirectories...
+    while((DirectoryEntry = readdir(Directory)))
+    {
+        // Regular file...
+        if(DirectoryEntry->d_type == DT_REG)
+        {
+            // Skip if extension doesn't match a potential VICAR file...
+            if(fnmatch("vl_*.[0-9][0-9][0-9]", DirectoryEntry->d_name, 0) != 0)
+                continue;
+
+            // Otherwise, add it...
+            else
+                m_ProspectiveFiles.push_back(InputDirectory + DirectoryEntry->d_name);
+        }
+
+        // Directory, recurse...
+        else if((DirectoryEntry->d_type == DT_DIR) && 
+                (string(".") != DirectoryEntry->d_name) && 
+                (string("..") != DirectoryEntry->d_name))
+        {
+            // Get the subdirectory...
+            string SubDirectory = DirectoryEntry->d_name;
+
+            // Path should end with path separator...
+            if(SubDirectory.at(SubDirectory.length() - 1) != '/')
+                SubDirectory += '/';
+
+            // Recurse and scan subdirectory...
+            GenerateProspectiveFileList(InputDirectory + SubDirectory);
+        }
+    }
+
+    // Done with the directory, unwind stack...
+    closedir(Directory);
+}
+
+// Reconstruct all possible images found of either the input 
+//  file or a directory into the output directory...
+void VicarImageAssembler::Reconstruct()
+{
+    // Variables...
+    string ErrorMessage;
 
     // If summarize only mode is enabled, mute current file name, warnings, info, and errors...
     if(m_SummarizeOnly)
@@ -75,59 +156,34 @@ void VicarImageAssembler::Index()
     // Reset assembler state...
     Reset();
 
-    // Open directory and check for error...
-    if(!(Directory = opendir(m_InputDirectory.c_str())))
-        throw string("unable to open input directory for indexing: ") + m_InputDirectory;
-
     // Try to index the directory...
     try
     {
-        // Count total number of files...
-        while((DirectoryEntry = readdir(Directory)))
-        {
-            // Not a regular file, skip...
-            if(DirectoryEntry->d_type != DT_REG)
-                continue;
-            
-            // Increment...
-          ++TotalFiles;
-        }
-        
-        // Rewind directory back to the beginning now...
-        rewinddir(Directory);
-
-        // Total files examined so far...
-        size_t FilesExamined = 0;
+        // Generate input file list from the input file or directory...
+        GenerateProspectiveFileList(m_InputFileOrRootDirectory);
 
         // Keep reading entries while there are some...
-        while((DirectoryEntry = readdir(Directory)))
+        for(vector<string>::iterator CurrentFileIterator = m_ProspectiveFiles.begin();
+            CurrentFileIterator != m_ProspectiveFiles.end();
+          ++CurrentFileIterator)
         {
-            // Not a regular file, skip...
-            if(DirectoryEntry->d_type != DT_REG)
-                continue;
-            
-            // Update number of files examined...
-          ++FilesExamined;
+            // Get the full path...
+            const string CurrentFile = *CurrentFileIterator;
 
-            // Skip if extension doesn't match...
-            if(fnmatch("*.[0-9][0-9][0-9]", DirectoryEntry->d_name, 0) != 0)
-                continue;
+            // Construct an image band object...
+            VicarImageBand ImageBand(CurrentFile);
 
             // Update summary, if enabled...
             if(m_SummarizeOnly)
                 Message(Console::Summary) 
                     << "\rexamined " 
-                    << FilesExamined << "/" << TotalFiles 
+                    << CurrentFileIterator - m_ProspectiveFiles.begin() << "/" << m_ProspectiveFiles.size()
                     << " files, please wait...";
-            
-            // Get the full path...
-            CurrentFile = m_InputDirectory + DirectoryEntry->d_name;
 
-            // Construct an image band object...
-            VicarImageBand ImageBand(CurrentFile);
-
-            // Get just the file name as well...
-            FileNameOnly = ImageBand.GetInputFileNameOnly();
+            // Otherwise update console so it knows what current file we are 
+            //  working with...
+            else
+                Console::GetInstance().SetCurrentFileName(ImageBand.GetInputFileNameOnly());
             
             // Attempt to load the file...
             ImageBand.Load();
@@ -174,7 +230,7 @@ void VicarImageAssembler::Index()
             if(!ImageBand.IsCameraEventLabelPresent())
             {
                 // Alert user, skip...
-                Message(Console::Info)
+                Message(Console::Error)
                     << "camera event doesn't identify itself, cannot index" 
                     << endl;
                 continue;
@@ -201,11 +257,13 @@ void VicarImageAssembler::Index()
 
                     // Construct a new reconstructable image...
                     Reconstructable = new ReconstructableImage(
-                        m_AutoRotate, 
-                        m_Interlace, 
-                        m_SolDirectorize, 
-                        m_OutputDirectory, 
+                        m_OutputRootDirectory, 
                         CameraEventLabel);
+
+                    // Set user preferences...
+                    SetAutoRotate(m_AutoRotate);
+                    SetInterlace(m_Interlace);
+                    SetSolDirectorize(m_SolDirectorize);
 
                     // Insert the reconstructable image into the event dictionary.
                     //  We use the previous failed find iterator as a possible 
@@ -260,9 +318,6 @@ void VicarImageAssembler::Index()
         // Update summary, if enabled, beginning with new line since last was \r only...
         if(m_SummarizeOnly)
             Message(Console::Summary) << endl;
-
-        // Done with the directory...
-        closedir(Directory);
 
         // Total attempted reconstructions and total successful...
         size_t AttemptedReconstruction      = 0;
@@ -332,9 +387,6 @@ void VicarImageAssembler::Index()
             // Update summary, if enabled, beginning with new line since last was \r only...
             if(m_SummarizeOnly)
                 Message(Console::Summary) << endl;
-
-            // Close the directory...
-            closedir(Directory);
             
             // Reset assembler state...
             Reset();
@@ -347,6 +399,9 @@ void VicarImageAssembler::Index()
 // Reset the assembler state...
 void VicarImageAssembler::Reset()
 {
+    // Empty the prospective file list...
+    m_ProspectiveFiles.clear();
+
     // Cleanup camera event dictionary multi...
     for(CameraEventDictionaryIterator Iterator = m_CameraEventDictionary.begin();
         Iterator != m_CameraEventDictionary.end();
