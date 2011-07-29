@@ -52,15 +52,17 @@ class ReconstructableImage
         const std::string &GetErrorMessage() const 
             { return m_ErrorMessage; }
 
-        // Create the necessary path to the output file and return a path...
-        std::string GetOutputFileName();
-
         // Was an error set?
         bool IsError() const
             { return !m_ErrorMessage.empty(); }
         
         // Extract the image out as a PNG, or return false if failed...
         bool Reconstruct();
+
+        // Set user preferences...
+        void SetAutoRotate(const bool AutoRotate = true) { m_AutoRotate = AutoRotate; }
+        void SetInterlace(const bool Interlace = true) { m_Interlace = Interlace; }
+        void SetSolDirectorize(const bool SolDirectorize = true) { m_SolDirectorize = SolDirectorize; }
 
     // Protected types...
     protected:
@@ -72,6 +74,10 @@ class ReconstructableImage
     // Protected methods...
     protected:
 
+        // Create the necessary path to the output file and return a path, 
+        //  appending an optional name suffix e.g. file_suffix.png...
+        std::string CreateOutputFileName(std::string NameSuffix = "");
+
         // Reconstruct a colour image from requested image bands which can be NULL...
         bool ReconstructColourImage(
             const std::string &OutputFileName, 
@@ -79,14 +85,14 @@ class ReconstructableImage
             VicarImageBand *BestGreenImageBand, 
             VicarImageBand *BestBlueImageBand);
 
+        // Reconstruct a grayscale image from requested image band...
+        bool ReconstructGrayscaleImage(
+            const std::string &OutputFileName, 
+            VicarImageBand &BestGrayscaleImageBand);
+
         // Set the error message...
         void SetErrorMessage(const std::string &ErrorMessage)
             { m_ErrorMessage = ErrorMessage; }
-
-        // Set user preferences...
-        void SetAutoRotate(const bool AutoRotate) { m_AutoRotate = AutoRotate; }
-        void SetInterlace(const bool Interlace) { m_Interlace = Interlace; }
-        void SetSolDirectorize(const bool SolDirectorize) { m_SolDirectorize = SolDirectorize; }
 
     // Protected data...
     protected:

@@ -24,6 +24,7 @@
 #include "Console.h"
 #include <cassert>
 #include <iostream>
+#include <iomanip>
 #include <dirent.h>
 #include <sys/stat.h>
 #include <errno.h>
@@ -43,6 +44,7 @@ VicarImageAssembler::VicarImageAssembler(
       m_IgnoreBadFiles(false),
       m_Interlace(false),
       m_LanderFilter(0),
+      m_Recursive(false),
       m_SolDirectorize(false),
       m_SummarizeOnly(false)
 {
@@ -107,7 +109,8 @@ void VicarImageAssembler::GenerateProspectiveFileList(const string &InputFileOrD
         // Regular file...
         if(DirectoryEntry->d_type == DT_REG)
         {
-            // Skip if extension doesn't match a potential VICAR file...
+            // Skip if extension doesn't match that of a potential Viking 
+            //  Lander VICAR file...
             if(fnmatch("vl_*.[0-9][0-9][0-9]", DirectoryEntry->d_name, 0) != 0)
                 continue;
 
@@ -118,6 +121,7 @@ void VicarImageAssembler::GenerateProspectiveFileList(const string &InputFileOrD
 
         // Directory, recurse...
         else if((DirectoryEntry->d_type == DT_DIR) && 
+                m_Recursive &&
                 (string(".") != DirectoryEntry->d_name) && 
                 (string("..") != DirectoryEntry->d_name))
         {
@@ -162,6 +166,18 @@ void VicarImageAssembler::Reconstruct()
         // Generate input file list from the input file or directory...
         GenerateProspectiveFileList(m_InputFileOrRootDirectory);
 
+        // No prospective files to examine...
+        if(m_ProspectiveFiles.empty())
+        {
+            // Alert...
+            Message(Console::Summary) 
+                << "no prospective files found"
+                << endl;
+
+            // Done...
+            return;
+        }
+
         // Keep reading entries while there are some...
         for(vector<string>::iterator CurrentFileIterator = m_ProspectiveFiles.begin();
             CurrentFileIterator != m_ProspectiveFiles.end();
@@ -173,12 +189,19 @@ void VicarImageAssembler::Reconstruct()
             // Construct an image band object...
             VicarImageBand ImageBand(CurrentFile);
 
+            // Calculate progress...
+            const size_t ProspectiveFilesExamined = CurrentFileIterator - m_ProspectiveFiles.begin() + 1;
+            const size_t TotalProspectiveFiles = m_ProspectiveFiles.size();
+            const float  PercentageExamined = static_cast<float>(ProspectiveFilesExamined) / TotalProspectiveFiles * 100.0f;
+
             // Update summary, if enabled...
             if(m_SummarizeOnly)
+            {
                 Message(Console::Summary) 
-                    << "\rexamined " 
-                    << CurrentFileIterator - m_ProspectiveFiles.begin() << "/" << m_ProspectiveFiles.size()
-                    << " files, please wait...";
+                    << "\rgenerating catalogue from " 
+                    << ProspectiveFilesExamined << "/" << TotalProspectiveFiles 
+                    << " (" << PercentageExamined << " %)";
+            }
 
             // Otherwise update console so it knows what current file we are 
             //  working with...
@@ -261,9 +284,9 @@ void VicarImageAssembler::Reconstruct()
                         CameraEventLabel);
 
                     // Set user preferences...
-                    SetAutoRotate(m_AutoRotate);
-                    SetInterlace(m_Interlace);
-                    SetSolDirectorize(m_SolDirectorize);
+                    Reconstructable->SetAutoRotate(m_AutoRotate);
+                    Reconstructable->SetInterlace(m_Interlace);
+                    Reconstructable->SetSolDirectorize(m_SolDirectorize);
 
                     // Insert the reconstructable image into the event dictionary.
                     //  We use the previous failed find iterator as a possible 
@@ -334,9 +357,9 @@ void VicarImageAssembler::Reconstruct()
             // Update summary, if enabled...
             if(m_SummarizeOnly)
                 Message(Console::Summary) 
-                    << "\rattempted reconstruction " 
+                    << "\rattempting reconstruction " 
                     << AttemptedReconstruction << "/" << m_CameraEventDictionary.size()
-                    << " files, please wait...";
+                    << " (" << static_cast<float>(AttemptedReconstruction) / m_CameraEventDictionary.size() * 100.0f << " %)";
 
             // Get the reconstructable image object...
             ReconstructableImage *Reconstructable = EventIterator->second;
@@ -424,7 +447,7 @@ void VicarImageAssembler::SetDiodeFilterClass(const string &DiodeFilter)
     // Use any supported type...
     if(DiodeFilter.empty() || DiodeFilter == "any")
     {
-        Message(Console::Info) << "using any supported diode filter" << endl;
+//        Message(Console::Info) << "using any supported diode filter" << endl;
         m_DiodeBandFilterSet.insert(VicarImageBand::Blue);
         m_DiodeBandFilterSet.insert(VicarImageBand::Green);
         m_DiodeBandFilterSet.insert(VicarImageBand::Red);
@@ -438,7 +461,7 @@ void VicarImageAssembler::SetDiodeFilterClass(const string &DiodeFilter)
     // Colour band...
     else if(DiodeFilter == "colour")
     {
-        Message(Console::Info) << "using colour diode filter" << endl;
+//        Message(Console::Info) << "using colour diode filter" << endl;
         m_DiodeBandFilterSet.insert(VicarImageBand::Blue);
         m_DiodeBandFilterSet.insert(VicarImageBand::Green);
         m_DiodeBandFilterSet.insert(VicarImageBand::Red);
@@ -447,7 +470,7 @@ void VicarImageAssembler::SetDiodeFilterClass(const string &DiodeFilter)
     // Infrared band...
     else if(DiodeFilter == "infrared")
     {
-        Message(Console::Info) << "using infrared diode filter" << endl;
+//        Message(Console::Info) << "using infrared diode filter" << endl;
         m_DiodeBandFilterSet.insert(VicarImageBand::Infrared1);
         m_DiodeBandFilterSet.insert(VicarImageBand::Infrared2);
         m_DiodeBandFilterSet.insert(VicarImageBand::Infrared3);
@@ -456,14 +479,14 @@ void VicarImageAssembler::SetDiodeFilterClass(const string &DiodeFilter)
     // Sun...
     else if(DiodeFilter == "sun")
     {
-        Message(Console::Info) << "using sun diode filter" << endl;
+//        Message(Console::Info) << "using sun diode filter" << endl;
         m_DiodeBandFilterSet.insert(VicarImageBand::Sun);    
     }
     
     // Survey...
     else if(DiodeFilter == "survey")
     {
-        Message(Console::Info) << "using survey diode filter" << endl;
+//        Message(Console::Info) << "using survey diode filter" << endl;
         m_DiodeBandFilterSet.insert(VicarImageBand::Survey);
     }
     
@@ -478,21 +501,21 @@ void VicarImageAssembler::SetLanderFilter(const string &LanderFilter)
     // Use any...
     if(LanderFilter.empty() || LanderFilter == "0" || LanderFilter == "any")
     {
-        Message(Console::Info) << "filtering for either Viking Lander" << endl;
+//        Message(Console::Info) << "filtering for either Viking Lander" << endl;
         m_LanderFilter = 0;
     }
     
     // Viking 1 lander...
     else if(LanderFilter == "1")
     {
-        Message(Console::Info) << "filtering for either Viking Lander 1" << endl;
+//        Message(Console::Info) << "filtering for either Viking Lander 1" << endl;
         m_LanderFilter = 1;
     }
 
     // Viking 2 lander...
     else if(LanderFilter == "2")
     {
-        Message(Console::Info) << "filtering for either Viking Lander 2" << endl;
+//        Message(Console::Info) << "filtering for either Viking Lander 2" << endl;
         m_LanderFilter = 2;
     }
     

@@ -53,6 +53,7 @@ class VicarImageAssembler
         void SetIgnoreBadFiles(const bool IgnoreBadFiles = true) { m_IgnoreBadFiles = IgnoreBadFiles; }
         void SetInterlace(const bool Interlace = true) { m_Interlace = Interlace; }
         void SetLanderFilter(const std::string &LanderFilter);
+        void SetRecursive(const bool Recursive = true) { m_Recursive = Recursive; }
         void SetSolDirectorize(const bool SolDirectorize = true) { m_SolDirectorize = SolDirectorize; }
         void SetSummarizeOnly(const bool SummarizeOnly = true) { m_SummarizeOnly = SummarizeOnly; }
 
@@ -103,6 +104,7 @@ class VicarImageAssembler
         bool                            m_IgnoreBadFiles;
         bool                            m_Interlace;
         int                             m_LanderFilter;
+        bool                            m_Recursive;
         bool                            m_SolDirectorize;
         bool                            m_SummarizeOnly;
 };

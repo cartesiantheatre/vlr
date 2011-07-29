@@ -29,6 +29,8 @@
 #include <algorithm>
 #include <png++/png.hpp>
 
+#include <sstream>
+
 // Using the standard namespace...
 using namespace std;
 
@@ -106,13 +108,18 @@ void ReconstructableImage::AddImageBand(const VicarImageBand &ImageBand)
     }
 }
 
-// Create the necessary path to the output file and return a path...
-string ReconstructableImage::GetOutputFileName()
+// Create the necessary path to the output file and return a path, 
+//  appending an optional name suffix e.g. file_suffix.png...
+string ReconstructableImage::CreateOutputFileName(string NameSuffix)
 {
     // Identifier and solar day this image was taken on...
     string Identifier   = "unknown";
     string SolarDay     = "unknown";
-    
+
+    // If a name suffix was provided, make it start with an underscore...
+    if(!NameSuffix.empty())
+        NameSuffix.insert(0, "_");
+
     // Extract solar day out of camera event label...
     const size_t SolarDayOffset = m_CameraEventLabel.find_last_of("/\\");
     if(SolarDayOffset != string::npos && (SolarDayOffset + 1 < m_CameraEventLabel.length()))
@@ -132,7 +139,7 @@ string ReconstructableImage::GetOutputFileName()
     {
         // Create full path to subfolder...
         const string FullDirectory = m_OutputRootDirectory + "/" + SolarDay + "/";
-        
+
         // Create and check for error...
         if(!CreateDirectoryRecursively(FullDirectory))
         {
@@ -142,24 +149,39 @@ string ReconstructableImage::GetOutputFileName()
         }
         
         // Now have enough information to create full path to output file name...
-        return FullDirectory + Identifier + ".png";
+        return FullDirectory + Identifier + NameSuffix + ".png";
     }
     
     // Otherwise, if sol directory mode is not enabled...
     else
-        return m_OutputRootDirectory + "/" + Identifier + ".png";
-    
+    {
+        // Create root output directory and check for error...
+        if(!CreateDirectoryRecursively(m_OutputRootDirectory))
+        {
+            // Set the error message and abort...
+            SetErrorMessage("could not create output root directory");
+            return string();
+        }
+        
+        // Return the full path to a file ready to be written to...
+        return m_OutputRootDirectory + "/" + Identifier + NameSuffix + ".png";
+    }
 }
 
 // Extract the image out as a PNG, or return false if failed...
 bool ReconstructableImage::Reconstruct()
 {
-    // Create full path to output file...
-    const string OutputFileName = GetOutputFileName();
+    // Create full path to output file and create containing 
+    // directory, if necessary...
+    const string OutputFileName = CreateOutputFileName();
 
         // Failed...
         if(IsError())
             return false;
+
+    // File already existed, don't overwrite...
+    if(access(OutputFileName.c_str(), F_OK) == 0)
+        SetErrorAndReturnFalse("output already exists, not overwriting");
 
     // Set file name for console messages to begin with...
     Console::GetInstance().SetCurrentFileName(OutputFileName);
@@ -209,27 +231,20 @@ bool ReconstructableImage::Reconstruct()
         if(Grays)
             BestGrayscale = &m_GrayImageBandList.back();
 
-    // Colour image... (only all colour bands present)
-    if((Reds == 1 && Greens == 1 && Blues == 1) && 
-       (Infrareds1 + Infrareds2 + Infrareds3 + Grays == 0))
-    {
-        // Attempt to reconstruct...
-        return ReconstructColourImage(OutputFileName, BestRed, BestGreen, BestBlue);
-    }
-
-/*
-    TODO: Complete reconstruction recipes for below.
-*/
+// Colour image... (only all colour bands present)
+if((Reds == 1 && Greens == 1 && Blues == 1) && 
+   (Infrareds1 + Infrareds2 + Infrareds3 + Grays == 0))
+{
+    // Attempt to reconstruct...
+    return ReconstructColourImage(OutputFileName, BestRed, BestGreen, BestBlue);
+}
 
     /* Colour image... (only all colour bands present)
     if((min(Reds, Greens, Blues) >= 1) && 
        (Infrareds1 + Infrareds2 + Infrareds3 + Grays == 0))
     {
         // Attempt to reconstruct...
-        if(!ReconstructColourImage(OutputFileName, BestRed, BestGreen, BestBlue))
-            Message(Console::Error) << GetErrorMessage() << endl;
-        else
-            Message(Console::Info) << "reconstructed colour image successfully" << endl;
+        return ReconstructColourImage(OutputFileName, BestRed, BestGreen, BestBlue);
     }*/
 
     /* Infrared image... (only all infrared bands present)
@@ -249,16 +264,27 @@ bool ReconstructableImage::Reconstruct()
     // Unknown...
     else
     {
-Message(Console::Info)
+/*Message(Console::Info)
      << m_RedImageBandList.size() << " "
      << m_GreenImageBandList.size() << " "
      << m_BlueImageBandList.size() << " "
      << m_Infrared1ImageBandList.size() << " "
      << m_Infrared2ImageBandList.size() << " "
      << m_Infrared3ImageBandList.size() << " "
-     << m_GrayImageBandList.size() << endl;
+     << m_GrayImageBandList.size() << endl;*/
 
-        Message(Console::Error) << "no known reconstruction recipe available" << endl;
+        // Alert user...
+        Message(Console::Error) << "no known reconstruction recipe available, dumping bands" << endl;
+
+for(ImageBandListIterator Iterator = m_RedImageBandList.begin(); Iterator != m_RedImageBandList.end(); ++Iterator)
+{
+    stringstream suffixstream;
+    suffixstream << Iterator - m_RedImageBandList.begin();
+    suffixstream << "_red";
+    ReconstructGrayscaleImage(CreateOutputFileName(suffixstream.str()), *Iterator);
+}
+
+        // This doesn't count as a successful reconstruction since it wasn't reassembled...
         return false;
     }
 }
@@ -337,7 +363,7 @@ bool ReconstructableImage::ReconstructColourImage(
         // Pass raw image data through encoder, column by column...
         for(size_t X = 0; X < PngImage.get_width(); ++X)
         {
-            // Storage for this pixels colour...
+            // Storage for this pixel's colours...
             char RedByte    = '\x0';
             char GreenByte  = '\x0';
             char BlueByte   = '\x0';
@@ -376,7 +402,13 @@ bool ReconstructableImage::ReconstructColourImage(
     {
         // Allocate png storage of swapped dimensions...
         png::image<png::rgb_pixel> RotatedPngImage(Height, Width);
-        
+
+        // Toggle interlacing, if user selected...
+        if(m_Interlace)
+            RotatedPngImage.set_interlace_type(png::interlace_adam7);
+        else
+            RotatedPngImage.set_interlace_type(png::interlace_none);
+
         // Transform each row...
         for(size_t Y = 0; Y < RotatedPngImage.get_height(); ++Y)
         {
@@ -397,13 +429,24 @@ bool ReconstructableImage::ReconstructColourImage(
     return true;
 }
 
-/* Reconstruct a grayscale image from requested image band...
+// Reconstruct a grayscale image from requested image band...
 bool ReconstructableImage::ReconstructGrayscaleImage(
     const string &OutputFileName, 
     VicarImageBand &BestGrayscaleImageBand)
 {
-    // Allocate...
-    png::image<png::gray_pixel> PngImage(m_Width, m_Height);
+    // Extraction stream...
+    ifstream GrayExtractionStream;
+
+    // Initialize extraction stream and check for error...
+    if(!BestGrayscaleImageBand.GetExtractionStream(GrayExtractionStream))
+        SetErrorAndReturnFalse(BestGrayscaleImageBand.GetErrorMessage());
+
+    // Get width and height...
+    const int Width   = BestGrayscaleImageBand.GetWidth();
+    const int Height  = BestGrayscaleImageBand.GetHeight();
+
+    // Allocate png storage...
+    png::image<png::gray_pixel> PngImage(Width, Height);
 
     // Toggle interlacing, if user selected...
     if(m_Interlace)
@@ -417,17 +460,47 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
         // Pass raw image data through encoder, column by column...
         for(size_t X = 0; X < PngImage.get_width(); ++X)
         {
-            // Read a pixel / byte and check for error...
-            char Byte = '\x0';
-            if(!InputFileStream.read(&Byte, 1).good())
-                SetErrorAndReturn("raw image data ended prematurely")
+            // Storage for this pixel's grayscale value...
+            char GrayByte    = '\x0';
+
+            // Read byte and check for error ...
+            if(!GrayExtractionStream.read(&GrayByte, 1).good())
+                SetErrorAndReturnFalse("raw gray channel's source image band data i/o error")
             
             // Encode...
-            PngImage.set_pixel(X, Y, Byte);
+            PngImage.set_pixel(X, Y, GrayByte);
         }
     }
 
-    // Write out the file and alert the user...
-    PngImage.write(OutputFile);
-    clog << "writing " << OutputFile << endl;
-}*/
+    // Requested to auto rotate...
+    if(m_AutoRotate)
+    {
+        // Allocate png storage of swapped dimensions...
+        png::image<png::gray_pixel> RotatedPngImage(Height, Width);
+
+        // Toggle interlacing, if user selected...
+        if(m_Interlace)
+            RotatedPngImage.set_interlace_type(png::interlace_adam7);
+        else
+            RotatedPngImage.set_interlace_type(png::interlace_none);
+
+        // Transform each row...
+        for(size_t Y = 0; Y < RotatedPngImage.get_height(); ++Y)
+        {
+            // Transform each column...
+            for(size_t X = 0; X < RotatedPngImage.get_width(); ++X)
+                RotatedPngImage.set_pixel(X, Y, PngImage.get_pixel(Width - Y - 1, X));
+        }
+        
+        // Write out...
+        RotatedPngImage.write(OutputFileName);
+    }
+    
+    // No auto rotation requested, write out normally...
+    else
+        PngImage.write(OutputFileName);
+
+    // Done...
+    return true;
+}
+

@@ -512,8 +512,24 @@ void VicarImageBand::Load()
 //  and same band type...
 bool VicarImageBand::operator<(const VicarImageBand &RightSide) const
 {
-// Stub for now...
+    /*
+        Comparison Rules:
 
+            Rule 1: Indiscernable images or ones without scanline axis
+            are either corrupt or there is a better image with the 
+            scanline axis somewhere in the image set.
+
+                Method: Check for scanline axis presence by looking
+                for "LINE" text.
+
+            Rule 2: Images without a histogram are better than ones 
+            with them because they have more image space.
+                
+                Method: Check for histogram text (e.g. "VIKING LANDER")
+
+    */
+
+    // Stub for now...
     return true;
 }
 

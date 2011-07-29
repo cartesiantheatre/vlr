@@ -41,6 +41,10 @@ Console::Console()
     m_ChannelMap[Summary]   = new Channel(Blue,    "");
     m_ChannelMap[Warning]   = new Channel(Yellow,  "warning: ");
     m_ChannelMap[Verbose]   = new Channel(Default, "");
+
+    // Set default floating point settings...
+    cout.setf(ios::fixed, ios::floatfield);
+    cout.precision(1);
 }
 
 // Get the singleton instance...
