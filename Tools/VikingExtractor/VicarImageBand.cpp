@@ -342,7 +342,7 @@ void VicarImageBand::Load()
 
         // Empty...
         if(FileSize == 0)
-            SetErrorAndReturn("empty file, probably blank magnetic tape")
+            SetErrorAndReturn("empty file, probably blank magnetic tape or not received back on Earth")
 
         // Check to make sure it is at least four kilobytes...
         else if(FileSize < (4 * 1024))

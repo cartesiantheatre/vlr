@@ -26,6 +26,7 @@
 #include <cassert>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <algorithm>
 #include <png++/png.hpp>
 
@@ -49,12 +50,31 @@ ReconstructableImage::ReconstructableImage(
     const std::string &CameraEventLabel)
     : m_OutputRootDirectory(OutputRootDirectory),
       m_CameraEventLabel(CameraEventLabel),
+      m_SolarDay(0),
       m_AutoRotate(true),
       m_Interlace(false),
       m_SolDirectorize(false)
 {
     // Always need an label...
     assert(!CameraEventLabel.empty());
+    
+    // Extract solar day out of camera event label...
+    const size_t SolarDayOffset = m_CameraEventLabel.find_last_of("/\\");
+    
+    // Should always have a sol separator...
+    assert(SolarDayOffset != string::npos && (SolarDayOffset + 1 < m_CameraEventLabel.length()));
+    
+    // Get the identifier without the solar day out of the label...
+    m_CameraEventNoSol.assign(m_CameraEventLabel, 0, SolarDayOffset);
+    
+    // Get the solar day...
+        
+        // Store whole thing as a string...
+        string SolarDay;
+        SolarDay.assign(m_CameraEventLabel, SolarDayOffset + 1, 4);
+
+        // Convert to integer...
+        m_SolarDay = atoi(SolarDay.c_str());
 }
 
 // Add an image band...
@@ -109,91 +129,82 @@ void ReconstructableImage::AddImageBand(const VicarImageBand &ImageBand)
 }
 
 // Create the necessary path to the output file and return a path, 
-//  appending an optional name suffix e.g. file_suffix.png...
-string ReconstructableImage::CreateOutputFileName(string NameSuffix)
+//  placing the output file within an option subdirectory and appending
+//  an optional name suffix e.g. file_suffix.png...
+string ReconstructableImage::CreateOutputFileName(
+    const string &SubDirectory, const string &NameSuffix)
 {
-    // Identifier and solar day this image was taken on...
-    string Identifier   = "unknown";
-    string SolarDay     = "unknown";
 
-    // If a name suffix was provided, make it start with an underscore...
-    if(!NameSuffix.empty())
-        NameSuffix.insert(0, "_");
-
-    // Extract solar day out of camera event label...
-    const size_t SolarDayOffset = m_CameraEventLabel.find_last_of("/\\");
-    if(SolarDayOffset != string::npos && (SolarDayOffset + 1 < m_CameraEventLabel.length()))
-    {
-        // Copy the identifier and solar day out of the label...
-        Identifier.assign(m_CameraEventLabel, 0, SolarDayOffset);
-        SolarDay.assign(m_CameraEventLabel, SolarDayOffset + 1, 4);
-
-        // Remove initial zeros, if any, from solar day...
-        while(SolarDay.length() > 1 && SolarDay.at(0) == '0')
-            SolarDay.erase(0, 1);
-    }
+    // Will contain the full directory, not including the file name...
+    stringstream FullDirectory;
+    FullDirectory << m_OutputRootDirectory << '/';
 
     // Images are reconstructed in subfolder of solar day it was 
     //  taken on, so create the subfolder, if enabled......
     if(m_SolDirectorize)
-    {
-        // Create full path to subfolder...
-        const string FullDirectory = m_OutputRootDirectory + "/" + SolarDay + "/";
+        FullDirectory << m_SolarDay << '/';
+    
+    // Otherwise put inside camera event identifier folder...
+    else
+        FullDirectory << m_CameraEventNoSol << '/';
 
-        // Create and check for error...
-        if(!CreateDirectoryRecursively(FullDirectory))
-        {
-            // Set the error message and abort...
-            SetErrorMessage("could not create output subdirectory for solar day");
-            return string();
-        }
+    // Add an optional subdirectory...
+    if(!SubDirectory.empty())
+    {
+        // Append...
+        FullDirectory << SubDirectory;
         
-        // Now have enough information to create full path to output file name...
-        return FullDirectory + Identifier + NameSuffix + ".png";
+        // Add path separator, if not present already...
+        if(*FullDirectory.str().rbegin() != '/')
+            FullDirectory << '/';
+    }
+
+    // Create and check for error...
+    if(!CreateDirectoryRecursively(FullDirectory.str()))
+    {
+        // Set the error message and abort...
+        SetErrorMessage("could not create output subdirectory for solar day");
+        return string();
+    }
+
+    // Return the full path to a file ready to be written to...
+    return FullDirectory.str() + m_CameraEventNoSol + NameSuffix + ".png";
+}
+
+// Dump all images within given image band to the output directory in 
+//  a given subdirectory...
+bool ReconstructableImage::DumpBand(
+    ImageBandListType &ImageBand, const string &SubDirectory)
+{
+    // Dump all images within this image band...
+    for(ImageBandListIterator Iterator = ImageBand.begin(); 
+        Iterator != ImageBand.end(); 
+      ++Iterator)
+    {
+        // Format suffix to contain unique identifier to distinguish
+        //  from other images of this same band type of this same
+        //  camera event...
+        stringstream SuffixStream;
+        SuffixStream << "_" << Iterator - ImageBand.begin();
+        ReconstructGrayscaleImage(
+            CreateOutputFileName(SubDirectory, SuffixStream.str()), *Iterator);
     }
     
-    // Otherwise, if sol directory mode is not enabled...
-    else
-    {
-        // Create root output directory and check for error...
-        if(!CreateDirectoryRecursively(m_OutputRootDirectory))
-        {
-            // Set the error message and abort...
-            SetErrorMessage("could not create output root directory");
-            return string();
-        }
-        
-        // Return the full path to a file ready to be written to...
-        return m_OutputRootDirectory + "/" + Identifier + NameSuffix + ".png";
-    }
+    // Done...
+    return true;
 }
 
 // Extract the image out as a PNG, or return false if failed...
 bool ReconstructableImage::Reconstruct()
 {
-    // Create full path to output file and create containing 
-    // directory, if necessary...
-    const string OutputFileName = CreateOutputFileName();
-
-        // Failed...
-        if(IsError())
-            return false;
-
-    // File already existed, don't overwrite...
-    if(access(OutputFileName.c_str(), F_OK) == 0)
-        SetErrorAndReturnFalse("output already exists, not overwriting");
-
-    // Set file name for console messages to begin with...
-    Console::GetInstance().SetCurrentFileName(OutputFileName);
-
     // Sort each band lists from lowest to best quality...
-    sort(m_RedImageBandList.begin(), m_RedImageBandList.end());
-    sort(m_GreenImageBandList.begin(), m_GreenImageBandList.end());
-    sort(m_BlueImageBandList.begin(), m_BlueImageBandList.end());
-    sort(m_Infrared1ImageBandList.begin(), m_Infrared1ImageBandList.end());
-    sort(m_Infrared2ImageBandList.begin(), m_Infrared2ImageBandList.end());
-    sort(m_Infrared3ImageBandList.begin(), m_Infrared3ImageBandList.end());
-    sort(m_GrayImageBandList.begin(), m_GrayImageBandList.end());
+    sort(m_RedImageBandList.begin(),        m_RedImageBandList.end());
+    sort(m_GreenImageBandList.begin(),      m_GreenImageBandList.end());
+    sort(m_BlueImageBandList.begin(),       m_BlueImageBandList.end());
+    sort(m_Infrared1ImageBandList.begin(),  m_Infrared1ImageBandList.end());
+    sort(m_Infrared2ImageBandList.begin(),  m_Infrared2ImageBandList.end());
+    sort(m_Infrared3ImageBandList.begin(),  m_Infrared3ImageBandList.end());
+    sort(m_GrayImageBandList.begin(),       m_GrayImageBandList.end());
 
     // Setup shorthand sizes to image band vectors...
     const size_t Reds       = m_RedImageBandList.size();
@@ -216,27 +227,31 @@ bool ReconstructableImage::Reconstruct()
         VicarImageBand *BestGrayscale   = NULL;
 
         // Get pointers to the best of each type, if available...
-        if(Reds) 
-            BestRed = &m_RedImageBandList.back();
-        if(Greens)
-            BestGreen = &m_GreenImageBandList.back();
-        if(Blues) 
-            BestBlue = &m_BlueImageBandList.back();
-        if(Infrareds1)
-            BestInfrared1 = &m_Infrared1ImageBandList.back();
-        if(Infrareds2)
-            BestInfrared2 = &m_Infrared2ImageBandList.back();
-        if(Infrareds3)
-            BestInfrared3 = &m_Infrared3ImageBandList.back();
-        if(Grays)
-            BestGrayscale = &m_GrayImageBandList.back();
+        if(Reds)        BestRed         = &m_RedImageBandList.back();
+        if(Greens)      BestGreen       = &m_GreenImageBandList.back();
+        if(Blues)       BestBlue        = &m_BlueImageBandList.back();
+        if(Infrareds1)  BestInfrared1   = &m_Infrared1ImageBandList.back();
+        if(Infrareds2)  BestInfrared2   = &m_Infrared2ImageBandList.back();
+        if(Infrareds3)  BestInfrared3   = &m_Infrared3ImageBandList.back();
+        if(Grays)       BestGrayscale   = &m_GrayImageBandList.back();
 
 // Colour image... (only all colour bands present)
 if((Reds == 1 && Greens == 1 && Blues == 1) && 
    (Infrareds1 + Infrareds2 + Infrareds3 + Grays == 0))
 {
+    // Create full path to output file and create containing 
+    // directory, if necessary...
+    const string OutputFileName = CreateOutputFileName();
+
+        // Failed...
+        if(IsError())
+            return false;
+
     // Attempt to reconstruct...
-    return ReconstructColourImage(OutputFileName, BestRed, BestGreen, BestBlue);
+/*    return ReconstructColourImage(OutputFileName, BestRed, BestGreen, BestBlue);
+    Stubbed out for now since these kinds are easy and we want to 
+    isolate the hard ones
+*/
 }
 
     /* Colour image... (only all colour bands present)
@@ -261,10 +276,10 @@ if((Reds == 1 && Greens == 1 && Blues == 1) &&
         Message(Console::Info) << "reconstructed grayscale image successfully" << endl;
     }*/
     
-    // Unknown...
+    /* Unknown...
     else
     {
-/*Message(Console::Info)
+Message(Console::Info)
      << m_RedImageBandList.size() << " "
      << m_GreenImageBandList.size() << " "
      << m_BlueImageBandList.size() << " "
@@ -276,17 +291,18 @@ if((Reds == 1 && Greens == 1 && Blues == 1) &&
         // Alert user...
         Message(Console::Error) << "no known reconstruction recipe available, dumping bands" << endl;
 
-for(ImageBandListIterator Iterator = m_RedImageBandList.begin(); Iterator != m_RedImageBandList.end(); ++Iterator)
-{
-    stringstream suffixstream;
-    suffixstream << Iterator - m_RedImageBandList.begin();
-    suffixstream << "_red";
-    ReconstructGrayscaleImage(CreateOutputFileName(suffixstream.str()), *Iterator);
-}
+        // Dump...
+        DumpBand(m_RedImageBandList, "Unknowns/Red");
+        DumpBand(m_GreenImageBandList, "Unknowns/Green");
+        DumpBand(m_BlueImageBandList, "Unknowns/Blue");
+        DumpBand(m_Infrared1ImageBandList, "Unknowns/IR1");
+        DumpBand(m_Infrared2ImageBandList, "Unknowns/IR2");
+        DumpBand(m_Infrared3ImageBandList, "Unknowns/IR3");
+        DumpBand(m_GrayImageBandList, "Unknowns/Gray");
 
         // This doesn't count as a successful reconstruction since it wasn't reassembled...
         return false;
-    }
+//    }
 }
 
 // Reconstruct a colour image from requested image bands which can be NULL...
@@ -298,6 +314,13 @@ bool ReconstructableImage::ReconstructColourImage(
 {
     // At least one of the image bands should be non-null...
     assert(BestRedImageBand || BestGreenImageBand || BestBlueImageBand);
+
+    // Set file name for console messages to begin with...
+    Console::GetInstance().SetCurrentFileName(OutputFileName);
+
+    // File already existed, don't overwrite...
+    if(access(OutputFileName.c_str(), F_OK) == 0)
+        SetErrorAndReturnFalse("output already exists, not overwriting");
 
     // Extraction streams...
     ifstream RedExtractionStream;
@@ -434,6 +457,13 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
     const string &OutputFileName, 
     VicarImageBand &BestGrayscaleImageBand)
 {
+    // Set file name for console messages to begin with...
+    Console::GetInstance().SetCurrentFileName(OutputFileName);
+
+    // File already existed, don't overwrite...
+    if(access(OutputFileName.c_str(), F_OK) == 0)
+        SetErrorAndReturnFalse("output already exists, not overwriting");
+
     // Extraction stream...
     ifstream GrayExtractionStream;
 

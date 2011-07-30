@@ -44,10 +44,6 @@ class ReconstructableImage
         // Add an image band...
         void AddImageBand(const VicarImageBand &ImageBand);
 
-        // Get the camera event label...
-        const std::string &GetCameraEventLabel() const 
-            { return m_CameraEventLabel; }
-
         // Get an error message, if set...
         const std::string &GetErrorMessage() const 
             { return m_ErrorMessage; }
@@ -75,8 +71,15 @@ class ReconstructableImage
     protected:
 
         // Create the necessary path to the output file and return a path, 
+        //  placing the output file within an option subdirectory and 
         //  appending an optional name suffix e.g. file_suffix.png...
-        std::string CreateOutputFileName(std::string NameSuffix = "");
+        std::string CreateOutputFileName(
+            const std::string &SubDirectory = "", 
+            const std::string &NameSuffix = "");
+
+        // Dump all images within given image band to the output directory in 
+        //  a given subdirectory...
+        bool DumpBand(ImageBandListType &ImageBand, const std::string &SubDirectory);
 
         // Reconstruct a colour image from requested image bands which can be NULL...
         bool ReconstructColourImage(
@@ -109,8 +112,11 @@ class ReconstructableImage
         ImageBandListType   m_Infrared3ImageBandList;
         ImageBandListType   m_GrayImageBandList;
         
-        // Camera event label...
+        // Camera event label and same thing without the sol day
+        //  and then the solar day itself...
         const std::string   m_CameraEventLabel;
+        std::string         m_CameraEventNoSol;
+        size_t              m_SolarDay;
 
         // Error message...
         std::string         m_ErrorMessage;
