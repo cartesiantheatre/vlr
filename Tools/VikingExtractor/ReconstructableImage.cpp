@@ -50,10 +50,7 @@ ReconstructableImage::ReconstructableImage(
     const std::string &CameraEventLabel)
     : m_OutputRootDirectory(OutputRootDirectory),
       m_CameraEventLabel(CameraEventLabel),
-      m_SolarDay(0),
-      m_AutoRotate(true),
-      m_Interlace(false),
-      m_SolDirectorize(false)
+      m_SolarDay(0)
 {
     // Always need an label...
     assert(!CameraEventLabel.empty());
@@ -141,7 +138,7 @@ string ReconstructableImage::CreateOutputFileName(
 
     // Images are reconstructed in subfolder of solar day it was 
     //  taken on, so create the subfolder, if enabled......
-    if(m_SolDirectorize)
+    if(Options::GetInstance().GetSolDirectorize())
         FullDirectory << m_SolarDay << '/';
     
     // Otherwise put inside camera event identifier folder...
@@ -181,9 +178,9 @@ bool ReconstructableImage::DumpBand(
         Iterator != ImageBand.end(); 
       ++Iterator)
     {
-        // Format suffix to contain unique identifier to distinguish
-        //  from other images of this same band type of this same
-        //  camera event...
+        // Format suffix to contain sort order identifier to distinguish
+        //  from other images of this same band type of this same camera 
+        //  event...
         stringstream SuffixStream;
         SuffixStream << "_" << Iterator - ImageBand.begin();
         ReconstructGrayscaleImage(
@@ -288,9 +285,6 @@ Message(Console::Info)
      << m_Infrared3ImageBandList.size() << " "
      << m_GrayImageBandList.size() << endl;*/
 
-        // Alert user...
-        Message(Console::Error) << "no known reconstruction recipe available, dumping bands" << endl;
-
         // Dump...
         DumpBand(m_RedImageBandList, "Unknowns/Red");
         DumpBand(m_GreenImageBandList, "Unknowns/Green");
@@ -301,14 +295,15 @@ Message(Console::Info)
         DumpBand(m_GrayImageBandList, "Unknowns/Gray");
 
         // This doesn't count as a successful reconstruction since it wasn't reassembled...
+        SetErrorAndReturnFalse("no reconstruction recipe available, dumping bands");
         return false;
 //    }
 }
 
-// Reconstruct a colour image from requested image bands which can be NULL...
+/* Reconstruct a colour image from requested image bands which can be NULL...
 bool ReconstructableImage::ReconstructColourImage(
     const string &OutputFileName, 
-    VicarImageBand *BestRedImageBand, 
+    VicarImageBand::RawBandData &BestRedBandData, 
     VicarImageBand *BestGreenImageBand, 
     VicarImageBand *BestBlueImageBand)
 {
@@ -450,7 +445,7 @@ bool ReconstructableImage::ReconstructColourImage(
 
     // Done...
     return true;
-}
+}*/
 
 // Reconstruct a grayscale image from requested image band...
 bool ReconstructableImage::ReconstructGrayscaleImage(
@@ -464,11 +459,11 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
     if(access(OutputFileName.c_str(), F_OK) == 0)
         SetErrorAndReturnFalse("output already exists, not overwriting");
 
-    // Extraction stream...
-    ifstream GrayExtractionStream;
+    // Extraction raw band data...
+    VicarImageBand::RawBandDataType RawBandData;
 
-    // Initialize extraction stream and check for error...
-    if(!BestGrayscaleImageBand.GetExtractionStream(GrayExtractionStream))
+    // Get the raw band data and check for error...
+    if(!BestGrayscaleImageBand.GetRawBandData(RawBandData))
         SetErrorAndReturnFalse(BestGrayscaleImageBand.GetErrorMessage());
 
     // Get width and height...
@@ -479,7 +474,7 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
     png::image<png::gray_pixel> PngImage(Width, Height);
 
     // Toggle interlacing, if user selected...
-    if(m_Interlace)
+    if(Options::GetInstance().GetInterlace())
         PngImage.set_interlace_type(png::interlace_adam7);
     else
         PngImage.set_interlace_type(png::interlace_none);
@@ -490,45 +485,16 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
         // Pass raw image data through encoder, column by column...
         for(size_t X = 0; X < PngImage.get_width(); ++X)
         {
-            // Storage for this pixel's grayscale value...
-            char GrayByte    = '\x0';
+            // Get this pixel's grayscale value...
+            char GrayByte    = RawBandData.at(Y).at(X);
 
-            // Read byte and check for error ...
-            if(!GrayExtractionStream.read(&GrayByte, 1).good())
-                SetErrorAndReturnFalse("raw gray channel's source image band data i/o error")
-            
             // Encode...
             PngImage.set_pixel(X, Y, GrayByte);
         }
     }
-
-    // Requested to auto rotate...
-    if(m_AutoRotate)
-    {
-        // Allocate png storage of swapped dimensions...
-        png::image<png::gray_pixel> RotatedPngImage(Height, Width);
-
-        // Toggle interlacing, if user selected...
-        if(m_Interlace)
-            RotatedPngImage.set_interlace_type(png::interlace_adam7);
-        else
-            RotatedPngImage.set_interlace_type(png::interlace_none);
-
-        // Transform each row...
-        for(size_t Y = 0; Y < RotatedPngImage.get_height(); ++Y)
-        {
-            // Transform each column...
-            for(size_t X = 0; X < RotatedPngImage.get_width(); ++X)
-                RotatedPngImage.set_pixel(X, Y, PngImage.get_pixel(Width - Y - 1, X));
-        }
-        
-        // Write out...
-        RotatedPngImage.write(OutputFileName);
-    }
     
-    // No auto rotation requested, write out normally...
-    else
-        PngImage.write(OutputFileName);
+    // Write out...
+    PngImage.write(OutputFileName);
 
     // Done...
     return true;

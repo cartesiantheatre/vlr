@@ -29,6 +29,7 @@
 #include <set>
 #include <map>
 #include <string>
+#include "Options.h"
 #include "VicarImageBand.h"
 #include "ReconstructableImage.h"
 
@@ -47,15 +48,11 @@ class VicarImageAssembler
         //  file or a directory into the output directory...
         void Reconstruct();
 
-        // Set usage switches...
-        void SetAutoRotate(const bool AutoRotate = true) { m_AutoRotate = AutoRotate; }
-        void SetDiodeFilterClass(const std::string &DiodeFilterClass);
-        void SetIgnoreBadFiles(const bool IgnoreBadFiles = true) { m_IgnoreBadFiles = IgnoreBadFiles; }
-        void SetInterlace(const bool Interlace = true) { m_Interlace = Interlace; }
+        // Set the diode filter type or throw an error...
+        void SetDiodeFilterClass(const std::string &DiodeFilter);
+        
+        // Set the lander filter or throw an error...
         void SetLanderFilter(const std::string &LanderFilter);
-        void SetRecursive(const bool Recursive = true) { m_Recursive = Recursive; }
-        void SetSolDirectorize(const bool SolDirectorize = true) { m_SolDirectorize = SolDirectorize; }
-        void SetSummarizeOnly(const bool SummarizeOnly = true) { m_SummarizeOnly = SummarizeOnly; }
 
         // Deconstructor...
        ~VicarImageAssembler();
@@ -98,15 +95,9 @@ class VicarImageAssembler
 
         // Acceptable diode band filter set...
         DiodeBandFilterSet              m_DiodeBandFilterSet;
-
-        // Usage flags...
-        bool                            m_AutoRotate;
-        bool                            m_IgnoreBadFiles;
-        bool                            m_Interlace;
+        
+        // Lander filter. Zero for either, or one or two...
         int                             m_LanderFilter;
-        bool                            m_Recursive;
-        bool                            m_SolDirectorize;
-        bool                            m_SummarizeOnly;
 };
 
 // Multiple include protection...

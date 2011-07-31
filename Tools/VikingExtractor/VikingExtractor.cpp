@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <getopt.h>
 #include <unistd.h>
+#include <ocradlib.h>
 
 // Using the standard namespace...
 using namespace std;
@@ -40,6 +41,7 @@ void ShowHelp()
 {
     cout << "Usage: VikingExtractor [options] input [output]"                                   << endl
          << "Options:"                                                                          << endl
+         << "      --auto-rotate           Automaticaly orient image by rotating as needed."    << endl
          << "  -f, --diode-filter[=type]   Extract from matching supported diode filter"        << endl
          << "                              classes which are any (default), colour, infrared,"  << endl
          << "                              sun, or survey."                                     << endl
@@ -54,8 +56,6 @@ void ShowHelp()
          << "      --lander-filter=#       Extract from specific lander only which are"         << endl
          << "                              either (0, the default), 1, or 2."                   << endl
          << "      --no-colours            Disable VT/100 ANSI coloured terminal output."       << endl
-         << "      --no-rotate             Don't apply automatic 90 degree counter"             << endl
-         << "                              clockwise rotation."                                 << endl
          << "  -r, --recursive             Scan subfolders as well if input is a directory."    << endl
          << "      --save-record-labels    Save VICAR record labels as text file"               << endl
          << "      --sol-directorize       Put reconstructed images into subdirectories"        << endl
@@ -74,7 +74,7 @@ void ShowHelp()
 // Show version information...
 void ShowVersion()
 {
-    cout << "VikingExtractor " VIKING_EXTRACTOR_VERSION << endl
+    cout << "VikingExtractor " VIKING_EXTRACTOR_VERSION << " (GNU Ocrad " << OCRAD_version() << ")" << endl
          << "Copyright (C) 2010, 2011 Kshatra Corp." << endl
          << "This is free software; see the source for copying conditions. There is NO" << endl
          << "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE." << endl;
@@ -89,25 +89,16 @@ int main(int ArgumentCount, char *Arguments[])
     string      InputFileOrRootDirectory;
     string      OutputRootDirectory;
     
-    // User switches and defaults...
-    bool        AutoRotate              = true;
-    string      DiodeFilterClass;
-    bool        DryRun                  = false;
-    bool        IgnoreBadFiles          = false;
-    bool        Interlace               = false;
-    size_t      Jobs                    = 1;
-    string      LanderFilter;
-    bool        Recursive               = false;
-    bool        SaveLabels              = false;
-    bool        SolDirectorize          = false;
-    bool        SummarizeOnly           = false;
-    bool        UseColours              = true;
+    // Some user options...
+    string      DiodeFilter             = "any";
+    string      LanderFilter            = "any";
     bool        VerboseConsole          = false;
 
     // Enumerator of long command line option identifiers...
     enum option_long_enum
     {
-        option_long_diode_filter = 256, /* To ensure no clashes with short option char identifiers */
+        option_long_auto_rotate  = 256, /* To ensure no clashes with short option char identifiers */
+        option_long_diode_filter,
         option_long_dry_run,
         option_long_help,
         option_long_ignore_bad_files,
@@ -115,7 +106,6 @@ int main(int ArgumentCount, char *Arguments[])
         option_long_jobs,
         option_long_lander_filter,
         option_long_no_colours,
-        option_long_no_rotate,
         option_long_recursive,
         option_long_save_record_labels,
         option_long_sol_directorize,
@@ -127,6 +117,7 @@ int main(int ArgumentCount, char *Arguments[])
     // Command line option structure...
     option CommandLineLongOptions[] =
     {
+        {"auto-rotate",         no_argument,        NULL,   option_long_auto_rotate},
         {"diode-filter",        required_argument,  NULL,   option_long_diode_filter},
         {"dry-run",             no_argument,        NULL,   option_long_dry_run},
         {"help",                no_argument,        NULL,   option_long_help},
@@ -135,7 +126,6 @@ int main(int ArgumentCount, char *Arguments[])
         {"jobs",                optional_argument,  NULL,   option_long_jobs},
         {"lander-filter",       required_argument,  NULL,   option_long_lander_filter},
         {"no-colours",          no_argument,        NULL,   option_long_no_colours},
-        {"no-rotate",           no_argument,        NULL,   option_long_no_rotate},
         {"recursive",           no_argument,        NULL,   option_long_recursive},
         {"save-record-labels",  no_argument,        NULL,   option_long_save_record_labels},
         {"sol-directorize",     no_argument,        NULL,   option_long_sol_directorize},
@@ -171,12 +161,15 @@ int main(int ArgumentCount, char *Arguments[])
                 break;
             }
 
+            // Automatic image rotation correction...
+            case option_long_auto_rotate: { Options::GetInstance().SetAutoRotate(); break; }
+
             // Diode filter class...
             case 'f':
-            case option_long_diode_filter: { assert(optarg); DiodeFilterClass = optarg; break; }
+            case option_long_diode_filter: { assert(optarg); DiodeFilter = optarg; break; }
 
             // Dry run...
-            case option_long_dry_run: { DryRun = true; break; }
+            case option_long_dry_run: { Options::GetInstance().SetDryRun(); break; }
            
             // Help...
             case option_long_help:
@@ -185,19 +178,21 @@ int main(int ArgumentCount, char *Arguments[])
                 ShowHelp();
 
                 // Exit...
-                exit(0);
+                exit(EXIT_SUCCESS);
             }
 
             // Ignore bad files...
-            case option_long_ignore_bad_files: { IgnoreBadFiles = true; break; }
+            case option_long_ignore_bad_files: { Options::GetInstance().SetIgnoreBadFiles(); break; }
 
             // Interlace with Adam7...
-            case option_long_interlace: { Interlace = true; break; }
+            case option_long_interlace: { Options::GetInstance().SetInterlace(); break; }
             
             // Jobs...
             case 'j':
             case option_long_jobs: 
             {
+                size_t Jobs = 0;
+                
                 // Number of threads provided...
                 if(optarg)
                     Jobs = atoi(optarg);
@@ -212,30 +207,28 @@ int main(int ArgumentCount, char *Arguments[])
                     Jobs = sysconf(_SC_NPROCESSORS_ONLN);
 
                 // Done...
+                Options::GetInstance().SetJobs(Jobs);
                 break;
             }
 
             // Lander filter...
             case option_long_lander_filter: { assert(optarg); LanderFilter = optarg; break; }
 
-            // No automatic image rotation correction...
-            case option_long_no_rotate: { AutoRotate = false; break; }
-
             // No terminal colour...
-            case option_long_no_colours: { UseColours = false; break; }
+            case option_long_no_colours: { Console::GetInstance().SetUseColours(false); break; }
 
             // Recursive scan of subfolders if input is a directory...
             case 'r':
-            case option_long_recursive: { Recursive = true; break; }
+            case option_long_recursive: { Options::GetInstance().SetRecursive(); break; }
 
             // Save record labels...
-            case option_long_save_record_labels: { SaveLabels = true; break; }
+            case option_long_save_record_labels: { Options::GetInstance().SetSaveLabels(); break; }
 
             // Sol directorize...
-            case option_long_sol_directorize: { SolDirectorize = true; break; }
+            case option_long_sol_directorize: { Options::GetInstance().SetSolDirectorize(); break; }
 
             // Summarize only...
-            case option_long_summarize_only: { SummarizeOnly = true; break; }
+            case option_long_summarize_only: { Options::GetInstance().SetSummarizeOnly(); break; }
 
             // Verbose...
             case 'V':
@@ -249,14 +242,14 @@ int main(int ArgumentCount, char *Arguments[])
                 ShowVersion();
 
                 // Exit...
-                exit(0);
+                exit(EXIT_SUCCESS);
             }
 
             // Unknown option...
             case '?':
             {
                 // get_opt_long already dumped an error message...
-                exit(1);
+                exit(EXIT_FAILURE);
             }
             
             // Unknown option...
@@ -265,14 +258,24 @@ int main(int ArgumentCount, char *Arguments[])
                 //cout << "Exiting on option " << (int) OptionCharacter << endl;
                 
                 // Exit...
-                exit(1);
+                exit(EXIT_FAILURE);
             }
         }
     }
 
-    // Toggle console colours and verbosity to user preference...
-    Console::GetInstance().SetUseColours(UseColours);
+    // Toggle verbose console...
     Console::GetInstance().SetChannelEnabled(Console::Verbose, VerboseConsole);
+
+    // Verify linked against compatible library...
+    if(OCRAD_version()[0] != OCRAD_version_string[0])
+    {
+        // Alert, abort...
+        Message(Console::Error) 
+            << "GNU Ocrad " << OCRAD_version_string << " linked against incompatible GNU Ocrad version " 
+            << OCRAD_version() 
+            << endl;
+        exit(EXIT_FAILURE);
+    }
 
     // We need at least one additional parameter, the input...
     
@@ -285,7 +288,7 @@ int main(int ArgumentCount, char *Arguments[])
         {
             // Alert, abort...
             Message(Console::Error) << "need input file or directory, see --help" << endl;
-            exit(1);
+            exit(EXIT_FAILURE);
         }
 
     // The output directory is optional, but check if explicitly provided...
@@ -301,7 +304,7 @@ int main(int ArgumentCount, char *Arguments[])
             << optind + 1 << "/" << ArgumentCount 
             << " ("
             << Arguments[optind] << "), see --help" << endl;
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     // Extract from a set of VICAR images...
@@ -311,15 +314,11 @@ int main(int ArgumentCount, char *Arguments[])
         //  the input directory and the root output directory respectively...
         VicarImageAssembler Assembler(InputFileOrRootDirectory, OutputRootDirectory);
         
-        // Set usage switches...
-        Assembler.SetAutoRotate(AutoRotate);
-        Assembler.SetDiodeFilterClass(DiodeFilterClass);
-        Assembler.SetIgnoreBadFiles(IgnoreBadFiles);
-        Assembler.SetInterlace(Interlace);
+        // Set the diode filter...
+        Assembler.SetDiodeFilterClass(DiodeFilter);
+        
+        // Set the lander filter...
         Assembler.SetLanderFilter(LanderFilter);
-        Assembler.SetRecursive(Recursive);
-        Assembler.SetSolDirectorize(SolDirectorize);
-        Assembler.SetSummarizeOnly(SummarizeOnly);
         
         // Reconstruct all possible images found of either the input 
         //  file or a directory into the output directory...
@@ -333,7 +332,7 @@ int main(int ArgumentCount, char *Arguments[])
             Message(Console::Error) << ErrorMessage << endl;
             
             // Terminate...
-            exit(1);
+            exit(EXIT_FAILURE);
         }
 
     // Done...

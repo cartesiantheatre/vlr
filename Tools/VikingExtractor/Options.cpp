@@ -19,19 +19,43 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Multiple include protection...
-#ifndef _MISCELLANEOUS_H_
-#define _MISCELLANEOUS_H_
-
 // Includes...
-#include <string>
+#include "Options.h"
 
-// Create a directory and all of its parents, if necessary...
-bool CreateDirectoryRecursively(const std::string &Path);
+// Using the standard namespace...
+using namespace std;
 
-// Check if GOCR is installed and available...
-bool IsGocrAvailable();
+// Options singleton instance...
+Options *Options::m_SingletonInstance = NULL;
 
-// Multiple include protection...
-#endif
+// Default constructor...
+Options::Options()
+    :   m_AutoRotate(false),
+        m_DryRun(false),
+        m_IgnoreBadFiles(false),
+        m_Interlace(false),
+        m_Jobs(1),
+        m_Recursive(false),
+        m_SaveLabels(false),
+        m_SolDirectorize(false),
+        m_SummarizeOnly(false)
+{
 
+}
+
+// Get the singleton instance...
+Options &Options::GetInstance()
+{
+    // Unconstructed, construct...
+    if(!m_SingletonInstance)
+        m_SingletonInstance = new Options;
+
+    // Return the only instance...
+    return *m_SingletonInstance;
+}
+
+// Deconstructor...
+Options::~Options()
+{
+
+}

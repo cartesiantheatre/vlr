@@ -28,6 +28,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include "Options.h"
 #include "VicarImageBand.h"
 
 // Reconstructable image...
@@ -54,11 +55,6 @@ class ReconstructableImage
         
         // Extract the image out as a PNG, or return false if failed...
         bool Reconstruct();
-
-        // Set user preferences...
-        void SetAutoRotate(const bool AutoRotate = true) { m_AutoRotate = AutoRotate; }
-        void SetInterlace(const bool Interlace = true) { m_Interlace = Interlace; }
-        void SetSolDirectorize(const bool SolDirectorize = true) { m_SolDirectorize = SolDirectorize; }
 
     // Protected types...
     protected:
@@ -120,15 +116,6 @@ class ReconstructableImage
 
         // Error message...
         std::string         m_ErrorMessage;
-        
-        // Auto rotation correction...
-        bool                m_AutoRotate;
-
-        // Use Adam7 interlacing...
-        bool                m_Interlace;
-        
-        // Sol directorize...
-        bool                m_SolDirectorize;
 };
 
 // Multiple include protection...

@@ -40,13 +40,7 @@ VicarImageAssembler::VicarImageAssembler(
     const string &OutputRootDirectory)
     : m_InputFileOrRootDirectory(InputFileOrRootDirectory),
       m_OutputRootDirectory(OutputRootDirectory),
-      m_AutoRotate(true),
-      m_IgnoreBadFiles(false),
-      m_Interlace(false),
-      m_LanderFilter(0),
-      m_Recursive(false),
-      m_SolDirectorize(false),
-      m_SummarizeOnly(false)
+      m_LanderFilter(0)
 {
     // We should have been provided with an input directory...
     assert(!m_InputFileOrRootDirectory.empty());
@@ -121,7 +115,7 @@ void VicarImageAssembler::GenerateProspectiveFileList(const string &InputFileOrD
 
         // Directory, recurse...
         else if((DirectoryEntry->d_type == DT_DIR) && 
-                m_Recursive &&
+                Options::GetInstance().GetRecursive() &&
                 (string(".") != DirectoryEntry->d_name) && 
                 (string("..") != DirectoryEntry->d_name))
         {
@@ -149,7 +143,7 @@ void VicarImageAssembler::Reconstruct()
     string ErrorMessage;
 
     // If summarize only mode is enabled, mute current file name, warnings, info, and errors...
-    if(m_SummarizeOnly)
+    if(Options::GetInstance().GetSummarizeOnly())
     {
         Console::GetInstance().SetUseCurrentFileName(false);
         Console::GetInstance().SetChannelEnabled(Console::Error, false);
@@ -195,7 +189,7 @@ void VicarImageAssembler::Reconstruct()
             const float  PercentageExamined = static_cast<float>(ProspectiveFilesExamined) / TotalProspectiveFiles * 100.0f;
 
             // Update summary, if enabled...
-            if(m_SummarizeOnly)
+            if(Options::GetInstance().GetSummarizeOnly())
             {
                 Message(Console::Summary) 
                     << "\rgenerating catalogue from " 
@@ -215,7 +209,7 @@ void VicarImageAssembler::Reconstruct()
                 if(ImageBand.IsError())
                 {
                     // User requested we just skip over bad files....
-                    if(m_IgnoreBadFiles)
+                    if(Options::GetInstance().GetIgnoreBadFiles())
                     {
                         // Alert and skip...
                         Message(Console::Warning)
@@ -283,11 +277,6 @@ void VicarImageAssembler::Reconstruct()
                         m_OutputRootDirectory, 
                         CameraEventLabel);
 
-                    // Set user preferences...
-                    Reconstructable->SetAutoRotate(m_AutoRotate);
-                    Reconstructable->SetInterlace(m_Interlace);
-                    Reconstructable->SetSolDirectorize(m_SolDirectorize);
-
                     // Insert the reconstructable image into the event dictionary.
                     //  We use the previous failed find iterator as a possible 
                     //  amortized constant performance optimization...
@@ -316,7 +305,7 @@ void VicarImageAssembler::Reconstruct()
             if(Reconstructable->IsError())
             {
                 // User requested we just skip over bad files....
-                if(m_IgnoreBadFiles)
+                if(Options::GetInstance().GetIgnoreBadFiles())
                 {
                     // Alert and skip...
                     Message(Console::Warning)
@@ -339,7 +328,7 @@ void VicarImageAssembler::Reconstruct()
         }
 
         // Update summary, if enabled, beginning with new line since last was \r only...
-        if(m_SummarizeOnly)
+        if(Options::GetInstance().GetSummarizeOnly())
             Message(Console::Summary) << endl;
 
         // Total attempted reconstructions and total successful...
@@ -355,7 +344,7 @@ void VicarImageAssembler::Reconstruct()
           ++AttemptedReconstruction;
 
             // Update summary, if enabled...
-            if(m_SummarizeOnly)
+            if(Options::GetInstance().GetSummarizeOnly())
                 Message(Console::Summary) 
                     << "\rattempting reconstruction " 
                     << AttemptedReconstruction << "/" << m_CameraEventDictionary.size()
@@ -369,7 +358,7 @@ void VicarImageAssembler::Reconstruct()
             if(!Reconstructable->Reconstruct())
             {
                 // User requested we just skip over bad files....
-                if(m_IgnoreBadFiles)
+                if(Options::GetInstance().GetIgnoreBadFiles())
                 {
                     // Alert and skip...
                     Message(Console::Warning)
@@ -378,7 +367,7 @@ void VicarImageAssembler::Reconstruct()
                         << endl;
                     continue;
                 }
-                
+
                 // Otherwise raise an error...
                 else
                 {
@@ -389,14 +378,14 @@ void VicarImageAssembler::Reconstruct()
                     throw ErrorMessage;
                 }
             }
-            
+
             // Otherwise, take note that we recovered one more...
             else
               ++SuccessfullyReconstructed;
         }
 
         // Update summary, if enabled, beginning with new line since last was \r only...
-        if(m_SummarizeOnly)
+        if(Options::GetInstance().GetSummarizeOnly())
             Message(Console::Summary) 
                 << endl
                 << "successfully reconstructed "
@@ -408,7 +397,7 @@ void VicarImageAssembler::Reconstruct()
         catch(const string &ErrorMessage)
         {
             // Update summary, if enabled, beginning with new line since last was \r only...
-            if(m_SummarizeOnly)
+            if(Options::GetInstance().GetSummarizeOnly())
                 Message(Console::Summary) << endl;
             
             // Reset assembler state...
@@ -500,24 +489,15 @@ void VicarImageAssembler::SetLanderFilter(const string &LanderFilter)
 {
     // Use any...
     if(LanderFilter.empty() || LanderFilter == "0" || LanderFilter == "any")
-    {
-//        Message(Console::Info) << "filtering for either Viking Lander" << endl;
         m_LanderFilter = 0;
-    }
     
     // Viking 1 lander...
     else if(LanderFilter == "1")
-    {
-//        Message(Console::Info) << "filtering for either Viking Lander 1" << endl;
         m_LanderFilter = 1;
-    }
 
     // Viking 2 lander...
     else if(LanderFilter == "2")
-    {
-//        Message(Console::Info) << "filtering for either Viking Lander 2" << endl;
         m_LanderFilter = 2;
-    }
     
     // Unknown...
     else

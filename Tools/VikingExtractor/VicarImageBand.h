@@ -24,13 +24,15 @@
 #define _VICAR_COLOUR_IMAGE_H_
 
 // Includes...
+#include "LogicalRecord.h"
+#include "Options.h"
 #include <cassert>
-#include <string>
 #include <fstream>
+#include <map>
 #include <ostream>
 #include <set>
-#include <map>
-#include "LogicalRecord.h"
+#include <string>
+#include <vector>
 
 // 1970s era VICAR image class...
 class VicarImageBand
@@ -63,6 +65,15 @@ class VicarImageBand
             Survey
 
         }PSADiode;
+        
+        // Image rotation...
+        typedef enum
+        {
+            None,
+            Rotate90,
+            Rotate180,
+            Rotate270
+        }RotationEnum
 
         // Token to band type map and pair types...
         typedef std::map<const std::string, PSADiode>   TokenToBandTypeMap;
@@ -71,6 +82,9 @@ class VicarImageBand
         // Band type to friendly map and pair types...
         typedef std::map<const PSADiode, std::string>   BandTypeToFriendlyMap;
         typedef std::pair<const PSADiode, std::string>  BandTypeToFriendlyMapPair;
+        
+        // Raw image band data, each nested vector is a row containing column data...
+        typedef std::vector< std::vector<char> >        RawBandDataType;
 
     // Public methods...
     public:
@@ -90,9 +104,8 @@ class VicarImageBand
         // Get the diode band type as a human friendly string...
         const std::string &GetDiodeBandTypeFriendlyString() const;
 
-        // Get a stream opened and ready to extract where raw image data 
-        //  begins. Must be loaded first. Argument is streams to use...
-        bool GetExtractionStream(std::ifstream &ExtractionStream);
+        // Get the raw band data...
+        bool GetRawBandData(RawBandDataType &BandData);
 
         // Get the original file on the magnetic tape number, or zero if unknown...
         size_t GetFileOnMagneticTapeNumber() const;
@@ -136,6 +149,9 @@ class VicarImageBand
         
     // Protected methods...
     protected:
+
+        // Extract OCR with image in given rotation of 0, 90, 180, or 270...
+        std::string ExtractOCR(const RotationEnum Rotation, std::string &Buffer);
 
         // Set the photosensor diode band type from VICAR token... (e.g. "RED/T")
         PSADiode GetDiodeBandTypeFromVicarToken(const std::string &DiodeBandTypeToken) const;
@@ -228,6 +244,13 @@ class VicarImageBand
 
         // Saved labels buffer...
         std::string             m_SavedLabelsBuffer;
+        
+        // Any OCR text that happened to be extracted...
+        std::string             m_OCRBuffer;
+
+        // Counterclockwise rotation to orient image properly which is
+        //  always 0, 90, 180, or 270...
+        RotationEnum            m_Rotation;
 };
 
 // Multiple include protection...

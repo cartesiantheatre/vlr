@@ -32,6 +32,9 @@
 
     // PNG writing...
     #include <png++/png.hpp>
+    
+    // Optical character recognition...
+    #include <ocradlib.h>
 
     // Streams...
     #include <iostream>
@@ -67,7 +70,8 @@ VicarImageBand::VicarImageBand(
       m_PhysicalRecordPadding(0),
       m_RawImageOffset(0),
       m_DiodeBandType(Unknown),
-      m_Ok(false)
+      m_Ok(false),
+      m_Rotation(0)
 {
     // Initialize the token to diode band type dictionary...
 
@@ -174,32 +178,50 @@ const string &VicarImageBand::GetDiodeBandTypeFriendlyString() const
     return Iterator->second;
 }
 
-// Get a stream opened and ready to extract where raw image data 
-//  begins. Must be loaded first. Argument is streams to use...
-bool VicarImageBand::GetExtractionStream(std::ifstream &ExtractionStream)
+// Get the raw band data...
+bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &BandData)
 {
+    // Clear caller's band data...
+    BandData.clear();
+
     // Check if file was loaded ok...
     if(!IsOk())
         SetErrorAndReturnFalse("input was not loaded")
 
-    // Stream should not be opened...
-    assert(!ExtractionStream.is_open());
-
     // Open the input file...
-    ExtractionStream.open(m_InputFile.c_str(), ifstream::in | ifstream::binary);
+    ifstream ExtractionStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
     
         // Failed...
         if(!ExtractionStream.is_open())
-        {
-            // Alert, cleanup, and abort...
-            SetErrorMessage("could not open input for reading");
-            ExtractionStream.close();
-            return false;
-        }
+            SetErrorAndReturnFalse("could not open input for reading");
 
     // Seek to raw image offset and make sure it was successful...
     if(!ExtractionStream.seekg(m_RawImageOffset, ios_base::beg).good())
         SetErrorAndReturnFalse("file ended prematurely before raw image");
+
+    // Read the whole image, row by row...
+    for(int Y = 0; Y < m_Height; ++Y)
+    {
+        // The current row...
+        vector<char>    CurrentRow;
+
+        // Read each pixel in this row...
+        for(int X = 0; X < m_Width; ++X)
+        {
+            // Current pixel value...
+            char Byte = '\x0';
+            
+            // Extract pixel and check for error...
+            if(!ExtractionStream.get(Byte).good())
+                SetErrorAndReturnFalse("band data extraction i/o error");
+            
+            // Add to row...
+            CurrentRow.push_back(Byte);
+        }
+        
+        // Add row to list of columns...
+        BandData.push_back(CurrentRow);
+    }
 
     // Done...
     return true;
@@ -236,6 +258,112 @@ string VicarImageBand::GetInputFileNameOnly() const
 
     // Done...
     return FileNameOnly;
+}
+
+// Extract OCR with image in given rotation of 0, 90, 180, or 270...
+bool VicarImageBand::ExtractOCR(const RotationEnum Rotation, string &Buffer);
+{
+    // Clear caller's buffer...
+    Buffer.clear();
+
+    // Get the raw band data and check for error...
+    RawBandDataType RawBandData;
+    if(!GetRawBandData(RawBandData))
+        return false;
+
+    // Rotate the image as requested, if at all...
+    Rotate(RotationEnum, RawBandData);
+    
+    /*
+        TODO: Implement Rotate method.
+    */
+
+    // Initialize OCR library...
+    OCRAD_Descriptor *LibraryDescriptor = OCRAD_open();
+    
+        // Fucked...
+        if(OCRAD_get_errno(LibraryDescriptor) != OCRAD_ok)
+            SetErrorAndReturnFalse("ocrad failed to initialize");
+
+    // Algorithm seems to recognize VICAR text overlay better when 
+    //  the original image is re-scaled by a factor of four
+    OCRAD_scale(LibraryDescriptor, 4);
+
+    // Load the raw image band data...
+
+        // OCRAD_greymap only works with single byte per pixel...
+        assert(m_BytesPerColour == 1);
+
+        // Space for flattened linear version of the raw band data...
+        vector<char>    FlattenedRawBandData;
+
+        // Flatten each row...
+        for(int Y = 0; Y < m_Height; ++Y)
+        {
+            // Flatten each column...
+            for(int X = 0; X < m_Width; ++X)
+                FlattenedRawBandData.push_back(RawBandData.at(Y).at(X));
+        }
+
+        // Get direct address to flattened raw band data vector...
+        vector<char>::const_iterator Iterator = FlattenedRawBandData.begin();
+        const char *DataAddress = &(*Iterator);
+
+        // Initialize the OCR image structure with the raw image data...
+        OCRAD_Pixmap OcrImage;
+        OcrImage.height = m_Height;
+        OcrImage.width  = m_Width;
+        OcrImage.mode   = OCRAD_greymap;
+        OcrImage.data   = reinterpret_cast<const unsigned char *>(DataAddress);
+    
+    // Pass the image into the OCR library and check for error...
+    if(OCRAD_set_image(LibraryDescriptor, &OcrImage, 0) != 0)
+    {
+        // Cleanup...
+        OCRAD_close(LibraryDescriptor);
+
+        // Set error message...
+        SetErrorAndReturnFalse("could not set ocr image");
+    }
+
+    // Perform optical character recognition and check for error...
+    if(OCRAD_recognize(LibraryDescriptor, 0) != 0)
+    {
+        // Cleanup...
+        OCRAD_close(LibraryDescriptor);
+
+        // Set error message...
+        SetErrorAndReturnFalse("ocr pass failed");
+    }
+
+    // Grab the text from each text block...
+    for(int CurrentTextBlock = 0; 
+        CurrentTextBlock < OCRAD_result_blocks(LibraryDescriptor); 
+      ++CurrentTextBlock)
+    {
+        // Grab each line in this text block...
+        for(int CurrentTextLine = 0;
+            CurrentTextLine < OCRAD_result_lines(LibraryDescriptor, CurrentTextBlock);
+          ++CurrentTextLine)
+        {
+            // Get the current text line from the current text block...
+            OCRBuffer += OCRAD_result_line(
+                LibraryDescriptor, CurrentTextBlock, CurrentTextLine);
+        }
+    }
+
+    // Be verbose...
+    Message(Console::Info) 
+        << "optical character recognition found " 
+        << Buffer.size() 
+        << " characters" 
+        << endl;
+
+    // Cleanup...
+    OCRAD_close(LibraryDescriptor);
+    
+    // Done...
+    return true;
 }
 
 // Is the token a valid VICAR diode band type?
@@ -503,6 +631,11 @@ void VicarImageBand::Load()
     const int RequiredMinimumSize = m_RawImageOffset + (m_Bands * m_Height * m_Width * m_BytesPerColour);
     if(FileSize < RequiredMinimumSize)
         SetErrorAndReturn("file too small to contain self described band data payload");
+
+    // Guess image orientation and extract any available OCR. No need 
+    //  to set an error since callee does this...
+    if(!GuessOrientationAndExtractOCR())
+        return;
 
     // Loaded ok...
     m_Ok = true;

@@ -21,8 +21,12 @@
 
 // Includes...
 #include "Miscellaneous.h"
-#include <sys/stat.h>
+#include <cstdio>
+#include <fstream>
+#include <sstream>
 #include <string>
+#include <cstring>
+#include <sys/stat.h>
 
 // Using the standard name space...
 using namespace std;
