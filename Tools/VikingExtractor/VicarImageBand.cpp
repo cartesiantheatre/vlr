@@ -71,7 +71,7 @@ VicarImageBand::VicarImageBand(
       m_RawImageOffset(0),
       m_DiodeBandType(Unknown),
       m_Ok(false),
-      m_Rotation(0)
+      m_Rotation(Normal)
 {
     // Initialize the token to diode band type dictionary...
 
@@ -179,10 +179,10 @@ const string &VicarImageBand::GetDiodeBandTypeFriendlyString() const
 }
 
 // Get the raw band data...
-bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &BandData)
+bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData)
 {
     // Clear caller's band data...
-    BandData.clear();
+    RawBandData.clear();
 
     // Check if file was loaded ok...
     if(!IsOk())
@@ -220,7 +220,7 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &BandData)
         }
         
         // Add row to list of columns...
-        BandData.push_back(CurrentRow);
+        RawBandData.push_back(CurrentRow);
     }
 
     // Done...
@@ -260,24 +260,9 @@ string VicarImageBand::GetInputFileNameOnly() const
     return FileNameOnly;
 }
 
-// Extract OCR with image in given rotation of 0, 90, 180, or 270...
-bool VicarImageBand::ExtractOCR(const RotationEnum Rotation, string &Buffer);
+// Extract OCR within image band data...
+string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
 {
-    // Clear caller's buffer...
-    Buffer.clear();
-
-    // Get the raw band data and check for error...
-    RawBandDataType RawBandData;
-    if(!GetRawBandData(RawBandData))
-        return false;
-
-    // Rotate the image as requested, if at all...
-    Rotate(RotationEnum, RawBandData);
-    
-    /*
-        TODO: Implement Rotate method.
-    */
-
     // Initialize OCR library...
     OCRAD_Descriptor *LibraryDescriptor = OCRAD_open();
     
@@ -336,6 +321,9 @@ bool VicarImageBand::ExtractOCR(const RotationEnum Rotation, string &Buffer);
         SetErrorAndReturnFalse("ocr pass failed");
     }
 
+    // Space for the text read...
+    string OCRBuffer;
+
     // Grab the text from each text block...
     for(int CurrentTextBlock = 0; 
         CurrentTextBlock < OCRAD_result_blocks(LibraryDescriptor); 
@@ -363,7 +351,7 @@ bool VicarImageBand::ExtractOCR(const RotationEnum Rotation, string &Buffer);
     OCRAD_close(LibraryDescriptor);
     
     // Done...
-    return true;
+    return OCRBuffer;
 }
 
 // Is the token a valid VICAR diode band type?
@@ -636,6 +624,62 @@ void VicarImageBand::Load()
     //  to set an error since callee does this...
     if(!GuessOrientationAndExtractOCR())
         return;
+
+    // Space for the original unrotated as well as the rotated image band data...
+    RawBandDataType RawBandData;
+    RawBandDataType RotatedBandData;
+
+    // Get the raw band data and check for error. No need to set an 
+    //  error since callee does this...
+    if(!GetRawBandData(RawBandData))
+        return;
+
+    // Extract OCR with image in given rotations of 0, 90, 180, or 270...
+    
+        // Without a rotation...
+        const string OCRText_Normal = ExtractOCR(RotatedBandData);
+
+        // Rotated 90..
+        Rotate(Rotate90, RawBandData, RotatedBandData);
+        const string OCRText_Rotate90 = ExtractOCR(RotatedBandData);
+
+        // Rotated 180...
+        Rotate(Rotate180, RawBandData, RotatedBandData);
+        const string OCRText_Rotate180 = ExtractOCR(RotatedBandData);
+
+        // Rotated 270...
+        Rotate(Rotate270, RawBandData, RotatedBandData);
+        const string OCRText_Rotate270 = ExtractOCR(RotatedBandData);
+
+    // Check orientation and store best OCR pass...
+
+        // Normal without rotation appears to be correct orientation...
+        if(OCRText_Normal.size() >= max(OCRText_Rotate90, OCRText_Rotate180, OCRText_Rotate270))
+        {
+            m_Rotation = Normal;
+            m_OCRBuffer = OCRText_Normal;
+        }
+        
+        // Rotated 90 appears to be correct orientation...
+        else if(OCRText_Rotate90.size() >= max(OCRText_Rotate180, OCRText_Rotate270, OCRText_RotateNormal))
+        {
+            m_Rotation = Rotate90;
+            m_OCRBuffer = OCRText_Rotate90;
+        }
+
+        // Rotated 180 appears to be correct orientation...
+        else if(OCRText_Rotate180.size() >= max(OCRText_Rotate270, OCRText_RotateNormal, OCRText_Rotate90))
+        {
+            m_Rotation = Rotate180;
+            m_OCRBuffer = OCRText_Rotate180;
+        }
+        
+        // Rotated 270 appears to be correct orientation...
+        else
+        {
+            m_Rotation = Rotate270;
+            m_OCRBuffer = OCRText_Rotate270;
+        }
 
     // Loaded ok...
     m_Ok = true;
@@ -1545,5 +1589,46 @@ VicarImageBand::PSADiode VicarImageBand::GetDiodeBandTypeFromVicarToken(
     // Not found...
     else
         return Unknown;
+}
+
+// Rotate image band data as requested...
+void Rotate(
+    const RotationType Rotation, 
+    const RawBandDataType &RawBandData, 
+    RawBandDataType &RotatedRawBandData)
+{
+    // Bounds check...
+    assert(Rotation == None || Rotation == Rotate90 || 
+           Rotation == Rotate180 || Rotation == Rotate270);
+    assert(!RawBandData.empty());
+
+    // Clear the output...
+    RotatedRawBandData.clear();
+
+    // No rotation to perform...
+    if(Rotation == None)
+        RotatedRawBandData = RawBandData;
+
+/*
+    TODO: Complete the implementation of this method...
+*/
+
+    // Rotate counterclockwise 90...
+    else if(Rotation == Rotate90)
+    {
+    
+    }
+    
+    // Rotate counterclockwise 180...
+    else if(Rotation == Rotate180)
+    {
+    
+    }
+    
+    // Rotate counterclockwise 270...
+    else if(Rotation == Rotate270)
+    {
+    
+    }
 }
 

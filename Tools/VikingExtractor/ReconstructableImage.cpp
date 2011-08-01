@@ -40,10 +40,6 @@ using namespace std;
 #define SetErrorAndReturnNullStream(Message)    { SetErrorMessage((Message)); return ostream(0); }
 #define SetErrorAndReturnFalse(Message)         { SetErrorMessage((Message)); return false; }
 
-// Three way min() / max function templates...
-template<class T> const T &min(const T &A, const T &B, const T &C) { return min(A, min(B, C)); }
-template<class T> const T &max(const T &A, const T &B, const T &C) { return max(A, max(B, C)); }
-
 // Constructor...
 ReconstructableImage::ReconstructableImage(
     const std::string &OutputRootDirectory, 

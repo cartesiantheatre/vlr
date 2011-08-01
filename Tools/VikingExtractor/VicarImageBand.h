@@ -70,10 +70,10 @@ class VicarImageBand
         typedef enum
         {
             None,
-            Rotate90,
+            Rotate90,   /* Angles expressed in degrees and counterclockwise */
             Rotate180,
             Rotate270
-        }RotationEnum
+        }RotationType;
 
         // Token to band type map and pair types...
         typedef std::map<const std::string, PSADiode>   TokenToBandTypeMap;
@@ -104,8 +104,11 @@ class VicarImageBand
         // Get the diode band type as a human friendly string...
         const std::string &GetDiodeBandTypeFriendlyString() const;
 
+        // Get the OCR buffer...
+        const std::string &GetOCRBuffer() const { return m_OCRBuffer; }
+
         // Get the raw band data...
-        bool GetRawBandData(RawBandDataType &BandData);
+        bool GetRawBandData(RawBandDataType &RawBandData);
 
         // Get the original file on the magnetic tape number, or zero if unknown...
         size_t GetFileOnMagneticTapeNumber() const;
@@ -150,10 +153,10 @@ class VicarImageBand
     // Protected methods...
     protected:
 
-        // Extract OCR with image in given rotation of 0, 90, 180, or 270...
-        std::string ExtractOCR(const RotationEnum Rotation, std::string &Buffer);
+        // Extract OCR within image band data...
+        std::string ExtractOCR(const RawBandDataType &RawBandData);
 
-        // Set the photosensor diode band type from VICAR token... (e.g. "RED/T")
+        // Get the photosensor diode band type from VICAR token... (e.g. "RED/T")
         PSADiode GetDiodeBandTypeFromVicarToken(const std::string &DiodeBandTypeToken) const;
 
         // Check if the header is at least readable, and if so, phase offset 
@@ -252,6 +255,14 @@ class VicarImageBand
         //  always 0, 90, 180, or 270...
         RotationEnum            m_Rotation;
 };
+
+// Helper functions...
+
+    // Rotate image band data as requested...
+    void Rotate(
+        const RotationType Rotation, 
+        const RawBandDataType &RawBandData, 
+        RawBandDataType &RotatedRawBandData);
 
 // Multiple include protection...
 #endif
