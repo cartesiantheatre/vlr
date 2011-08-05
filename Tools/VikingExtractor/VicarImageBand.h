@@ -107,8 +107,9 @@ class VicarImageBand
         // Get the OCR buffer...
         const std::string &GetOCRBuffer() const { return m_OCRBuffer; }
 
-        // Get the raw band data...
-        bool GetRawBandData(RawBandDataType &RawBandData);
+        // Get the raw band data transformed if autorotate was enabled. Use 
+        //  GetTransformedWidth()/Height() to know adapted dimensions...
+        bool GetRawBandData(VicarImageBand::RawBandDataType &RawBandData);
 
         // Get the original file on the magnetic tape number, or zero if unknown...
         size_t GetFileOnMagneticTapeNumber() const;
@@ -119,17 +120,19 @@ class VicarImageBand
         // Get the file size, or -1 on error...
         int GetFileSize() const;
 
-        // Get image height...
-        int GetHeight() const { return m_Height; }
+        // Get original image width and height, not accounting for rotation...
+        int GetOriginalHeight() const { return m_OriginalHeight; }
+        int GetOriginalWidth() const { return m_OriginalWidth; }
+
+        // Get image height and width, accounting for transformations like rotation...
+        int GetTransformedHeight() const;
+        int GetTransformedWidth() const;
 
         // Get the input file name only without path...
         std::string GetInputFileNameOnly() const;
         
         // Get the original magnetic tape number, or zero if unknown...
         size_t GetMagneticTapeNumber() const;
-
-        // Get image width...
-        int GetWidth() const { return m_Width; }
 
         // Check if the file came with a camera event label...
         bool IsCameraEventLabelPresent() const 
@@ -138,6 +141,9 @@ class VicarImageBand
         // Check if an error is present...
         bool IsError() const
             { return !m_ErrorMessage.empty(); }
+
+        // Check if a full histogram legend is present...
+        bool IsFullHistogramPresent() { return m_FullHistogramPresent; }
 
         // Is the file accessible and the header ok?
         bool IsOk() const { return m_Ok; }
@@ -152,6 +158,11 @@ class VicarImageBand
         
     // Protected methods...
     protected:
+
+        // Examine image visually to determine things like suggested 
+        //  orientation, optical character recognition, and histogram 
+        //  detection, or set an error...
+        bool ExamineImageVisually();
 
         // Extract OCR within image band data...
         std::string ExtractOCR(const RawBandDataType &RawBandData);
@@ -193,6 +204,38 @@ class VicarImageBand
         // Set the error message...
         void SetErrorMessage(const std::string &ErrorMessage) { m_Ok = false; m_ErrorMessage = ErrorMessage; }
 
+    // Static protected methods...
+    protected:
+
+        // Check if a buffer contains text usually found in an image 
+        //  with azimuth / elevation axes are oriented properly...
+        static bool IsHorizontalAxisTextHintsPresent(const std::string &OCRBuffer);
+
+        // Check if a buffer contains text usually found in an image 
+        //  with a large histogram present...
+        static bool IsLargeHistogramTextPresent(const std::string &OCRBuffer);
+
+        // Mirror the band data from left to right...
+        static void MirrorLeftRight(
+            const RawBandDataType &RawBandData, 
+            RawBandDataType &TransformedRawBandData);
+
+        // Mirror the top and bottom...
+        static void MirrorTopBottom(
+            const RawBandDataType &RawBandData, 
+            RawBandDataType &TransformedRawBandData);
+
+        // Mirror diagonaly...
+        static void MirrorDiagonal(
+            const RawBandDataType &RawBandData, 
+            VicarImageBand::RawBandDataType &TransformedRawBandData);
+
+        // Rotate image band data as requested...
+        static void Rotate(
+            const RotationType Rotation, 
+            const RawBandDataType &RawBandData, 
+            RawBandDataType &TransformedRawBandData);
+
     // Protected data...
     protected:
 
@@ -213,9 +256,9 @@ class VicarImageBand
         // Number of image bands in this file. Should always be one...
         size_t                  m_Bands;
         
-        // Image height and width in pixels...
-        int                     m_Height;
-        int                     m_Width;
+        // Image height and width in pixels before being rotated...
+        int                     m_OriginalHeight;
+        int                     m_OriginalWidth;
 
         // Pixel format... (e.g. 'I' -> integral)
         char                    m_PixelFormat;
@@ -245,6 +288,9 @@ class VicarImageBand
         // If m_Ok is false, this is the error message...
         std::string             m_ErrorMessage;
 
+        // True if the image has a full histogram present...
+        bool                    m_FullHistogramPresent;
+
         // Saved labels buffer...
         std::string             m_SavedLabelsBuffer;
         
@@ -253,16 +299,8 @@ class VicarImageBand
 
         // Counterclockwise rotation to orient image properly which is
         //  always 0, 90, 180, or 270...
-        RotationEnum            m_Rotation;
+        RotationType            m_Rotation;
 };
-
-// Helper functions...
-
-    // Rotate image band data as requested...
-    void Rotate(
-        const RotationType Rotation, 
-        const RawBandDataType &RawBandData, 
-        RawBandDataType &RotatedRawBandData);
 
 // Multiple include protection...
 #endif

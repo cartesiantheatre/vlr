@@ -29,6 +29,9 @@
 
     // Logical record access...
     #include "LogicalRecord.h"
+    
+    // Helper functions...
+    #include "Miscellaneous.h"
 
     // PNG writing...
     #include <png++/png.hpp>
@@ -62,8 +65,8 @@ VicarImageBand::VicarImageBand(
     : m_InputFile(InputFile),
       m_PhaseOffsetRequired(0),
       m_Bands(0),
-      m_Height(0),
-      m_Width(0),
+      m_OriginalHeight(0),
+      m_OriginalWidth(0),
       m_PixelFormat(0),
       m_BytesPerColour(0),
       m_PhysicalRecordSize(0),
@@ -71,7 +74,8 @@ VicarImageBand::VicarImageBand(
       m_RawImageOffset(0),
       m_DiodeBandType(Unknown),
       m_Ok(false),
-      m_Rotation(Normal)
+      m_FullHistogramPresent(false),
+      m_Rotation(None)
 {
     // Initialize the token to diode band type dictionary...
 
@@ -178,7 +182,8 @@ const string &VicarImageBand::GetDiodeBandTypeFriendlyString() const
     return Iterator->second;
 }
 
-// Get the raw band data...
+// Get the raw band data transformed if autorotate was enabled. Use 
+//  GetTransformedWidth()/Height() to know adapted dimensions...
 bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData)
 {
     // Clear caller's band data...
@@ -200,13 +205,13 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
         SetErrorAndReturnFalse("file ended prematurely before raw image");
 
     // Read the whole image, row by row...
-    for(int Y = 0; Y < m_Height; ++Y)
+    for(int Y = 0; Y < m_OriginalHeight; ++Y)
     {
         // The current row...
         vector<char>    CurrentRow;
 
         // Read each pixel in this row...
-        for(int X = 0; X < m_Width; ++X)
+        for(int X = 0; X < m_OriginalWidth; ++X)
         {
             // Current pixel value...
             char Byte = '\x0';
@@ -221,6 +226,19 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
         
         // Add row to list of columns...
         RawBandData.push_back(CurrentRow);
+    }
+
+    // Auto rotate was requested and requires a rotation...
+    if(Options::GetInstance().GetAutoRotate() && m_Rotation != None)
+    {
+        // Space for the rotated raw band data...
+        RawBandDataType RotatedRawBandData;
+        
+        // Perform rotation...
+        Rotate(m_Rotation, RawBandData, RotatedRawBandData);
+        
+        // Store result for caller...
+        RawBandData = RotatedRawBandData;
     }
 
     // Done...
@@ -260,19 +278,149 @@ string VicarImageBand::GetInputFileNameOnly() const
     return FileNameOnly;
 }
 
+// Examine image visually to determine things like suggested 
+//  orientation, optical character recognition, and histogram 
+//  detection, or set an error...
+bool VicarImageBand::ExamineImageVisually()
+{
+    // Space for the original unrotated as well as the rotated image band data...
+    RawBandDataType RawBandData;
+    RawBandDataType RotatedBandData;
+
+    // Get the raw band data and check for error. No need to set an 
+    //  error since callee does this...
+    if(!GetRawBandData(RawBandData))
+        return false;
+
+    // Extract OCR and guess image orientation. Note that histogram containing text...
+        
+        // Space for OCR buffer...
+        string OCRBuffer;
+
+        // No rotation...
+        const string OCR_None = ExtractOCR(RawBandData);
+
+        // Rotated 90..
+        Rotate(Rotate90, RawBandData, RotatedBandData);
+        const string OCR_Rotated90 = ExtractOCR(RotatedBandData);
+
+        // Rotated 180...
+        Rotate(Rotate180, RawBandData, RotatedBandData);
+        const string OCR_Rotated180 = ExtractOCR(RotatedBandData);
+
+        // Rotated 270...
+        Rotate(Rotate270, RawBandData, RotatedBandData);
+        const string OCR_Rotated270 = ExtractOCR(RotatedBandData);
+
+    // Check orientation by looking for large histogram's text which 
+    //  is always 90 degrees counterclockwise rotated away from normal 
+    //  image orientation...
+
+        // Image needs to be rotated 90 degrees counterclockwise...
+        if(IsLargeHistogramTextPresent(OCR_None))
+        {
+            Message(Console::Verbose) << "image should be rotated 90 counterclockwise" << endl;
+            m_Rotation = Rotate90;
+            m_OCRBuffer = OCR_None;
+            m_FullHistogramPresent = true;
+        }
+        
+        // Image needs to be rotated 180 degrees counterclockwise...
+        else if(IsLargeHistogramTextPresent(OCR_Rotated90))
+        {
+            Message(Console::Verbose) << "image should be rotated 180 counterclockwise" << endl;
+            m_Rotation = Rotate180;
+            m_OCRBuffer = OCR_Rotated90;
+            m_FullHistogramPresent = true;
+        }
+        
+        // Image needs to be rotated 270 degrees counterclockwise...
+        else if(IsLargeHistogramTextPresent(OCR_Rotated180))
+        {
+            Message(Console::Verbose) << "image should be rotated 270 counterclockwise" << endl;
+            m_Rotation = Rotate270;
+            m_OCRBuffer = OCR_Rotated180;
+            m_FullHistogramPresent = true;
+        }
+        
+        // Image does not need be rotated...
+        else if(IsLargeHistogramTextPresent(OCR_Rotated270))
+        {
+            Message(Console::Verbose) << "image does not need to be rotated" << endl;
+            m_Rotation = None;
+            m_OCRBuffer = OCR_Rotated270;
+            m_FullHistogramPresent = true;
+        }
+        
+        // No large large histogram found. Check for properly oriented 
+        //  azimuth / elevation axes...
+        else
+        {
+            // Image does not need be rotated...
+            if(IsHorizontalAxisTextHintsPresent(OCR_None))
+            {
+                Message(Console::Verbose) << "image does not need to be rotated" << endl;
+                m_Rotation = None;
+                m_OCRBuffer = OCR_None;
+            }
+
+            // Image needs to be rotated 90 degrees counterclockwise...
+            else if(IsHorizontalAxisTextHintsPresent(OCR_Rotated90))
+            {
+                Message(Console::Verbose) << "image should be rotated 90 counterclockwise" << endl;
+                m_Rotation = Rotate90;
+                m_OCRBuffer = OCR_Rotated90;
+            }
+            
+            // Image needs to be rotated 180 degrees counterclockwise...
+            else if(IsHorizontalAxisTextHintsPresent(OCR_Rotated180))
+            {
+                Message(Console::Verbose) << "image should be rotated 180 counterclockwise" << endl;
+                m_Rotation = Rotate180;
+                m_OCRBuffer = OCR_Rotated180;
+            }
+            
+            // Image needs to be rotated 270 degrees counterclockwise...
+            else if(IsHorizontalAxisTextHintsPresent(OCR_Rotated270))
+            {
+                Message(Console::Verbose) << "image should be rotated 270 counterclockwise" << endl;
+                m_Rotation = Rotate270;
+                m_OCRBuffer = OCR_Rotated270;
+            }
+            
+            // No legible text hints found, default to no rotation...
+            else
+            {
+                Message(Console::Verbose) << "could not guess image rotation" << endl;
+                m_Rotation = None;
+                m_OCRBuffer.clear();
+            }
+        }
+
+    // If autorotation isn't enabled, then leave rotation as none...
+    if(!Options::GetInstance().GetAutoRotate())
+        m_Rotation = None;
+
+    // Done...
+    return true;
+}
+
 // Extract OCR within image band data...
 string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
 {
+    // Check some assumptions...
+    assert(!RawBandData.empty());
+
+    // Get the width and height of this raw band data...
+    const size_t Height = RawBandData.size();
+    const size_t Width  = RawBandData.at(0).size();
+
     // Initialize OCR library...
     OCRAD_Descriptor *LibraryDescriptor = OCRAD_open();
     
         // Fucked...
         if(OCRAD_get_errno(LibraryDescriptor) != OCRAD_ok)
             SetErrorAndReturnFalse("ocrad failed to initialize");
-
-    // Algorithm seems to recognize VICAR text overlay better when 
-    //  the original image is re-scaled by a factor of four
-    OCRAD_scale(LibraryDescriptor, 4);
 
     // Load the raw image band data...
 
@@ -282,11 +430,11 @@ string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
         // Space for flattened linear version of the raw band data...
         vector<char>    FlattenedRawBandData;
 
-        // Flatten each row...
-        for(int Y = 0; Y < m_Height; ++Y)
+        // Collapse by flattening each row...
+        for(size_t Y = 0; Y < Height; ++Y)
         {
-            // Flatten each column...
-            for(int X = 0; X < m_Width; ++X)
+            // Flatten each column in this row...
+            for(size_t X = 0; X < Width; ++X)
                 FlattenedRawBandData.push_back(RawBandData.at(Y).at(X));
         }
 
@@ -296,13 +444,13 @@ string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
 
         // Initialize the OCR image structure with the raw image data...
         OCRAD_Pixmap OcrImage;
-        OcrImage.height = m_Height;
-        OcrImage.width  = m_Width;
+        OcrImage.height = Height;
+        OcrImage.width  = Width;
         OcrImage.mode   = OCRAD_greymap;
         OcrImage.data   = reinterpret_cast<const unsigned char *>(DataAddress);
-    
-    // Pass the image into the OCR library and check for error...
-    if(OCRAD_set_image(LibraryDescriptor, &OcrImage, 0) != 0)
+
+    // Pass the image into the OCR library, inverted, and check for error...
+    if(OCRAD_set_image(LibraryDescriptor, &OcrImage, true) != 0)
     {
         // Cleanup...
         OCRAD_close(LibraryDescriptor);
@@ -310,6 +458,10 @@ string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
         // Set error message...
         SetErrorAndReturnFalse("could not set ocr image");
     }
+
+    // Algorithm seems to recognize VICAR text overlay better when 
+    //  the original image is re-scaled by a factor of four
+    OCRAD_scale(LibraryDescriptor, 4);
 
     // Perform optical character recognition and check for error...
     if(OCRAD_recognize(LibraryDescriptor, 0) != 0)
@@ -321,7 +473,7 @@ string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
         SetErrorAndReturnFalse("ocr pass failed");
     }
 
-    // Space for the text read...
+    // Space for the OCR buffer...
     string OCRBuffer;
 
     // Grab the text from each text block...
@@ -340,18 +492,73 @@ string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
         }
     }
 
-    // Be verbose...
+    /* Be verbose...
     Message(Console::Info) 
         << "optical character recognition found " 
-        << Buffer.size() 
+        << OCRBuffer.size() 
         << " characters" 
-        << endl;
+        << endl;*/
 
     // Cleanup...
     OCRAD_close(LibraryDescriptor);
-    
-    // Done...
+
+    // Return the buffer...
     return OCRBuffer;
+}
+
+// Get image height, accounting for transformations like rotation...
+int VicarImageBand::GetTransformedHeight() const
+{
+    // Depending on the rotation applied, if any, width and height can be swapped...
+    if(m_Rotation == Rotate90 || m_Rotation == Rotate270)
+        return m_OriginalWidth;
+    else
+        return m_OriginalHeight;
+}
+
+// Get image width, accounting for transformations like rotation...
+int VicarImageBand::GetTransformedWidth() const
+{
+    // Depending on the rotation applied, if any, width and height can be swapped...
+    if(m_Rotation == Rotate90 || m_Rotation == Rotate270)
+        return m_OriginalHeight;
+    else
+        return m_OriginalWidth;
+}
+
+// Check if a buffer contains text usually found in an image 
+//  with azimuth / elevation axes are oriented properly...
+bool VicarImageBand::IsHorizontalAxisTextHintsPresent(const std::string &OCRBuffer)
+{
+    // Look for words we would expect to see if oriented properly...
+    if(OCRBuffer.find("AZ") != string::npos) return true;
+    else if(OCRBuffer.find("CAMERA") != string::npos) return true;
+    else if(OCRBuffer.find("SCAN") != string::npos) return true;
+    else if(OCRBuffer.find("LINE") != string::npos) return true;
+    else if(OCRBuffer.find("IPL") != string::npos) return true;
+    else if(OCRBuffer.find("SAMPLE") != string::npos) return true;
+    else return false;
+}
+
+// Check if a buffer contains text usually found in an image 
+//  with a large histogram present...
+bool VicarImageBand::IsLargeHistogramTextPresent(const std::string &OCRBuffer)
+{
+    // Look for words we would expect to see if oriented properly...
+    if(OCRBuffer.find("VIKING") != string::npos) return true;
+    else if(OCRBuffer.find("LANDER") != string::npos) return true;
+    else if(OCRBuffer.find("CAMERA") != string::npos) return true;
+    else if(OCRBuffer.find("LABEL") != string::npos) return true;
+    else if(OCRBuffer.find("DIODE") != string::npos) return true;
+    else if(OCRBuffer.find("CHANNEL") != string::npos) return true;
+    else if(OCRBuffer.find("AZIMUTH") != string::npos) return true;
+    else if(OCRBuffer.find("ELEVATION") != string::npos) return true;
+    else if(OCRBuffer.find("OFFSET") != string::npos) return true;
+    else if(OCRBuffer.find("LINES") != string::npos) return true;
+    else if(OCRBuffer.find("RESCAN") != string::npos) return true;
+    else if(OCRBuffer.find("SEGMENT") != string::npos) return true;
+    else if(OCRBuffer.find("MEAN") != string::npos) return true;
+    else return false;
 }
 
 // Is the token a valid VICAR diode band type?
@@ -616,70 +823,17 @@ void VicarImageBand::Load()
     Message(Console::Verbose) << "raw image offset: " << m_RawImageOffset << hex << showbase << " (" << m_RawImageOffset<< ")" << dec << endl;
 
     // Now we know an absolute lower bound for file size, check...
-    const int RequiredMinimumSize = m_RawImageOffset + (m_Bands * m_Height * m_Width * m_BytesPerColour);
+    const int RequiredMinimumSize = 
+        m_RawImageOffset + 
+        (m_Bands * m_OriginalHeight * m_OriginalWidth * m_BytesPerColour);
     if(FileSize < RequiredMinimumSize)
         SetErrorAndReturn("file too small to contain self described band data payload");
 
-    // Guess image orientation and extract any available OCR. No need 
-    //  to set an error since callee does this...
-    if(!GuessOrientationAndExtractOCR())
+    // Examine image visually to determine things like suggested 
+    //  orientation, optical character recognition, and histogram 
+    //  detection...
+    if(!ExamineImageVisually())
         return;
-
-    // Space for the original unrotated as well as the rotated image band data...
-    RawBandDataType RawBandData;
-    RawBandDataType RotatedBandData;
-
-    // Get the raw band data and check for error. No need to set an 
-    //  error since callee does this...
-    if(!GetRawBandData(RawBandData))
-        return;
-
-    // Extract OCR with image in given rotations of 0, 90, 180, or 270...
-    
-        // Without a rotation...
-        const string OCRText_Normal = ExtractOCR(RotatedBandData);
-
-        // Rotated 90..
-        Rotate(Rotate90, RawBandData, RotatedBandData);
-        const string OCRText_Rotate90 = ExtractOCR(RotatedBandData);
-
-        // Rotated 180...
-        Rotate(Rotate180, RawBandData, RotatedBandData);
-        const string OCRText_Rotate180 = ExtractOCR(RotatedBandData);
-
-        // Rotated 270...
-        Rotate(Rotate270, RawBandData, RotatedBandData);
-        const string OCRText_Rotate270 = ExtractOCR(RotatedBandData);
-
-    // Check orientation and store best OCR pass...
-
-        // Normal without rotation appears to be correct orientation...
-        if(OCRText_Normal.size() >= max(OCRText_Rotate90, OCRText_Rotate180, OCRText_Rotate270))
-        {
-            m_Rotation = Normal;
-            m_OCRBuffer = OCRText_Normal;
-        }
-        
-        // Rotated 90 appears to be correct orientation...
-        else if(OCRText_Rotate90.size() >= max(OCRText_Rotate180, OCRText_Rotate270, OCRText_RotateNormal))
-        {
-            m_Rotation = Rotate90;
-            m_OCRBuffer = OCRText_Rotate90;
-        }
-
-        // Rotated 180 appears to be correct orientation...
-        else if(OCRText_Rotate180.size() >= max(OCRText_Rotate270, OCRText_RotateNormal, OCRText_Rotate90))
-        {
-            m_Rotation = Rotate180;
-            m_OCRBuffer = OCRText_Rotate180;
-        }
-        
-        // Rotated 270 appears to be correct orientation...
-        else
-        {
-            m_Rotation = Rotate270;
-            m_OCRBuffer = OCRText_Rotate270;
-        }
 
     // Loaded ok...
     m_Ok = true;
@@ -948,11 +1102,11 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
             SetErrorAndReturn("unsupported number of image bands")
 
         // Check height...
-        if(m_Height <= 0)
+        if(m_OriginalHeight <= 0)
             SetErrorAndReturn("expected positive image height")
 
         // Check width...
-        if(m_Width <= 0)
+        if(m_OriginalWidth <= 0)
             SetErrorAndReturn("expected positive image width")
 
         // Check pixel format is integral...
@@ -966,9 +1120,9 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
 
     // If verbosity is set, display basic metadata...
     Message(Console::Verbose) << "bands: " << m_Bands << endl;
-    Message(Console::Verbose) << "height: " << m_Height << endl;
-    Message(Console::Verbose) << "width: " << m_Width << endl;
-    Message(Console::Verbose) << "raw band data size: " << m_Width * m_Height * m_BytesPerColour << " bytes" << endl;
+    Message(Console::Verbose) << "height: " << m_OriginalHeight << endl;
+    Message(Console::Verbose) << "width: " << m_OriginalWidth << endl;
+    Message(Console::Verbose) << "raw band data size: " << m_OriginalWidth * m_OriginalHeight * m_BytesPerColour << " bytes" << endl;
     Message(Console::Verbose) << "file size: " << GetFileSize() << " bytes" << endl;
     Message(Console::Verbose) << "format: " << "integral" << endl;
     Message(Console::Verbose) << "bytes per colour: " << m_BytesPerColour << endl;
@@ -1013,22 +1167,22 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format1(
     Tokenizer >> DummyCharacter;
 
     // Extract image height...
-    Tokenizer >> m_Height;
+    Tokenizer >> m_OriginalHeight;
 
     // Extract image width...
-    Tokenizer >> m_Width;
+    Tokenizer >> m_OriginalWidth;
 
     // Calculate the physical record size which is either 5 logical 
     //  records or the image width, whichever is greater...
 
         // Image width is greater than 5 logical records...
-        if(m_Width > 5 * LOGICAL_RECORD_SIZE)
+        if(m_OriginalWidth > 5 * LOGICAL_RECORD_SIZE)
         {
             // Use the width...
-            m_PhysicalRecordSize = m_Width;
+            m_PhysicalRecordSize = m_OriginalWidth;
 
             // But anything passed the last logical record is just padding...
-            m_PhysicalRecordPadding = m_Width - (5 * LOGICAL_RECORD_SIZE);
+            m_PhysicalRecordPadding = m_OriginalWidth - (5 * LOGICAL_RECORD_SIZE);
         }
         
         // Image width less than five logical records, meaning physical
@@ -1098,24 +1252,24 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format2(
     // Let the first half be the height...
     Token.copy(Buffer, HeightLength);
     Buffer[HeightLength] = '\x0';
-    m_Height = atoi(Buffer);
+    m_OriginalHeight = atoi(Buffer);
     
     // Let the second half be the width...
     Token.copy(Buffer, Token.length() - HeightLength, HeightLength);
     Buffer[Token.length() - HeightLength] = '\x0';
-    m_Width = atoi(Buffer);
+    m_OriginalWidth = atoi(Buffer);
 
     // Calculate the physical record size which is either 5 logical 
     //  records or the image width, whichever is greater...
 
         // Image width is greater than 5 logical records...
-        if(m_Width > 5 * LOGICAL_RECORD_SIZE)
+        if(m_OriginalWidth > 5 * LOGICAL_RECORD_SIZE)
         {
             // Use the width...
-            m_PhysicalRecordSize = m_Width;
+            m_PhysicalRecordSize = m_OriginalWidth;
 
             // But anything passed the last logical record is just padding...
-            m_PhysicalRecordPadding = m_Width - (5 * LOGICAL_RECORD_SIZE);
+            m_PhysicalRecordPadding = m_OriginalWidth - (5 * LOGICAL_RECORD_SIZE);
         }
         
         // Image width less than five logical records, meaning physical
@@ -1165,25 +1319,25 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format3(
     m_Bands = 1;
 
     // Extract image height...
-    Tokenizer >> m_Height;
+    Tokenizer >> m_OriginalHeight;
 
     // Next token is the height and width coallesced. Ignore...
     Tokenizer >> Token;
     
     // Extract width...
-    Tokenizer >> m_Width;
+    Tokenizer >> m_OriginalWidth;
 
     // Calculate the physical record size which is either 5 logical 
     //  records or the image width, whichever is greater...
 
         // Image width is greater than 5 logical records...
-        if(m_Width > 5 * LOGICAL_RECORD_SIZE)
+        if(m_OriginalWidth > 5 * LOGICAL_RECORD_SIZE)
         {
             // Use the width...
-            m_PhysicalRecordSize = m_Width;
+            m_PhysicalRecordSize = m_OriginalWidth;
 
             // But anything passed the last logical record is just padding...
-            m_PhysicalRecordPadding = m_Width - (5 * LOGICAL_RECORD_SIZE);
+            m_PhysicalRecordPadding = m_OriginalWidth - (5 * LOGICAL_RECORD_SIZE);
         }
         
         // Image width less than five logical records, meaning physical
@@ -1233,10 +1387,10 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format4(
     m_Bands = 1;
 
     // Extract image height...
-    Tokenizer >> m_Height;
+    Tokenizer >> m_OriginalHeight;
     
     // Extract width...
-    Tokenizer >> m_Width;
+    Tokenizer >> m_OriginalWidth;
     
     // Next two are height and width again, skip...
     Tokenizer >> Token;
@@ -1246,13 +1400,13 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format4(
     //  records or the image width, whichever is greater...
 
         // Image width is greater than 5 logical records...
-        if(m_Width > 5 * LOGICAL_RECORD_SIZE)
+        if(m_OriginalWidth > 5 * LOGICAL_RECORD_SIZE)
         {
             // Use the width...
-            m_PhysicalRecordSize = m_Width;
+            m_PhysicalRecordSize = m_OriginalWidth;
 
             // But anything passed the last logical record is just padding...
-            m_PhysicalRecordPadding = m_Width - (5 * LOGICAL_RECORD_SIZE);
+            m_PhysicalRecordPadding = m_OriginalWidth - (5 * LOGICAL_RECORD_SIZE);
         }
         
         // Image width less than five logical records, meaning physical
@@ -1302,10 +1456,10 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format5(
     m_Bands = 1;
 
     // Extract image height...
-    Tokenizer >> m_Height;
+    Tokenizer >> m_OriginalHeight;
 
     // Extract width...
-    Tokenizer >> m_Width;
+    Tokenizer >> m_OriginalWidth;
 
     // Next token is the height and width coallesced. Ignore...
     Tokenizer >> Token;
@@ -1314,13 +1468,13 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format5(
     //  records or the image width, whichever is greater...
 
         // Image width is greater than 5 logical records...
-        if(m_Width > 5 * LOGICAL_RECORD_SIZE)
+        if(m_OriginalWidth > 5 * LOGICAL_RECORD_SIZE)
         {
             // Use the width...
-            m_PhysicalRecordSize = m_Width;
+            m_PhysicalRecordSize = m_OriginalWidth;
 
             // But anything passed the last logical record is just padding...
-            m_PhysicalRecordPadding = m_Width - (5 * LOGICAL_RECORD_SIZE);
+            m_PhysicalRecordPadding = m_OriginalWidth - (5 * LOGICAL_RECORD_SIZE);
         }
         
         // Image width less than five logical records, meaning physical
@@ -1373,7 +1527,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format6(
     // Extract image height...
     Tokenizer >> Token;
     const size_t HeightLength = Token.length();
-    m_Height = atoi(Token.c_str());
+    m_OriginalHeight = atoi(Token.c_str());
 
     // Next token is the height, width, and height again coallesced...
     Tokenizer >> Token;
@@ -1381,19 +1535,19 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format6(
     // The width we can calculate because it follows immediately after height...
     Token.copy(Buffer, Token.length() - HeightLength, HeightLength);
     Buffer[Token.length() - HeightLength] = '\x0';
-    m_Width = atoi(Buffer);
+    m_OriginalWidth = atoi(Buffer);
 
     // Calculate the physical record size which is either 5 logical 
     //  records or the image width, whichever is greater...
 
         // Image width is greater than 5 logical records...
-        if(m_Width > 5 * LOGICAL_RECORD_SIZE)
+        if(m_OriginalWidth > 5 * LOGICAL_RECORD_SIZE)
         {
             // Use the width...
-            m_PhysicalRecordSize = m_Width;
+            m_PhysicalRecordSize = m_OriginalWidth;
 
             // But anything passed the last logical record is just padding...
-            m_PhysicalRecordPadding = m_Width - (5 * LOGICAL_RECORD_SIZE);
+            m_PhysicalRecordPadding = m_OriginalWidth - (5 * LOGICAL_RECORD_SIZE);
         }
         
         // Image width less than five logical records, meaning physical
@@ -1591,44 +1745,135 @@ VicarImageBand::PSADiode VicarImageBand::GetDiodeBandTypeFromVicarToken(
         return Unknown;
 }
 
+
+// Mirror the band data from left to right...
+void VicarImageBand::MirrorLeftRight(
+    const RawBandDataType &RawBandData, 
+    RawBandDataType &TransformedRawBandData)
+{
+    // Make an editable copy of the band data...
+    TransformedRawBandData = RawBandData;
+
+    // Get height...
+    const size_t Height = RawBandData.size();
+    
+    // Reverse each scanline...
+    for(size_t CurrentRow = 0; CurrentRow < Height; ++CurrentRow)
+        reverse(TransformedRawBandData[CurrentRow].begin(), TransformedRawBandData[CurrentRow].end());
+}
+
+// Mirror the top and bottom...
+void VicarImageBand::MirrorTopBottom(
+    const RawBandDataType &RawBandData, 
+    RawBandDataType &TransformedRawBandData)
+{
+    // Make a writable copy of the band data...
+    TransformedRawBandData = RawBandData;
+
+    // Reverse from top to bottom...
+    for(size_t Upper = 0, Bottom = RawBandData.size() - 1; Upper < Bottom; ++Upper, --Bottom)
+        TransformedRawBandData[Upper].swap(TransformedRawBandData[Bottom]);
+}
+
+// Mirror diagonaly...
+void VicarImageBand::MirrorDiagonal(
+    const RawBandDataType &RawBandData, 
+    RawBandDataType &TransformedRawBandData)
+{
+    // Make a writable copy of the band data...
+    TransformedRawBandData = RawBandData;
+
+    // Remember the original height and width before transforming...
+    const size_t OldHeight = TransformedRawBandData.size();
+    const size_t OldWidth  = TransformedRawBandData.at(0).size();
+
+    // Get the larger of either the height or the width...
+    const size_t LargerDimension = max(OldHeight, OldWidth);
+
+    // Resize image dimensions...
+
+        // Height less than width... (wide)
+        if(OldHeight < LargerDimension)
+        {
+            // Make tall enough since new height will be what the width was...
+            TransformedRawBandData.resize(LargerDimension);
+
+            // Make each row (formally column) large enough...
+            for(size_t CurrentRow = OldHeight; CurrentRow < LargerDimension; ++CurrentRow)
+                TransformedRawBandData.at(CurrentRow).resize(LargerDimension);
+        }
+
+        // Width less than height... (narrow)
+        else if(OldWidth < LargerDimension)
+        {
+            // Make each row large enough...
+            for(size_t CurrentRow = 0; CurrentRow < OldHeight; ++CurrentRow)
+                TransformedRawBandData.at(CurrentRow).resize(LargerDimension);
+        }
+
+    // Mirror the data along the diagonal...
+    for(size_t CurrentRow = 0; CurrentRow < LargerDimension; ++CurrentRow)
+    {
+        // Grab the current row's data...
+        vector<char> &CurrentRowData = TransformedRawBandData.at(CurrentRow);
+        
+        // Perform the pixel swap...
+        for(size_t CurrentColumn = 0; CurrentColumn < CurrentRow; ++CurrentColumn)
+            swap(CurrentRowData.at(CurrentColumn), TransformedRawBandData.at(CurrentColumn).at(CurrentRow));
+    }
+
+    // Since it was mirrored over the diagonal, the width becomes the height 
+    //  and vise versa...
+    const size_t NewHeight  = OldWidth;
+    const size_t NewWidth   = OldHeight;
+
+    // Trim excess height, if necessary...
+    if(NewHeight < LargerDimension)
+        TransformedRawBandData.resize(NewHeight);
+
+    // Trim excess width, if necessary...
+    else if(NewWidth < LargerDimension)
+    {
+        for(size_t CurrentRow = 0; CurrentRow < NewHeight; ++CurrentRow)
+            TransformedRawBandData.at(CurrentRow).resize(NewWidth);
+    }
+}
+
 // Rotate image band data as requested...
-void Rotate(
+void VicarImageBand::Rotate(
     const RotationType Rotation, 
     const RawBandDataType &RawBandData, 
-    RawBandDataType &RotatedRawBandData)
+    RawBandDataType &TransformedRawBandData)
 {
     // Bounds check...
     assert(Rotation == None || Rotation == Rotate90 || 
            Rotation == Rotate180 || Rotation == Rotate270);
     assert(!RawBandData.empty());
-
-    // Clear the output...
-    RotatedRawBandData.clear();
+    assert(RawBandData != TransformedRawBandData);
 
     // No rotation to perform...
     if(Rotation == None)
-        RotatedRawBandData = RawBandData;
-
-/*
-    TODO: Complete the implementation of this method...
-*/
+        TransformedRawBandData = RawBandData;
 
     // Rotate counterclockwise 90...
     else if(Rotation == Rotate90)
     {
-    
+        MirrorDiagonal(RawBandData, TransformedRawBandData); 
+        MirrorTopBottom(TransformedRawBandData, TransformedRawBandData);
     }
     
     // Rotate counterclockwise 180...
     else if(Rotation == Rotate180)
     {
-    
+        MirrorLeftRight(RawBandData, TransformedRawBandData); 
+        MirrorTopBottom(TransformedRawBandData, TransformedRawBandData);
     }
     
     // Rotate counterclockwise 270...
     else if(Rotation == Rotate270)
     {
-    
+        MirrorDiagonal(RawBandData, TransformedRawBandData);
+        MirrorLeftRight(TransformedRawBandData, TransformedRawBandData);
     }
 }
 

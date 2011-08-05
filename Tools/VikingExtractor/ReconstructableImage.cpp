@@ -30,8 +30,6 @@
 #include <algorithm>
 #include <png++/png.hpp>
 
-#include <sstream>
-
 // Using the standard namespace...
 using namespace std;
 
@@ -463,8 +461,8 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
         SetErrorAndReturnFalse(BestGrayscaleImageBand.GetErrorMessage());
 
     // Get width and height...
-    const int Width   = BestGrayscaleImageBand.GetWidth();
-    const int Height  = BestGrayscaleImageBand.GetHeight();
+    const int Width   = BestGrayscaleImageBand.GetTransformedWidth();
+    const int Height  = BestGrayscaleImageBand.GetTransformedHeight();
 
     // Allocate png storage...
     png::image<png::gray_pixel> PngImage(Width, Height);
@@ -482,7 +480,7 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
         for(size_t X = 0; X < PngImage.get_width(); ++X)
         {
             // Get this pixel's grayscale value...
-            char GrayByte    = RawBandData.at(Y).at(X);
+            char GrayByte = RawBandData.at(Y).at(X);
 
             // Encode...
             PngImage.set_pixel(X, Y, GrayByte);
