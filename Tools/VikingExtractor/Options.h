@@ -41,6 +41,7 @@ class Options
         bool        GetIgnoreBadFiles() { return m_IgnoreBadFiles; }
         bool        GetInterlace() { return m_Interlace; }
         size_t      GetJobs() { return m_Jobs; }
+        bool        GetOverwrite() { return m_Overwrite; }
         bool        GetRecursive() { return m_Recursive; }
         bool        GetSaveLabels() { return m_SaveLabels; }
         bool        GetSolDirectorize() { return m_SolDirectorize; }
@@ -52,6 +53,7 @@ class Options
         void        SetIgnoreBadFiles(const bool IgnoreBadFiles = true) { m_IgnoreBadFiles = IgnoreBadFiles; }
         void        SetInterlace(const bool Interlace = true) { m_Interlace = Interlace; }
         void        SetJobs(const size_t Jobs) { m_Jobs = Jobs; }
+        void        SetOverwrite(const bool Overwrite = true) { m_Overwrite = Overwrite; }
         void        SetRecursive(const bool Recursive = true) { m_Recursive = Recursive; }
         void        SetSaveLabels(const bool SaveLabels = true) { m_SaveLabels = SaveLabels; }
         void        SetSolDirectorize(const bool SolDirectorize = true) { m_SolDirectorize = SolDirectorize; }
@@ -83,7 +85,10 @@ class Options
 
         // Number of threads to use...
         size_t      m_Jobs;
-        
+
+        // Overwrite output files...
+        bool        m_Overwrite;
+
         // Recursively scan subdirectories if the input is a directory...
         bool        m_Recursive;
         

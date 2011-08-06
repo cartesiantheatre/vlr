@@ -48,7 +48,11 @@ ReconstructableImage::ReconstructableImage(
 {
     // Always need an label...
     assert(!CameraEventLabel.empty());
-    
+
+    // Make sure output root directory ends with a path separator...
+    if(m_OutputRootDirectory.find_last_of("/\\") != m_OutputRootDirectory.length() - 1)
+        m_OutputRootDirectory += '/';
+
     // Extract solar day out of camera event label...
     const size_t SolarDayOffset = m_CameraEventLabel.find_last_of("/\\");
     
@@ -128,13 +132,13 @@ string ReconstructableImage::CreateOutputFileName(
 
     // Will contain the full directory, not including the file name...
     stringstream FullDirectory;
-    FullDirectory << m_OutputRootDirectory << '/';
+    FullDirectory << m_OutputRootDirectory;
 
     // Images are reconstructed in subfolder of solar day it was 
     //  taken on, so create the subfolder, if enabled......
     if(Options::GetInstance().GetSolDirectorize())
         FullDirectory << m_SolarDay << '/';
-    
+
     // Otherwise put inside camera event identifier folder...
     else
         FullDirectory << m_CameraEventNoSol << '/';
@@ -239,10 +243,7 @@ if((Reds == 1 && Greens == 1 && Blues == 1) &&
             return false;
 
     // Attempt to reconstruct...
-/*    return ReconstructColourImage(OutputFileName, BestRed, BestGreen, BestBlue);
-    Stubbed out for now since these kinds are easy and we want to 
-    isolate the hard ones
-*/
+    return ReconstructColourImage(OutputFileName, BestRed, BestGreen, BestBlue);
 }
 
     /* Colour image... (only all colour bands present)
@@ -267,18 +268,9 @@ if((Reds == 1 && Greens == 1 && Blues == 1) &&
         Message(Console::Info) << "reconstructed grayscale image successfully" << endl;
     }*/
     
-    /* Unknown...
+    // Unknown...
     else
     {
-Message(Console::Info)
-     << m_RedImageBandList.size() << " "
-     << m_GreenImageBandList.size() << " "
-     << m_BlueImageBandList.size() << " "
-     << m_Infrared1ImageBandList.size() << " "
-     << m_Infrared2ImageBandList.size() << " "
-     << m_Infrared3ImageBandList.size() << " "
-     << m_GrayImageBandList.size() << endl;*/
-
         // Dump...
         DumpBand(m_RedImageBandList, "Unknowns/Red");
         DumpBand(m_GreenImageBandList, "Unknowns/Green");
@@ -291,13 +283,13 @@ Message(Console::Info)
         // This doesn't count as a successful reconstruction since it wasn't reassembled...
         SetErrorAndReturnFalse("no reconstruction recipe available, dumping bands");
         return false;
-//    }
+    }
 }
 
-/* Reconstruct a colour image from requested image bands which can be NULL...
+// Reconstruct a colour image from requested image bands which can be NULL...
 bool ReconstructableImage::ReconstructColourImage(
     const string &OutputFileName, 
-    VicarImageBand::RawBandData &BestRedBandData, 
+    VicarImageBand *BestRedImageBand, 
     VicarImageBand *BestGreenImageBand, 
     VicarImageBand *BestBlueImageBand)
 {
@@ -307,14 +299,15 @@ bool ReconstructableImage::ReconstructColourImage(
     // Set file name for console messages to begin with...
     Console::GetInstance().SetCurrentFileName(OutputFileName);
 
-    // File already existed, don't overwrite...
-    if(access(OutputFileName.c_str(), F_OK) == 0)
-        SetErrorAndReturnFalse("output already exists, not overwriting");
+    // Overwrite not enabled and file already existed, don't overwrite...
+    if(!Options::GetInstance().GetOverwrite() && 
+       (access(OutputFileName.c_str(), F_OK) == 0))
+        SetErrorAndReturnFalse("output already exists, not overwriting (use --overwrite to override)");
 
-    // Extraction streams...
-    ifstream RedExtractionStream;
-    ifstream GreenExtractionStream;
-    ifstream BlueExtractionStream;
+    // Raw band data...
+    VicarImageBand::RawBandDataType RedRawBandData;
+    VicarImageBand::RawBandDataType GreenRawBandData;
+    VicarImageBand::RawBandDataType BlueRawBandData;
     
     // Width and height...
     int Width   = 0;
@@ -327,44 +320,44 @@ bool ReconstructableImage::ReconstructColourImage(
         // Red...
         if(BestRedImageBand)
         {
-            // Initialize extraction stream and check for error...
-            if(!BestRedImageBand->GetExtractionStream(RedExtractionStream))
+            // Get the raw band data and check for error...
+            if(!BestRedImageBand->GetRawBandData(RedRawBandData))
                 SetErrorAndReturnFalse(BestRedImageBand->GetErrorMessage());
 
             // Get width and height...
-            Width   = BestRedImageBand->GetWidth();
-            Height  = BestRedImageBand->GetHeight();
+            Width   = BestRedImageBand->GetTransformedWidth();
+            Height  = BestRedImageBand->GetTransformedHeight();
         }
         
         // Green...
         if(BestGreenImageBand)
         {
-            // Initialize extraction stream and check for error...
-            if(!BestGreenImageBand->GetExtractionStream(GreenExtractionStream))
+            // Get the raw band data and check for error...
+            if(!BestGreenImageBand->GetRawBandData(GreenRawBandData))
                 SetErrorAndReturnFalse(BestGreenImageBand->GetErrorMessage());
 
             // Get width and height...
-            Width   = BestGreenImageBand->GetWidth();
-            Height  = BestGreenImageBand->GetHeight();
+            Width   = BestGreenImageBand->GetTransformedWidth();
+            Height  = BestGreenImageBand->GetTransformedHeight();
         }
         
         // Blue...
         if(BestBlueImageBand)
         {
             // Initialize extraction stream and check for error...
-            if(!BestBlueImageBand->GetExtractionStream(BlueExtractionStream))
+            if(!BestBlueImageBand->GetRawBandData(BlueRawBandData))
                 SetErrorAndReturnFalse(BestBlueImageBand->GetErrorMessage());
 
             // Get width and height...
-            Width   = BestBlueImageBand->GetWidth();
-            Height  = BestBlueImageBand->GetHeight();
+            Width   = BestBlueImageBand->GetTransformedWidth();
+            Height  = BestBlueImageBand->GetTransformedHeight();
         }
 
     // Allocate png storage...
     png::image<png::rgb_pixel> PngImage(Width, Height);
 
     // Toggle interlacing, if user selected...
-    if(m_Interlace)
+    if(Options::GetInstance().GetInterlace())
         PngImage.set_interlace_type(png::interlace_adam7);
     else
         PngImage.set_interlace_type(png::interlace_none);
@@ -382,64 +375,27 @@ bool ReconstructableImage::ReconstructColourImage(
 
             // Red extraction stream available, use...
             if(BestRedImageBand)
-            {
-                // Read byte and check for error ...
-                if(!RedExtractionStream.read(&RedByte, 1).good())
-                    SetErrorAndReturnFalse("raw red channel's source image band data i/o error")
-            }
+                RedByte = RedRawBandData.at(Y).at(X);
 
             // Green extraction stream available, use...
             if(BestGreenImageBand)
-            {
-                // Read byte and check for error ...
-                if(!GreenExtractionStream.read(&GreenByte, 1).good())
-                    SetErrorAndReturnFalse("raw green channel's source image band data i/o error")
-            }
+                GreenByte = GreenRawBandData.at(Y).at(X);
 
             // Blue extraction stream available, use...
             if(BestBlueImageBand)
-            {
-                // Read byte and check for error ...
-                if(!BlueExtractionStream.read(&BlueByte, 1).good())
-                    SetErrorAndReturnFalse("raw blue channel's source image band data i/o error")
-            }
+                BlueByte = BlueRawBandData.at(Y).at(X);
             
             // Encode...
             PngImage.set_pixel(X, Y, png::rgb_pixel(RedByte, GreenByte, BlueByte));
         }
     }
 
-    // Requested to auto rotate...
-    if(m_AutoRotate)
-    {
-        // Allocate png storage of swapped dimensions...
-        png::image<png::rgb_pixel> RotatedPngImage(Height, Width);
-
-        // Toggle interlacing, if user selected...
-        if(m_Interlace)
-            RotatedPngImage.set_interlace_type(png::interlace_adam7);
-        else
-            RotatedPngImage.set_interlace_type(png::interlace_none);
-
-        // Transform each row...
-        for(size_t Y = 0; Y < RotatedPngImage.get_height(); ++Y)
-        {
-            // Transform each column...
-            for(size_t X = 0; X < RotatedPngImage.get_width(); ++X)
-                RotatedPngImage.set_pixel(X, Y, PngImage.get_pixel(Width - Y - 1, X));
-        }
-        
-        // Write out...
-        RotatedPngImage.write(OutputFileName);
-    }
-    
-    // No auto rotation requested, write out normally...
-    else
-        PngImage.write(OutputFileName);
+    // Write out...
+    PngImage.write(OutputFileName);
 
     // Done...
     return true;
-}*/
+}
 
 // Reconstruct a grayscale image from requested image band...
 bool ReconstructableImage::ReconstructGrayscaleImage(
@@ -449,9 +405,10 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
     // Set file name for console messages to begin with...
     Console::GetInstance().SetCurrentFileName(OutputFileName);
 
-    // File already existed, don't overwrite...
-    if(access(OutputFileName.c_str(), F_OK) == 0)
-        SetErrorAndReturnFalse("output already exists, not overwriting");
+    // Overwrite not enabled and file already existed, don't overwrite...
+    if(!Options::GetInstance().GetOverwrite() && 
+       (access(OutputFileName.c_str(), F_OK) == 0))
+        SetErrorAndReturnFalse("output already exists, not overwriting (use --overwrite to override)");
 
     // Extraction raw band data...
     VicarImageBand::RawBandDataType RawBandData;

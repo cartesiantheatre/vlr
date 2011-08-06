@@ -54,14 +54,8 @@ VicarImageAssembler::VicarImageAssembler(
     }
 
     // Make sure output root directory ends with a path separator...
-
-        // Search for the last path separator...
-        size_t Index = string::npos;
-        Index = m_OutputRootDirectory.find_last_of("/\\");
-
-        // If found and it's not the last character, append one...
-        if(Index != string::npos && (Index != m_OutputRootDirectory.length() - 1))
-            m_OutputRootDirectory += '/';
+    if(m_OutputRootDirectory.find_last_of("/\\") != m_OutputRootDirectory.length() - 1)
+        m_OutputRootDirectory += '/';
 }
 
 // Generate input file list from the input file or directory, or throw an error... (recursive)

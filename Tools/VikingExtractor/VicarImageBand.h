@@ -159,6 +159,24 @@ class VicarImageBand
     // Protected methods...
     protected:
 
+        // Check if the raw band image data, rotated as requested, 
+        //  contains text usually found in an image with azimuth / 
+        //  elevation axes oriented properly. If so, return true
+        //  and store extracted text in buffer...
+        bool CheckForHorizontalAxisAndExtractText(
+            const RawBandDataType &RawBandData, 
+            const RotationType Rotation, 
+            std::string &OCRBuffer);
+
+        // Check if the raw band image data, rotated as requested, 
+        //  contains text usually found in an image with with a large 
+        //  histogram present. If so, return true and store extracted 
+        //  text in buffer...
+        bool CheckForLargeHistogramAndExtractText(
+            const RawBandDataType &RawBandData, 
+            const RotationType Rotation, 
+            std::string &OCRBuffer);
+
         // Examine image visually to determine things like suggested 
         //  orientation, optical character recognition, and histogram 
         //  detection, or set an error...
@@ -206,14 +224,6 @@ class VicarImageBand
 
     // Static protected methods...
     protected:
-
-        // Check if a buffer contains text usually found in an image 
-        //  with azimuth / elevation axes are oriented properly...
-        static bool IsHorizontalAxisTextHintsPresent(const std::string &OCRBuffer);
-
-        // Check if a buffer contains text usually found in an image 
-        //  with a large histogram present...
-        static bool IsLargeHistogramTextPresent(const std::string &OCRBuffer);
 
         // Mirror the band data from left to right...
         static void MirrorLeftRight(
@@ -273,6 +283,9 @@ class VicarImageBand
         // Raw image offset...
         size_t                  m_RawImageOffset;
         
+        // True if the image has an axis overlay present...
+        bool                    m_AxisPresent;
+
         // Azimuth / elevation string...
         std::string             m_AzimuthElevation;
         

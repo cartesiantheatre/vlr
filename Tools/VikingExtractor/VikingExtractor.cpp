@@ -56,6 +56,7 @@ void ShowHelp()
          << "      --lander-filter=#       Extract from specific lander only which are"         << endl
          << "                              either (0, the default), 1, or 2."                   << endl
          << "      --no-colours            Disable VT/100 ANSI coloured terminal output."       << endl
+         << "      --overwrite             Overwrite any existing output files."                << endl
          << "  -r, --recursive             Scan subfolders as well if input is a directory."    << endl
          << "      --save-record-labels    Save VICAR record labels as text file"               << endl
          << "      --sol-directorize       Put reconstructed images into subdirectories"        << endl
@@ -106,6 +107,7 @@ int main(int ArgumentCount, char *Arguments[])
         option_long_jobs,
         option_long_lander_filter,
         option_long_no_colours,
+        option_long_overwrite,
         option_long_recursive,
         option_long_save_record_labels,
         option_long_sol_directorize,
@@ -126,6 +128,7 @@ int main(int ArgumentCount, char *Arguments[])
         {"jobs",                optional_argument,  NULL,   option_long_jobs},
         {"lander-filter",       required_argument,  NULL,   option_long_lander_filter},
         {"no-colours",          no_argument,        NULL,   option_long_no_colours},
+        {"overwrite",           no_argument,        NULL,   option_long_overwrite},
         {"recursive",           no_argument,        NULL,   option_long_recursive},
         {"save-record-labels",  no_argument,        NULL,   option_long_save_record_labels},
         {"sol-directorize",     no_argument,        NULL,   option_long_sol_directorize},
@@ -217,6 +220,9 @@ int main(int ArgumentCount, char *Arguments[])
             // No terminal colour...
             case option_long_no_colours: { Console::GetInstance().SetUseColours(false); break; }
 
+            // Overwrite output files...
+            case option_long_overwrite: { Options::GetInstance().SetOverwrite(); break; }
+
             // Recursive scan of subfolders if input is a directory...
             case 'r':
             case option_long_recursive: { Options::GetInstance().SetRecursive(); break; }
@@ -266,16 +272,29 @@ int main(int ArgumentCount, char *Arguments[])
     // Toggle verbose console...
     Console::GetInstance().SetChannelEnabled(Console::Verbose, VerboseConsole);
 
-    // Verify linked against compatible library...
-    if(OCRAD_version()[0] != OCRAD_version_string[0])
-    {
-        // Alert, abort...
-        Message(Console::Error) 
-            << "GNU Ocrad " << OCRAD_version_string << " linked against incompatible GNU Ocrad version " 
-            << OCRAD_version() 
-            << endl;
-        exit(EXIT_FAILURE);
-    }
+    // Check OCRAD...
+
+        // Verify linked against compatible library...
+        if(OCRAD_version()[0] != OCRAD_version_string[0])
+        {
+            // Alert, abort...
+            Message(Console::Error) 
+                << "GNU Ocrad " << OCRAD_version_string << " linked against incompatible GNU Ocrad version " 
+                << OCRAD_version() 
+                << endl;
+            exit(EXIT_FAILURE);
+        }
+
+        // Too old...
+        if(OCRAD_version()[2] < 2)
+        {
+            // Alert, abort...
+            Message(Console::Error) 
+                << "GNU Ocrad needs to be at least 0.21, but got " 
+                << OCRAD_version() 
+                << endl;
+            exit(EXIT_FAILURE);        
+        }
 
     // We need at least one additional parameter, the input...
     

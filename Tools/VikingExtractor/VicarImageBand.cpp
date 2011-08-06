@@ -72,6 +72,7 @@ VicarImageBand::VicarImageBand(
       m_PhysicalRecordSize(0),
       m_PhysicalRecordPadding(0),
       m_RawImageOffset(0),
+      m_AxisPresent(false),
       m_DiodeBandType(Unknown),
       m_Ok(false),
       m_FullHistogramPresent(false),
@@ -166,6 +167,278 @@ VicarImageBand::VicarImageBand(
     
         // Broad band for survey...
         m_BandTypeToFriendlyMap[Survey]     = "survey";
+}
+
+// Check if the raw band image data, rotated as requested, 
+//  contains text usually found in an image with azimuth / 
+//  elevation axes oriented properly. If so, return true
+//  and store extracted text in buffer...
+bool VicarImageBand::CheckForHorizontalAxisAndExtractText(
+    const RawBandDataType &RawBandData, 
+    const RotationType Rotation, 
+    string &OCRBuffer)
+{
+    // Space for rotated raw band data...
+    RawBandDataType RotatedRawBandData;
+
+    // Rotated as requested...
+    Rotate(Rotation, RawBandData, RotatedRawBandData);
+
+    // Extract the OCR text...
+    OCRBuffer = ExtractOCR(RotatedRawBandData);
+
+    // Look for words we would expect to see if oriented properly...
+    if(OCRBuffer.find("AZ") != string::npos) return true;
+    else if(OCRBuffer.find("CAMERA") != string::npos) return true;
+    else if(OCRBuffer.find("SCAN") != string::npos) return true;
+    else if(OCRBuffer.find("LINE") != string::npos) return true;
+    else if(OCRBuffer.find("IPL") != string::npos) return true;
+    else if(OCRBuffer.find("SAMPLE") != string::npos) return true;
+    else return false;
+}
+
+// Check if the raw band image data, rotated as requested, 
+//  contains text usually found in an image with with a large 
+//  histogram present. If so, return true and store extracted 
+//  text in buffer...
+bool VicarImageBand::CheckForLargeHistogramAndExtractText(
+    const RawBandDataType &RawBandData, 
+    const RotationType Rotation, 
+    string &OCRBuffer)
+{
+    // Space for rotated raw band data...
+    RawBandDataType RotatedRawBandData;
+
+    // Rotated as requested...
+    Rotate(Rotation, RawBandData, RotatedRawBandData);
+
+    // Extract the OCR text...
+    OCRBuffer = ExtractOCR(RotatedRawBandData);
+
+    // Look for words we would expect to see if oriented properly...
+    if(OCRBuffer.find("VIKING") != string::npos) return true;
+    else if(OCRBuffer.find("LANDER") != string::npos) return true;
+    else if(OCRBuffer.find("LABEL") != string::npos) return true;
+    else if(OCRBuffer.find("DIODE") != string::npos) return true;
+    else if(OCRBuffer.find("CHANNEL") != string::npos) return true;
+    else if(OCRBuffer.find("AZIMUTH") != string::npos) return true;
+    else if(OCRBuffer.find("ELEVATION") != string::npos) return true;
+    else if(OCRBuffer.find("OFFSET") != string::npos) return true;
+    else if(OCRBuffer.find("RESCAN") != string::npos) return true;
+    else if(OCRBuffer.find("SEGMENT") != string::npos) return true;
+    else if(OCRBuffer.find("MEAN") != string::npos) return true;
+    else return false;
+}
+
+// Examine image visually to determine things like suggested 
+//  orientation, optical character recognition, and histogram 
+//  detection, or set an error...
+bool VicarImageBand::ExamineImageVisually()
+{
+    // Space for the original unrotated as well as the rotated image band data...
+    RawBandDataType RawBandData;
+    RawBandDataType RotatedBandData;
+
+    // Get the raw band data and check for error. No need to set an 
+    //  error since callee does this...
+    if(!GetRawBandData(RawBandData))
+        return false;
+
+    // Check orientation by looking for large histogram's text which 
+    //  is always 90 degrees counterclockwise rotated away from normal 
+    //  image orientation...
+
+        // Image needs to be rotated 90 degrees counterclockwise...
+        if(CheckForLargeHistogramAndExtractText(RawBandData, None, m_OCRBuffer))
+        {
+            Message(Console::Verbose) << "image should be rotated 90 counterclockwise" << endl;
+            m_Rotation = Rotate90;
+            m_FullHistogramPresent = true;
+            m_AxisPresent = true;
+        }
+        
+        // Image needs to be rotated 180 degrees counterclockwise...
+        else if(CheckForLargeHistogramAndExtractText(RawBandData, Rotate90, m_OCRBuffer))
+        {
+            Message(Console::Verbose) << "image should be rotated 180 counterclockwise" << endl;
+            m_Rotation = Rotate180;
+            m_FullHistogramPresent = true;
+            m_AxisPresent = true;
+        }
+        
+        // Image needs to be rotated 270 degrees counterclockwise...
+        else if(CheckForLargeHistogramAndExtractText(RawBandData, Rotate180, m_OCRBuffer))
+        {
+            Message(Console::Verbose) << "image should be rotated 270 counterclockwise" << endl;
+            m_Rotation = Rotate270;
+            m_FullHistogramPresent = true;
+            m_AxisPresent = true;
+        }
+        
+        // Image does not need be rotated...
+        else if(CheckForLargeHistogramAndExtractText(RawBandData, Rotate270, m_OCRBuffer))
+        {
+            Message(Console::Verbose) << "image does not need to be rotated" << endl;
+            m_Rotation = None;
+            m_FullHistogramPresent = true;
+            m_AxisPresent = true;
+        }
+        
+        // No large large histogram found. Check for properly oriented 
+        //  azimuth / elevation axes...
+        else
+        {
+            // Image does not need be rotated...
+            if(CheckForHorizontalAxisAndExtractText(RawBandData, None, m_OCRBuffer))
+            {
+                Message(Console::Verbose) << "image does not need to be rotated" << endl;
+                m_Rotation = None;
+                m_AxisPresent = true;
+            }
+
+            // Image needs to be rotated 90 degrees counterclockwise...
+            else if(CheckForHorizontalAxisAndExtractText(RawBandData, Rotate90, m_OCRBuffer))
+            {
+                Message(Console::Verbose) << "image should be rotated 90 counterclockwise" << endl;
+                m_Rotation = Rotate90;
+                m_AxisPresent = true;
+            }
+            
+            // Image needs to be rotated 180 degrees counterclockwise...
+            else if(CheckForHorizontalAxisAndExtractText(RawBandData, Rotate180, m_OCRBuffer))
+            {
+                Message(Console::Verbose) << "image should be rotated 180 counterclockwise" << endl;
+                m_Rotation = Rotate180;
+                m_AxisPresent = true;
+            }
+            
+            // Image needs to be rotated 270 degrees counterclockwise...
+            else if(CheckForHorizontalAxisAndExtractText(RawBandData, Rotate270, m_OCRBuffer))
+            {
+                Message(Console::Verbose) << "image should be rotated 270 counterclockwise" << endl;
+                m_Rotation = Rotate270;
+                m_AxisPresent = true;
+            }
+            
+            // No legible text hints found. Probably image without any axis or histogram overlay...
+            else
+            {
+                Message(Console::Verbose) << "could not guess image rotation" << endl;
+                m_Rotation = None;
+                m_OCRBuffer.clear();
+            }
+        }
+
+    // If autorotation isn't enabled, then leave rotation as none...
+    if(!Options::GetInstance().GetAutoRotate())
+        m_Rotation = None;
+
+    // Done...
+    return true;
+}
+
+// Extract OCR within image band data...
+string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
+{
+    // Check some assumptions...
+    assert(!RawBandData.empty());
+
+    // Get the width and height of this raw band data...
+    const size_t Height = RawBandData.size();
+    const size_t Width  = RawBandData.at(0).size();
+
+    // Initialize OCR library...
+    OCRAD_Descriptor *LibraryDescriptor = OCRAD_open();
+    
+        // Fucked...
+        if(OCRAD_get_errno(LibraryDescriptor) != OCRAD_ok)
+            SetErrorAndReturnFalse("ocrad failed to initialize");
+
+    // Load the raw image band data...
+
+        // OCRAD_greymap only works with single byte per pixel...
+        assert(m_BytesPerColour == 1);
+
+        // Space for flattened linear version of the raw band data...
+        vector<char> FlattenedRawBandData;
+
+        // Collapse by flattening each row...
+        for(size_t Y = 0; Y < Height; ++Y)
+        {
+            // Flatten each column in this row...
+            for(size_t X = 0; X < Width; ++X)
+                FlattenedRawBandData.push_back(RawBandData.at(Y).at(X));
+        }
+
+        // Get direct address to flattened raw band data vector...
+        vector<char>::const_iterator Iterator = FlattenedRawBandData.begin();
+        const char *DataAddress = &(*Iterator);
+
+        // Initialize the OCR image structure with the raw image data...
+        OCRAD_Pixmap OcrImage;
+        OcrImage.height = Height;
+        OcrImage.width  = Width;
+        OcrImage.mode   = OCRAD_greymap;
+        OcrImage.data   = reinterpret_cast<const unsigned char *>(DataAddress);
+
+    // Pass the image into the OCR library, inverted, and check for error...
+    if(OCRAD_set_image(LibraryDescriptor, &OcrImage, true) != 0)
+    {
+        // Cleanup...
+        OCRAD_close(LibraryDescriptor);
+
+        // Set error message...
+        SetErrorAndReturnFalse("could not set ocr image");
+    }
+
+    // Algorithm seems to recognize VICAR text overlay better when 
+    //  the original image is re-scaled by a factor of four and 
+    //  the threshhold is at 0.3. We can hardcode these constants
+    //  since the Viking Lander data set isn't going to change...
+    OCRAD_scale(LibraryDescriptor, 4);
+    OCRAD_set_threshold(LibraryDescriptor, 70);
+    
+    // Perform optical character recognition and check for error...
+    if(OCRAD_recognize(LibraryDescriptor, true) != 0)
+    {
+        // Cleanup...
+        OCRAD_close(LibraryDescriptor);
+
+        // Set error message...
+        SetErrorAndReturnFalse("ocr pass failed");
+    }
+
+    // Space for the OCR buffer...
+    string OCRBuffer;
+
+    // Grab the text from each text block...
+    for(int CurrentTextBlock = 0; 
+        CurrentTextBlock < OCRAD_result_blocks(LibraryDescriptor); 
+      ++CurrentTextBlock)
+    {
+        // Grab each line in this text block...
+        for(int CurrentTextLine = 0;
+            CurrentTextLine < OCRAD_result_lines(LibraryDescriptor, CurrentTextBlock);
+          ++CurrentTextLine)
+        {
+            // Get the current text line from the current text block...
+            OCRBuffer += OCRAD_result_line(
+                LibraryDescriptor, CurrentTextBlock, CurrentTextLine);
+        }
+    }
+
+    /* Be verbose...
+    Message(Console::Info) 
+        << "optical character recognition found " 
+        << OCRBuffer.size() 
+        << " characters" 
+        << endl;*/
+
+    // Cleanup...
+    OCRAD_close(LibraryDescriptor);
+
+    // Return the buffer...
+    return OCRBuffer;
 }
 
 // Get the diode band type as a human friendly string...
@@ -278,239 +551,11 @@ string VicarImageBand::GetInputFileNameOnly() const
     return FileNameOnly;
 }
 
-// Examine image visually to determine things like suggested 
-//  orientation, optical character recognition, and histogram 
-//  detection, or set an error...
-bool VicarImageBand::ExamineImageVisually()
-{
-    // Space for the original unrotated as well as the rotated image band data...
-    RawBandDataType RawBandData;
-    RawBandDataType RotatedBandData;
-
-    // Get the raw band data and check for error. No need to set an 
-    //  error since callee does this...
-    if(!GetRawBandData(RawBandData))
-        return false;
-
-    // Extract OCR and guess image orientation. Note that histogram containing text...
-        
-        // Space for OCR buffer...
-        string OCRBuffer;
-
-        // No rotation...
-        const string OCR_None = ExtractOCR(RawBandData);
-
-        // Rotated 90..
-        Rotate(Rotate90, RawBandData, RotatedBandData);
-        const string OCR_Rotated90 = ExtractOCR(RotatedBandData);
-
-        // Rotated 180...
-        Rotate(Rotate180, RawBandData, RotatedBandData);
-        const string OCR_Rotated180 = ExtractOCR(RotatedBandData);
-
-        // Rotated 270...
-        Rotate(Rotate270, RawBandData, RotatedBandData);
-        const string OCR_Rotated270 = ExtractOCR(RotatedBandData);
-
-    // Check orientation by looking for large histogram's text which 
-    //  is always 90 degrees counterclockwise rotated away from normal 
-    //  image orientation...
-
-        // Image needs to be rotated 90 degrees counterclockwise...
-        if(IsLargeHistogramTextPresent(OCR_None))
-        {
-            Message(Console::Verbose) << "image should be rotated 90 counterclockwise" << endl;
-            m_Rotation = Rotate90;
-            m_OCRBuffer = OCR_None;
-            m_FullHistogramPresent = true;
-        }
-        
-        // Image needs to be rotated 180 degrees counterclockwise...
-        else if(IsLargeHistogramTextPresent(OCR_Rotated90))
-        {
-            Message(Console::Verbose) << "image should be rotated 180 counterclockwise" << endl;
-            m_Rotation = Rotate180;
-            m_OCRBuffer = OCR_Rotated90;
-            m_FullHistogramPresent = true;
-        }
-        
-        // Image needs to be rotated 270 degrees counterclockwise...
-        else if(IsLargeHistogramTextPresent(OCR_Rotated180))
-        {
-            Message(Console::Verbose) << "image should be rotated 270 counterclockwise" << endl;
-            m_Rotation = Rotate270;
-            m_OCRBuffer = OCR_Rotated180;
-            m_FullHistogramPresent = true;
-        }
-        
-        // Image does not need be rotated...
-        else if(IsLargeHistogramTextPresent(OCR_Rotated270))
-        {
-            Message(Console::Verbose) << "image does not need to be rotated" << endl;
-            m_Rotation = None;
-            m_OCRBuffer = OCR_Rotated270;
-            m_FullHistogramPresent = true;
-        }
-        
-        // No large large histogram found. Check for properly oriented 
-        //  azimuth / elevation axes...
-        else
-        {
-            // Image does not need be rotated...
-            if(IsHorizontalAxisTextHintsPresent(OCR_None))
-            {
-                Message(Console::Verbose) << "image does not need to be rotated" << endl;
-                m_Rotation = None;
-                m_OCRBuffer = OCR_None;
-            }
-
-            // Image needs to be rotated 90 degrees counterclockwise...
-            else if(IsHorizontalAxisTextHintsPresent(OCR_Rotated90))
-            {
-                Message(Console::Verbose) << "image should be rotated 90 counterclockwise" << endl;
-                m_Rotation = Rotate90;
-                m_OCRBuffer = OCR_Rotated90;
-            }
-            
-            // Image needs to be rotated 180 degrees counterclockwise...
-            else if(IsHorizontalAxisTextHintsPresent(OCR_Rotated180))
-            {
-                Message(Console::Verbose) << "image should be rotated 180 counterclockwise" << endl;
-                m_Rotation = Rotate180;
-                m_OCRBuffer = OCR_Rotated180;
-            }
-            
-            // Image needs to be rotated 270 degrees counterclockwise...
-            else if(IsHorizontalAxisTextHintsPresent(OCR_Rotated270))
-            {
-                Message(Console::Verbose) << "image should be rotated 270 counterclockwise" << endl;
-                m_Rotation = Rotate270;
-                m_OCRBuffer = OCR_Rotated270;
-            }
-            
-            // No legible text hints found, default to no rotation...
-            else
-            {
-                Message(Console::Verbose) << "could not guess image rotation" << endl;
-                m_Rotation = None;
-                m_OCRBuffer.clear();
-            }
-        }
-
-    // If autorotation isn't enabled, then leave rotation as none...
-    if(!Options::GetInstance().GetAutoRotate())
-        m_Rotation = None;
-
-    // Done...
-    return true;
-}
-
-// Extract OCR within image band data...
-string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
-{
-    // Check some assumptions...
-    assert(!RawBandData.empty());
-
-    // Get the width and height of this raw band data...
-    const size_t Height = RawBandData.size();
-    const size_t Width  = RawBandData.at(0).size();
-
-    // Initialize OCR library...
-    OCRAD_Descriptor *LibraryDescriptor = OCRAD_open();
-    
-        // Fucked...
-        if(OCRAD_get_errno(LibraryDescriptor) != OCRAD_ok)
-            SetErrorAndReturnFalse("ocrad failed to initialize");
-
-    // Load the raw image band data...
-
-        // OCRAD_greymap only works with single byte per pixel...
-        assert(m_BytesPerColour == 1);
-
-        // Space for flattened linear version of the raw band data...
-        vector<char>    FlattenedRawBandData;
-
-        // Collapse by flattening each row...
-        for(size_t Y = 0; Y < Height; ++Y)
-        {
-            // Flatten each column in this row...
-            for(size_t X = 0; X < Width; ++X)
-                FlattenedRawBandData.push_back(RawBandData.at(Y).at(X));
-        }
-
-        // Get direct address to flattened raw band data vector...
-        vector<char>::const_iterator Iterator = FlattenedRawBandData.begin();
-        const char *DataAddress = &(*Iterator);
-
-        // Initialize the OCR image structure with the raw image data...
-        OCRAD_Pixmap OcrImage;
-        OcrImage.height = Height;
-        OcrImage.width  = Width;
-        OcrImage.mode   = OCRAD_greymap;
-        OcrImage.data   = reinterpret_cast<const unsigned char *>(DataAddress);
-
-    // Pass the image into the OCR library, inverted, and check for error...
-    if(OCRAD_set_image(LibraryDescriptor, &OcrImage, true) != 0)
-    {
-        // Cleanup...
-        OCRAD_close(LibraryDescriptor);
-
-        // Set error message...
-        SetErrorAndReturnFalse("could not set ocr image");
-    }
-
-    // Algorithm seems to recognize VICAR text overlay better when 
-    //  the original image is re-scaled by a factor of four
-    OCRAD_scale(LibraryDescriptor, 4);
-
-    // Perform optical character recognition and check for error...
-    if(OCRAD_recognize(LibraryDescriptor, 0) != 0)
-    {
-        // Cleanup...
-        OCRAD_close(LibraryDescriptor);
-
-        // Set error message...
-        SetErrorAndReturnFalse("ocr pass failed");
-    }
-
-    // Space for the OCR buffer...
-    string OCRBuffer;
-
-    // Grab the text from each text block...
-    for(int CurrentTextBlock = 0; 
-        CurrentTextBlock < OCRAD_result_blocks(LibraryDescriptor); 
-      ++CurrentTextBlock)
-    {
-        // Grab each line in this text block...
-        for(int CurrentTextLine = 0;
-            CurrentTextLine < OCRAD_result_lines(LibraryDescriptor, CurrentTextBlock);
-          ++CurrentTextLine)
-        {
-            // Get the current text line from the current text block...
-            OCRBuffer += OCRAD_result_line(
-                LibraryDescriptor, CurrentTextBlock, CurrentTextLine);
-        }
-    }
-
-    /* Be verbose...
-    Message(Console::Info) 
-        << "optical character recognition found " 
-        << OCRBuffer.size() 
-        << " characters" 
-        << endl;*/
-
-    // Cleanup...
-    OCRAD_close(LibraryDescriptor);
-
-    // Return the buffer...
-    return OCRBuffer;
-}
-
 // Get image height, accounting for transformations like rotation...
 int VicarImageBand::GetTransformedHeight() const
 {
     // Depending on the rotation applied, if any, width and height can be swapped...
-    if(m_Rotation == Rotate90 || m_Rotation == Rotate270)
+    if(Options::GetInstance().GetAutoRotate() && (m_Rotation == Rotate90 || m_Rotation == Rotate270))
         return m_OriginalWidth;
     else
         return m_OriginalHeight;
@@ -520,45 +565,10 @@ int VicarImageBand::GetTransformedHeight() const
 int VicarImageBand::GetTransformedWidth() const
 {
     // Depending on the rotation applied, if any, width and height can be swapped...
-    if(m_Rotation == Rotate90 || m_Rotation == Rotate270)
+    if(Options::GetInstance().GetAutoRotate() && (m_Rotation == Rotate90 || m_Rotation == Rotate270))
         return m_OriginalHeight;
     else
         return m_OriginalWidth;
-}
-
-// Check if a buffer contains text usually found in an image 
-//  with azimuth / elevation axes are oriented properly...
-bool VicarImageBand::IsHorizontalAxisTextHintsPresent(const std::string &OCRBuffer)
-{
-    // Look for words we would expect to see if oriented properly...
-    if(OCRBuffer.find("AZ") != string::npos) return true;
-    else if(OCRBuffer.find("CAMERA") != string::npos) return true;
-    else if(OCRBuffer.find("SCAN") != string::npos) return true;
-    else if(OCRBuffer.find("LINE") != string::npos) return true;
-    else if(OCRBuffer.find("IPL") != string::npos) return true;
-    else if(OCRBuffer.find("SAMPLE") != string::npos) return true;
-    else return false;
-}
-
-// Check if a buffer contains text usually found in an image 
-//  with a large histogram present...
-bool VicarImageBand::IsLargeHistogramTextPresent(const std::string &OCRBuffer)
-{
-    // Look for words we would expect to see if oriented properly...
-    if(OCRBuffer.find("VIKING") != string::npos) return true;
-    else if(OCRBuffer.find("LANDER") != string::npos) return true;
-    else if(OCRBuffer.find("CAMERA") != string::npos) return true;
-    else if(OCRBuffer.find("LABEL") != string::npos) return true;
-    else if(OCRBuffer.find("DIODE") != string::npos) return true;
-    else if(OCRBuffer.find("CHANNEL") != string::npos) return true;
-    else if(OCRBuffer.find("AZIMUTH") != string::npos) return true;
-    else if(OCRBuffer.find("ELEVATION") != string::npos) return true;
-    else if(OCRBuffer.find("OFFSET") != string::npos) return true;
-    else if(OCRBuffer.find("LINES") != string::npos) return true;
-    else if(OCRBuffer.find("RESCAN") != string::npos) return true;
-    else if(OCRBuffer.find("SEGMENT") != string::npos) return true;
-    else if(OCRBuffer.find("MEAN") != string::npos) return true;
-    else return false;
 }
 
 // Is the token a valid VICAR diode band type?
@@ -827,7 +837,18 @@ void VicarImageBand::Load()
         m_RawImageOffset + 
         (m_Bands * m_OriginalHeight * m_OriginalWidth * m_BytesPerColour);
     if(FileSize < RequiredMinimumSize)
-        SetErrorAndReturn("file too small to contain self described band data payload");
+    {
+        // Compose error message...
+        stringstream ErrorStream;
+        ErrorStream 
+            << "file too small to contain claimed payload "
+            << FileSize
+            << " < "
+            << RequiredMinimumSize;
+
+        // Set the error message and abort...
+        SetErrorAndReturn(ErrorStream.str());
+    }
 
     // Examine image visually to determine things like suggested 
     //  orientation, optical character recognition, and histogram 
@@ -857,8 +878,24 @@ bool VicarImageBand::operator<(const VicarImageBand &RightSide) const
             with them because they have more image space.
                 
                 Method: Check for histogram text (e.g. "VIKING LANDER")
-
     */
+
+    // These should always be true...
+    assert(m_DiodeBandType == RightSide.m_DiodeBandType);
+    assert(m_Rotation == RightSide.m_Rotation);
+    assert(GetTransformedHeight() == RightSide.GetTransformedHeight());
+    assert(GetTransformedWidth() == RightSide.GetTransformedWidth());
+
+    /* If only one of the images has an axis present, the one with it
+    //  we consider better...
+    if(m_AxisPresent != RightSide.m_AxisPresent)
+        return !m_AxisPresent;
+    
+    // If only one of the images has a full histogram present, the one 
+    //  with it is inferior to the one without, since the one without 
+    //  has more image space...
+    else if(m_FullHistogramPresent != RightSide.m_FullHistogramPresent)
+        return m_FullHistogramPresent;*/
 
     // Stub for now...
     return true;

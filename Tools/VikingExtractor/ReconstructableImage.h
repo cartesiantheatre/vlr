@@ -97,7 +97,7 @@ class ReconstructableImage
     protected:
 
         // Root output directory...
-        const std::string   m_OutputRootDirectory;
+        std::string         m_OutputRootDirectory;
 
         // Image band lists for different colour and infrared types...
         ImageBandListType   m_RedImageBandList;
