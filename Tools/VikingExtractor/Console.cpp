@@ -78,6 +78,10 @@ ostream &Console::Message(const Console::ChannelID ID)
     if(!RequestedChannel.m_Enabled)
         return m_DummyOutputStream;
 
+    // Flush the last message, if this isn't the verbose stream which is noisy...
+    if(ID != Verbose)
+        cout.flush();
+
     // Set to the requested foreground colour...
     if(m_UseColours)
         cout << "\033[1;" << RequestedChannel.m_ForegroundColour << "m";

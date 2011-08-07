@@ -136,21 +136,24 @@ void VicarImageAssembler::Reconstruct()
     // Variables...
     string ErrorMessage;
 
-    // If summarize only mode is enabled, mute current file name, warnings, info, and errors...
-    if(Options::GetInstance().GetSummarizeOnly())
-    {
-        Console::GetInstance().SetUseCurrentFileName(false);
-        Console::GetInstance().SetChannelEnabled(Console::Error, false);
-        Console::GetInstance().SetChannelEnabled(Console::Info, false);
-        Console::GetInstance().SetChannelEnabled(Console::Warning, false);
-    }
-
-    // Reset assembler state...
-    Reset();
-
     // Try to index the directory...
     try
     {
+        // Alert user...
+        Message(Console::Summary) << "preparing list of prospective files to catalogue, please wait" << endl;
+
+        // If summarize only mode is enabled, mute current file name, warnings, info, and errors...
+        if(Options::GetInstance().GetSummarizeOnly())
+        {
+            Console::GetInstance().SetUseCurrentFileName(false);
+            Console::GetInstance().SetChannelEnabled(Console::Error, false);
+            Console::GetInstance().SetChannelEnabled(Console::Info, false);
+            Console::GetInstance().SetChannelEnabled(Console::Warning, false);
+        }
+
+        // Reset assembler state...
+        Reset();
+
         // Generate input file list from the input file or directory...
         GenerateProspectiveFileList(m_InputFileOrRootDirectory);
 

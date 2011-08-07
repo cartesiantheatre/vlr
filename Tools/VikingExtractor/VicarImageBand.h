@@ -95,8 +95,9 @@ class VicarImageBand
         // Get the azimuth / elevation string...
         const std::string &GetAzimuthElevation() const;
 
-        // Get the camera event label...
+        // Get the camera event label with and without the solar day...
         const std::string &GetCameraEventLabel() const { return m_CameraEventLabel; }
+        const std::string &GetCameraEventLabelNoSol() const { return m_CameraEventLabelNoSol; }
 
         // Get the diode band type...
         PSADiode GetDiodeBandType() const { return m_DiodeBandType; };
@@ -121,12 +122,15 @@ class VicarImageBand
         int GetFileSize() const;
 
         // Get original image width and height, not accounting for rotation...
-        int GetOriginalHeight() const { return m_OriginalHeight; }
-        int GetOriginalWidth() const { return m_OriginalWidth; }
+        size_t GetOriginalHeight() const { return m_OriginalHeight; }
+        size_t GetOriginalWidth() const { return m_OriginalWidth; }
+
+        // Get the solar day the image was taken on...
+        size_t GetSolarDay() const { return m_SolarDay; }
 
         // Get image height and width, accounting for transformations like rotation...
-        int GetTransformedHeight() const;
-        int GetTransformedWidth() const;
+        size_t GetTransformedHeight() const;
+        size_t GetTransformedWidth() const;
 
         // Get the input file name only without path...
         std::string GetInputFileNameOnly() const;
@@ -219,6 +223,10 @@ class VicarImageBand
         //  that probably denotes an unsupported diode type...
         PSADiode ProbeDiodeBandType(std::string &DiodeBandTypeHint) const;
 
+        // Set the camera event label, along with the solar day and camera 
+        //  event identifier without the solar day...
+        void SetCameraEventLabel(const std::string &CameraEventLabel);
+
         // Set the error message...
         void SetErrorMessage(const std::string &ErrorMessage) { m_Ok = false; m_ErrorMessage = ErrorMessage; }
 
@@ -267,8 +275,8 @@ class VicarImageBand
         size_t                  m_Bands;
         
         // Image height and width in pixels before being rotated...
-        int                     m_OriginalHeight;
-        int                     m_OriginalWidth;
+        size_t                  m_OriginalHeight;
+        size_t                  m_OriginalWidth;
 
         // Pixel format... (e.g. 'I' -> integral)
         char                    m_PixelFormat;
@@ -291,6 +299,9 @@ class VicarImageBand
         
         // Camera event label...
         std::string             m_CameraEventLabel;
+
+        // Camera event identifier without solar day...
+        std::string             m_CameraEventLabelNoSol;
         
         // Band type...
         PSADiode                m_DiodeBandType;
@@ -313,6 +324,9 @@ class VicarImageBand
         // Counterclockwise rotation to orient image properly which is
         //  always 0, 90, 180, or 270...
         RotationType            m_Rotation;
+        
+        // Solar day image was taken on...
+        size_t                  m_SolarDay;
 };
 
 // Multiple include protection...

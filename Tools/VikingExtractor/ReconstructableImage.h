@@ -69,20 +69,27 @@ class ReconstructableImage
         // Create the necessary path to the output file and return a path, 
         //  placing the output file within an option subdirectory and 
         //  appending an optional name suffix e.g. file_suffix.png...
-        std::string CreateOutputFileName(
-            const std::string &SubDirectory = "", 
-            const std::string &NameSuffix = "");
+        std::string CreateOutputFileName();
+
+        // Create the necessary path to a single component of an image, 
+        //  distinguished with a name suffix and ordinal. These end up in the
+        //  Unreconstructable directory...
+        std::string CreateUnreconstructableOutputFileName(
+            const std::string &BandType, 
+            const size_t Ordinal);
 
         // Dump all images within given image band to the output directory in 
-        //  a given subdirectory...
-        bool DumpBand(ImageBandListType &ImageBand, const std::string &SubDirectory);
+        //  a subdirectory Incomplete under the camera event identifier...
+        bool DumpUnreconstructable(
+            ImageBandListType &ImageBandList, 
+            const std::string &BandTypeSuffix);
 
         // Reconstruct a colour image from requested image bands which can be NULL...
         bool ReconstructColourImage(
             const std::string &OutputFileName, 
-            VicarImageBand *BestRedImageBand, 
-            VicarImageBand *BestGreenImageBand, 
-            VicarImageBand *BestBlueImageBand);
+            VicarImageBand &BestRedImageBand, 
+            VicarImageBand &BestGreenImageBand, 
+            VicarImageBand &BestBlueImageBand);
 
         // Reconstruct a grayscale image from requested image band...
         bool ReconstructGrayscaleImage(

@@ -52,10 +52,6 @@
     #include <algorithm>
     #include <iterator>
 
-// Helpful macro...
-#define SetErrorAndReturn(Message)      { SetErrorMessage((Message)); return; }
-#define SetErrorAndReturnFalse(Message) { SetErrorMessage((Message)); return false; }
-
 // Using the standard namespace...
 using namespace std;
 
@@ -76,7 +72,8 @@ VicarImageBand::VicarImageBand(
       m_DiodeBandType(Unknown),
       m_Ok(false),
       m_FullHistogramPresent(false),
-      m_Rotation(None)
+      m_Rotation(None),
+      m_SolarDay(99999)
 {
     // Initialize the token to diode band type dictionary...
 
@@ -395,7 +392,7 @@ string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
     //  the original image is re-scaled by a factor of four and 
     //  the threshhold is at 0.3. We can hardcode these constants
     //  since the Viking Lander data set isn't going to change...
-    OCRAD_scale(LibraryDescriptor, 4);
+    OCRAD_scale(LibraryDescriptor, 3);
     OCRAD_set_threshold(LibraryDescriptor, 70);
     
     // Perform optical character recognition and check for error...
@@ -478,13 +475,13 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
         SetErrorAndReturnFalse("file ended prematurely before raw image");
 
     // Read the whole image, row by row...
-    for(int Y = 0; Y < m_OriginalHeight; ++Y)
+    for(size_t Y = 0; Y < m_OriginalHeight; ++Y)
     {
         // The current row...
         vector<char>    CurrentRow;
 
         // Read each pixel in this row...
-        for(int X = 0; X < m_OriginalWidth; ++X)
+        for(size_t X = 0; X < m_OriginalWidth; ++X)
         {
             // Current pixel value...
             char Byte = '\x0';
@@ -552,7 +549,7 @@ string VicarImageBand::GetInputFileNameOnly() const
 }
 
 // Get image height, accounting for transformations like rotation...
-int VicarImageBand::GetTransformedHeight() const
+size_t VicarImageBand::GetTransformedHeight() const
 {
     // Depending on the rotation applied, if any, width and height can be swapped...
     if(Options::GetInstance().GetAutoRotate() && (m_Rotation == Rotate90 || m_Rotation == Rotate270))
@@ -562,7 +559,7 @@ int VicarImageBand::GetTransformedHeight() const
 }
 
 // Get image width, accounting for transformations like rotation...
-int VicarImageBand::GetTransformedWidth() const
+size_t VicarImageBand::GetTransformedWidth() const
 {
     // Depending on the rotation applied, if any, width and height can be swapped...
     if(Options::GetInstance().GetAutoRotate() && (m_Rotation == Rotate90 || m_Rotation == Rotate270))
@@ -882,23 +879,29 @@ bool VicarImageBand::operator<(const VicarImageBand &RightSide) const
 
     // These should always be true...
     assert(m_DiodeBandType == RightSide.m_DiodeBandType);
-    assert(m_Rotation == RightSide.m_Rotation);
+    assert(m_CameraEventLabel == RightSide.m_CameraEventLabel);
+    /*assert(m_Rotation == RightSide.m_Rotation);
     assert(GetTransformedHeight() == RightSide.GetTransformedHeight());
-    assert(GetTransformedWidth() == RightSide.GetTransformedWidth());
+    assert(GetTransformedWidth() == RightSide.GetTransformedWidth());*/
 
-    /* If only one of the images has an axis present, the one with it
+    // If only one of the images has an axis present, the one with it
     //  we consider better...
     if(m_AxisPresent != RightSide.m_AxisPresent)
         return !m_AxisPresent;
     
-    // If only one of the images has a full histogram present, the one 
-    //  with it is inferior to the one without, since the one without 
-    //  has more image space...
+    // If only one of the images has a full histogram present (which 
+    //  implies the presence of an axis as well), the one with it is 
+    //  inferior to the one without, since the one without has more image space...
     else if(m_FullHistogramPresent != RightSide.m_FullHistogramPresent)
-        return m_FullHistogramPresent;*/
+        return m_FullHistogramPresent;
 
     // Stub for now...
-    return true;
+    else
+    {
+        cout << "Left: " << m_InputFile << endl;
+        cout << "Right: " << RightSide.m_InputFile << endl;
+        return true;
+    }
 }
 
 // Parse basic metadata. Basic metadata includes bands, dimensions, 
@@ -1645,10 +1648,11 @@ void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
             if(Token == "LABEL")
             {
                 // Store the label...
-                Tokenizer >> m_CameraEventLabel;
+                Tokenizer >> Token;
+                SetCameraEventLabel(Token);
                 Message(Console::Verbose) << "camera event label: " << m_CameraEventLabel << endl;
             }
-            
+
             // Not a camera event, restore the token...
             else
                 Tokenizer << Token;
@@ -1782,6 +1786,31 @@ VicarImageBand::PSADiode VicarImageBand::GetDiodeBandTypeFromVicarToken(
         return Unknown;
 }
 
+// Set the camera event label, along with the solar day and camera 
+//  event identifier without the solar day...
+void VicarImageBand::SetCameraEventLabel(const string &CameraEventLabel)
+{
+    // Store the camera event label...
+    m_CameraEventLabel = CameraEventLabel;
+
+    // Extract solar day out of camera event label...
+    const size_t SolarDayOffset = m_CameraEventLabel.find_last_of("/\\");
+    
+    // Should always have a sol separator...
+    assert(SolarDayOffset != string::npos && (SolarDayOffset + 1 < m_CameraEventLabel.length()));
+    
+    // Get the identifier without the solar day out of the label...
+    m_CameraEventLabelNoSol.assign(m_CameraEventLabel, 0, SolarDayOffset);
+    
+    // Get the solar day...
+        
+        // Store whole thing as a string...
+        string SolarDay;
+        SolarDay.assign(m_CameraEventLabel, SolarDayOffset + 1, 4);
+
+        // Convert to integer...
+        m_SolarDay = atoi(SolarDay.c_str());
+}
 
 // Mirror the band data from left to right...
 void VicarImageBand::MirrorLeftRight(

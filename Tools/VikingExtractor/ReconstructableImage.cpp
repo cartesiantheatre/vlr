@@ -28,15 +28,11 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <climits>
 #include <png++/png.hpp>
 
 // Using the standard namespace...
 using namespace std;
-
-// Helpful macro...
-#define SetErrorAndReturn(Message)              { SetErrorMessage((Message)); return; }
-#define SetErrorAndReturnNullStream(Message)    { SetErrorMessage((Message)); return ostream(0); }
-#define SetErrorAndReturnFalse(Message)         { SetErrorMessage((Message)); return false; }
 
 // Constructor...
 ReconstructableImage::ReconstructableImage(
@@ -126,8 +122,7 @@ void ReconstructableImage::AddImageBand(const VicarImageBand &ImageBand)
 // Create the necessary path to the output file and return a path, 
 //  placing the output file within an option subdirectory and appending
 //  an optional name suffix e.g. file_suffix.png...
-string ReconstructableImage::CreateOutputFileName(
-    const string &SubDirectory, const string &NameSuffix)
+string ReconstructableImage::CreateOutputFileName()
 {
 
     // Will contain the full directory, not including the file name...
@@ -139,20 +134,9 @@ string ReconstructableImage::CreateOutputFileName(
     if(Options::GetInstance().GetSolDirectorize())
         FullDirectory << m_SolarDay << '/';
 
-    // Otherwise put inside camera event identifier folder...
+    /* Otherwise put inside camera event identifier folder...
     else
-        FullDirectory << m_CameraEventNoSol << '/';
-
-    // Add an optional subdirectory...
-    if(!SubDirectory.empty())
-    {
-        // Append...
-        FullDirectory << SubDirectory;
-        
-        // Add path separator, if not present already...
-        if(*FullDirectory.str().rbegin() != '/')
-            FullDirectory << '/';
-    }
+        FullDirectory << m_CameraEventNoSol << '/';*/
 
     // Create and check for error...
     if(!CreateDirectoryRecursively(FullDirectory.str()))
@@ -163,26 +147,66 @@ string ReconstructableImage::CreateOutputFileName(
     }
 
     // Return the full path to a file ready to be written to...
-    return FullDirectory.str() + m_CameraEventNoSol + NameSuffix + ".png";
+    return FullDirectory.str() + m_CameraEventNoSol + ".png";
+}
+
+// Create the necessary path to a single component of an image, 
+//  distinguished with a name suffix and ordinal. These end up in the
+//  Unreconstructable directory...
+string ReconstructableImage::CreateUnreconstructableOutputFileName(
+    const string &BandType, const size_t Ordinal)
+{
+
+    // Will contain the full directory, not including the file name...
+    stringstream FullDirectory;
+    FullDirectory << m_OutputRootDirectory;
+
+    // Unreconstructables go in the Incomplete directory...
+    FullDirectory 
+        << "Unreconstructable/"
+        << m_CameraEventNoSol 
+        << "/";
+
+    // Create and check for error...
+    if(!CreateDirectoryRecursively(FullDirectory.str()))
+    {
+        // Set the error message and abort...
+        SetErrorMessage("could not create output subdirectory for solar day");
+        return string();
+    }
+
+    // Now append the file name...
+    FullDirectory
+        << BandType
+        << "_" << Ordinal
+        << ".png";
+
+    // Return the full path to a file ready to be written to...
+    return FullDirectory.str();
 }
 
 // Dump all images within given image band to the output directory in 
-//  a given subdirectory...
-bool ReconstructableImage::DumpBand(
-    ImageBandListType &ImageBand, const string &SubDirectory)
+//  a subdirectory Incomplete under the camera event identifier...
+bool ReconstructableImage::DumpUnreconstructable(
+    ImageBandListType &ImageBandList, const string &BandTypeSuffix)
 {
     // Dump all images within this image band...
-    for(ImageBandListIterator Iterator = ImageBand.begin(); 
-        Iterator != ImageBand.end(); 
+    for(ImageBandListIterator Iterator = ImageBandList.begin(); 
+        Iterator != ImageBandList.end(); 
       ++Iterator)
     {
+        // Get the image band...
+        VicarImageBand &ImageBand = *Iterator;
+
         // Format suffix to contain sort order identifier to distinguish
         //  from other images of this same band type of this same camera 
         //  event...
-        stringstream SuffixStream;
-        SuffixStream << "_" << Iterator - ImageBand.begin();
-        ReconstructGrayscaleImage(
-            CreateOutputFileName(SubDirectory, SuffixStream.str()), *Iterator);
+        const string FullDirectory = CreateUnreconstructableOutputFileName(
+            BandTypeSuffix, 
+            Iterator - ImageBandList.begin());
+        
+        // Dump the single channel as grayscale...
+        ReconstructGrayscaleImage(FullDirectory, ImageBand);
     }
     
     // Done...
@@ -210,26 +234,6 @@ bool ReconstructableImage::Reconstruct()
     const size_t Infrareds3 = m_Infrared3ImageBandList.size();
     const size_t Grays      = m_GrayImageBandList.size();
 
-    // Get the best band data of each type of band type...
-    
-        // Pointers to the best of each type, or NULL if none available...
-        VicarImageBand *BestRed         = NULL;
-        VicarImageBand *BestGreen       = NULL;
-        VicarImageBand *BestBlue        = NULL;
-        VicarImageBand *BestInfrared1   = NULL;
-        VicarImageBand *BestInfrared2   = NULL;
-        VicarImageBand *BestInfrared3   = NULL;
-        VicarImageBand *BestGrayscale   = NULL;
-
-        // Get pointers to the best of each type, if available...
-        if(Reds)        BestRed         = &m_RedImageBandList.back();
-        if(Greens)      BestGreen       = &m_GreenImageBandList.back();
-        if(Blues)       BestBlue        = &m_BlueImageBandList.back();
-        if(Infrareds1)  BestInfrared1   = &m_Infrared1ImageBandList.back();
-        if(Infrareds2)  BestInfrared2   = &m_Infrared2ImageBandList.back();
-        if(Infrareds3)  BestInfrared3   = &m_Infrared3ImageBandList.back();
-        if(Grays)       BestGrayscale   = &m_GrayImageBandList.back();
-
 // Colour image... (only all colour bands present)
 if((Reds == 1 && Greens == 1 && Blues == 1) && 
    (Infrareds1 + Infrareds2 + Infrareds3 + Grays == 0))
@@ -243,15 +247,31 @@ if((Reds == 1 && Greens == 1 && Blues == 1) &&
             return false;
 
     // Attempt to reconstruct...
-    return ReconstructColourImage(OutputFileName, BestRed, BestGreen, BestBlue);
+    return ReconstructColourImage(
+            OutputFileName, 
+            m_RedImageBandList.back(), 
+            m_GreenImageBandList.back(), 
+            m_BlueImageBandList.back());
 }
 
     /* Colour image... (only all colour bands present)
-    if((min(Reds, Greens, Blues) >= 1) && 
+    if((min3(Reds, Greens, Blues) >= 1) && 
        (Infrareds1 + Infrareds2 + Infrareds3 + Grays == 0))
     {
+        // Create full path to output file and create containing 
+        // directory, if necessary...
+        const string OutputFileName = CreateOutputFileName();
+
+            // Failed...
+            if(IsError())
+                return false;
+
         // Attempt to reconstruct...
-        return ReconstructColourImage(OutputFileName, BestRed, BestGreen, BestBlue);
+        return ReconstructColourImage(
+                OutputFileName, 
+                m_RedImageBandList.back(), 
+                m_GreenImageBandList.back(), 
+                m_BlueImageBandList.back());
     }*/
 
     /* Infrared image... (only all infrared bands present)
@@ -272,16 +292,16 @@ if((Reds == 1 && Greens == 1 && Blues == 1) &&
     else
     {
         // Dump...
-        DumpBand(m_RedImageBandList, "Unknowns/Red");
-        DumpBand(m_GreenImageBandList, "Unknowns/Green");
-        DumpBand(m_BlueImageBandList, "Unknowns/Blue");
-        DumpBand(m_Infrared1ImageBandList, "Unknowns/IR1");
-        DumpBand(m_Infrared2ImageBandList, "Unknowns/IR2");
-        DumpBand(m_Infrared3ImageBandList, "Unknowns/IR3");
-        DumpBand(m_GrayImageBandList, "Unknowns/Gray");
+        DumpUnreconstructable(m_RedImageBandList, "red");
+        DumpUnreconstructable(m_GreenImageBandList, "green");
+        DumpUnreconstructable(m_BlueImageBandList, "blue");
+        DumpUnreconstructable(m_Infrared1ImageBandList, "ir1");
+        DumpUnreconstructable(m_Infrared2ImageBandList, "ir2");
+        DumpUnreconstructable(m_Infrared3ImageBandList, "ir3");
+        DumpUnreconstructable(m_GrayImageBandList, "gray");
 
         // This doesn't count as a successful reconstruction since it wasn't reassembled...
-        SetErrorAndReturnFalse("no reconstruction recipe available, dumping bands");
+        SetErrorAndReturnFalse("cannot reconstruct, dumped all bands");
         return false;
     }
 }
@@ -289,13 +309,10 @@ if((Reds == 1 && Greens == 1 && Blues == 1) &&
 // Reconstruct a colour image from requested image bands which can be NULL...
 bool ReconstructableImage::ReconstructColourImage(
     const string &OutputFileName, 
-    VicarImageBand *BestRedImageBand, 
-    VicarImageBand *BestGreenImageBand, 
-    VicarImageBand *BestBlueImageBand)
+    VicarImageBand &BestRedImageBand, 
+    VicarImageBand &BestGreenImageBand, 
+    VicarImageBand &BestBlueImageBand)
 {
-    // At least one of the image bands should be non-null...
-    assert(BestRedImageBand || BestGreenImageBand || BestBlueImageBand);
-
     // Set file name for console messages to begin with...
     Console::GetInstance().SetCurrentFileName(OutputFileName);
 
@@ -309,49 +326,46 @@ bool ReconstructableImage::ReconstructColourImage(
     VicarImageBand::RawBandDataType GreenRawBandData;
     VicarImageBand::RawBandDataType BlueRawBandData;
     
-    // Width and height...
-    int Width   = 0;
-    int Height  = 0;
-
-    // Open all available band type extraction streams, and width and 
-    //  height from whichever of them are available... (should be all 
-    //  the same)
+    // Get the raw band data of each colour band...
     
         // Red...
-        if(BestRedImageBand)
-        {
+
             // Get the raw band data and check for error...
-            if(!BestRedImageBand->GetRawBandData(RedRawBandData))
-                SetErrorAndReturnFalse(BestRedImageBand->GetErrorMessage());
+            if(!BestRedImageBand.GetRawBandData(RedRawBandData))
+                SetErrorAndReturnFalse(BestRedImageBand.GetErrorMessage());
 
             // Get width and height...
-            Width   = BestRedImageBand->GetTransformedWidth();
-            Height  = BestRedImageBand->GetTransformedHeight();
-        }
+            const size_t RedWidth  = BestRedImageBand.GetTransformedWidth();
+            const size_t RedHeight = BestRedImageBand.GetTransformedHeight();
         
         // Green...
-        if(BestGreenImageBand)
-        {
+
             // Get the raw band data and check for error...
-            if(!BestGreenImageBand->GetRawBandData(GreenRawBandData))
-                SetErrorAndReturnFalse(BestGreenImageBand->GetErrorMessage());
+            if(!BestGreenImageBand.GetRawBandData(GreenRawBandData))
+                SetErrorAndReturnFalse(BestGreenImageBand.GetErrorMessage());
 
             // Get width and height...
-            Width   = BestGreenImageBand->GetTransformedWidth();
-            Height  = BestGreenImageBand->GetTransformedHeight();
-        }
-        
+            const size_t GreenWidth  = BestGreenImageBand.GetTransformedWidth();
+            const size_t GreenHeight = BestGreenImageBand.GetTransformedHeight();
+
         // Blue...
-        if(BestBlueImageBand)
-        {
+
             // Initialize extraction stream and check for error...
-            if(!BestBlueImageBand->GetRawBandData(BlueRawBandData))
-                SetErrorAndReturnFalse(BestBlueImageBand->GetErrorMessage());
+            if(!BestBlueImageBand.GetRawBandData(BlueRawBandData))
+                SetErrorAndReturnFalse(BestBlueImageBand.GetErrorMessage());
 
             // Get width and height...
-            Width   = BestBlueImageBand->GetTransformedWidth();
-            Height  = BestBlueImageBand->GetTransformedHeight();
-        }
+            const size_t BlueWidth  = BestBlueImageBand.GetTransformedWidth();
+            const size_t BlueHeight = BestBlueImageBand.GetTransformedHeight();
+
+    // If the widths don't match or the heights don't match, we have a problem...
+    if((min3(RedWidth, GreenWidth, BlueWidth) != max3(RedWidth, GreenWidth, BlueWidth)) ||
+       (min3(RedHeight, GreenHeight, BlueHeight) != max3(RedHeight, GreenHeight, BlueHeight)))
+        SetErrorAndReturnFalse("image bands not all the same size, may be missing scanlines");
+
+    // Get the final image width and height...
+    const size_t Width  = RedWidth;
+    const size_t Height = RedHeight;
 
     // Allocate png storage...
     png::image<png::rgb_pixel> PngImage(Width, Height);
@@ -369,22 +383,10 @@ bool ReconstructableImage::ReconstructColourImage(
         for(size_t X = 0; X < PngImage.get_width(); ++X)
         {
             // Storage for this pixel's colours...
-            char RedByte    = '\x0';
-            char GreenByte  = '\x0';
-            char BlueByte   = '\x0';
+            const char RedByte    = RedRawBandData.at(Y).at(X);
+            const char GreenByte  = GreenRawBandData.at(Y).at(X);
+            const char BlueByte   = BlueRawBandData.at(Y).at(X);
 
-            // Red extraction stream available, use...
-            if(BestRedImageBand)
-                RedByte = RedRawBandData.at(Y).at(X);
-
-            // Green extraction stream available, use...
-            if(BestGreenImageBand)
-                GreenByte = GreenRawBandData.at(Y).at(X);
-
-            // Blue extraction stream available, use...
-            if(BestBlueImageBand)
-                BlueByte = BlueRawBandData.at(Y).at(X);
-            
             // Encode...
             PngImage.set_pixel(X, Y, png::rgb_pixel(RedByte, GreenByte, BlueByte));
         }
