@@ -281,6 +281,9 @@ class VicarImageBand
         // Pixel format... (e.g. 'I' -> integral)
         char                    m_PixelFormat;
 
+        // Pixel mean value...
+        float                   m_PixelMeanValue;
+
         // Bytes per pixel...
         int                     m_BytesPerColour;
         

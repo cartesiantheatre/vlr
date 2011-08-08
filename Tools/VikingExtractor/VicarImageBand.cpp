@@ -64,6 +64,7 @@ VicarImageBand::VicarImageBand(
       m_OriginalHeight(0),
       m_OriginalWidth(0),
       m_PixelFormat(0),
+      m_PixelMeanValue(0.0f),
       m_BytesPerColour(0),
       m_PhysicalRecordSize(0),
       m_PhysicalRecordPadding(0),
@@ -240,6 +241,10 @@ bool VicarImageBand::ExamineImageVisually()
     //  error since callee does this...
     if(!GetRawBandData(RawBandData))
         return false;
+
+    // Image appears to be black so doesn't contain anything...
+    if(m_PixelMeanValue <= 0.5f)
+        SetErrorAndReturnFalse("empty black image");
 
     // Check orientation by looking for large histogram's text which 
     //  is always 90 degrees counterclockwise rotated away from normal 
@@ -474,6 +479,9 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
     if(!ExtractionStream.seekg(m_RawImageOffset, ios_base::beg).good())
         SetErrorAndReturnFalse("file ended prematurely before raw image");
 
+    // Clear the pixel mean value...
+    m_PixelMeanValue = 0.0f;
+
     // Read the whole image, row by row...
     for(size_t Y = 0; Y < m_OriginalHeight; ++Y)
     {
@@ -492,11 +500,21 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
             
             // Add to row...
             CurrentRow.push_back(Byte);
+            
+            // Sum into pixel mean value...
+            m_PixelMeanValue += Byte;
         }
         
         // Add row to list of columns...
         RawBandData.push_back(CurrentRow);
     }
+
+    // Calculate the mean pixel value by dividing accumulator with 
+    //  total number of pixels...
+    m_PixelMeanValue /= (m_OriginalWidth * m_OriginalHeight);
+
+    // Alert user if verbose mode enabled...
+    Message(Console::Verbose) << "pixel mean value: " << m_PixelMeanValue << endl;
 
     // Auto rotate was requested and requires a rotation...
     if(Options::GetInstance().GetAutoRotate() && m_Rotation != None)
@@ -861,22 +879,6 @@ void VicarImageBand::Load()
 //  and same band type...
 bool VicarImageBand::operator<(const VicarImageBand &RightSide) const
 {
-    /*
-        Comparison Rules:
-
-            Rule 1: Indiscernable images or ones without scanline axis
-            are either corrupt or there is a better image with the 
-            scanline axis somewhere in the image set.
-
-                Method: Check for scanline axis presence by looking
-                for "LINE" text.
-
-            Rule 2: Images without a histogram are better than ones 
-            with them because they have more image space.
-                
-                Method: Check for histogram text (e.g. "VIKING LANDER")
-    */
-
     // These should always be true...
     assert(m_DiodeBandType == RightSide.m_DiodeBandType);
     assert(m_CameraEventLabel == RightSide.m_CameraEventLabel);
@@ -895,13 +897,18 @@ bool VicarImageBand::operator<(const VicarImageBand &RightSide) const
     else if(m_FullHistogramPresent != RightSide.m_FullHistogramPresent)
         return m_FullHistogramPresent;
 
-    // Stub for now...
+    // If neither has an axis nor full histogram, or both do, the one
+    //  that is brighter is the one we consider better...
+    else
+        return (m_PixelMeanValue < RightSide.m_PixelMeanValue);
+
+    /*
     else
     {
         cout << "Left: " << m_InputFile << endl;
         cout << "Right: " << RightSide.m_InputFile << endl;
         return true;
-    }
+    }*/
 }
 
 // Parse basic metadata. Basic metadata includes bands, dimensions, 
@@ -1801,7 +1808,7 @@ void VicarImageBand::SetCameraEventLabel(const string &CameraEventLabel)
     
     // Get the identifier without the solar day out of the label...
     m_CameraEventLabelNoSol.assign(m_CameraEventLabel, 0, SolarDayOffset);
-    
+
     // Get the solar day...
         
         // Store whole thing as a string...
@@ -1810,6 +1817,9 @@ void VicarImageBand::SetCameraEventLabel(const string &CameraEventLabel)
 
         // Convert to integer...
         m_SolarDay = atoi(SolarDay.c_str());
+
+/*if(m_CameraEventLabelNoSol != "11A147" && m_CameraEventLabelNoSol != "11B045")
+    SetErrorAndReturn("not what we're looking for");*/
 }
 
 // Mirror the band data from left to right...

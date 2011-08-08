@@ -198,6 +198,9 @@ bool ReconstructableImage::DumpUnreconstructable(
         // Get the image band...
         VicarImageBand &ImageBand = *Iterator;
 
+/*if(ImageBand.GetCameraEventLabelNoSol() == "11A147" && BandTypeSuffix == "blue")
+    cout << endl << Iterator - ImageBandList.begin() << " has mean pixel value of " << ImageBand.m_PixelMeanValue << endl;*/
+
         // Format suffix to contain sort order identifier to distinguish
         //  from other images of this same band type of this same camera 
         //  event...
@@ -234,9 +237,10 @@ bool ReconstructableImage::Reconstruct()
     const size_t Infrareds3 = m_Infrared3ImageBandList.size();
     const size_t Grays      = m_GrayImageBandList.size();
 
-// Colour image... (only all colour bands present)
-if((Reds == 1 && Greens == 1 && Blues == 1) && 
-   (Infrareds1 + Infrareds2 + Infrareds3 + Grays == 0))
+/* Colour image... (only all colour bands present)
+if(!Options::GetInstance().GetNoReconstruct() &&
+        (Reds == 1 && Greens == 1 && Blues == 1) && 
+        (Infrareds1 + Infrareds2 + Infrareds3 + Grays == 0))
 {
     // Create full path to output file and create containing 
     // directory, if necessary...
@@ -252,10 +256,11 @@ if((Reds == 1 && Greens == 1 && Blues == 1) &&
             m_RedImageBandList.back(), 
             m_GreenImageBandList.back(), 
             m_BlueImageBandList.back());
-}
+}*/
 
-    /* Colour image... (only all colour bands present)
-    if((min3(Reds, Greens, Blues) >= 1) && 
+    // Colour image... (only all colour bands present)
+    if(!Options::GetInstance().GetNoReconstruct() &&
+       (min3(Reds, Greens, Blues) >= 1) && 
        (Infrareds1 + Infrareds2 + Infrareds3 + Grays == 0))
     {
         // Create full path to output file and create containing 
@@ -272,17 +277,19 @@ if((Reds == 1 && Greens == 1 && Blues == 1) &&
                 m_RedImageBandList.back(), 
                 m_GreenImageBandList.back(), 
                 m_BlueImageBandList.back());
-    }*/
+    }
 
     /* Infrared image... (only all infrared bands present)
-    else if((Reds + Greens + Blues + Grays == 0) && 
+    else if(!Options::GetInstance().GetNoReconstruct() &&
+            (Reds + Greens + Blues + Grays == 0) && 
             (min(Infrareds1, Infrareds2, Infrareds3) >= 1))
     {
         Message(Console::Info) << "reconstructed infrared image successfully" << endl;
     }
     
     // Grayscale image... (only grayscale image bands)
-    else if((Reds + Greens + Blues + Infrareds1 + Infrareds2 + Infrareds3 == 0) &&
+    else if(!Options::GetInstance().GetNoReconstruct() &&
+            (Reds + Greens + Blues + Infrareds1 + Infrareds2 + Infrareds3 == 0) &&
             Grays >= 1)
     {
         Message(Console::Info) << "reconstructed grayscale image successfully" << endl;
@@ -292,16 +299,17 @@ if((Reds == 1 && Greens == 1 && Blues == 1) &&
     else
     {
         // Dump...
-        DumpUnreconstructable(m_RedImageBandList, "red");
-        DumpUnreconstructable(m_GreenImageBandList, "green");
-        DumpUnreconstructable(m_BlueImageBandList, "blue");
+        DumpUnreconstructable(m_RedImageBandList,       "red");
+        DumpUnreconstructable(m_GreenImageBandList,     "green");
+        DumpUnreconstructable(m_BlueImageBandList,      "blue");
         DumpUnreconstructable(m_Infrared1ImageBandList, "ir1");
         DumpUnreconstructable(m_Infrared2ImageBandList, "ir2");
         DumpUnreconstructable(m_Infrared3ImageBandList, "ir3");
-        DumpUnreconstructable(m_GrayImageBandList, "gray");
+        DumpUnreconstructable(m_GrayImageBandList,      "gray");
 
         // This doesn't count as a successful reconstruction since it wasn't reassembled...
-        SetErrorAndReturnFalse("cannot reconstruct, dumped all bands");
+        if(!Options::GetInstance().GetNoReconstruct())
+            SetErrorAndReturnFalse("cannot reconstruct, dumped all bands");
         return false;
     }
 }

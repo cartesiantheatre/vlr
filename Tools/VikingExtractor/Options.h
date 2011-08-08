@@ -41,6 +41,7 @@ class Options
         bool        GetIgnoreBadFiles() { return m_IgnoreBadFiles; }
         bool        GetInterlace() { return m_Interlace; }
         size_t      GetJobs() { return m_Jobs; }
+        bool        GetNoReconstruct() { return m_NoReconstruct; };
         bool        GetOverwrite() { return m_Overwrite; }
         bool        GetRecursive() { return m_Recursive; }
         bool        GetSaveLabels() { return m_SaveLabels; }
@@ -53,6 +54,7 @@ class Options
         void        SetIgnoreBadFiles(const bool IgnoreBadFiles = true) { m_IgnoreBadFiles = IgnoreBadFiles; }
         void        SetInterlace(const bool Interlace = true) { m_Interlace = Interlace; }
         void        SetJobs(const size_t Jobs) { m_Jobs = Jobs; }
+        void        SetNoReconstruct(const bool NoReconstruct = true) { m_NoReconstruct = NoReconstruct; }
         void        SetOverwrite(const bool Overwrite = true) { m_Overwrite = Overwrite; }
         void        SetRecursive(const bool Recursive = true) { m_Recursive = Recursive; }
         void        SetSaveLabels(const bool SaveLabels = true) { m_SaveLabels = SaveLabels; }
@@ -85,6 +87,10 @@ class Options
 
         // Number of threads to use...
         size_t      m_Jobs;
+
+        // Don't attempt to reconstruct camera events, just dump all 
+        //  available band data as separate images...
+        bool        m_NoReconstruct;
 
         // Overwrite output files...
         bool        m_Overwrite;

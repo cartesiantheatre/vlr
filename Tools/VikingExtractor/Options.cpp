@@ -35,6 +35,7 @@ Options::Options()
         m_IgnoreBadFiles(false),
         m_Interlace(false),
         m_Jobs(1),
+        m_NoReconstruct(false),
         m_Overwrite(false),
         m_Recursive(false),
         m_SaveLabels(false),

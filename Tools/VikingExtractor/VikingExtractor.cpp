@@ -56,6 +56,8 @@ void ShowHelp()
          << "      --lander-filter=#       Extract from specific lander only which are"         << endl
          << "                              either (0, the default), 1, or 2."                   << endl
          << "      --no-colours            Disable VT/100 ANSI coloured terminal output."       << endl
+         << "      --no-reconstruct        Don't attempt to reconstruct camera events, just"    << endl
+         << "                              dump all available band data as separate images."    << endl
          << "      --overwrite             Overwrite any existing output files."                << endl
          << "  -r, --recursive             Scan subfolders as well if input is a directory."    << endl
          << "      --save-record-labels    Save VICAR record labels as text file"               << endl
@@ -107,6 +109,7 @@ int main(int ArgumentCount, char *Arguments[])
         option_long_jobs,
         option_long_lander_filter,
         option_long_no_colours,
+        option_long_no_reconstruct,
         option_long_overwrite,
         option_long_recursive,
         option_long_save_record_labels,
@@ -128,6 +131,7 @@ int main(int ArgumentCount, char *Arguments[])
         {"jobs",                optional_argument,  NULL,   option_long_jobs},
         {"lander-filter",       required_argument,  NULL,   option_long_lander_filter},
         {"no-colours",          no_argument,        NULL,   option_long_no_colours},
+        {"no-reconstruct",      no_argument,        NULL,   option_long_no_reconstruct},
         {"overwrite",           no_argument,        NULL,   option_long_overwrite},
         {"recursive",           no_argument,        NULL,   option_long_recursive},
         {"save-record-labels",  no_argument,        NULL,   option_long_save_record_labels},
@@ -219,6 +223,9 @@ int main(int ArgumentCount, char *Arguments[])
 
             // No terminal colour...
             case option_long_no_colours: { Console::GetInstance().SetUseColours(false); break; }
+
+            // No reconstruct...
+            case option_long_no_reconstruct: { Options::GetInstance().SetNoReconstruct(); break; }
 
             // Overwrite output files...
             case option_long_overwrite: { Options::GetInstance().SetOverwrite(); break; }
