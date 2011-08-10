@@ -84,12 +84,12 @@ class ReconstructableImage
             ImageBandListType &ImageBandList, 
             const std::string &BandTypeSuffix);
 
-        // Reconstruct a colour image from requested image bands which can be NULL...
+        // Reconstruct a colour image from requested image bands...
         bool ReconstructColourImage(
             const std::string &OutputFileName, 
-            VicarImageBand &BestRedImageBand, 
-            VicarImageBand &BestGreenImageBand, 
-            VicarImageBand &BestBlueImageBand);
+            ImageBandListType &RedImageBandList, 
+            ImageBandListType &GreenImageBandList, 
+            ImageBandListType &BlueImageBandList);
 
         // Reconstruct a grayscale image from requested image band...
         bool ReconstructGrayscaleImage(

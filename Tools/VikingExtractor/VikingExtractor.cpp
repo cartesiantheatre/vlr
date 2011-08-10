@@ -42,9 +42,6 @@ void ShowHelp()
     cout << "Usage: VikingExtractor [options] input [output]"                                   << endl
          << "Options:"                                                                          << endl
          << "      --auto-rotate           Automaticaly orient image by rotating as needed."    << endl
-         << "  -f, --diode-filter[=type]   Extract from matching supported diode filter"        << endl
-         << "                              classes which are any (default), colour, infrared,"  << endl
-         << "                              sun, or survey."                                     << endl
          << "      --dry-run               Don't write anything"                                << endl
          << "      --help                  Show this help"                                      << endl
          << "      --ignore-bad-files      Don't stop on corrupt or problematic input file,"    << endl
@@ -53,8 +50,16 @@ void ShowHelp()
          << "  -j, --jobs[=threads]        Number of threads to run parallelized. Only one"     << endl
          << "                              if -j is not provided, or auto if threads"           << endl
          << "                              argument not specified."                             << endl
-         << "      --lander-filter=#       Extract from specific lander only which are"         << endl
+         << "      --filter-camera-event[=id]"                                                  << endl
+         << "                              Look only for the specified matching camera event"   << endl
+         << "                              ID, such as 22A158."                                 << endl
+         << "      --filter-diode[=type]   Extract from matching supported diode filter"        << endl
+         << "                              classes which are any (default), colour, infrared,"  << endl
+         << "                              sun, or survey."                                     << endl
+         << "      --filter-lander=#       Extract from specific lander only which are"         << endl
          << "                              either (0, the default), 1, or 2."                   << endl
+         << "      --filter-solar-day[=#]  Look only for camera events taken on the specified"  << endl
+         << "                              solar day."                                          << endl
          << "      --no-colours            Disable VT/100 ANSI coloured terminal output."       << endl
          << "      --no-reconstruct        Don't attempt to reconstruct camera events, just"    << endl
          << "                              dump all available band data as separate images."    << endl
@@ -93,21 +98,21 @@ int main(int ArgumentCount, char *Arguments[])
     string      OutputRootDirectory;
     
     // Some user options...
-    string      DiodeFilter             = "any";
-    string      LanderFilter            = "any";
     bool        VerboseConsole          = false;
 
     // Enumerator of long command line option identifiers...
     enum option_long_enum
     {
         option_long_auto_rotate  = 256, /* To ensure no clashes with short option char identifiers */
-        option_long_diode_filter,
         option_long_dry_run,
+        option_long_filter_camera_event,
+        option_long_filter_diode_class,
+        option_long_filter_lander,
+        option_long_filter_solar_day,
         option_long_help,
         option_long_ignore_bad_files,
         option_long_interlace,
         option_long_jobs,
-        option_long_lander_filter,
         option_long_no_colours,
         option_long_no_reconstruct,
         option_long_overwrite,
@@ -123,13 +128,15 @@ int main(int ArgumentCount, char *Arguments[])
     option CommandLineLongOptions[] =
     {
         {"auto-rotate",         no_argument,        NULL,   option_long_auto_rotate},
-        {"diode-filter",        required_argument,  NULL,   option_long_diode_filter},
         {"dry-run",             no_argument,        NULL,   option_long_dry_run},
+        {"filter-camera-event", required_argument,  NULL,   option_long_filter_camera_event},
+        {"filter-diode",        required_argument,  NULL,   option_long_filter_diode_class},
+        {"filter-lander",       required_argument,  NULL,   option_long_filter_lander},
+        {"filter-solar-day",    required_argument,  NULL,   option_long_filter_solar_day},
         {"help",                no_argument,        NULL,   option_long_help},
         {"ignore-bad-files",    no_argument,        NULL,   option_long_ignore_bad_files},
         {"interlace",           no_argument,        NULL,   option_long_interlace},
         {"jobs",                optional_argument,  NULL,   option_long_jobs},
-        {"lander-filter",       required_argument,  NULL,   option_long_lander_filter},
         {"no-colours",          no_argument,        NULL,   option_long_no_colours},
         {"no-reconstruct",      no_argument,        NULL,   option_long_no_reconstruct},
         {"overwrite",           no_argument,        NULL,   option_long_overwrite},
@@ -146,7 +153,7 @@ int main(int ArgumentCount, char *Arguments[])
 
     // Keep processing each option until there are none left...
     while((OptionCharacter = getopt_long(
-        ArgumentCount, Arguments, "f:j::rVv", CommandLineLongOptions, &OptionIndex)) != -1)
+        ArgumentCount, Arguments, "j::rVv", CommandLineLongOptions, &OptionIndex)) != -1)
     {
         // Which option?
         switch(OptionCharacter)
@@ -171,13 +178,25 @@ int main(int ArgumentCount, char *Arguments[])
             // Automatic image rotation correction...
             case option_long_auto_rotate: { Options::GetInstance().SetAutoRotate(); break; }
 
-            // Diode filter class...
-            case 'f':
-            case option_long_diode_filter: { assert(optarg); DiodeFilter = optarg; break; }
-
             // Dry run...
             case option_long_dry_run: { Options::GetInstance().SetDryRun(); break; }
-           
+
+            // Filter by camera event ID...
+            case option_long_filter_camera_event:
+            { assert(optarg); Options::GetInstance().SetFilterCameraEvent(optarg); break; }
+            
+            // Filter by diode class...
+            case option_long_filter_diode_class:
+            { assert(optarg); Options::GetInstance().SetFilterDiodeClass(optarg); break; }
+
+            // Filter by lander number...
+            case option_long_filter_lander: 
+            { assert(optarg); Options::GetInstance().SetFilterLander(atoi(optarg)); break; }
+
+            // Filter by solar day...
+            case option_long_filter_solar_day:
+            { assert(optarg); Options::GetInstance().SetFilterSolarDay(atoi(optarg)); break; }
+
             // Help...
             case option_long_help:
             {
@@ -217,9 +236,6 @@ int main(int ArgumentCount, char *Arguments[])
                 Options::GetInstance().SetJobs(Jobs);
                 break;
             }
-
-            // Lander filter...
-            case option_long_lander_filter: { assert(optarg); LanderFilter = optarg; break; }
 
             // No terminal colour...
             case option_long_no_colours: { Console::GetInstance().SetUseColours(false); break; }
@@ -339,12 +355,6 @@ int main(int ArgumentCount, char *Arguments[])
         // Create image assembler where input and output "files" are just
         //  the input directory and the root output directory respectively...
         VicarImageAssembler Assembler(InputFileOrRootDirectory, OutputRootDirectory);
-        
-        // Set the diode filter...
-        Assembler.SetDiodeFilterClass(DiodeFilter);
-        
-        // Set the lander filter...
-        Assembler.SetLanderFilter(LanderFilter);
         
         // Reconstruct all possible images found of either the input 
         //  file or a directory into the output directory...

@@ -20,12 +20,11 @@
 */
 
 // Multiple include protection...
-#ifndef _VICAR_COLOUR_IMAGE_H_
-#define _VICAR_COLOUR_IMAGE_H_
+#ifndef _VICAR_IMAGE_BAND_H_
+#define _VICAR_IMAGE_BAND_H_
 
 // Includes...
 #include "LogicalRecord.h"
-#include "Options.h"
 #include <cassert>
 #include <fstream>
 #include <map>
@@ -105,6 +104,9 @@ class VicarImageBand
         // Get the diode band type as a human friendly string...
         const std::string &GetDiodeBandTypeFriendlyString() const;
 
+        // Get the mean pixel value of the inner rectangle...
+        float GetMeanPixelValue() const { return m_MeanPixelValue; }
+
         // Get the OCR buffer...
         const std::string &GetOCRBuffer() const { return m_OCRBuffer; }
 
@@ -138,10 +140,13 @@ class VicarImageBand
         // Get the original magnetic tape number, or zero if unknown...
         size_t GetMagneticTapeNumber() const;
 
+        // Check if the image has an axis overlay present...
+        bool IsAxisPresent() { return m_AxisPresent; }
+
         // Check if the file came with a camera event label...
         bool IsCameraEventLabelPresent() const 
             { assert(m_Ok); return !m_CameraEventLabel.empty(); }
-        
+
         // Check if an error is present...
         bool IsError() const
             { return !m_ErrorMessage.empty(); }
@@ -281,8 +286,10 @@ class VicarImageBand
         // Pixel format... (e.g. 'I' -> integral)
         char                    m_PixelFormat;
 
-        // Pixel mean value...
-        float                   m_PixelMeanValue;
+        // Pixel mean value of centre rectange which is 1/3 length and 
+        //  width of image. We do this to prevent sampling from outside
+        //  in the image overlay and histogram region...
+        float                   m_MeanPixelValue;
 
         // Bytes per pixel...
         int                     m_BytesPerColour;

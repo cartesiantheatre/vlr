@@ -39,8 +39,7 @@ VicarImageAssembler::VicarImageAssembler(
     const string &InputFileOrRootDirectory,
     const string &OutputRootDirectory)
     : m_InputFileOrRootDirectory(InputFileOrRootDirectory),
-      m_OutputRootDirectory(OutputRootDirectory),
-      m_LanderFilter(0)
+      m_OutputRootDirectory(OutputRootDirectory)
 {
     // We should have been provided with an input directory...
     assert(!m_InputFileOrRootDirectory.empty());
@@ -227,9 +226,14 @@ void VicarImageAssembler::Reconstruct()
                     }
                 }
 
+            // Get user selected diode band filter set...
+            const Options::FilterDiodeBandSet &DiodeBandSet = 
+                Options::GetInstance().GetFilterDiodeBandSet();
+
             // Not part of the diode filter set...
-            if(m_DiodeBandFilterSet.find(ImageBand.GetDiodeBandType()) == 
-                m_DiodeBandFilterSet.end())
+            if(!DiodeBandSet.empty() && 
+               (DiodeBandSet.find(ImageBand.GetDiodeBandType()) == 
+                DiodeBandSet.end()))
             {
                 // Alert, skip...
                 Message(Console::Info) 
@@ -422,83 +426,6 @@ void VicarImageAssembler::Reset()
     
     // Cleanup dangling pointers...
     m_CameraEventDictionary.clear();
-}
-
-// Set the diode filter type or throw an error...
-void VicarImageAssembler::SetDiodeFilterClass(const string &DiodeFilter)
-{
-    // Clear the old set...
-    m_DiodeBandFilterSet.clear();
-
-    // Use any supported type...
-    if(DiodeFilter.empty() || DiodeFilter == "any")
-    {
-//        Message(Console::Info) << "using any supported diode filter" << endl;
-        m_DiodeBandFilterSet.insert(VicarImageBand::Blue);
-        m_DiodeBandFilterSet.insert(VicarImageBand::Green);
-        m_DiodeBandFilterSet.insert(VicarImageBand::Red);
-        m_DiodeBandFilterSet.insert(VicarImageBand::Infrared1);
-        m_DiodeBandFilterSet.insert(VicarImageBand::Infrared2);
-        m_DiodeBandFilterSet.insert(VicarImageBand::Infrared3);
-        m_DiodeBandFilterSet.insert(VicarImageBand::Sun);
-        m_DiodeBandFilterSet.insert(VicarImageBand::Survey);
-    }
-    
-    // Colour band...
-    else if(DiodeFilter == "colour")
-    {
-//        Message(Console::Info) << "using colour diode filter" << endl;
-        m_DiodeBandFilterSet.insert(VicarImageBand::Blue);
-        m_DiodeBandFilterSet.insert(VicarImageBand::Green);
-        m_DiodeBandFilterSet.insert(VicarImageBand::Red);
-    }
-    
-    // Infrared band...
-    else if(DiodeFilter == "infrared")
-    {
-//        Message(Console::Info) << "using infrared diode filter" << endl;
-        m_DiodeBandFilterSet.insert(VicarImageBand::Infrared1);
-        m_DiodeBandFilterSet.insert(VicarImageBand::Infrared2);
-        m_DiodeBandFilterSet.insert(VicarImageBand::Infrared3);
-    }
-    
-    // Sun...
-    else if(DiodeFilter == "sun")
-    {
-//        Message(Console::Info) << "using sun diode filter" << endl;
-        m_DiodeBandFilterSet.insert(VicarImageBand::Sun);    
-    }
-    
-    // Survey...
-    else if(DiodeFilter == "survey")
-    {
-//        Message(Console::Info) << "using survey diode filter" << endl;
-        m_DiodeBandFilterSet.insert(VicarImageBand::Survey);
-    }
-    
-    // Unsupported...
-    else
-       throw string("unsupported diode filter class: ") + DiodeFilter;
-}
-
-// Set the lander filter or throw an error...
-void VicarImageAssembler::SetLanderFilter(const string &LanderFilter)
-{
-    // Use any...
-    if(LanderFilter.empty() || LanderFilter == "0" || LanderFilter == "any")
-        m_LanderFilter = 0;
-    
-    // Viking 1 lander...
-    else if(LanderFilter == "1")
-        m_LanderFilter = 1;
-
-    // Viking 2 lander...
-    else if(LanderFilter == "2")
-        m_LanderFilter = 2;
-    
-    // Unknown...
-    else
-        throw string("unknown lander filter: ") + LanderFilter;
 }
 
 // Deconstructor...

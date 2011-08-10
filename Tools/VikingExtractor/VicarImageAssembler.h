@@ -48,12 +48,6 @@ class VicarImageAssembler
         //  file or a directory into the output directory...
         void Reconstruct();
 
-        // Set the diode filter type or throw an error...
-        void SetDiodeFilterClass(const std::string &DiodeFilter);
-        
-        // Set the lander filter or throw an error...
-        void SetLanderFilter(const std::string &LanderFilter);
-
         // Deconstructor...
        ~VicarImageAssembler();
 
@@ -74,9 +68,6 @@ class VicarImageAssembler
         typedef std::map<std::string, ReconstructableImage *>   CameraEventDictionaryType;
         typedef CameraEventDictionaryType::iterator             CameraEventDictionaryIterator;
         typedef std::pair<std::string, ReconstructableImage *>  CameraEventDictionaryPair;
-        
-        // A set of photosensor array diode band types...
-        typedef std::set<VicarImageBand::PSADiode>              DiodeBandFilterSet;
 
     // Protected data...
     protected:
@@ -92,12 +83,6 @@ class VicarImageAssembler
         
         // Output root directory...
         std::string                     m_OutputRootDirectory;
-
-        // Acceptable diode band filter set...
-        DiodeBandFilterSet              m_DiodeBandFilterSet;
-        
-        // Lander filter. Zero for either, or one or two...
-        int                             m_LanderFilter;
 };
 
 // Multiple include protection...

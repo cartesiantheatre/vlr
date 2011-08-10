@@ -21,6 +21,7 @@
 
 // Includes...
 #include "Options.h"
+#include <limits>
 
 // Using the standard namespace...
 using namespace std;
@@ -32,6 +33,8 @@ Options *Options::m_SingletonInstance = NULL;
 Options::Options()
     :   m_AutoRotate(false),
         m_DryRun(false),
+        m_FilterLander(0),
+        m_FilterSolarDay(numeric_limits<size_t>::max()),
         m_IgnoreBadFiles(false),
         m_Interlace(false),
         m_Jobs(1),
@@ -54,6 +57,74 @@ Options &Options::GetInstance()
 
     // Return the only instance...
     return *m_SingletonInstance;
+}
+
+// Set the diode filter type or throw an error...
+void Options::SetFilterDiodeClass(const string &DiodeClass)
+{
+    // Clear the old set...
+    m_FilterDiodeBandSet.clear();
+
+    // Use any supported type...
+    if(DiodeClass.empty() || DiodeClass == "any")
+    {
+//        Message(Console::Info) << "using any supported diode filter" << endl;
+        m_FilterDiodeBandSet.insert(VicarImageBand::Blue);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Green);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Red);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Infrared1);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Infrared2);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Infrared3);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Sun);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Survey);
+    }
+    
+    // Colour band...
+    else if(DiodeClass == "colour")
+    {
+//        Message(Console::Info) << "using colour diode filter" << endl;
+        m_FilterDiodeBandSet.insert(VicarImageBand::Blue);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Green);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Red);
+    }
+    
+    // Infrared band...
+    else if(DiodeClass == "infrared")
+    {
+//        Message(Console::Info) << "using infrared diode filter" << endl;
+        m_FilterDiodeBandSet.insert(VicarImageBand::Infrared1);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Infrared2);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Infrared3);
+    }
+    
+    // Sun...
+    else if(DiodeClass == "sun")
+    {
+//        Message(Console::Info) << "using sun diode filter" << endl;
+        m_FilterDiodeBandSet.insert(VicarImageBand::Sun);    
+    }
+    
+    // Survey...
+    else if(DiodeClass == "survey")
+    {
+//        Message(Console::Info) << "using survey diode filter" << endl;
+        m_FilterDiodeBandSet.insert(VicarImageBand::Survey);
+    }
+    
+    // Unsupported...
+    else
+       throw string("unsupported diode filter class: ") + DiodeClass;
+}
+
+// Set the lander filter or throw an error...
+void Options::SetFilterLander(const size_t Lander)
+{
+    // Bounds check...
+    if(Lander > 2)
+        throw string("invalid lander filter");
+    
+    // Remember lander number, 0 being any...
+    m_FilterLander = Lander;
 }
 
 // Deconstructor...

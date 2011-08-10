@@ -198,8 +198,7 @@ bool ReconstructableImage::DumpUnreconstructable(
         // Get the image band...
         VicarImageBand &ImageBand = *Iterator;
 
-/*if(ImageBand.GetCameraEventLabelNoSol() == "11A147" && BandTypeSuffix == "blue")
-    cout << endl << Iterator - ImageBandList.begin() << " has mean pixel value of " << ImageBand.m_PixelMeanValue << endl;*/
+cerr << endl << BandTypeSuffix << " " << Iterator - ImageBandList.begin() << " has mean pixel value of " << ImageBand.GetMeanPixelValue() << endl;
 
         // Format suffix to contain sort order identifier to distinguish
         //  from other images of this same band type of this same camera 
@@ -274,9 +273,9 @@ if(!Options::GetInstance().GetNoReconstruct() &&
         // Attempt to reconstruct...
         return ReconstructColourImage(
                 OutputFileName, 
-                m_RedImageBandList.back(), 
-                m_GreenImageBandList.back(), 
-                m_BlueImageBandList.back());
+                m_RedImageBandList, 
+                m_GreenImageBandList, 
+                m_BlueImageBandList);
     }
 
     /* Infrared image... (only all infrared bands present)
@@ -314,13 +313,18 @@ if(!Options::GetInstance().GetNoReconstruct() &&
     }
 }
 
-// Reconstruct a colour image from requested image bands which can be NULL...
+// Reconstruct a colour image from requested image bands...
 bool ReconstructableImage::ReconstructColourImage(
     const string &OutputFileName, 
-    VicarImageBand &BestRedImageBand, 
-    VicarImageBand &BestGreenImageBand, 
-    VicarImageBand &BestBlueImageBand)
+    ImageBandListType &RedImageBandList, 
+    ImageBandListType &GreenImageBandList, 
+    ImageBandListType &BlueImageBandList)
 {
+    // We should have always been presented with non-empty lists...
+    assert(!RedImageBandList.empty());
+    assert(!GreenImageBandList.empty());
+    assert(!BlueImageBandList.empty());
+
     // Set file name for console messages to begin with...
     Console::GetInstance().SetCurrentFileName(OutputFileName);
 
@@ -329,14 +333,68 @@ bool ReconstructableImage::ReconstructColourImage(
        (access(OutputFileName.c_str(), F_OK) == 0))
         SetErrorAndReturnFalse("output already exists, not overwriting (use --overwrite to override)");
 
-    // Raw band data...
-    VicarImageBand::RawBandDataType RedRawBandData;
-    VicarImageBand::RawBandDataType GreenRawBandData;
-    VicarImageBand::RawBandDataType BlueRawBandData;
+    // Get the indices of the best colours of each band...
     
+        // Start with indices to last band data of each type...
+        int BestRedIndex    = RedImageBandList.size() - 1;
+        int BestGreenIndex  = GreenImageBandList.size() - 1;
+        int BestBlueIndex   = BlueImageBandList.size() - 1;
+
+FindBestImageBandWithFullHistogram
+FindBestImageBandWithAxis
+
+        // If they are not all full histogram containing...
+        if((RedImageBandList.back().IsFullHistogramPresent() != 
+           GreenImageBandList.back().IsFullHistogramPresent()) !=
+           BlueImageBandList.back().IsFullHistogramPresent())
+        {
+            // If red's best has a full histogram, look back for first one without...
+            while(BestRedIndex >= 0 && RedImageBandList.at(BestRedIndex).IsFullHistogramPresent())
+              --BestRedIndex;
+            
+            // If green's best has a full histogram, look back for first one without...
+            while(BestGreenIndex >= 0 && GreenImageBandList.at(BestGreenIndex).IsFullHistogramPresent())
+              --BestGreenIndex;
+            
+            // If blue's best has a full histogram, look back for first one without...
+            while(BestBlueIndex >= 0 && BlueImageBandList.at(BestBlueIndex).IsFullHistogramPresent())
+              --BestBlueIndex;
+        }
+        
+        // If they are not all axis containing...
+        else if((RedImageBandList.back().IsAxisPresent() !=
+           GreenImageBandList.back().IsAxisPresent()) !=
+           BlueImageBandList.back().IsAxisPresent())
+        {
+            // If red's best has an axis, look back for first one without...
+            while(BestRedIndex >= 0 && RedImageBandList.at(BestRedIndex).IsAxisPresent())
+              --BestRedIndex;
+            
+            // If green's best has an axis, look back for first one without...
+            while(BestGreenIndex >= 0 && GreenImageBandList.at(BestGreenIndex).IsAxisPresent())
+              --BestGreenIndex;
+            
+            // If blue's best has an axis, look back for first one without...
+            while(BestBlueIndex >= 0 && BlueImageBandList.at(BestBlueIndex).IsAxisPresent())
+              --BestBlueIndex;
+        }
+        
+        // Make sure we found a matching set...
+        if(BestRedIndex < 0)    SetErrorAndReturnFalse("red colour band data available, but none to form matching set");
+        if(BestGreenIndex < 0)  SetErrorAndReturnFalse("green colour band data available, but none to form matching set");
+        if(BestBlueIndex < 0)   SetErrorAndReturnFalse("blue colour band data available, but none to form matching set");
+
     // Get the raw band data of each colour band...
+
+        // Space for the raw band data...
+        VicarImageBand::RawBandDataType RedRawBandData;
+        VicarImageBand::RawBandDataType GreenRawBandData;
+        VicarImageBand::RawBandDataType BlueRawBandData;
     
         // Red...
+
+            // Get the best red image band...
+            VicarImageBand &BestRedImageBand = RedImageBandList.at(BestRedIndex);
 
             // Get the raw band data and check for error...
             if(!BestRedImageBand.GetRawBandData(RedRawBandData))
@@ -347,6 +405,9 @@ bool ReconstructableImage::ReconstructColourImage(
             const size_t RedHeight = BestRedImageBand.GetTransformedHeight();
         
         // Green...
+        
+            // Get the best green image band...
+            VicarImageBand &BestGreenImageBand = GreenImageBandList.at(BestGreenIndex);
 
             // Get the raw band data and check for error...
             if(!BestGreenImageBand.GetRawBandData(GreenRawBandData))
@@ -357,6 +418,9 @@ bool ReconstructableImage::ReconstructColourImage(
             const size_t GreenHeight = BestGreenImageBand.GetTransformedHeight();
 
         // Blue...
+            
+            // Get the best blue image band...
+            VicarImageBand &BestBlueImageBand = BlueImageBandList.at(BestBlueIndex);
 
             // Initialize extraction stream and check for error...
             if(!BestBlueImageBand.GetRawBandData(BlueRawBandData))
