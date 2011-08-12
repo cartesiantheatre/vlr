@@ -60,16 +60,16 @@ class ReconstructableImage
     protected:
 
         // Image band list type and iterator...
-        typedef std::vector<VicarImageBand> ImageBandListType;
-        typedef ImageBandListType::iterator ImageBandListIterator;
+        typedef std::vector<VicarImageBand>         ImageBandListType;
+        typedef ImageBandListType::iterator         ImageBandListIterator;
+        typedef ImageBandListType::reverse_iterator ImageBandListReverseIterator;
 
     // Protected methods...
     protected:
 
-        // Create the necessary path to the output file and return a path, 
-        //  placing the output file within an option subdirectory and 
-        //  appending an optional name suffix e.g. file_suffix.png...
-        std::string CreateOutputFileName();
+        // Create the necessary path to the output file and return a path. 
+        //  The file will have the provided file extension...
+        std::string CreateOutputFileName(const std::string &Extension);
 
         // Create the necessary path to a single component of an image, 
         //  distinguished with a name suffix and ordinal. These end up in the
@@ -84,6 +84,18 @@ class ReconstructableImage
             ImageBandListType &ImageBandList, 
             const std::string &BandTypeSuffix);
 
+        // Find the best image in the band list with a full histogram, 
+        //  or return rend iterator...
+        ImageBandListReverseIterator FindBestImageBandWithFullHistogram(
+            ImageBandListType &ImageBandList, 
+            ImageBandListReverseIterator &ReverseIterator) const;
+
+        // Find the best image in the band list with no axis, but just 
+        //  vanilla image, or return rend iterator...
+        ImageBandListReverseIterator FindBestImageBandWithNoAxis(
+            ImageBandListType &ImageBandList, 
+            ImageBandListReverseIterator &ReverseIterator) const;
+
         // Reconstruct a colour image from requested image bands...
         bool ReconstructColourImage(
             const std::string &OutputFileName, 
@@ -95,6 +107,13 @@ class ReconstructableImage
         bool ReconstructGrayscaleImage(
             const std::string &OutputFileName, 
             VicarImageBand &BestGrayscaleImageBand);
+
+        // Save metadata for file...
+        void SaveMetadata(
+            const std::string &OutputFileName, 
+            const VicarImageBand &RedImageBand, 
+            const VicarImageBand &GreenImageBand, 
+            const VicarImageBand &BlueImageBand);
 
         // Set the error message...
         void SetErrorMessage(const std::string &ErrorMessage)

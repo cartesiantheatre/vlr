@@ -119,10 +119,9 @@ void ReconstructableImage::AddImageBand(const VicarImageBand &ImageBand)
     }
 }
 
-// Create the necessary path to the output file and return a path, 
-//  placing the output file within an option subdirectory and appending
-//  an optional name suffix e.g. file_suffix.png...
-string ReconstructableImage::CreateOutputFileName()
+// Create the necessary path to the output file and return a path. 
+//  The file will have the provided file extension...
+string ReconstructableImage::CreateOutputFileName(const string &Extension)
 {
 
     // Will contain the full directory, not including the file name...
@@ -147,7 +146,7 @@ string ReconstructableImage::CreateOutputFileName()
     }
 
     // Return the full path to a file ready to be written to...
-    return FullDirectory.str() + m_CameraEventNoSol + ".png";
+    return FullDirectory.str() + m_CameraEventNoSol + "." + Extension;
 }
 
 // Create the necessary path to a single component of an image, 
@@ -198,7 +197,7 @@ bool ReconstructableImage::DumpUnreconstructable(
         // Get the image band...
         VicarImageBand &ImageBand = *Iterator;
 
-cerr << endl << BandTypeSuffix << " " << Iterator - ImageBandList.begin() << " has mean pixel value of " << ImageBand.GetMeanPixelValue() << endl;
+//cerr << endl << BandTypeSuffix << " " << Iterator - ImageBandList.begin() << " has mean pixel value of " << ImageBand.GetMeanPixelValue() << endl;
 
         // Format suffix to contain sort order identifier to distinguish
         //  from other images of this same band type of this same camera 
@@ -215,10 +214,61 @@ cerr << endl << BandTypeSuffix << " " << Iterator - ImageBandList.begin() << " h
     return true;
 }
 
+// Find the best image in the band list with a full histogram, 
+//  or return rend iterator...
+ReconstructableImage::ImageBandListReverseIterator 
+ReconstructableImage::FindBestImageBandWithFullHistogram(
+    ImageBandListType &ImageBandList, 
+    ImageBandListReverseIterator &ReverseIterator) const
+{
+    // Scan backwards, starting with best quality image...
+    for(ImageBandListReverseIterator Current = ReverseIterator;
+        Current != ImageBandList.rend();
+      ++Current)
+    {
+        // Get the current image band...
+        const VicarImageBand &ImageBand = *Current;
+        
+        // This one has only an axis and no full histogram...
+        if(ImageBand.IsFullHistogramPresent())
+            return Current;
+    }
+    
+    // Nothing found, return rend...
+    return ImageBandList.rend();
+}
+
+// Find the best image in the band list with no axis, but just 
+//  vanilla image, or return rend iterator...
+ReconstructableImage::ImageBandListReverseIterator 
+ReconstructableImage::FindBestImageBandWithNoAxis(
+    ImageBandListType &ImageBandList, 
+    ImageBandListReverseIterator &ReverseIterator) const
+{
+    // Scan backwards, starting with best quality image...
+    for(ImageBandListReverseIterator Current = ReverseIterator;
+        Current != ImageBandList.rend();
+      ++Current)
+    {
+        // Get the current image band...
+        const VicarImageBand &ImageBand = *Current;
+        
+        // This one has no axis present, use...
+        if(!ImageBand.IsAxisPresent())
+            return Current;
+    }
+    
+    // Nothing found, return rend...
+    return ImageBandList.rend();
+}
+
 // Extract the image out as a PNG, or return false if failed...
 bool ReconstructableImage::Reconstruct()
 {
-    // Sort each band lists from lowest to best quality...
+    // Sort each band lists from lowest to best quality. Note that this
+    //  does not necessarily mean that the best image of each band list
+    //  will form the best matching set, since the best of one band list
+    //  might have a full histogram and another might not...
     sort(m_RedImageBandList.begin(),        m_RedImageBandList.end());
     sort(m_GreenImageBandList.begin(),      m_GreenImageBandList.end());
     sort(m_BlueImageBandList.begin(),       m_BlueImageBandList.end());
@@ -236,27 +286,6 @@ bool ReconstructableImage::Reconstruct()
     const size_t Infrareds3 = m_Infrared3ImageBandList.size();
     const size_t Grays      = m_GrayImageBandList.size();
 
-/* Colour image... (only all colour bands present)
-if(!Options::GetInstance().GetNoReconstruct() &&
-        (Reds == 1 && Greens == 1 && Blues == 1) && 
-        (Infrareds1 + Infrareds2 + Infrareds3 + Grays == 0))
-{
-    // Create full path to output file and create containing 
-    // directory, if necessary...
-    const string OutputFileName = CreateOutputFileName();
-
-        // Failed...
-        if(IsError())
-            return false;
-
-    // Attempt to reconstruct...
-    return ReconstructColourImage(
-            OutputFileName, 
-            m_RedImageBandList.back(), 
-            m_GreenImageBandList.back(), 
-            m_BlueImageBandList.back());
-}*/
-
     // Colour image... (only all colour bands present)
     if(!Options::GetInstance().GetNoReconstruct() &&
        (min3(Reds, Greens, Blues) >= 1) && 
@@ -264,7 +293,7 @@ if(!Options::GetInstance().GetNoReconstruct() &&
     {
         // Create full path to output file and create containing 
         // directory, if necessary...
-        const string OutputFileName = CreateOutputFileName();
+        const string OutputFileName = CreateOutputFileName("png");
 
             // Failed...
             if(IsError())
@@ -285,7 +314,7 @@ if(!Options::GetInstance().GetNoReconstruct() &&
     {
         Message(Console::Info) << "reconstructed infrared image successfully" << endl;
     }
-    
+
     // Grayscale image... (only grayscale image bands)
     else if(!Options::GetInstance().GetNoReconstruct() &&
             (Reds + Greens + Blues + Infrareds1 + Infrareds2 + Infrareds3 == 0) &&
@@ -293,7 +322,7 @@ if(!Options::GetInstance().GetNoReconstruct() &&
     {
         Message(Console::Info) << "reconstructed grayscale image successfully" << endl;
     }*/
-    
+
     // Unknown...
     else
     {
@@ -333,56 +362,59 @@ bool ReconstructableImage::ReconstructColourImage(
        (access(OutputFileName.c_str(), F_OK) == 0))
         SetErrorAndReturnFalse("output already exists, not overwriting (use --overwrite to override)");
 
-    // Get the indices of the best colours of each band...
-    
-        // Start with indices to last band data of each type...
-        int BestRedIndex    = RedImageBandList.size() - 1;
-        int BestGreenIndex  = GreenImageBandList.size() - 1;
-        int BestBlueIndex   = BlueImageBandList.size() - 1;
+    // Form the best image set from each band list...
 
-FindBestImageBandWithFullHistogram
-FindBestImageBandWithAxis
+        // Iterators to point to best of each, beginning with the best 
+        //  of each, but not necessarily forming the final set. e.g.
+        //  some might have a full histogram, others just an axis, and
+        //  sometimes maybe neither with just the vanilla image...
+        ImageBandListReverseIterator BestRedIterator   = RedImageBandList.rbegin();
+//VicarImageBand RedImage = *BestRedIterator;
+        ImageBandListReverseIterator BestGreenIterator = GreenImageBandList.rbegin();
+//VicarImageBand GreenImage = *BestGreenIterator;
+        ImageBandListReverseIterator BestBlueIterator  = BlueImageBandList.rbegin();
+//VicarImageBand BlueImage = *BestBlueIterator;
 
-        // If they are not all full histogram containing...
-        if((RedImageBandList.back().IsFullHistogramPresent() != 
-           GreenImageBandList.back().IsFullHistogramPresent()) !=
-           BlueImageBandList.back().IsFullHistogramPresent())
+        // If the best image of each band list has some with an
+        //  axis present, no full histogram, and some without...
+        const size_t AxesOnlyPresent = 
+            (*BestRedIterator).IsAxisOnlyPresent() +
+            (*BestGreenIterator).IsAxisOnlyPresent() +
+            (*BestBlueIterator).IsAxisOnlyPresent();
+        if(AxesOnlyPresent >= 1 && AxesOnlyPresent < 3)
         {
-            // If red's best has a full histogram, look back for first one without...
-            while(BestRedIndex >= 0 && RedImageBandList.at(BestRedIndex).IsFullHistogramPresent())
-              --BestRedIndex;
-            
-            // If green's best has a full histogram, look back for first one without...
-            while(BestGreenIndex >= 0 && GreenImageBandList.at(BestGreenIndex).IsFullHistogramPresent())
-              --BestGreenIndex;
-            
-            // If blue's best has a full histogram, look back for first one without...
-            while(BestBlueIndex >= 0 && BlueImageBandList.at(BestBlueIndex).IsFullHistogramPresent())
-              --BestBlueIndex;
+            // ...see if you can find ones with full histograms then, 
+            //  which are next best option...
+            BestRedIterator = FindBestImageBandWithFullHistogram(RedImageBandList, BestRedIterator);
+            BestGreenIterator = FindBestImageBandWithFullHistogram(GreenImageBandList, BestGreenIterator);
+            BestBlueIterator = FindBestImageBandWithFullHistogram(BlueImageBandList, BestBlueIterator);
         }
-        
-        // If they are not all axis containing...
-        else if((RedImageBandList.back().IsAxisPresent() !=
-           GreenImageBandList.back().IsAxisPresent()) !=
-           BlueImageBandList.back().IsAxisPresent())
+
+        // At least one of them didn't match up...
+        if(BestRedIterator == RedImageBandList.rend() || 
+           BestGreenIterator == GreenImageBandList.rend() ||
+           BestBlueIterator == BlueImageBandList.rend())
+            SetErrorAndReturnFalse("images for each band present, but no matching set of full histogram variants available");
+
+        // If the best image of each band list has some with a full
+        //  histogram present and some without...
+        const size_t FullHistogramsPresent = 
+            (*BestRedIterator).IsFullHistogramPresent() +
+            (*BestGreenIterator).IsFullHistogramPresent() +
+            (*BestBlueIterator).IsFullHistogramPresent();
+        if(FullHistogramsPresent >= 1 && FullHistogramsPresent < 3)
         {
-            // If red's best has an axis, look back for first one without...
-            while(BestRedIndex >= 0 && RedImageBandList.at(BestRedIndex).IsAxisPresent())
-              --BestRedIndex;
-            
-            // If green's best has an axis, look back for first one without...
-            while(BestGreenIndex >= 0 && GreenImageBandList.at(BestGreenIndex).IsAxisPresent())
-              --BestGreenIndex;
-            
-            // If blue's best has an axis, look back for first one without...
-            while(BestBlueIndex >= 0 && BlueImageBandList.at(BestBlueIndex).IsAxisPresent())
-              --BestBlueIndex;
+            // ...try without any full histogram or axis at all, just vanilla image...
+            BestRedIterator = FindBestImageBandWithNoAxis(RedImageBandList, BestRedIterator);
+            BestGreenIterator = FindBestImageBandWithNoAxis(GreenImageBandList, BestGreenIterator);
+            BestBlueIterator = FindBestImageBandWithNoAxis(BlueImageBandList, BestBlueIterator);
         }
-        
-        // Make sure we found a matching set...
-        if(BestRedIndex < 0)    SetErrorAndReturnFalse("red colour band data available, but none to form matching set");
-        if(BestGreenIndex < 0)  SetErrorAndReturnFalse("green colour band data available, but none to form matching set");
-        if(BestBlueIndex < 0)   SetErrorAndReturnFalse("blue colour band data available, but none to form matching set");
+
+        // At least one of them didn't match up...
+        if(BestRedIterator == RedImageBandList.rend() || 
+           BestGreenIterator == GreenImageBandList.rend() ||
+           BestBlueIterator == BlueImageBandList.rend())
+            SetErrorAndReturnFalse("images for each band present, but no matching set of non-overlayed variants available");
 
     // Get the raw band data of each colour band...
 
@@ -394,7 +426,7 @@ FindBestImageBandWithAxis
         // Red...
 
             // Get the best red image band...
-            VicarImageBand &BestRedImageBand = RedImageBandList.at(BestRedIndex);
+            VicarImageBand &BestRedImageBand = *BestRedIterator;
 
             // Get the raw band data and check for error...
             if(!BestRedImageBand.GetRawBandData(RedRawBandData))
@@ -407,7 +439,7 @@ FindBestImageBandWithAxis
         // Green...
         
             // Get the best green image band...
-            VicarImageBand &BestGreenImageBand = GreenImageBandList.at(BestGreenIndex);
+            VicarImageBand &BestGreenImageBand = *BestGreenIterator;
 
             // Get the raw band data and check for error...
             if(!BestGreenImageBand.GetRawBandData(GreenRawBandData))
@@ -420,7 +452,7 @@ FindBestImageBandWithAxis
         // Blue...
             
             // Get the best blue image band...
-            VicarImageBand &BestBlueImageBand = BlueImageBandList.at(BestBlueIndex);
+            VicarImageBand &BestBlueImageBand = *BestBlueIterator;
 
             // Initialize extraction stream and check for error...
             if(!BestBlueImageBand.GetRawBandData(BlueRawBandData))
@@ -464,8 +496,12 @@ FindBestImageBandWithAxis
         }
     }
 
-    // Write out...
+    // Write out image...
     PngImage.write(OutputFileName);
+    
+    // If saving metadata is enabled, do it...
+    if(Options::GetInstance().GetSaveMetadata())
+        SaveMetadata(CreateOutputFileName("txt"), *BestRedIterator, *BestGreenIterator, *BestBlueIterator);
 
     // Done...
     return true;
@@ -523,5 +559,39 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
 
     // Done...
     return true;
+}
+
+// Save metadata for file...
+void ReconstructableImage::SaveMetadata(
+    const string &OutputFileName, 
+    const VicarImageBand &RedImageBand, 
+    const VicarImageBand &GreenImageBand, 
+    const VicarImageBand &BlueImageBand)
+{
+    // Create the metadata text file...
+    ofstream OutputFileStream(OutputFileName.c_str());
+    
+        // Failed...
+        if(!OutputFileStream.is_open())
+        {
+            // Just give a warning and abort...
+            Message(Console::Warning) << "couldn't save metadata" << endl;
+            return;
+        }
+    
+    // Show red data...
+    OutputFileStream 
+        << "Red Image Band: " << endl
+        << "\tSource: " << RedImageBand.GetInputFileName() << endl;
+
+    // Show green data...
+    OutputFileStream 
+        << "Green Image Band: " << endl
+        << "\tSource: " << GreenImageBand.GetInputFileName() << endl;
+
+    // Show blue data...
+    OutputFileStream 
+        << "Blue Image Band: " << endl
+        << "\tSource: " << BlueImageBand.GetInputFileName() << endl;
 }
 

@@ -134,14 +134,20 @@ class VicarImageBand
         size_t GetTransformedHeight() const;
         size_t GetTransformedWidth() const;
 
+        // Get the input file name with full path...
+        const std::string &GetInputFileName() const { return m_InputFile; }
+
         // Get the input file name only without path...
         std::string GetInputFileNameOnly() const;
         
         // Get the original magnetic tape number, or zero if unknown...
         size_t GetMagneticTapeNumber() const;
 
+        // Check if the image has an axis overlay present only, but no full histogram...
+        bool IsAxisOnlyPresent() const { return (m_AxisPresent && !m_FullHistogramPresent); }
+
         // Check if the image has an axis overlay present...
-        bool IsAxisPresent() { return m_AxisPresent; }
+        bool IsAxisPresent() const { return m_AxisPresent; }
 
         // Check if the file came with a camera event label...
         bool IsCameraEventLabelPresent() const 
@@ -152,7 +158,7 @@ class VicarImageBand
             { return !m_ErrorMessage.empty(); }
 
         // Check if a full histogram legend is present...
-        bool IsFullHistogramPresent() { return m_FullHistogramPresent; }
+        bool IsFullHistogramPresent() const { return m_FullHistogramPresent; }
 
         // Is the file accessible and the header ok?
         bool IsOk() const { return m_Ok; }

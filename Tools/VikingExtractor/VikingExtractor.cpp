@@ -65,7 +65,7 @@ void ShowHelp()
          << "                              dump all available band data as separate images."    << endl
          << "      --overwrite             Overwrite any existing output files."                << endl
          << "  -r, --recursive             Scan subfolders as well if input is a directory."    << endl
-         << "      --save-record-labels    Save VICAR record labels as text file"               << endl
+         << "      --save-metadata         Save a metadata text file paired with each image"    << endl
          << "      --sol-directorize       Put reconstructed images into subdirectories"        << endl
          << "                              numbered by camera event solar day."                 << endl
          << "      --summary-only          No warnings or errors displayed, summary only."      << endl
@@ -117,7 +117,7 @@ int main(int ArgumentCount, char *Arguments[])
         option_long_no_reconstruct,
         option_long_overwrite,
         option_long_recursive,
-        option_long_save_record_labels,
+        option_long_save_metadata,
         option_long_sol_directorize,
         option_long_summarize_only,
         option_long_verbose,
@@ -141,7 +141,7 @@ int main(int ArgumentCount, char *Arguments[])
         {"no-reconstruct",      no_argument,        NULL,   option_long_no_reconstruct},
         {"overwrite",           no_argument,        NULL,   option_long_overwrite},
         {"recursive",           no_argument,        NULL,   option_long_recursive},
-        {"save-record-labels",  no_argument,        NULL,   option_long_save_record_labels},
+        {"save-metadata",       no_argument,        NULL,   option_long_save_metadata},
         {"sol-directorize",     no_argument,        NULL,   option_long_sol_directorize},
         {"summarize-only",      no_argument,        NULL,   option_long_summarize_only},
         {"verbose",             no_argument,        NULL,   option_long_verbose},
@@ -250,8 +250,8 @@ int main(int ArgumentCount, char *Arguments[])
             case 'r':
             case option_long_recursive: { Options::GetInstance().SetRecursive(); break; }
 
-            // Save record labels...
-            case option_long_save_record_labels: { Options::GetInstance().SetSaveLabels(); break; }
+            // Save metadata...
+            case option_long_save_metadata: { Options::GetInstance().SetSaveMetadata(); break; }
 
             // Sol directorize...
             case option_long_sol_directorize: { Options::GetInstance().SetSolDirectorize(); break; }

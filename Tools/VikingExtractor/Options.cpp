@@ -41,7 +41,7 @@ Options::Options()
         m_NoReconstruct(false),
         m_Overwrite(false),
         m_Recursive(false),
-        m_SaveLabels(false),
+        m_SaveMetadata(false),
         m_SolDirectorize(false),
         m_SummarizeOnly(false)
 {

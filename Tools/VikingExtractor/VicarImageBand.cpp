@@ -246,10 +246,6 @@ bool VicarImageBand::ExamineImageVisually()
     if(!GetRawBandData(RawBandData))
         return false;
 
-    // Image appears to be black so doesn't contain anything...
-    if(m_MeanPixelValue <= 0.5f)
-        SetErrorAndReturnFalse("empty black image");
-
     // Check orientation by looking for large histogram's text which 
     //  is always 90 degrees counterclockwise rotated away from normal 
     //  image orientation...
@@ -474,7 +470,7 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
 
     // Open the input file...
     ifstream ExtractionStream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
-    
+
         // Failed...
         if(!ExtractionStream.is_open())
             SetErrorAndReturnFalse("could not open input for reading");
@@ -493,7 +489,7 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
     const size_t SampleRegion_Left      = m_OriginalWidth / 3;
     const size_t SampleRegion_Right     = (m_OriginalWidth / 3) * 2;
     const size_t SampleRegion_Bottom    = (m_OriginalHeight / 3) * 2;
-
+size_t sampled = 0;
     // Read the whole image, row by row...
     for(size_t Y = 0; Y < m_OriginalHeight; ++Y)
     {
@@ -505,14 +501,14 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
         {
             // Current pixel value...
             char Byte = '\x0';
-            
+
             // Extract pixel and check for error...
             if(!ExtractionStream.get(Byte).good())
                 SetErrorAndReturnFalse("band data extraction i/o error");
-            
+
             // Add to row...
             CurrentRow.push_back(Byte);
-            
+
             // Check if within the pixel sample region...
             if(X >= SampleRegion_Left  && 
                X <= SampleRegion_Right &&
@@ -521,16 +517,20 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
             {
                 // Sum into pixel mean value if in...
                 m_MeanPixelValue += Byte;
+                sampled++;
             }
         }
-        
+
         // Add row to list of columns...
         RawBandData.push_back(CurrentRow);
     }
 
     // Calculate the mean pixel value by dividing accumulator with 
-    //  total number of pixels...
-    m_MeanPixelValue /= (m_OriginalWidth * m_OriginalHeight);
+    //  total rectangle size...
+    m_MeanPixelValue /= ((SampleRegion_Right - SampleRegion_Left) * 
+                         (SampleRegion_Bottom - SampleRegion_Top));
+
+assert(((SampleRegion_Right - SampleRegion_Left) * (SampleRegion_Bottom - SampleRegion_Top)) == sampled);
 
     // Alert user if verbose mode enabled...
     Message(Console::Verbose) << "mean pixel value: " << m_MeanPixelValue << endl;
@@ -540,7 +540,7 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
     {
         // Space for the rotated raw band data...
         RawBandDataType RotatedRawBandData;
-        
+
         // Perform rotation...
         Rotate(m_Rotation, RawBandData, RotatedRawBandData);
         
@@ -1838,14 +1838,12 @@ void VicarImageBand::SetCameraEventLabel(const string &CameraEventLabel)
         m_SolarDay = atoi(SolarDay.c_str());
 
     // Check for matching solar day, if user filtered...
-    if(Options::GetInstance().GetFilterSolarDay() != numeric_limits<size_t>::max() &&
-       Options::GetInstance().GetFilterSolarDay() != m_SolarDay)
-        SetErrorAndReturn("filtering non-matching solar day");
+    if(Options::GetInstance().GetFilterSolarDay() != numeric_limits<size_t>::max() && Options::GetInstance().GetFilterSolarDay() != m_SolarDay)
+        SetErrorAndReturn("filtering non-matching solar day")
 
     // Check for matching camera event, if user filtered...
-    if(!Options::GetInstance().GetFilterCameraEvent().empty() &&
-       Options::GetInstance().GetFilterCameraEvent() != m_CameraEventLabelNoSol)
-        SetErrorAndReturn("filtering non-matching camera event");
+    if(!Options::GetInstance().GetFilterCameraEvent().empty() && Options::GetInstance().GetFilterCameraEvent() != m_CameraEventLabelNoSol)
+        SetErrorAndReturn("filtering non-matching camera event")
 }
 
 // Mirror the band data from left to right...

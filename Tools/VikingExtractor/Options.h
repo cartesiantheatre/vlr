@@ -57,7 +57,7 @@ class Options
         bool            GetNoReconstruct() { return m_NoReconstruct; };
         bool            GetOverwrite() { return m_Overwrite; }
         bool            GetRecursive() { return m_Recursive; }
-        bool            GetSaveLabels() { return m_SaveLabels; }
+        bool            GetSaveMetadata() { return m_SaveMetadata; }
         bool            GetSolDirectorize() { return m_SolDirectorize; }
         bool            GetSummarizeOnly() { return m_SummarizeOnly; }
 
@@ -74,7 +74,7 @@ class Options
         void            SetNoReconstruct(const bool NoReconstruct = true) { m_NoReconstruct = NoReconstruct; }
         void            SetOverwrite(const bool Overwrite = true) { m_Overwrite = Overwrite; }
         void            SetRecursive(const bool Recursive = true) { m_Recursive = Recursive; }
-        void            SetSaveLabels(const bool SaveLabels = true) { m_SaveLabels = SaveLabels; }
+        void            SetSaveMetadata(const bool SaveMetadata = true) { m_SaveMetadata = SaveMetadata; }
         void            SetSolDirectorize(const bool SolDirectorize = true) { m_SolDirectorize = SolDirectorize; }
         void            SetSummarizeOnly(const bool SummarizeOnly = true) { m_SummarizeOnly = SummarizeOnly; }
         
@@ -127,8 +127,8 @@ class Options
         // Recursively scan subdirectories if the input is a directory...
         bool                m_Recursive;
         
-        // Save record labels...
-        bool                m_SaveLabels;
+        // Save metadata...
+        bool                m_SaveMetadata;
 
         // Place reconstructed images in a subdirectory on of the solar 
         //  day they were taken on...
