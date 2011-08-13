@@ -62,6 +62,7 @@ class ReconstructableImage
         // Image band list type and iterator...
         typedef std::vector<VicarImageBand>         ImageBandListType;
         typedef ImageBandListType::iterator         ImageBandListIterator;
+        typedef ImageBandListType::const_iterator   ImageBandListConstIterator;
         typedef ImageBandListType::reverse_iterator ImageBandListReverseIterator;
 
     // Protected methods...
@@ -69,20 +70,14 @@ class ReconstructableImage
 
         // Create the necessary path to the output file and return a path. 
         //  The file will have the provided file extension...
-        std::string CreateOutputFileName(const std::string &Extension);
-
-        // Create the necessary path to a single component of an image, 
-        //  distinguished with a name suffix and ordinal. These end up in the
-        //  Unreconstructable directory...
-        std::string CreateUnreconstructableOutputFileName(
-            const std::string &BandType, 
-            const size_t Ordinal);
+        std::string CreateOutputFileName(
+            const bool Unreconstructable,
+            const std::string &Extension,
+            const std::string &FileNameSuffix = "");
 
         // Dump all images within given image band to the output directory in 
-        //  a subdirectory Incomplete under the camera event identifier...
-        bool DumpUnreconstructable(
-            ImageBandListType &ImageBandList, 
-            const std::string &BandTypeSuffix);
+        //  a subdirectory Unreconstructable under the camera event identifier...
+        bool DumpUnreconstructable(ImageBandListType &ImageBandList);
 
         // Find the best image in the band list with a full histogram, 
         //  or return rend iterator...
@@ -111,9 +106,7 @@ class ReconstructableImage
         // Save metadata for file...
         void SaveMetadata(
             const std::string &OutputFileName, 
-            const VicarImageBand &RedImageBand, 
-            const VicarImageBand &GreenImageBand, 
-            const VicarImageBand &BlueImageBand);
+            const ImageBandListType &ImageBandList);
 
         // Set the error message...
         void SetErrorMessage(const std::string &ErrorMessage)

@@ -60,7 +60,7 @@ void ShowHelp()
          << "                              either (0, the default), 1, or 2."                   << endl
          << "      --filter-solar-day[=#]  Look only for camera events taken on the specified"  << endl
          << "                              solar day."                                          << endl
-         << "      --no-colours            Disable VT/100 ANSI coloured terminal output."       << endl
+         << "      --no-ansi-colours       Disable VT/100 ANSI coloured terminal output."       << endl
          << "      --no-reconstruct        Don't attempt to reconstruct camera events, just"    << endl
          << "                              dump all available band data as separate images."    << endl
          << "      --overwrite             Overwrite any existing output files."                << endl
@@ -113,7 +113,7 @@ int main(int ArgumentCount, char *Arguments[])
         option_long_ignore_bad_files,
         option_long_interlace,
         option_long_jobs,
-        option_long_no_colours,
+        option_long_no_ansi_colours,
         option_long_no_reconstruct,
         option_long_overwrite,
         option_long_recursive,
@@ -137,7 +137,7 @@ int main(int ArgumentCount, char *Arguments[])
         {"ignore-bad-files",    no_argument,        NULL,   option_long_ignore_bad_files},
         {"interlace",           no_argument,        NULL,   option_long_interlace},
         {"jobs",                optional_argument,  NULL,   option_long_jobs},
-        {"no-colours",          no_argument,        NULL,   option_long_no_colours},
+        {"no-ansi-colours",     no_argument,        NULL,   option_long_no_ansi_colours},
         {"no-reconstruct",      no_argument,        NULL,   option_long_no_reconstruct},
         {"overwrite",           no_argument,        NULL,   option_long_overwrite},
         {"recursive",           no_argument,        NULL,   option_long_recursive},
@@ -237,8 +237,8 @@ int main(int ArgumentCount, char *Arguments[])
                 break;
             }
 
-            // No terminal colour...
-            case option_long_no_colours: { Console::GetInstance().SetUseColours(false); break; }
+            // No ANSI VT/100 terminal colour...
+            case option_long_no_ansi_colours: { Console::GetInstance().SetUseColours(false); break; }
 
             // No reconstruct...
             case option_long_no_reconstruct: { Options::GetInstance().SetNoReconstruct(); break; }

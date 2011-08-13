@@ -121,73 +121,52 @@ void ReconstructableImage::AddImageBand(const VicarImageBand &ImageBand)
 
 // Create the necessary path to the output file and return a path. 
 //  The file will have the provided file extension...
-string ReconstructableImage::CreateOutputFileName(const string &Extension)
+string ReconstructableImage::CreateOutputFileName(
+    const bool Unreconstructable,
+    const string &Extension,
+    const string &FileNameSuffix)
 {
 
     // Will contain the full directory, not including the file name...
     stringstream FullDirectory;
     FullDirectory << m_OutputRootDirectory;
+
+    // If this isn't part of a reconstructable image, prefix...
+    if(Unreconstructable)
+        FullDirectory << "Unreconstructable/";
 
     // Images are reconstructed in subfolder of solar day it was 
     //  taken on, so create the subfolder, if enabled......
     if(Options::GetInstance().GetSolDirectorize())
         FullDirectory << m_SolarDay << '/';
 
-    /* Otherwise put inside camera event identifier folder...
-    else
-        FullDirectory << m_CameraEventNoSol << '/';*/
-
     // Create and check for error...
     if(!CreateDirectoryRecursively(FullDirectory.str()))
     {
         // Set the error message and abort...
-        SetErrorMessage("could not create output subdirectory for solar day");
+        SetErrorMessage("could not create output directory for file");
         return string();
     }
 
-    // Return the full path to a file ready to be written to...
-    return FullDirectory.str() + m_CameraEventNoSol + "." + Extension;
-}
-
-// Create the necessary path to a single component of an image, 
-//  distinguished with a name suffix and ordinal. These end up in the
-//  Unreconstructable directory...
-string ReconstructableImage::CreateUnreconstructableOutputFileName(
-    const string &BandType, const size_t Ordinal)
-{
-
-    // Will contain the full directory, not including the file name...
-    stringstream FullDirectory;
-    FullDirectory << m_OutputRootDirectory;
-
-    // Unreconstructables go in the Incomplete directory...
-    FullDirectory 
-        << "Unreconstructable/"
-        << m_CameraEventNoSol 
-        << "/";
-
-    // Create and check for error...
-    if(!CreateDirectoryRecursively(FullDirectory.str()))
-    {
-        // Set the error message and abort...
-        SetErrorMessage("could not create output subdirectory for solar day");
-        return string();
-    }
-
-    // Now append the file name...
-    FullDirectory
-        << BandType
-        << "_" << Ordinal
-        << ".png";
+    // Compose the file name portion...
+    
+        // File begins with the camera event ID...
+        FullDirectory << m_CameraEventNoSol;
+        
+        // If an optional name suffix was provided, append it...
+        if(!FileNameSuffix.empty())
+            FullDirectory << "_" << FileNameSuffix;
+        
+        // Add the file name extension...
+        FullDirectory << "." + Extension;
 
     // Return the full path to a file ready to be written to...
     return FullDirectory.str();
 }
 
 // Dump all images within given image band to the output directory in 
-//  a subdirectory Incomplete under the camera event identifier...
-bool ReconstructableImage::DumpUnreconstructable(
-    ImageBandListType &ImageBandList, const string &BandTypeSuffix)
+//  a subdirectory Unreconstructable under the camera event identifier...
+bool ReconstructableImage::DumpUnreconstructable(ImageBandListType &ImageBandList)
 {
     // Dump all images within this image band...
     for(ImageBandListIterator Iterator = ImageBandList.begin(); 
@@ -197,14 +176,17 @@ bool ReconstructableImage::DumpUnreconstructable(
         // Get the image band...
         VicarImageBand &ImageBand = *Iterator;
 
-//cerr << endl << BandTypeSuffix << " " << Iterator - ImageBandList.begin() << " has mean pixel value of " << ImageBand.GetMeanPixelValue() << endl;
-
         // Format suffix to contain sort order identifier to distinguish
         //  from other images of this same band type of this same camera 
         //  event...
-        const string FullDirectory = CreateUnreconstructableOutputFileName(
-            BandTypeSuffix, 
-            Iterator - ImageBandList.begin());
+        stringstream FileNameSuffix;
+        FileNameSuffix 
+            << ImageBand.GetDiodeBandTypeFriendlyString()
+            << "_"
+            << Iterator - ImageBandList.begin();
+
+        // Create the path to the file...
+        const string FullDirectory = CreateOutputFileName(true, "png", FileNameSuffix.str());
         
         // Dump the single channel as grayscale...
         ReconstructGrayscaleImage(FullDirectory, ImageBand);
@@ -293,7 +275,7 @@ bool ReconstructableImage::Reconstruct()
     {
         // Create full path to output file and create containing 
         // directory, if necessary...
-        const string OutputFileName = CreateOutputFileName("png");
+        const string OutputFileName = CreateOutputFileName(false, "png");
 
             // Failed...
             if(IsError())
@@ -307,33 +289,42 @@ bool ReconstructableImage::Reconstruct()
                 m_BlueImageBandList);
     }
 
+    // Grayscale image... (only grayscale image bands)
+    else if(!Options::GetInstance().GetNoReconstruct() &&
+            (Reds + Greens + Blues + Infrareds1 + Infrareds2 + Infrareds3 == 0) &&
+            Grays >= 1)
+    {
+        // Create full path to output file and create containing 
+        // directory, if necessary...
+        const string OutputFileName = CreateOutputFileName(false, "png");
+
+            // Failed...
+            if(IsError())
+                return false;
+
+        // Save best...
+        return ReconstructGrayscaleImage(OutputFileName, m_GrayImageBandList.back());
+    }
+
     /* Infrared image... (only all infrared bands present)
     else if(!Options::GetInstance().GetNoReconstruct() &&
             (Reds + Greens + Blues + Grays == 0) && 
             (min(Infrareds1, Infrareds2, Infrareds3) >= 1))
     {
         Message(Console::Info) << "reconstructed infrared image successfully" << endl;
-    }
-
-    // Grayscale image... (only grayscale image bands)
-    else if(!Options::GetInstance().GetNoReconstruct() &&
-            (Reds + Greens + Blues + Infrareds1 + Infrareds2 + Infrareds3 == 0) &&
-            Grays >= 1)
-    {
-        Message(Console::Info) << "reconstructed grayscale image successfully" << endl;
     }*/
 
     // Unknown...
     else
     {
         // Dump...
-        DumpUnreconstructable(m_RedImageBandList,       "red");
-        DumpUnreconstructable(m_GreenImageBandList,     "green");
-        DumpUnreconstructable(m_BlueImageBandList,      "blue");
-        DumpUnreconstructable(m_Infrared1ImageBandList, "ir1");
-        DumpUnreconstructable(m_Infrared2ImageBandList, "ir2");
-        DumpUnreconstructable(m_Infrared3ImageBandList, "ir3");
-        DumpUnreconstructable(m_GrayImageBandList,      "gray");
+        DumpUnreconstructable(m_RedImageBandList);
+        DumpUnreconstructable(m_GreenImageBandList);
+        DumpUnreconstructable(m_BlueImageBandList);
+        DumpUnreconstructable(m_Infrared1ImageBandList);
+        DumpUnreconstructable(m_Infrared2ImageBandList);
+        DumpUnreconstructable(m_Infrared3ImageBandList);
+        DumpUnreconstructable(m_GrayImageBandList);
 
         // This doesn't count as a successful reconstruction since it wasn't reassembled...
         if(!Options::GetInstance().GetNoReconstruct())
@@ -487,9 +478,9 @@ bool ReconstructableImage::ReconstructColourImage(
         for(size_t X = 0; X < PngImage.get_width(); ++X)
         {
             // Storage for this pixel's colours...
-            const char RedByte    = RedRawBandData.at(Y).at(X);
-            const char GreenByte  = GreenRawBandData.at(Y).at(X);
-            const char BlueByte   = BlueRawBandData.at(Y).at(X);
+            const uint8_t RedByte    = RedRawBandData.at(Y).at(X);
+            const uint8_t GreenByte  = GreenRawBandData.at(Y).at(X);
+            const uint8_t BlueByte   = BlueRawBandData.at(Y).at(X);
 
             // Encode...
             PngImage.set_pixel(X, Y, png::rgb_pixel(RedByte, GreenByte, BlueByte));
@@ -501,7 +492,14 @@ bool ReconstructableImage::ReconstructColourImage(
     
     // If saving metadata is enabled, do it...
     if(Options::GetInstance().GetSaveMetadata())
-        SaveMetadata(CreateOutputFileName("txt"), *BestRedIterator, *BestGreenIterator, *BestBlueIterator);
+    {
+        // Prepare list of components...
+        ImageBandListType ImageBandList;
+        ImageBandList.push_back(*BestRedIterator);
+        ImageBandList.push_back(*BestGreenIterator);
+        ImageBandList.push_back(*BestBlueIterator);
+        SaveMetadata(CreateOutputFileName(false, "txt"), ImageBandList);
+    }
 
     // Done...
     return true;
@@ -547,7 +545,7 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
         for(size_t X = 0; X < PngImage.get_width(); ++X)
         {
             // Get this pixel's grayscale value...
-            char GrayByte = RawBandData.at(Y).at(X);
+            uint8_t GrayByte = RawBandData.at(Y).at(X);
 
             // Encode...
             PngImage.set_pixel(X, Y, GrayByte);
@@ -557,6 +555,15 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
     // Write out...
     PngImage.write(OutputFileName);
 
+    // If saving metadata is enabled, do it...
+    if(Options::GetInstance().GetSaveMetadata())
+    {
+        // Prepare list of components...
+        ImageBandListType ImageBandList;
+        ImageBandList.push_back(BestGrayscaleImageBand);
+        SaveMetadata(CreateOutputFileName(false, "txt"), ImageBandList);
+    }
+
     // Done...
     return true;
 }
@@ -564,10 +571,16 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
 // Save metadata for file...
 void ReconstructableImage::SaveMetadata(
     const string &OutputFileName, 
-    const VicarImageBand &RedImageBand, 
-    const VicarImageBand &GreenImageBand, 
-    const VicarImageBand &BlueImageBand)
+    const ImageBandListType &ImageBandList)
 {
+    // Overwrite not enabled and file already existed, don't overwrite...
+    if(!Options::GetInstance().GetOverwrite() && 
+       (access(OutputFileName.c_str(), F_OK) == 0))
+    {
+        Message(Console::Warning) << "output metadata already exists, not overwriting (use --overwrite to override)";
+        return;
+    }
+
     // Create the metadata text file...
     ofstream OutputFileStream(OutputFileName.c_str());
     
@@ -578,20 +591,39 @@ void ReconstructableImage::SaveMetadata(
             Message(Console::Warning) << "couldn't save metadata" << endl;
             return;
         }
-    
-    // Show red data...
-    OutputFileStream 
-        << "Red Image Band: " << endl
-        << "\tSource: " << RedImageBand.GetInputFileName() << endl;
 
-    // Show green data...
-    OutputFileStream 
-        << "Green Image Band: " << endl
-        << "\tSource: " << GreenImageBand.GetInputFileName() << endl;
+    // Give user some basic information about the metadata...
+    OutputFileStream
+        << "The following is a machine generated collection of metadata of each of" << endl
+        << "the image bands used to reconstruct a colour image." << endl
+        << endl;
 
-    // Show blue data...
-    OutputFileStream 
-        << "Blue Image Band: " << endl
-        << "\tSource: " << BlueImageBand.GetInputFileName() << endl;
+    // Dump each section...
+    for(ImageBandListConstIterator Iterator = ImageBandList.begin(); 
+        Iterator != ImageBandList.end(); 
+      ++Iterator)
+    {
+        // Get image...
+        const VicarImageBand &ImageBand = *Iterator;
+
+        // Dump metadata...
+        OutputFileStream 
+            << "camera azimuth / elevation: " << ImageBand.GetAzimuthElevation() << endl
+            << "camera event: " << ImageBand.GetCameraEventLabelNoSol() << endl
+            << "camera event solar day: " << ImageBand.GetSolarDay() << endl
+            << "diode band type: " << ImageBand.GetDiodeBandTypeFriendlyString() << endl
+            << "input file: " << ImageBand.GetInputFileNameOnly() << endl
+            << "magnetic tape: " << ImageBand.GetMagneticTapeNumber() << endl
+            << "magnetic tape file ordinal: " << ImageBand.GetFileOnMagneticTapeOrdinal() << endl
+            << "mean pixel value: " << ImageBand.GetMeanPixelValue() << endl
+            << "month: " << ImageBand.GetMonth() << endl
+            << "overlay axis present: " << ImageBand.IsAxisPresent() << endl
+            << "overlay full histogram present: " << ImageBand.IsFullHistogramPresent() << endl
+            << "physical record size: " << ImageBand.GetPhysicalRecordSize() << endl
+            << "physical record padding: " << ImageBand.GetPhysicalRecordPadding() << endl
+            << "phase offset required: " << ImageBand.GetPhaseOffsetRequired()
+            << endl 
+            << endl;
+    }
 }
 

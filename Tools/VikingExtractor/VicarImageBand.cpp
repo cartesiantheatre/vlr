@@ -21,21 +21,12 @@
 
 // Includes...
 
-    // Ourself...    
-    #include "VicarImageBand.h"
-    
-    // Console output...
+    // Our headers...    
     #include "Console.h"
-    
-    // Command line options...
-    #include "Options.h"
-
-    // Logical record access...
     #include "LogicalRecord.h"
-    
-    // Helper functions...
     #include "Miscellaneous.h"
-    #include <limits>
+    #include "Options.h"
+    #include "VicarImageBand.h"
 
     // PNG writing...
     #include <png++/png.hpp>
@@ -43,18 +34,16 @@
     // Optical character recognition...
     #include <ocradlib.h>
 
-    // Streams...
-    #include <iostream>
-    #include <iomanip>
-    #include <sstream>
-    #include <fstream>
-
-    // String access and manipulation...
-    #include <cstring>
-
-    // Connecting and operating on useful containers...
+    // Standard libraries...
     #include <algorithm>
+    #include <cmath>
+    #include <cstring>
+    #include <fstream>
+    #include <iomanip>
+    #include <iostream>
     #include <iterator>
+    #include <limits>
+    #include <sstream>
 
 // Using the standard namespace...
 using namespace std;
@@ -62,21 +51,23 @@ using namespace std;
 // Construct...
 VicarImageBand::VicarImageBand(
     const string &InputFile)
-    : m_InputFile(InputFile),
-      m_PhaseOffsetRequired(0),
+    : m_AxisPresent(false),
       m_Bands(0),
+      m_BytesPerColour(0),
+      m_DiodeBandType(Unknown),
+      m_FileOnMagneticTapeOrdinal(0),
+      m_FullHistogramPresent(false),
+      m_InputFile(InputFile),
+      m_MagneticTapeNumber(0),
+      m_MeanPixelValue(0.0f),
+      m_Ok(false),
       m_OriginalHeight(0),
       m_OriginalWidth(0),
-      m_PixelFormat(0),
-      m_MeanPixelValue(0.0f),
-      m_BytesPerColour(0),
-      m_PhysicalRecordSize(0),
+      m_PhaseOffsetRequired(0),
       m_PhysicalRecordPadding(0),
+      m_PhysicalRecordSize(0),
+      m_PixelFormat(0),
       m_RawImageOffset(0),
-      m_AxisPresent(false),
-      m_DiodeBandType(Unknown),
-      m_Ok(false),
-      m_FullHistogramPresent(false),
       m_Rotation(None),
       m_SolarDay(99999)
 {
@@ -169,6 +160,28 @@ VicarImageBand::VicarImageBand(
     
         // Broad band for survey...
         m_BandTypeToFriendlyMap[Survey]     = "survey";
+
+    // Get the magnetic tape and file on tape number...
+    
+        // Get just the input file name...
+        const string InputFileNameOnly = GetInputFileNameOnly();
+
+        // Appears to be properly formatted...
+        if(InputFileNameOnly.length() > 3 && InputFileNameOnly.compare(0, 3, "vl_") == 0)
+        {
+            // Find the separator between magnetic tape and file number...
+            const size_t SeparatorIndex = InputFileNameOnly.find(".");
+            if(SeparatorIndex != string::npos)
+            {
+                // Extract the magnetic tape number...
+                const string MagneticTapeNumber(InputFileNameOnly, 3, SeparatorIndex - 3);
+                m_MagneticTapeNumber = atoi(MagneticTapeNumber.c_str());
+
+                // Extract the file on magnetic tape ordinal...
+                const string FileOnMagneticTapeOrdinal(InputFileNameOnly, SeparatorIndex + 1);
+                m_FileOnMagneticTapeOrdinal = atoi(FileOnMagneticTapeOrdinal.c_str());
+            }
+        }
 }
 
 // Check if the raw band image data, rotated as requested, 
@@ -362,7 +375,7 @@ string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
         assert(m_BytesPerColour == 1);
 
         // Space for flattened linear version of the raw band data...
-        vector<char> FlattenedRawBandData;
+        vector<uint8_t> FlattenedRawBandData;
 
         // Collapse by flattening each row...
         for(size_t Y = 0; Y < Height; ++Y)
@@ -373,15 +386,15 @@ string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
         }
 
         // Get direct address to flattened raw band data vector...
-        vector<char>::const_iterator Iterator = FlattenedRawBandData.begin();
-        const char *DataAddress = &(*Iterator);
+        vector<uint8_t>::const_iterator Iterator = FlattenedRawBandData.begin();
+        const uint8_t *DataAddress = &(*Iterator);
 
         // Initialize the OCR image structure with the raw image data...
         OCRAD_Pixmap OcrImage;
         OcrImage.height = Height;
         OcrImage.width  = Width;
         OcrImage.mode   = OCRAD_greymap;
-        OcrImage.data   = reinterpret_cast<const unsigned char *>(DataAddress);
+        OcrImage.data   = DataAddress;
 
     // Pass the image into the OCR library, inverted, and check for error...
     if(OCRAD_set_image(LibraryDescriptor, &OcrImage, true) != 0)
@@ -457,6 +470,30 @@ const string &VicarImageBand::GetDiodeBandTypeFriendlyString() const
     return Iterator->second;
 }
 
+// Get the Martian month of this camera event...
+string VicarImageBand::GetMonth() const
+{
+    // Calculate Ls... (solar longitude)
+    const size_t VikingTemporalDatum    = 209 + 1; /* Add one since dates begin at zero */
+    const float  MartianSolsPerYear     = 668.5991f;
+    const float Ls = fmodf(m_SolarDay + VikingTemporalDatum, MartianSolsPerYear) 
+        / MartianSolsPerYear * 360.0f;
+    
+    // Convert Ls to month...
+    if(Ls <= 30.0f)                         return string("Gemini");
+    else if(30.0f < Ls && Ls <= 60.0f)      return string("Cancer");
+    else if(60.0f < Ls && Ls <= 90.0f)      return string("Leo");
+    else if(90.0f < Ls && Ls <= 120.0f)     return string("Virgo");
+    else if(120.0f < Ls && Ls <= 150.0f)    return string("Libra");
+    else if(150.0f < Ls && Ls <= 180.0f)    return string("Scorpius");
+    else if(180.0f < Ls && Ls <= 210.0f)    return string("Sagittarius");
+    else if(210.0f < Ls && Ls <= 240.0f)    return string("Capricorn");
+    else if(240.0f < Ls && Ls <= 270.0f)    return string("Aquarius");
+    else if(270.0f < Ls && Ls <= 300.0f)    return string("Pisces");
+    else if(300.0f < Ls && Ls <= 330.0f)    return string("Aries");
+    else                                    return string("Taurus");
+}
+
 // Get the raw band data transformed if autorotate was enabled. Use 
 //  GetTransformedWidth()/Height() to know adapted dimensions...
 bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData)
@@ -485,29 +522,27 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
     // Calculate inner bounding rectangle 1/3 image width and height to
     //  sample mean pixel value. We do this to prevent sampling from
     //  outside in the image overlay and histogram region...
-    const size_t SampleRegion_Top       = m_OriginalHeight / 3;
-    const size_t SampleRegion_Left      = m_OriginalWidth / 3;
-    const size_t SampleRegion_Right     = (m_OriginalWidth / 3) * 2;
-    const size_t SampleRegion_Bottom    = (m_OriginalHeight / 3) * 2;
-size_t sampled = 0;
+    const size_t    SampleRegion_Top    = m_OriginalHeight / 3;
+    const size_t    SampleRegion_Left   = m_OriginalWidth / 3;
+    const size_t    SampleRegion_Right  = (m_OriginalWidth / 3) * 2;
+    const size_t    SampleRegion_Bottom = (m_OriginalHeight / 3) * 2;
+    register size_t SampleRegionSize    = 0;
+
     // Read the whole image, row by row...
     for(size_t Y = 0; Y < m_OriginalHeight; ++Y)
     {
         // The current row...
-        vector<char>    CurrentRow;
+        vector<uint8_t> CurrentRow;
 
         // Read each pixel in this row...
         for(size_t X = 0; X < m_OriginalWidth; ++X)
         {
-            // Current pixel value...
-            char Byte = '\x0';
+            // Extract the current pixel value...
+            const uint8_t Byte = ExtractionStream.get();
 
-            // Extract pixel and check for error...
-            if(!ExtractionStream.get(Byte).good())
+            // Check for error...
+            if(!ExtractionStream.good())
                 SetErrorAndReturnFalse("band data extraction i/o error");
-
-            // Add to row...
-            CurrentRow.push_back(Byte);
 
             // Check if within the pixel sample region...
             if(X >= SampleRegion_Left  && 
@@ -515,10 +550,13 @@ size_t sampled = 0;
                Y >= SampleRegion_Top   &&
                Y <= SampleRegion_Bottom)
             {
-                // Sum into pixel mean value if in...
+                // Add to mean pixel value accumulator...
                 m_MeanPixelValue += Byte;
-                sampled++;
+                SampleRegionSize++;
             }
+
+            // Add to row...
+            CurrentRow.push_back(Byte);
         }
 
         // Add row to list of columns...
@@ -527,10 +565,7 @@ size_t sampled = 0;
 
     // Calculate the mean pixel value by dividing accumulator with 
     //  total rectangle size...
-    m_MeanPixelValue /= ((SampleRegion_Right - SampleRegion_Left) * 
-                         (SampleRegion_Bottom - SampleRegion_Top));
-
-assert(((SampleRegion_Right - SampleRegion_Left) * (SampleRegion_Bottom - SampleRegion_Top)) == sampled);
+    m_MeanPixelValue /= SampleRegionSize;
 
     // Alert user if verbose mode enabled...
     Message(Console::Verbose) << "mean pixel value: " << m_MeanPixelValue << endl;
@@ -1915,7 +1950,7 @@ void VicarImageBand::MirrorDiagonal(
     for(size_t CurrentRow = 0; CurrentRow < LargerDimension; ++CurrentRow)
     {
         // Grab the current row's data...
-        vector<char> &CurrentRowData = TransformedRawBandData.at(CurrentRow);
+        vector<uint8_t> &CurrentRowData = TransformedRawBandData.at(CurrentRow);
         
         // Perform the pixel swap...
         for(size_t CurrentColumn = 0; CurrentColumn < CurrentRow; ++CurrentColumn)

@@ -30,6 +30,7 @@
 #include <map>
 #include <ostream>
 #include <set>
+#include <stdint.h>
 #include <string>
 #include <vector>
 
@@ -83,7 +84,7 @@ class VicarImageBand
         typedef std::pair<const PSADiode, std::string>  BandTypeToFriendlyMapPair;
         
         // Raw image band data, each nested vector is a row containing column data...
-        typedef std::vector< std::vector<char> >        RawBandDataType;
+        typedef std::vector< std::vector<uint8_t> >     RawBandDataType;
 
     // Public methods...
     public:
@@ -92,10 +93,10 @@ class VicarImageBand
         VicarImageBand(const std::string &InputFile);
 
         // Get the azimuth / elevation string...
-        const std::string &GetAzimuthElevation() const;
+        const std::string &GetAzimuthElevation() const { return m_AzimuthElevation; }
 
         // Get the camera event label with and without the solar day...
-        const std::string &GetCameraEventLabel() const { return m_CameraEventLabel; }
+        const std::string &GetCameraEventLabel() const { return m_CameraEventLabel; } 
         const std::string &GetCameraEventLabelNoSol() const { return m_CameraEventLabelNoSol; }
 
         // Get the diode band type...
@@ -104,73 +105,78 @@ class VicarImageBand
         // Get the diode band type as a human friendly string...
         const std::string &GetDiodeBandTypeFriendlyString() const;
 
-        // Get the mean pixel value of the inner rectangle...
-        float GetMeanPixelValue() const { return m_MeanPixelValue; }
-
-        // Get the OCR buffer...
-        const std::string &GetOCRBuffer() const { return m_OCRBuffer; }
-
-        // Get the raw band data transformed if autorotate was enabled. Use 
-        //  GetTransformedWidth()/Height() to know adapted dimensions...
-        bool GetRawBandData(VicarImageBand::RawBandDataType &RawBandData);
-
-        // Get the original file on the magnetic tape number, or zero if unknown...
-        size_t GetFileOnMagneticTapeNumber() const;
-
         // Get the error message...
         const std::string &GetErrorMessage() const { return m_ErrorMessage; }
 
+        // Get the original file on the magnetic tape number, or zero if unknown...
+        size_t GetFileOnMagneticTapeOrdinal() const { return m_FileOnMagneticTapeOrdinal; }
+
         // Get the file size, or -1 on error...
-        int GetFileSize() const;
-
-        // Get original image width and height, not accounting for rotation...
-        size_t GetOriginalHeight() const { return m_OriginalHeight; }
-        size_t GetOriginalWidth() const { return m_OriginalWidth; }
-
-        // Get the solar day the image was taken on...
-        size_t GetSolarDay() const { return m_SolarDay; }
-
-        // Get image height and width, accounting for transformations like rotation...
-        size_t GetTransformedHeight() const;
-        size_t GetTransformedWidth() const;
+        int GetFileSize() const; 
 
         // Get the input file name with full path...
         const std::string &GetInputFileName() const { return m_InputFile; }
 
         // Get the input file name only without path...
-        std::string GetInputFileNameOnly() const;
-        
+        std::string GetInputFileNameOnly() const; 
+
         // Get the original magnetic tape number, or zero if unknown...
-        size_t GetMagneticTapeNumber() const;
+        size_t GetMagneticTapeNumber() const { return m_MagneticTapeNumber; }
+
+        // Get the mean pixel value of the inner rectangle...
+        float GetMeanPixelValue() const { return m_MeanPixelValue; }
+        
+        // Get the Martian month of this camera event...
+        std::string GetMonth() const;
+
+        // Get the OCR buffer...        
+        const std::string &GetOCRBuffer() const { return m_OCRBuffer; }
+
+        // Get original image width and height, not accounting for rotation...
+        size_t GetOriginalHeight() const { return m_OriginalHeight; } 
+        size_t GetOriginalWidth() const { return m_OriginalWidth; }
+
+        // Sometimes the records are out of phase due to being preceeded with VAX/VMS prefix bytes. This is the offset required to decode file...
+        size_t GetPhaseOffsetRequired() const { return m_PhaseOffsetRequired; }
+
+        // Get size of a physical record and padding...
+        size_t GetPhysicalRecordPadding() const { return m_PhysicalRecordPadding; } 
+        size_t GetPhysicalRecordSize() const { return m_PhysicalRecordSize; }
+
+        // Get the raw band data transformed if autorotate was enabled. Use GetTransformedWidth()/Height() to know adapted dimensions...
+        bool GetRawBandData(VicarImageBand::RawBandDataType &RawBandData); 
+
+        // Get the solar day the image was taken on...
+        size_t GetSolarDay() const { return m_SolarDay; } 
+
+        // Get image height and width, accounting for transformations like rotation...
+        size_t GetTransformedHeight() const; 
+        size_t GetTransformedWidth() const;
 
         // Check if the image has an axis overlay present only, but no full histogram...
-        bool IsAxisOnlyPresent() const { return (m_AxisPresent && !m_FullHistogramPresent); }
+        bool IsAxisOnlyPresent() const { return (m_AxisPresent && !m_FullHistogramPresent); } 
 
         // Check if the image has an axis overlay present...
-        bool IsAxisPresent() const { return m_AxisPresent; }
+        bool IsAxisPresent() const { return m_AxisPresent; } 
 
         // Check if the file came with a camera event label...
-        bool IsCameraEventLabelPresent() const 
-            { assert(m_Ok); return !m_CameraEventLabel.empty(); }
-
+        bool IsCameraEventLabelPresent() const { assert(m_Ok); return !m_CameraEventLabel.empty(); } 
+        
         // Check if an error is present...
-        bool IsError() const
-            { return !m_ErrorMessage.empty(); }
-
+        bool IsError() const { return !m_ErrorMessage.empty(); } 
+        
         // Check if a full histogram legend is present...
-        bool IsFullHistogramPresent() const { return m_FullHistogramPresent; }
-
+        bool IsFullHistogramPresent() const { return m_FullHistogramPresent; } 
+        
         // Is the file accessible and the header ok?
-        bool IsOk() const { return m_Ok; }
+        bool IsOk() const { return m_Ok; } 
         
-        // Load as much of the file as possible, setting error on 
-        //  failure...
-        void Load();
+        // Load as much of the file as possible, setting error on failure...
+        void Load(); 
         
-        // For comparing quality between images of the same camera event 
-        //  and same band type...
-        bool operator<(const VicarImageBand &RightSide) const;
-        
+        // For comparing quality between images of the same camera event and same band type...
+        bool operator<(const VicarImageBand &RightSide) const; 
+
     // Protected methods...
     protected:
 
@@ -268,50 +274,20 @@ class VicarImageBand
     // Protected data...
     protected:
 
-        // Token to band type map...
-        TokenToBandTypeMap      m_TokenToBandTypeMap;
-
-        // Band type to friendly map...
-        BandTypeToFriendlyMap   m_BandTypeToFriendlyMap;
-
-        // Input file name...
-        std::string             m_InputFile;
-
-        // Sometimes the records are out of phase due to being preceeded 
-        //  with VAX/VMS prefix bytes. This is the offset required to 
-        //  decode file...
-        size_t                  m_PhaseOffsetRequired;
-
-        // Number of image bands in this file. Should always be one...
-        size_t                  m_Bands;
-        
-        // Image height and width in pixels before being rotated...
-        size_t                  m_OriginalHeight;
-        size_t                  m_OriginalWidth;
-
-        // Pixel format... (e.g. 'I' -> integral)
-        char                    m_PixelFormat;
-
-        // Pixel mean value of centre rectange which is 1/3 length and 
-        //  width of image. We do this to prevent sampling from outside
-        //  in the image overlay and histogram region...
-        float                   m_MeanPixelValue;
-
-        // Bytes per pixel...
-        int                     m_BytesPerColour;
-        
-        // Size of a physical record and padding...
-        size_t                  m_PhysicalRecordSize;
-        size_t                  m_PhysicalRecordPadding;
-        
-        // Raw image offset...
-        size_t                  m_RawImageOffset;
-        
         // True if the image has an axis overlay present...
         bool                    m_AxisPresent;
 
         // Azimuth / elevation string...
         std::string             m_AzimuthElevation;
+
+        // Number of image bands in this file. Should always be one...
+        size_t                  m_Bands;
+
+        // Band type to friendly map...
+        BandTypeToFriendlyMap   m_BandTypeToFriendlyMap;
+
+        // Bytes per pixel...
+        int                     m_BytesPerColour;
         
         // Camera event label...
         std::string             m_CameraEventLabel;
@@ -322,27 +298,63 @@ class VicarImageBand
         // Band type...
         PSADiode                m_DiodeBandType;
 
-        // True if the file is probably extractable...
-        bool                    m_Ok;
-        
         // If m_Ok is false, this is the error message...
         std::string             m_ErrorMessage;
+
+        // File on magnetic tape ordinal...
+        size_t                  m_FileOnMagneticTapeOrdinal;
 
         // True if the image has a full histogram present...
         bool                    m_FullHistogramPresent;
 
-        // Saved labels buffer...
-        std::string             m_SavedLabelsBuffer;
-        
+        // Input file name...
+        std::string             m_InputFile;
+
+        // Magnetic tape number this originated on...
+        size_t                  m_MagneticTapeNumber;
+
+        // Pixel mean value of centre rectange which is 1/3 length and 
+        //  width of image. We do this to prevent sampling from outside
+        //  in the image overlay and histogram region...
+        float                   m_MeanPixelValue;
+
         // Any OCR text that happened to be extracted...
         std::string             m_OCRBuffer;
+
+        // True if the file is probably extractable...
+        bool                    m_Ok;
+
+        // Image height and width in pixels before being rotated...
+        size_t                  m_OriginalHeight;
+        size_t                  m_OriginalWidth;
+
+        // Sometimes the records are out of phase due to being preceeded 
+        //  with VAX/VMS prefix bytes. This is the offset required to 
+        //  decode file...
+        size_t                  m_PhaseOffsetRequired;
+
+        // Size of a padding between physical records and their size...
+        size_t                  m_PhysicalRecordPadding;
+        size_t                  m_PhysicalRecordSize;
+
+        // Pixel format... (e.g. 'I' -> integral)
+        char                    m_PixelFormat;
+
+        // Raw image offset...
+        size_t                  m_RawImageOffset;
 
         // Counterclockwise rotation to orient image properly which is
         //  always 0, 90, 180, or 270...
         RotationType            m_Rotation;
         
+        // Saved labels buffer...
+        std::string             m_SavedLabelsBuffer;
+
         // Solar day image was taken on...
         size_t                  m_SolarDay;
+        
+        // Token to band type map...
+        TokenToBandTypeMap      m_TokenToBandTypeMap;
 };
 
 // Multiple include protection...
