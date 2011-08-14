@@ -95,6 +95,9 @@ class VicarImageBand
         // Get the azimuth / elevation string...
         const std::string &GetAzimuthElevation() const { return m_AzimuthElevation; }
 
+        // Get the heuristic selected to parse the basic metadata...
+        int GetBasicMetadataParserHeuristic() const { return m_BasicMetadataParserHeuristic; }
+
         // Get the camera event label with and without the solar day...
         const std::string &GetCameraEventLabel() const { return m_CameraEventLabel; } 
         const std::string &GetCameraEventLabelNoSol() const { return m_CameraEventLabelNoSol; }
@@ -285,6 +288,9 @@ class VicarImageBand
 
         // Band type to friendly map...
         BandTypeToFriendlyMap   m_BandTypeToFriendlyMap;
+
+        // Heuristic selected to parse the basic metadata...
+        int                     m_BasicMetadataParserHeuristic;
 
         // Bytes per pixel...
         int                     m_BytesPerColour;

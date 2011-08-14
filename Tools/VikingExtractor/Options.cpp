@@ -21,8 +21,10 @@
 
 // Includes...
 #include "Options.h"
+#include <algorithm>
+#include <cctype>
 #include <limits>
-
+#include <iostream>
 // Using the standard namespace...
 using namespace std;
 
@@ -57,6 +59,16 @@ Options &Options::GetInstance()
 
     // Return the only instance...
     return *m_SingletonInstance;
+}
+
+void Options::SetFilterCameraEvent(const std::string &CameraEvent)
+{
+    // Store in upper case version...
+    transform(
+        CameraEvent.begin(), 
+        CameraEvent.end(), 
+        back_inserter(m_FilterCameraEvent), 
+      ::toupper);
 }
 
 // Set the diode filter type or throw an error...

@@ -64,7 +64,7 @@ class Options
         // Set options...
         void            SetAutoRotate(const bool AutoRotate = true) { m_AutoRotate = AutoRotate; }
         void            SetDryRun(const bool DryRun = true) { m_DryRun = DryRun; }
-        void            SetFilterCameraEvent(const std::string &CameraEvent) { m_FilterCameraEvent = CameraEvent; }
+        void            SetFilterCameraEvent(const std::string &CameraEvent);
         void            SetFilterDiodeClass(const std::string &DiodeClass);
         void            SetFilterLander(const size_t Lander);
         void            SetFilterSolarDay(const size_t SolarDay) { m_FilterSolarDay = SolarDay; }

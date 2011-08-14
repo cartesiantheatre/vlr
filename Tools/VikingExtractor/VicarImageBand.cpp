@@ -1047,7 +1047,10 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
            TokenLength[2] <= 4 &&
            TokenLength[3] == 1 &&
            TokenLength[4] == 1)
+        {
             ParseBasicMetadataImplementation_Format1(HeaderRecord);
+            m_BasicMetadataParserHeuristic = 1;
+        }
 
         /* 
             Example: vl_0387.021
@@ -1067,7 +1070,10 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
            TokenLength[2] <= 8 &&
            TokenLength[3] == 1 &&
            TokenLength[4] == 1)
+        {
             ParseBasicMetadataImplementation_Format2(HeaderRecord);
+            m_BasicMetadataParserHeuristic = 2;
+        }
 
         /* 
             Example: vl_1474.001
@@ -1088,7 +1094,10 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
            TokenLength[2] >= 4 &&
            TokenLength[3] == 1 &&
            TokenLength[4] == 1)
+        {
             ParseBasicMetadataImplementation_Format5(HeaderRecord);
+            m_BasicMetadataParserHeuristic = 5;
+        }
 
         /* 
             Example: vl_1529.008
@@ -1107,7 +1116,10 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
            TokenLength[2] <= 4 &&
            TokenLength[3] == 1 &&
            TokenLength[4] == 1)
+        {
             ParseBasicMetadataImplementation_Format3(HeaderRecord);
+            m_BasicMetadataParserHeuristic = 3;
+        }
 
         /* 
             Example: vl_0514.004
@@ -1126,7 +1138,10 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
            TokenLength[1] <= 9 &&
            TokenLength[2] == 1 &&
            TokenLength[3] == 1)
+        {
             ParseBasicMetadataImplementation_Format2(HeaderRecord);
+            m_BasicMetadataParserHeuristic = 2;
+        }
 
         /* 
             Example: vl_2044.001
@@ -1145,7 +1160,10 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
            TokenLength[1] >= 6 &&
            TokenLength[2] == 1 &&
            TokenLength[3] == 1)
+        {
             ParseBasicMetadataImplementation_Format6(HeaderRecord);
+            m_BasicMetadataParserHeuristic = 6;
+        }
 
         /* 
             Example: vl_1105.006
@@ -1166,7 +1184,10 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
            TokenLength[3] <= 4 &&
            TokenLength[4] == 1 &&
            TokenLength[5] == 1)
+        {
             ParseBasicMetadataImplementation_Format1(HeaderRecord);
+            m_BasicMetadataParserHeuristic = 1;
+        }
 
         /* 
             Example: vl_2003.002
@@ -1190,7 +1211,10 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
            TokenLength[3] <= 4 &&
            TokenLength[4] == 1 &&
            TokenLength[5] == 1)
+        {
             ParseBasicMetadataImplementation_Format4(HeaderRecord);
+            m_BasicMetadataParserHeuristic = 4;
+        }
 
         // Unknown format...
         else
@@ -1220,6 +1244,7 @@ void VicarImageBand::ParseBasicMetadata(ifstream &InputFileStream)
             SetErrorAndReturn("unsupported colour bit depth")
 
     // If verbosity is set, display basic metadata...
+    Message(Console::Verbose) << "basic metadata parser heuristic: " << m_BasicMetadataParserHeuristic << endl;
     Message(Console::Verbose) << "bands: " << m_Bands << endl;
     Message(Console::Verbose) << "height: " << m_OriginalHeight << endl;
     Message(Console::Verbose) << "width: " << m_OriginalWidth << endl;

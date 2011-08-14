@@ -189,7 +189,18 @@ bool ReconstructableImage::DumpUnreconstructable(ImageBandListType &ImageBandLis
         const string FullDirectory = CreateOutputFileName(true, "png", FileNameSuffix.str());
         
         // Dump the single channel as grayscale...
-        ReconstructGrayscaleImage(FullDirectory, ImageBand);
+        if(ReconstructGrayscaleImage(FullDirectory, ImageBand))
+        {
+            // Saved successfully, now if saving metadata is 
+            //  enabled, dump it...
+            if(Options::GetInstance().GetSaveMetadata())
+            {
+                // Prepare list of components...
+                ImageBandListType ImageBandList;
+                ImageBandList.push_back(ImageBand);
+                SaveMetadata(CreateOutputFileName(false, "txt"), ImageBandList);
+            }
+        }
     }
     
     // Done...
@@ -303,7 +314,9 @@ bool ReconstructableImage::Reconstruct()
                 return false;
 
         // Save best...
-        return ReconstructGrayscaleImage(OutputFileName, m_GrayImageBandList.back());
+        return ReconstructGrayscaleImage(
+            OutputFileName, 
+            m_GrayImageBandList.back());
     }
 
     /* Infrared image... (only all infrared bands present)
@@ -489,8 +502,8 @@ bool ReconstructableImage::ReconstructColourImage(
 
     // Write out image...
     PngImage.write(OutputFileName);
-    
-    // If saving metadata is enabled, do it...
+
+    // If saving metadata is enabled, dump it...
     if(Options::GetInstance().GetSaveMetadata())
     {
         // Prepare list of components...
@@ -555,15 +568,6 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
     // Write out...
     PngImage.write(OutputFileName);
 
-    // If saving metadata is enabled, do it...
-    if(Options::GetInstance().GetSaveMetadata())
-    {
-        // Prepare list of components...
-        ImageBandListType ImageBandList;
-        ImageBandList.push_back(BestGrayscaleImageBand);
-        SaveMetadata(CreateOutputFileName(false, "txt"), ImageBandList);
-    }
-
     // Done...
     return true;
 }
@@ -608,10 +612,12 @@ void ReconstructableImage::SaveMetadata(
 
         // Dump metadata...
         OutputFileStream 
+            << "basic heuristic method: " << ImageBand.GetBasicMetadataParserHeuristic() << endl
             << "camera azimuth / elevation: " << ImageBand.GetAzimuthElevation() << endl
             << "camera event: " << ImageBand.GetCameraEventLabelNoSol() << endl
             << "camera event solar day: " << ImageBand.GetSolarDay() << endl
             << "diode band type: " << ImageBand.GetDiodeBandTypeFriendlyString() << endl
+            << "file size: " << ImageBand.GetFileSize() << endl
             << "input file: " << ImageBand.GetInputFileNameOnly() << endl
             << "magnetic tape: " << ImageBand.GetMagneticTapeNumber() << endl
             << "magnetic tape file ordinal: " << ImageBand.GetFileOnMagneticTapeOrdinal() << endl
