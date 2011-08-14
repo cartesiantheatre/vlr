@@ -53,6 +53,7 @@ VicarImageBand::VicarImageBand(
     const string &InputFile)
     : m_AxisPresent(false),
       m_Bands(0),
+      m_BasicMetadataParserHeuristic(0),
       m_BytesPerColour(0),
       m_DiodeBandType(Unknown),
       m_FileOnMagneticTapeOrdinal(0),
