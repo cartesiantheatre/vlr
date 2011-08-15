@@ -40,7 +40,8 @@ ReconstructableImage::ReconstructableImage(
     const std::string &CameraEventLabel)
     : m_OutputRootDirectory(OutputRootDirectory),
       m_CameraEventLabel(CameraEventLabel),
-      m_SolarDay(0)
+      m_SolarDay(0),
+      m_DumpedImagesCount(0)
 {
     // Always need an label...
     assert(!CameraEventLabel.empty());
@@ -74,43 +75,58 @@ void ReconstructableImage::AddImageBand(const VicarImageBand &ImageBand)
     // Make sure this is for the right event...
     assert(ImageBand.GetCameraEventLabel() == m_CameraEventLabel);
 
+    // Remember the month it was taken on...
+    m_Month = ImageBand.GetMonth();
+
     // Add to the appropriate band type list...
     switch(ImageBand.GetDiodeBandType())
     {
         // Red...
         case VicarImageBand::Red: 
             m_RedImageBandList.push_back(ImageBand);
+            m_BandTypeClass = "Colour";
             break;
         
         // Green...
         case VicarImageBand::Green: 
             m_GreenImageBandList.push_back(ImageBand);
+            m_BandTypeClass = "Colour";
             break;
         
         // Blue...
         case VicarImageBand::Blue: 
             m_BlueImageBandList.push_back(ImageBand);
+            m_BandTypeClass = "Colour";
             break;
         
         // Infrared 1...
         case VicarImageBand::Infrared1:
             m_Infrared1ImageBandList.push_back(ImageBand);
+            m_BandTypeClass = "Infrared";
             break;
         
         // Infrared 2...
         case VicarImageBand::Infrared2:
             m_Infrared2ImageBandList.push_back(ImageBand);
+            m_BandTypeClass = "Infrared";
             break;
         
         // Infrared 3...
         case VicarImageBand::Infrared3:
             m_Infrared3ImageBandList.push_back(ImageBand);
+            m_BandTypeClass = "Infrared";
             break;
         
-        // Grayscale...
+        // Sun...
         case VicarImageBand::Sun:
+            m_GrayImageBandList.push_back(ImageBand);
+            m_BandTypeClass = "Sun";
+            break;
+
+        // Survey...
         case VicarImageBand::Survey:
             m_GrayImageBandList.push_back(ImageBand);
+            m_BandTypeClass = "Survey";
             break;
 
         // Unknown... (shouldn't ever happen, but here for completeness)
@@ -135,10 +151,21 @@ string ReconstructableImage::CreateOutputFileName(
     if(Unreconstructable)
         FullDirectory << "Unreconstructable/";
 
+    // Images are reconstructed in subfolder of band type class if enabled...
+    if(Options::GetInstance().GetDirectorizeBandTypeClass() && !m_BandTypeClass.empty())
+        FullDirectory << m_BandTypeClass << '/';
+
+    // Images are reconstructed in subfolder of month if enabled...
+    if(Options::GetInstance().GetDirectorizeMonth() && !m_Month.empty())
+        FullDirectory << m_Month << '/';
+
     // Images are reconstructed in subfolder of solar day it was 
-    //  taken on, so create the subfolder, if enabled......
-    if(Options::GetInstance().GetSolDirectorize())
+    //  taken on, so create the subfolder, if enabled...
+    if(Options::GetInstance().GetDirectorizeSol())
         FullDirectory << m_SolarDay << '/';
+
+    // Put inside of directory for this camera event...
+    FullDirectory << m_CameraEventNoSol << '/';
 
     // Create and check for error...
     if(!CreateDirectoryRecursively(FullDirectory.str()))
@@ -191,15 +218,13 @@ bool ReconstructableImage::DumpUnreconstructable(ImageBandListType &ImageBandLis
         // Dump the single channel as grayscale...
         if(ReconstructGrayscaleImage(FullDirectory, ImageBand))
         {
+            // Remember this...
+          ++m_DumpedImagesCount;
+
             // Saved successfully, now if saving metadata is 
             //  enabled, dump it...
             if(Options::GetInstance().GetSaveMetadata())
-            {
-                // Prepare list of components...
-                ImageBandListType ImageBandList;
-                ImageBandList.push_back(ImageBand);
-                SaveMetadata(CreateOutputFileName(false, "txt"), ImageBandList);
-            }
+                SaveMetadata(CreateOutputFileName(true, "txt", FileNameSuffix.str()), ImageBandList);
         }
     }
     
@@ -278,6 +303,9 @@ bool ReconstructableImage::Reconstruct()
     const size_t Infrareds2 = m_Infrared2ImageBandList.size();
     const size_t Infrareds3 = m_Infrared3ImageBandList.size();
     const size_t Grays      = m_GrayImageBandList.size();
+
+    // We haven't dumped any images until we do so directed from in here...
+    m_DumpedImagesCount = 0;
 
     // Colour image... (only all colour bands present)
     if(!Options::GetInstance().GetNoReconstruct() &&
@@ -627,7 +655,8 @@ void ReconstructableImage::SaveMetadata(
             << "overlay full histogram present: " << ImageBand.IsFullHistogramPresent() << endl
             << "physical record size: " << ImageBand.GetPhysicalRecordSize() << endl
             << "physical record padding: " << ImageBand.GetPhysicalRecordPadding() << endl
-            << "phase offset required: " << ImageBand.GetPhaseOffsetRequired()
+            << "phase offset required: " << ImageBand.GetPhaseOffsetRequired() << endl
+            << "raw image offset: " << ImageBand.GetRawImageOffset() << endl
             << endl 
             << endl;
     }

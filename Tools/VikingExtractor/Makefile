@@ -17,50 +17,34 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-CPP         = g++
-OBJ         = Console.o                 \
-              LogicalRecord.o           \
-              Miscellaneous.o           \
-              Options.o                 \
-              ReconstructableImage.o    \
-              VikingExtractor.o         \
-              VicarImageAssembler.o     \
-              VicarImageBand.o
-LIBS        = `libpng-config --ldflags` -locrad
-INCS        =
-CXXINCS     =
-BIN         = viking-extractor
-CXXFLAGS    = $(CXXINCS) $(INCS) -g3 -Wall -Werror `libpng-config --cflags`
-SOURCES     = Console.cpp               \
-              LogicalRecord.cpp         \
-              Miscellaneous.cpp         \
-              Options.cpp               \
-              ReconstructableImage.cpp  \
-              VicarImageAssembler.cpp   \
-              VicarImageBand.cpp        \
-              VikingExtractor.cpp
+CPP                 = g++
+LIBS                = `libpng-config --ldflags` -locrad
+BIN                 = viking-extractor
+SOURCE_DIRECTORIES  := Source
+CXXFLAGS            = -g3 -Wall -Werror `libpng-config --cflags`
+SOURCE_FILES        := $(shell find $(SOURCE_DIRECTORIES) -type f -name "*.cpp")
+DEPENDENCY_FILES    := $(patsubst %.cpp, %.d, $(SOURCE_FILES))
+OBJECT_FILES        := $(patsubst %.cpp, %.o, $(SOURCE_FILES))
 
-.PHONY: all
+# Inlcude the list of dependencies, the - carries on if an error occured
+#  because one of them might not exist yet...
+-include $(DEPENDENCY_FILES)
+
+# Disable checking for files by these names...
+#.PHONY: all clean check
+
+# Default target is to built the executable...
 all: $(BIN)
 
-.SUFFIXES: .cpp
+# Build the executable...
+$(BIN): $(OBJECT_FILES)
+	$(CPP) $(OBJECT_FILES) -o $(BIN) $(LIBS)
 
-# Take the list of sources, replace extension with .d to include as
-#  additional makefiles...
--include $(subst .cpp,.d,$(SOURCES))
+# Build a single object file...
+%.o: %.cpp Makefile
+	$(CPP) $(CXXFLAGS) -MMD -MP -c $< -o $@
 
-%.d: %.cpp
-	@$(CPP) -M $(CXXFLAGS) $< > $@.$$$$;                    \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@;     \
-	rm -f $@.$$$$
-
-.cpp.o:
-	$(CPP) -c $< $(CXXFLAGS)
-
+# Clean up...
 clean:
-	@rm -f *.d
-	@rm -fv $(OBJ) $(BIN) *~
-
-$(BIN): $(OBJ)
-	$(CPP) $(OBJ) -o $(BIN) $(LIBS)
+	-@$(RM) $(wildcard $(OBJECT_FILES) $(DEPENDENCY_FILES) $(BIN))
 

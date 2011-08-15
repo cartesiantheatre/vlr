@@ -149,6 +149,9 @@ class VicarImageBand
         // Get the raw band data transformed if autorotate was enabled. Use GetTransformedWidth()/Height() to know adapted dimensions...
         bool GetRawBandData(VicarImageBand::RawBandDataType &RawBandData); 
 
+        // Get the raw image offset...
+        size_t GetRawImageOffset() const { return m_RawImageOffset; }
+
         // Get the solar day the image was taken on...
         size_t GetSolarDay() const { return m_SolarDay; } 
 

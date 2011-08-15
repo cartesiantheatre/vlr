@@ -41,7 +41,13 @@ void ShowHelp()
 {
     cout << "Usage: VikingExtractor [options] input [output]"                                   << endl
          << "Options:"                                                                          << endl
-         << "      --auto-rotate           Automaticaly orient image by rotating as needed."    << endl
+         << "      --directorize-band-class"                                                    << endl
+         << "                              Put reconstructed images into subdirectories"        << endl
+         << "                              numbered by band type class (e.g. Colour)."          << endl
+         << "      --directorize-month     Put reconstructed images into subdirectories"        << endl
+         << "                              named by Martian month taken on."                    << endl
+         << "      --directorize-sol       Put reconstructed images into subdirectories"        << endl
+         << "                              numbered by camera event solar day."                 << endl
          << "      --dry-run               Don't write anything"                                << endl
          << "      --help                  Show this help"                                      << endl
          << "      --ignore-bad-files      Don't stop on corrupt or problematic input file,"    << endl
@@ -61,13 +67,12 @@ void ShowHelp()
          << "      --filter-solar-day[=#]  Look only for camera events taken on the specified"  << endl
          << "                              solar day."                                          << endl
          << "      --no-ansi-colours       Disable VT/100 ANSI coloured terminal output."       << endl
+         << "      --no-auto-rotate        Don't automaticaly rotate image as needed."          << endl
          << "      --no-reconstruct        Don't attempt to reconstruct camera events, just"    << endl
          << "                              dump all available band data as separate images."    << endl
          << "      --overwrite             Overwrite any existing output files."                << endl
          << "  -r, --recursive             Scan subfolders as well if input is a directory."    << endl
          << "      --save-metadata         Save a metadata text file paired with each image"    << endl
-         << "      --sol-directorize       Put reconstructed images into subdirectories"        << endl
-         << "                              numbered by camera event solar day."                 << endl
          << "      --summary-only          No warnings or errors displayed, summary only."      << endl
          << "  -V, --verbose               Be verbose"                                          << endl
          << "  -v, --version               Show version information"                            << endl << endl
@@ -103,7 +108,9 @@ int main(int ArgumentCount, char *Arguments[])
     // Enumerator of long command line option identifiers...
     enum option_long_enum
     {
-        option_long_auto_rotate  = 256, /* To ensure no clashes with short option char identifiers */
+        option_long_directorize_band_class = 256, /* To ensure no clashes with short option char identifiers */
+        option_long_directorize_month,
+        option_long_directorize_sol,
         option_long_dry_run,
         option_long_filter_camera_event,
         option_long_filter_diode_class,
@@ -114,11 +121,11 @@ int main(int ArgumentCount, char *Arguments[])
         option_long_interlace,
         option_long_jobs,
         option_long_no_ansi_colours,
+        option_long_no_auto_rotate,
         option_long_no_reconstruct,
         option_long_overwrite,
         option_long_recursive,
         option_long_save_metadata,
-        option_long_sol_directorize,
         option_long_summarize_only,
         option_long_verbose,
         option_long_version
@@ -127,25 +134,27 @@ int main(int ArgumentCount, char *Arguments[])
     // Command line option structure...
     option CommandLineLongOptions[] =
     {
-        {"auto-rotate",         no_argument,        NULL,   option_long_auto_rotate},
-        {"dry-run",             no_argument,        NULL,   option_long_dry_run},
-        {"filter-camera-event", required_argument,  NULL,   option_long_filter_camera_event},
-        {"filter-diode",        required_argument,  NULL,   option_long_filter_diode_class},
-        {"filter-lander",       required_argument,  NULL,   option_long_filter_lander},
-        {"filter-solar-day",    required_argument,  NULL,   option_long_filter_solar_day},
-        {"help",                no_argument,        NULL,   option_long_help},
-        {"ignore-bad-files",    no_argument,        NULL,   option_long_ignore_bad_files},
-        {"interlace",           no_argument,        NULL,   option_long_interlace},
-        {"jobs",                optional_argument,  NULL,   option_long_jobs},
-        {"no-ansi-colours",     no_argument,        NULL,   option_long_no_ansi_colours},
-        {"no-reconstruct",      no_argument,        NULL,   option_long_no_reconstruct},
-        {"overwrite",           no_argument,        NULL,   option_long_overwrite},
-        {"recursive",           no_argument,        NULL,   option_long_recursive},
-        {"save-metadata",       no_argument,        NULL,   option_long_save_metadata},
-        {"sol-directorize",     no_argument,        NULL,   option_long_sol_directorize},
-        {"summarize-only",      no_argument,        NULL,   option_long_summarize_only},
-        {"verbose",             no_argument,        NULL,   option_long_verbose},
-        {"version",             no_argument,        NULL,   option_long_version},
+        {"directorize-band-class",  no_argument,        NULL,   option_long_directorize_band_class},
+        {"directorize-month",       no_argument,        NULL,   option_long_directorize_month},
+        {"directorize-sol",         no_argument,        NULL,   option_long_directorize_sol},
+        {"dry-run",                 no_argument,        NULL,   option_long_dry_run},
+        {"filter-camera-event",     required_argument,  NULL,   option_long_filter_camera_event},
+        {"filter-diode",            required_argument,  NULL,   option_long_filter_diode_class},
+        {"filter-lander",           required_argument,  NULL,   option_long_filter_lander},
+        {"filter-solar-day",        required_argument,  NULL,   option_long_filter_solar_day},
+        {"help",                    no_argument,        NULL,   option_long_help},
+        {"ignore-bad-files",        no_argument,        NULL,   option_long_ignore_bad_files},
+        {"interlace",               no_argument,        NULL,   option_long_interlace},
+        {"jobs",                    optional_argument,  NULL,   option_long_jobs},
+        {"no-ansi-colours",         no_argument,        NULL,   option_long_no_ansi_colours},
+        {"no-auto-rotate",          no_argument,        NULL,   option_long_no_auto_rotate},
+        {"no-reconstruct",          no_argument,        NULL,   option_long_no_reconstruct},
+        {"overwrite",               no_argument,        NULL,   option_long_overwrite},
+        {"recursive",               no_argument,        NULL,   option_long_recursive},
+        {"save-metadata",           no_argument,        NULL,   option_long_save_metadata},
+        {"summarize-only",          no_argument,        NULL,   option_long_summarize_only},
+        {"verbose",                 no_argument,        NULL,   option_long_verbose},
+        {"version",                 no_argument,        NULL,   option_long_version},
         
         // End of array marker...
         {0, 0, 0, 0}
@@ -175,8 +184,14 @@ int main(int ArgumentCount, char *Arguments[])
                 break;
             }
 
-            // Automatic image rotation correction...
-            case option_long_auto_rotate: { Options::GetInstance().SetAutoRotate(); break; }
+            // Directorize by band type class...
+            case option_long_directorize_band_class: { Options::GetInstance().SetDirectorizeBandTypeClass(); break; }
+
+            // Directorize by month...
+            case option_long_directorize_month: { Options::GetInstance().SetDirectorizeMonth(); break; }
+
+            // Directorize by solar day...
+            case option_long_directorize_sol: { Options::GetInstance().SetDirectorizeSol(); break; }
 
             // Dry run...
             case option_long_dry_run: { Options::GetInstance().SetDryRun(); break; }
@@ -217,6 +232,11 @@ int main(int ArgumentCount, char *Arguments[])
             case 'j':
             case option_long_jobs: 
             {
+                // Issue a non-implemented warning...
+                Message(Console::Warning) 
+                    << "parallelization is not implemented yet, using single thread" 
+                    << endl;
+                
                 size_t Jobs = 0;
                 
                 // Number of threads provided...
@@ -240,6 +260,9 @@ int main(int ArgumentCount, char *Arguments[])
             // No ANSI VT/100 terminal colour...
             case option_long_no_ansi_colours: { Console::GetInstance().SetUseColours(false); break; }
 
+            // No automatic image rotation correction...
+            case option_long_no_auto_rotate: { Options::GetInstance().SetAutoRotate(false); break; }
+
             // No reconstruct...
             case option_long_no_reconstruct: { Options::GetInstance().SetNoReconstruct(); break; }
 
@@ -252,9 +275,6 @@ int main(int ArgumentCount, char *Arguments[])
 
             // Save metadata...
             case option_long_save_metadata: { Options::GetInstance().SetSaveMetadata(); break; }
-
-            // Sol directorize...
-            case option_long_sol_directorize: { Options::GetInstance().SetSolDirectorize(); break; }
 
             // Summarize only...
             case option_long_summarize_only: { Options::GetInstance().SetSummarizeOnly(); break; }

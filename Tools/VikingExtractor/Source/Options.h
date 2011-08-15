@@ -44,25 +44,31 @@ class Options
         static Options &GetInstance();
 
         // Get options...
-        bool            GetAutoRotate() { return m_AutoRotate; }
-        bool            GetDryRun() { return m_DryRun; }
-        std::string    &GetFilterCameraEvent() { return m_FilterCameraEvent; }
+        bool            GetAutoRotate() const { return m_AutoRotate; }
+        bool            GetDirectorizeBandTypeClass() const { return m_DirectorizeBandTypeClass; }
+        bool            GetDirectorizeMonth() const { return m_DirectorizeMonth; }
+        bool            GetDirectorizeSol() const { return m_DirectorizeSol; }
+        bool            GetDryRun() const { return m_DryRun; }
+        const std::string &
+                        GetFilterCameraEvent() const { return m_FilterCameraEvent; }
         const FilterDiodeBandSet &
-                        GetFilterDiodeBandSet() { return m_FilterDiodeBandSet; }
-        size_t          GetFilterLander() { return m_FilterLander; }
-        size_t          GetFilterSolarDay() { return m_FilterSolarDay; }
-        bool            GetIgnoreBadFiles() { return m_IgnoreBadFiles; }
-        bool            GetInterlace() { return m_Interlace; }
-        size_t          GetJobs() { return m_Jobs; }
-        bool            GetNoReconstruct() { return m_NoReconstruct; };
-        bool            GetOverwrite() { return m_Overwrite; }
-        bool            GetRecursive() { return m_Recursive; }
-        bool            GetSaveMetadata() { return m_SaveMetadata; }
-        bool            GetSolDirectorize() { return m_SolDirectorize; }
-        bool            GetSummarizeOnly() { return m_SummarizeOnly; }
+                        GetFilterDiodeBandSet() const { return m_FilterDiodeBandSet; }
+        size_t          GetFilterLander() const { return m_FilterLander; }
+        size_t          GetFilterSolarDay() const { return m_FilterSolarDay; }
+        bool            GetIgnoreBadFiles() const { return m_IgnoreBadFiles; }
+        bool            GetInterlace() const { return m_Interlace; }
+        size_t          GetJobs() const { return m_Jobs; }
+        bool            GetNoReconstruct() const { return m_NoReconstruct; };
+        bool            GetOverwrite() const { return m_Overwrite; }
+        bool            GetRecursive() const { return m_Recursive; }
+        bool            GetSaveMetadata() const { return m_SaveMetadata; }
+        bool            GetSummarizeOnly() const { return m_SummarizeOnly; }
 
         // Set options...
         void            SetAutoRotate(const bool AutoRotate = true) { m_AutoRotate = AutoRotate; }
+        void            SetDirectorizeBandTypeClass(const bool DirectorizeBandTypeClass = true) { m_DirectorizeBandTypeClass = DirectorizeBandTypeClass; }
+        void            SetDirectorizeMonth(const bool DirectorizeMonth = true) { m_DirectorizeMonth = DirectorizeMonth; }
+        void            SetDirectorizeSol(const bool DirectorizeSol = true) { m_DirectorizeSol = DirectorizeSol; }
         void            SetDryRun(const bool DryRun = true) { m_DryRun = DryRun; }
         void            SetFilterCameraEvent(const std::string &CameraEvent);
         void            SetFilterDiodeClass(const std::string &DiodeClass);
@@ -75,7 +81,6 @@ class Options
         void            SetOverwrite(const bool Overwrite = true) { m_Overwrite = Overwrite; }
         void            SetRecursive(const bool Recursive = true) { m_Recursive = Recursive; }
         void            SetSaveMetadata(const bool SaveMetadata = true) { m_SaveMetadata = SaveMetadata; }
-        void            SetSolDirectorize(const bool SolDirectorize = true) { m_SolDirectorize = SolDirectorize; }
         void            SetSummarizeOnly(const bool SummarizeOnly = true) { m_SummarizeOnly = SummarizeOnly; }
         
     // Protected methods...
@@ -92,6 +97,18 @@ class Options
 
         // Use OCR to try and figure out correct image orientation...
         bool                m_AutoRotate;
+
+        // Place reconstructed images in a subdirectory of their band 
+        //  type class... (e.g. Colour)
+        bool                m_DirectorizeBandTypeClass;
+
+        // Place reconstructed images in a subdirectory of the Martian
+        //  month they were taken on... (e.g. Libra)
+        bool                m_DirectorizeMonth;
+
+        // Place reconstructed images in a subdirectory on of the solar 
+        //  day they were taken on...
+        bool                m_DirectorizeSol;
 
         // Don't actually write out any files...
         bool                m_DryRun;
@@ -129,10 +146,6 @@ class Options
         
         // Save metadata...
         bool                m_SaveMetadata;
-
-        // Place reconstructed images in a subdirectory on of the solar 
-        //  day they were taken on...
-        bool                m_SolDirectorize;
         
         // Mute all console output channels, except the summary channel...
         bool                m_SummarizeOnly;

@@ -33,7 +33,10 @@ Options *Options::m_SingletonInstance = NULL;
 
 // Default constructor...
 Options::Options()
-    :   m_AutoRotate(false),
+    :   m_AutoRotate(true),
+        m_DirectorizeBandTypeClass(false),
+        m_DirectorizeMonth(false),
+        m_DirectorizeSol(false),
         m_DryRun(false),
         m_FilterLander(0),
         m_FilterSolarDay(numeric_limits<size_t>::max()),
@@ -44,7 +47,6 @@ Options::Options()
         m_Overwrite(false),
         m_Recursive(false),
         m_SaveMetadata(false),
-        m_SolDirectorize(false),
         m_SummarizeOnly(false)
 {
 
@@ -61,6 +63,7 @@ Options &Options::GetInstance()
     return *m_SingletonInstance;
 }
 
+// Set the camera event filter...
 void Options::SetFilterCameraEvent(const std::string &CameraEvent)
 {
     // Store in upper case version...
@@ -80,7 +83,6 @@ void Options::SetFilterDiodeClass(const string &DiodeClass)
     // Use any supported type...
     if(DiodeClass.empty() || DiodeClass == "any")
     {
-//        Message(Console::Info) << "using any supported diode filter" << endl;
         m_FilterDiodeBandSet.insert(VicarImageBand::Blue);
         m_FilterDiodeBandSet.insert(VicarImageBand::Green);
         m_FilterDiodeBandSet.insert(VicarImageBand::Red);
@@ -94,7 +96,6 @@ void Options::SetFilterDiodeClass(const string &DiodeClass)
     // Colour band...
     else if(DiodeClass == "colour")
     {
-//        Message(Console::Info) << "using colour diode filter" << endl;
         m_FilterDiodeBandSet.insert(VicarImageBand::Blue);
         m_FilterDiodeBandSet.insert(VicarImageBand::Green);
         m_FilterDiodeBandSet.insert(VicarImageBand::Red);
@@ -103,7 +104,6 @@ void Options::SetFilterDiodeClass(const string &DiodeClass)
     // Infrared band...
     else if(DiodeClass == "infrared")
     {
-//        Message(Console::Info) << "using infrared diode filter" << endl;
         m_FilterDiodeBandSet.insert(VicarImageBand::Infrared1);
         m_FilterDiodeBandSet.insert(VicarImageBand::Infrared2);
         m_FilterDiodeBandSet.insert(VicarImageBand::Infrared3);
@@ -111,10 +111,7 @@ void Options::SetFilterDiodeClass(const string &DiodeClass)
     
     // Sun...
     else if(DiodeClass == "sun")
-    {
-//        Message(Console::Info) << "using sun diode filter" << endl;
         m_FilterDiodeBandSet.insert(VicarImageBand::Sun);    
-    }
     
     // Survey...
     else if(DiodeClass == "survey")

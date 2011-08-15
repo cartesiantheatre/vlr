@@ -45,6 +45,10 @@ class ReconstructableImage
         // Add an image band...
         void AddImageBand(const VicarImageBand &ImageBand);
 
+        // If the image wasn't reconstructed successfully, this is the
+        //  number of component images that were dumped...
+        size_t GetDumpedImagesCount() const { return m_DumpedImagesCount; }
+
         // Get an error message, if set...
         const std::string &GetErrorMessage() const 
             { return m_ErrorMessage; }
@@ -132,9 +136,19 @@ class ReconstructableImage
         const std::string   m_CameraEventLabel;
         std::string         m_CameraEventNoSol;
         size_t              m_SolarDay;
+        
+        // Band type class... (e.g. Colour)
+        std::string         m_BandTypeClass;
+        
+        // Month image was taken on... (e.g. Libra)
+        std::string         m_Month;
 
         // Error message...
         std::string         m_ErrorMessage;
+        
+        // If the image wasn't reconstructed successfully, this is the
+        //  number of component images that were dumped...
+        size_t              m_DumpedImagesCount;
 };
 
 // Multiple include protection...

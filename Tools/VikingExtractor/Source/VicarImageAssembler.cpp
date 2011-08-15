@@ -188,7 +188,7 @@ void VicarImageAssembler::Reconstruct()
             if(Options::GetInstance().GetSummarizeOnly())
             {
                 Message(Console::Summary) 
-                    << "\rgenerating catalogue from " 
+                    << "\rstudying catalogue of " 
                     << ProspectiveFilesExamined << "/" << TotalProspectiveFiles 
                     << " (" << PercentageExamined << " %)";
             }
@@ -332,9 +332,10 @@ void VicarImageAssembler::Reconstruct()
         if(Options::GetInstance().GetSummarizeOnly())
             Message(Console::Summary) << endl;
 
-        // Total attempted reconstructions and total successful...
+        // Total attempted reconstructions, total successful, and total just dumped...
         size_t AttemptedReconstruction      = 0;
         size_t SuccessfullyReconstructed    = 0;
+        size_t DumpedImages                 = 0;
 
         // Reconstruct each image...
         for(CameraEventDictionaryIterator EventIterator = m_CameraEventDictionary.begin();
@@ -358,6 +359,10 @@ void VicarImageAssembler::Reconstruct()
             // Reconstruct the image object and check for error...
             if(!Reconstructable->Reconstruct())
             {
+                // Since the image wasn't reconstructed successfully, 
+                //  this is the number of component images that were dumped...
+                DumpedImages += Reconstructable->GetDumpedImagesCount();
+
                 // User requested we just skip over bad files....
                 if(Options::GetInstance().GetIgnoreBadFiles())
                 {
@@ -391,6 +396,7 @@ void VicarImageAssembler::Reconstruct()
                 << endl
                 << "successfully reconstructed "
                 << SuccessfullyReconstructed << "/" << m_CameraEventDictionary.size()
+                << ", with " << DumpedImages << " unreconstructable components dumped"
                 << endl;
     }
 
