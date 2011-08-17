@@ -35,6 +35,7 @@ Options *Options::m_SingletonInstance = NULL;
 Options::Options()
     :   m_AutoRotate(true),
         m_DirectorizeBandTypeClass(false),
+        m_DirectorizeLocation(false),
         m_DirectorizeMonth(false),
         m_DirectorizeSol(false),
         m_DryRun(false),

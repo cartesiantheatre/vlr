@@ -347,10 +347,21 @@ void VicarImageAssembler::Reconstruct()
 
             // Update summary, if enabled...
             if(Options::GetInstance().GetSummarizeOnly())
-                Message(Console::Summary) 
-                    << "\rattempting reconstruction " 
-                    << AttemptedReconstruction << "/" << m_CameraEventDictionary.size()
-                    << " (" << static_cast<float>(AttemptedReconstruction) / m_CameraEventDictionary.size() * 100.0f << " %)";
+            {
+                // Trying to reconstruct...
+                if(!Options::GetInstance().GetNoReconstruct())
+                    Message(Console::Summary) 
+                        << "\rattempting reconstruction " 
+                        << AttemptedReconstruction << "/" << m_CameraEventDictionary.size()
+                        << " (" << static_cast<float>(AttemptedReconstruction) / m_CameraEventDictionary.size() * 100.0f << " %)";
+                
+                // Just dumping components...
+                else
+                    Message(Console::Summary) 
+                        << "\rdumping components from " 
+                        << AttemptedReconstruction << "/" << m_CameraEventDictionary.size()
+                        << " (" << static_cast<float>(AttemptedReconstruction) / m_CameraEventDictionary.size() * 100.0f << " %)";
+            }
 
             // Get the reconstructable image object...
             ReconstructableImage *Reconstructable = EventIterator->second;
@@ -392,12 +403,23 @@ void VicarImageAssembler::Reconstruct()
 
         // Update summary, if enabled, beginning with new line since last was \r only...
         if(Options::GetInstance().GetSummarizeOnly())
-            Message(Console::Summary) 
-                << endl
-                << "successfully reconstructed "
-                << SuccessfullyReconstructed << "/" << m_CameraEventDictionary.size()
-                << ", with " << DumpedImages << " unreconstructable components dumped"
-                << endl;
+        {
+            // We were trying to reconstruct...
+            if(!Options::GetInstance().GetNoReconstruct())
+                Message(Console::Summary) 
+                    << endl
+                    << "successfully reconstructed "
+                    << SuccessfullyReconstructed << "/" << m_CameraEventDictionary.size()
+                    << ", " << DumpedImages << " unreconstructable components dumped"
+                    << endl;
+            
+            // We were not trying to reconstruct...
+            else
+                Message(Console::Summary) 
+                    << endl
+                    << "dumped " << DumpedImages << " image components without reconstruction"
+                    << endl;
+        }
     }
 
         // Failed...

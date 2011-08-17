@@ -46,6 +46,7 @@ class Options
         // Get options...
         bool            GetAutoRotate() const { return m_AutoRotate; }
         bool            GetDirectorizeBandTypeClass() const { return m_DirectorizeBandTypeClass; }
+        bool            GetDirectorizeLocation() const { return m_DirectorizeLocation; }
         bool            GetDirectorizeMonth() const { return m_DirectorizeMonth; }
         bool            GetDirectorizeSol() const { return m_DirectorizeSol; }
         bool            GetDryRun() const { return m_DryRun; }
@@ -67,6 +68,7 @@ class Options
         // Set options...
         void            SetAutoRotate(const bool AutoRotate = true) { m_AutoRotate = AutoRotate; }
         void            SetDirectorizeBandTypeClass(const bool DirectorizeBandTypeClass = true) { m_DirectorizeBandTypeClass = DirectorizeBandTypeClass; }
+        void            SetDirectorizeLocation(const bool DirectorizeLocation = true) { m_DirectorizeLocation = DirectorizeLocation; }
         void            SetDirectorizeMonth(const bool DirectorizeMonth = true) { m_DirectorizeMonth = DirectorizeMonth; }
         void            SetDirectorizeSol(const bool DirectorizeSol = true) { m_DirectorizeSol = DirectorizeSol; }
         void            SetDryRun(const bool DryRun = true) { m_DryRun = DryRun; }
@@ -101,6 +103,10 @@ class Options
         // Place reconstructed images in a subdirectory of their band 
         //  type class... (e.g. Colour)
         bool                m_DirectorizeBandTypeClass;
+
+        // Place reconstructed images in a subdirectory of the location
+        //  they were taken in... (e.g. Utopia Planitia)
+        bool                m_DirectorizeLocation;
 
         // Place reconstructed images in a subdirectory of the Martian
         //  month they were taken on... (e.g. Libra)

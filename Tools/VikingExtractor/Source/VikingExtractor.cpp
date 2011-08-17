@@ -39,13 +39,15 @@ using namespace std;
 // Show help...
 void ShowHelp()
 {
-    cout << "Usage: VikingExtractor [options] input [output]"                                   << endl
+    cout << "Usage: viking-extractor [options] input [output]"                                  << endl
          << "Options:"                                                                          << endl
          << "      --directorize-band-class"                                                    << endl
          << "                              Put reconstructed images into subdirectories"        << endl
          << "                              numbered by band type class (e.g. Colour)."          << endl
+         << "      --directorize-location  Put reconstructed images into subdirectories"        << endl
+         << "                              named after location taken from."                    << endl
          << "      --directorize-month     Put reconstructed images into subdirectories"        << endl
-         << "                              named by Martian month taken on."                    << endl
+         << "                              named after Martian month taken on."                 << endl
          << "      --directorize-sol       Put reconstructed images into subdirectories"        << endl
          << "                              numbered by camera event solar day."                 << endl
          << "      --dry-run               Don't write anything"                                << endl
@@ -109,6 +111,7 @@ int main(int ArgumentCount, char *Arguments[])
     enum option_long_enum
     {
         option_long_directorize_band_class = 256, /* To ensure no clashes with short option char identifiers */
+        option_long_directorize_location,
         option_long_directorize_month,
         option_long_directorize_sol,
         option_long_dry_run,
@@ -135,6 +138,7 @@ int main(int ArgumentCount, char *Arguments[])
     option CommandLineLongOptions[] =
     {
         {"directorize-band-class",  no_argument,        NULL,   option_long_directorize_band_class},
+        {"directorize-location",    no_argument,        NULL,   option_long_directorize_location},
         {"directorize-month",       no_argument,        NULL,   option_long_directorize_month},
         {"directorize-sol",         no_argument,        NULL,   option_long_directorize_sol},
         {"dry-run",                 no_argument,        NULL,   option_long_dry_run},
@@ -186,6 +190,9 @@ int main(int ArgumentCount, char *Arguments[])
 
             // Directorize by band type class...
             case option_long_directorize_band_class: { Options::GetInstance().SetDirectorizeBandTypeClass(); break; }
+
+            // Directorize by location...
+            case option_long_directorize_location: { Options::GetInstance().SetDirectorizeLocation(); break; }
 
             // Directorize by month...
             case option_long_directorize_month: { Options::GetInstance().SetDirectorizeMonth(); break; }

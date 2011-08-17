@@ -40,8 +40,9 @@ ReconstructableImage::ReconstructableImage(
     const std::string &CameraEventLabel)
     : m_OutputRootDirectory(OutputRootDirectory),
       m_CameraEventLabel(CameraEventLabel),
-      m_SolarDay(0),
-      m_DumpedImagesCount(0)
+      m_DumpedImagesCount(0),
+      m_LanderNumber(0),
+      m_SolarDay(0)
 {
     // Always need an label...
     assert(!CameraEventLabel.empty());
@@ -74,6 +75,10 @@ void ReconstructableImage::AddImageBand(const VicarImageBand &ImageBand)
 {
     // Make sure this is for the right event...
     assert(ImageBand.GetCameraEventLabel() == m_CameraEventLabel);
+
+    // If this image knows the lander number, remember it...
+    if(ImageBand.GetLanderNumber())
+        m_LanderNumber = ImageBand.GetLanderNumber();
 
     // Remember the month it was taken on...
     m_Month = ImageBand.GetMonth();
@@ -136,11 +141,13 @@ void ReconstructableImage::AddImageBand(const VicarImageBand &ImageBand)
 }
 
 // Create the necessary path to the output file and return a path. 
-//  The file will have the provided file extension...
+//  The file will have the provided file extension, and if it is
+//  not a reconstructable image, then it will use specified name
+//  preceding the file extension...
 string ReconstructableImage::CreateOutputFileName(
     const bool Unreconstructable,
     const string &Extension,
-    const string &FileNameSuffix)
+    const string &UnreconstructableName)
 {
 
     // Will contain the full directory, not including the file name...
@@ -150,6 +157,29 @@ string ReconstructableImage::CreateOutputFileName(
     // If this isn't part of a reconstructable image, prefix...
     if(Unreconstructable)
         FullDirectory << "Unreconstructable/";
+
+    // Images are reconstructed in subfolder of location taken in if enabled...
+    if(Options::GetInstance().GetDirectorizeLocation())
+    {
+        // Location determined by lander image was taken from...
+        switch(m_LanderNumber)
+        {
+            // Chryse Planitia...
+            case 1:
+                FullDirectory << "Chryse Planitia/";
+                break;
+            
+            // Utopia Planitia...
+            case 2:
+                FullDirectory << "Utopia Planitia/";
+                break;
+
+            // Unknown...
+            default:
+                FullDirectory << "Location Unknown/"; 
+                break; 
+        }
+    }
 
     // Images are reconstructed in subfolder of band type class if enabled...
     if(Options::GetInstance().GetDirectorizeBandTypeClass() && !m_BandTypeClass.empty())
@@ -164,11 +194,15 @@ string ReconstructableImage::CreateOutputFileName(
     if(Options::GetInstance().GetDirectorizeSol())
         FullDirectory << m_SolarDay << '/';
 
-    // Put inside of directory for this camera event...
-    FullDirectory << m_CameraEventNoSol << '/';
+    // Put inside of directory for this camera event, but only if it's 
+    //  part of an unreconstructable image set, otherwise file name is
+    //  unique enough to distinguish it...
+    if(Unreconstructable)
+        FullDirectory << m_CameraEventNoSol << '/';
 
-    // Create and check for error...
-    if(!CreateDirectoryRecursively(FullDirectory.str()))
+    // Create and check for error, if not a dry run...
+    if(!Options::GetInstance().GetDryRun() && 
+       !CreateDirectoryRecursively(FullDirectory.str()))
     {
         // Set the error message and abort...
         SetErrorMessage("could not create output directory for file");
@@ -177,12 +211,20 @@ string ReconstructableImage::CreateOutputFileName(
 
     // Compose the file name portion...
     
-        // File begins with the camera event ID...
-        FullDirectory << m_CameraEventNoSol;
+        // Image is a reconstructed image, only needing a name of the 
+        //  camera event without the solar day...
+        if(!Unreconstructable)
+            FullDirectory << m_CameraEventNoSol;
         
-        // If an optional name suffix was provided, append it...
-        if(!FileNameSuffix.empty())
-            FullDirectory << "_" << FileNameSuffix;
+        // Otherwise, if image is unreconstructable...
+        else
+        {
+            // The unreconstructable's name should always have been provided...
+            assert(!UnreconstructableName.empty());
+            
+            // Use it...
+            FullDirectory << UnreconstructableName;
+        }
         
         // Add the file name extension...
         FullDirectory << "." + Extension;
@@ -206,14 +248,14 @@ bool ReconstructableImage::DumpUnreconstructable(ImageBandListType &ImageBandLis
         // Format suffix to contain sort order identifier to distinguish
         //  from other images of this same band type of this same camera 
         //  event...
-        stringstream FileNameSuffix;
-        FileNameSuffix 
+        stringstream UnreconstructableName;
+        UnreconstructableName 
             << ImageBand.GetDiodeBandTypeFriendlyString()
             << "_"
             << Iterator - ImageBandList.begin();
 
         // Create the path to the file...
-        const string FullDirectory = CreateOutputFileName(true, "png", FileNameSuffix.str());
+        const string FullDirectory = CreateOutputFileName(true, "png", UnreconstructableName.str());
         
         // Dump the single channel as grayscale...
         if(ReconstructGrayscaleImage(FullDirectory, ImageBand))
@@ -224,7 +266,7 @@ bool ReconstructableImage::DumpUnreconstructable(ImageBandListType &ImageBandLis
             // Saved successfully, now if saving metadata is 
             //  enabled, dump it...
             if(Options::GetInstance().GetSaveMetadata())
-                SaveMetadata(CreateOutputFileName(true, "txt", FileNameSuffix.str()), ImageBandList);
+                SaveMetadata(CreateOutputFileName(true, "txt", UnreconstructableName.str()), ImageBandList);
         }
     }
     
@@ -528,8 +570,9 @@ bool ReconstructableImage::ReconstructColourImage(
         }
     }
 
-    // Write out image...
-    PngImage.write(OutputFileName);
+    // Write out image, if not a dry run...
+    if(!Options::GetInstance().GetDryRun())
+        PngImage.write(OutputFileName);
 
     // If saving metadata is enabled, dump it...
     if(Options::GetInstance().GetSaveMetadata())
@@ -593,8 +636,9 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
         }
     }
     
-    // Write out...
-    PngImage.write(OutputFileName);
+    // Write out, if not a dry run...
+    if(!Options::GetInstance().GetDryRun())
+        PngImage.write(OutputFileName);
 
     // Done...
     return true;
@@ -605,6 +649,10 @@ void ReconstructableImage::SaveMetadata(
     const string &OutputFileName, 
     const ImageBandListType &ImageBandList)
 {
+    // Check for dry run...
+    if(Options::GetInstance().GetDryRun())
+        return;
+
     // Overwrite not enabled and file already existed, don't overwrite...
     if(!Options::GetInstance().GetOverwrite() && 
        (access(OutputFileName.c_str(), F_OK) == 0))

@@ -26,23 +26,25 @@ SOURCE_FILES        := $(shell find $(SOURCE_DIRECTORIES) -type f -name "*.cpp")
 DEPENDENCY_FILES    := $(patsubst %.cpp, %.d, $(SOURCE_FILES))
 OBJECT_FILES        := $(patsubst %.cpp, %.o, $(SOURCE_FILES))
 
-# Inlcude the list of dependencies, the - carries on if an error occured
-#  because one of them might not exist yet...
--include $(DEPENDENCY_FILES)
-
 # Disable checking for files by these names...
 #.PHONY: all clean check
 
 # Default target is to built the executable...
 all: $(BIN)
 
+# Include the list of dependencies, the - carries on if an error 
+#  occured because one of them might not exist yet...
+-include $(DEPENDENCY_FILES)
+
 # Build the executable...
 $(BIN): $(OBJECT_FILES)
-	$(CPP) $(OBJECT_FILES) -o $(BIN) $(LIBS)
+	@echo "Linking $@"
+	@$(CPP) $(OBJECT_FILES) -o $(BIN) $(LIBS)
 
 # Build a single object file...
-%.o: %.cpp Makefile
-	$(CPP) $(CXXFLAGS) -MMD -MP -c $< -o $@
+%.o: %.cpp
+	@echo "Compiling $<"
+	@$(CPP) $(CXXFLAGS) -MMD -MP -c $< -o $@
 
 # Clean up...
 clean:

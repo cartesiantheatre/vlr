@@ -59,6 +59,7 @@ VicarImageBand::VicarImageBand(
       m_FileOnMagneticTapeOrdinal(0),
       m_FullHistogramPresent(false),
       m_InputFile(InputFile),
+      m_LanderNumber(0),
       m_MagneticTapeNumber(0),
       m_MeanPixelValue(0.0f),
       m_Ok(false),
@@ -829,7 +830,7 @@ void VicarImageBand::Load()
             }
 
             // Parse the extended metadata, if any...
-            ParseExtendedMetadata(Record);
+            ParseExtendedMetadata(Record, LocalLogicalRecordIndex);
             
                 // Error occured, stop...
                 if(IsError())
@@ -1697,7 +1698,9 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format6(
 
 // Parse extended metadata, if any. Extended metadata includes the 
 //  azimuth and elevation...
-void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
+void VicarImageBand::ParseExtendedMetadata(
+    const LogicalRecord &Record, 
+    const size_t LocalLogicalRecordIndexHint)
 {
     // Variables...
     string Token;
@@ -1706,9 +1709,12 @@ void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
     if(!Record.IsValidLabel())
         SetErrorAndReturn("invalid logical record label while parsing extended metadata")
 
+    // Get the record as a string...
+    const string RecordString = Record;
+
     // Initialize tokenizer...
-    stringstream Tokenizer(Record);
-    
+    stringstream Tokenizer(RecordString);
+
     // Keep scanning until no more tokens...
     for(size_t TokenIndex = 0; Tokenizer.good(); ++TokenIndex)
     {
@@ -1738,6 +1744,32 @@ void VicarImageBand::ParseExtendedMetadata(const LogicalRecord &Record)
                 Tokenizer >> Token;
                 SetCameraEventLabel(Token);
                 Message(Console::Verbose) << "camera event label: " << m_CameraEventLabel << endl;
+            }
+
+            // Not a camera event, restore the token...
+            else
+                Tokenizer << Token;
+        }
+        
+        // Possibly lander number, and always in the second local
+        //  logical record if present at all...
+        if(LocalLogicalRecordIndexHint == 1 && Token == "VIKING")
+        {
+            // Check...
+            Tokenizer >> Token;
+            
+            // Confirmed...
+            if(Token == "LANDER")
+            {
+                // Store the lander number...
+                Tokenizer >> m_LanderNumber;
+
+                // Check validity...
+                if(m_LanderNumber > 2)
+                    Message(Console::Warning) << "bad lander number" << endl;
+
+                // Be verbose if requested...
+                Message(Console::Verbose) << "lander number: " << m_CameraEventLabel << endl;
             }
 
             // Not a camera event, restore the token...

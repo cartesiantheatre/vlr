@@ -73,11 +73,13 @@ class ReconstructableImage
     protected:
 
         // Create the necessary path to the output file and return a path. 
-        //  The file will have the provided file extension...
+        //  The file will have the provided file extension, and if it is
+        //  not a reconstructable image, then it will use specified name
+        //  preceding the file extension...
         std::string CreateOutputFileName(
             const bool Unreconstructable,
             const std::string &Extension,
-            const std::string &FileNameSuffix = "");
+            const std::string &UnreconstructableName = "");
 
         // Dump all images within given image band to the output directory in 
         //  a subdirectory Unreconstructable under the camera event identifier...
@@ -131,24 +133,28 @@ class ReconstructableImage
         ImageBandListType   m_Infrared3ImageBandList;
         ImageBandListType   m_GrayImageBandList;
         
-        // Camera event label and same thing without the sol day
-        //  and then the solar day itself...
+        // Camera event label and same thing without the solar day...
         const std::string   m_CameraEventLabel;
         std::string         m_CameraEventNoSol;
-        size_t              m_SolarDay;
-        
+
         // Band type class... (e.g. Colour)
         std::string         m_BandTypeClass;
+
+        // If the image wasn't reconstructed successfully, this is the
+        //  number of component images that were dumped...
+        size_t              m_DumpedImagesCount;
+
+        // Error message...
+        std::string         m_ErrorMessage;
+
+        // Lander number image was taken from, or zero if unknown...
+        size_t              m_LanderNumber;
         
         // Month image was taken on... (e.g. Libra)
         std::string         m_Month;
 
-        // Error message...
-        std::string         m_ErrorMessage;
-        
-        // If the image wasn't reconstructed successfully, this is the
-        //  number of component images that were dumped...
-        size_t              m_DumpedImagesCount;
+        // Solar day the image was taken on...
+        size_t              m_SolarDay;
 };
 
 // Multiple include protection...

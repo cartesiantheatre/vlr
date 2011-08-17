@@ -123,6 +123,9 @@ class VicarImageBand
         // Get the input file name only without path...
         std::string GetInputFileNameOnly() const; 
 
+        // Get the lander number, or zero if unknown...
+        const size_t GetLanderNumber() const { return m_LanderNumber; }
+
         // Get the original magnetic tape number, or zero if unknown...
         size_t GetMagneticTapeNumber() const { return m_MagneticTapeNumber; }
 
@@ -238,7 +241,9 @@ class VicarImageBand
 
         // Parse extended metadata, if any. Extended metadata includes the
         //  azimuth and elevation...
-        void ParseExtendedMetadata(const LogicalRecord &Record);
+        void ParseExtendedMetadata(
+            const LogicalRecord &Record,
+            const size_t LocalLogicalRecordIndexHint);
 
         // Perform a deep probe on the file to check for the photosensor diode
         //  band type, returning Unknown if couldn't detect it or unsupported.
@@ -318,6 +323,9 @@ class VicarImageBand
 
         // Input file name...
         std::string             m_InputFile;
+
+        // Lander number...
+        size_t                  m_LanderNumber;
 
         // Magnetic tape number this originated on...
         size_t                  m_MagneticTapeNumber;
