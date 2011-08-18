@@ -483,7 +483,8 @@ string VicarImageBand::GetMonth() const
     //  absolute solar day of the local midnight immediately preceding 
     //  the lander's touch down. Lander 1 landed on June 20, 1976 
     //  (Virgo 6 = 198) and Lander 2 on Sept 30 1976... (Virgo 49 241)
-    const size_t LanderTouchdownAbsoluteSolarDay = m_LanderNumber == 1 ? 198 : 241;
+    const size_t LanderTouchdownAbsoluteSolarDay = 
+        m_LanderNumber == 1 ? 199 : 242;
 
     // Calculate Ls... (solar longitude)
     const float  MartianSolsPerYear     = 668.5991f;

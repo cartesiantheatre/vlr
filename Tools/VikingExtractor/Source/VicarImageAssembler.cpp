@@ -427,7 +427,7 @@ void VicarImageAssembler::Reconstruct()
         {
             // Update summary, if enabled, beginning with new line since last was \r only...
             if(Options::GetInstance().GetSummarizeOnly())
-                Message(Console::Summary) << endl;
+                Message(Console::Summary) << ErrorMessage << endl;
             
             // Reset assembler state...
             Reset();
