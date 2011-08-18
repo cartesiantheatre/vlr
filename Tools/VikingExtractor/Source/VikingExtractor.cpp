@@ -75,7 +75,7 @@ void ShowHelp()
          << "      --overwrite             Overwrite any existing output files."                << endl
          << "  -r, --recursive             Scan subfolders as well if input is a directory."    << endl
          << "      --save-metadata         Save a metadata text file paired with each image"    << endl
-         << "      --summary-only          No warnings or errors displayed, summary only."      << endl
+         << "      --summarize-only        No warnings or errors displayed, summarize only."    << endl
          << "  -V, --verbose               Be verbose"                                          << endl
          << "  -v, --version               Show version information"                            << endl << endl
 

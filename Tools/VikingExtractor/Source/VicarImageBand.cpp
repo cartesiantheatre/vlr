@@ -475,10 +475,20 @@ const string &VicarImageBand::GetDiodeBandTypeFriendlyString() const
 // Get the Martian month of this camera event...
 string VicarImageBand::GetMonth() const
 {
+    // We must know which lander this is in order to perform this calculation...
+    if(!m_LanderNumber)
+        return string("Unknown");
+    
+    // We need to know relative to beginning of the Martian year the 
+    //  absolute solar day of the local midnight immediately preceding 
+    //  the lander's touch down. Lander 1 landed on June 20, 1976 
+    //  (Virgo 6 = 198) and Lander 2 on Sept 30 1976... (Virgo 49 241)
+    const size_t LanderTouchdownAbsoluteSolarDay = m_LanderNumber == 1 ? 198 : 241;
+
     // Calculate Ls... (solar longitude)
-    const size_t VikingTemporalDatum    = 209 + 1; /* Add one since dates begin at zero */
     const float  MartianSolsPerYear     = 668.5991f;
-    const float Ls = fmodf(m_SolarDay + VikingTemporalDatum, MartianSolsPerYear) 
+    const float Ls = 
+        fmodf(m_SolarDay + LanderTouchdownAbsoluteSolarDay, MartianSolsPerYear) 
         / MartianSolsPerYear * 360.0f;
     
     // Convert Ls to month...
@@ -1770,6 +1780,11 @@ void VicarImageBand::ParseExtendedMetadata(
 
                 // Be verbose if requested...
                 Message(Console::Verbose) << "lander number: " << m_CameraEventLabel << endl;
+
+                // Check for matching lander number, if user filtered...
+                if(Options::GetInstance().GetFilterLander() != 0 &&
+                   Options::GetInstance().GetFilterLander() != m_LanderNumber)
+                    SetErrorAndReturn("filtering non-matching lander")
             }
 
             // Not a camera event, restore the token...
