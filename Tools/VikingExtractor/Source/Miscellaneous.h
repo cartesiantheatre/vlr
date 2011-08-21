@@ -37,6 +37,9 @@ bool IsGocrAvailable();
 template<class T> const T &min3(const T &A, const T &B, const T &C) { return min(A, min(B, C)); }
 template<class T> const T &max3(const T &A, const T &B, const T &C) { return max(A, max(B, C)); }
 
+// Convert a given Martian solar day in the range [1 .. n] to Ls angle...
+float SolarDayToLs(const size_t SolarDay);
+
 // Helpful macros...
 #define SetErrorAndReturn(Message)              { SetErrorMessage((Message)); return; }
 #define SetErrorAndReturnNullStream(Message)    { SetErrorMessage((Message)); return ostream(0); }

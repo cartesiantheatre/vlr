@@ -475,23 +475,17 @@ const string &VicarImageBand::GetDiodeBandTypeFriendlyString() const
 // Get the Martian month of this camera event...
 string VicarImageBand::GetMonth() const
 {
-    // We must know which lander this is in order to perform this calculation...
-    if(!m_LanderNumber)
-        return string("Unknown");
-    
     // We need to know relative to beginning of the Martian year the 
     //  absolute solar day of the local midnight immediately preceding 
     //  the lander's touch down. Lander 1 landed on June 20, 1976 
-    //  (Virgo 6 = 198) and Lander 2 on Sept 30 1976... (Virgo 49 241)
-    const size_t LanderTouchdownAbsoluteSolarDay = 
-        m_LanderNumber == 1 ? 199 : 242;
+    //  (Virgo 6 = 198) and Lander 2 on Sept 30 1976... (Virgo 49 = 241)
+    const size_t LanderTouchdownAbsoluteSolarDay = m_LanderNumber == 1 ? 199 : 242;
 
     // Calculate Ls... (solar longitude)
-    const float  MartianSolsPerYear     = 668.5991f;
+    const float MartianSolsPerYear  = 668.5991f;
     const float Ls = 
-        fmodf(m_SolarDay + LanderTouchdownAbsoluteSolarDay, MartianSolsPerYear) 
-        / MartianSolsPerYear * 360.0f;
-    
+        SolarDayToLs(fmodf(LanderTouchdownAbsoluteSolarDay + m_SolarDay + 1, MartianSolsPerYear));
+
     // Convert Ls to month...
     if(Ls <= 30.0f)                         return string("Gemini");
     else if(30.0f < Ls && Ls <= 60.0f)      return string("Cancer");

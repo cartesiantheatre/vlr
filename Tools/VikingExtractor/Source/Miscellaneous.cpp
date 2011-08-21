@@ -22,6 +22,8 @@
 // Includes...
 #include "Miscellaneous.h"
 #include <cstdio>
+#include <cmath>
+#include <cassert>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -63,5 +65,59 @@ bool CreateDirectoryRecursively(const std::string &Path)
     // Otherwise path already exists...
     else
         return true;
+}
+
+// Convert a given Martian solar day in the range [1 .. n] to Ls angle...
+float SolarDayToLs(const size_t SolarDay)
+{
+    // Bounds check...
+    assert(SolarDay >= 1);
+
+    // Variables...
+    float Ls                        = 0.0f;
+    float EccentricAnomaly          = 0.0f;
+    float EccentricAnomalyDelta     = 0.0f;
+
+    // Constants...
+    const float SolsInYear          = 668.6f;
+    const float PerihelionDay       = 485.35f;
+    const float PerihelionLs        = 250.99f;
+    const float Ecentricity         = 0.09340f;
+    const float RadiansToDegrees    = 180.0f / M_PI;
+    const float TimePerihelion      = 2 * M_PI * (1 - PerihelionLs / 360.0f);
+
+    // Calculate mean anomaly...
+    const float zz = (SolarDay - PerihelionDay) / SolsInYear;
+    const float SignedMeanAnomaly = 2.0f * M_PI * (zz - round(zz));
+    const float MeanAnomaly = abs(SignedMeanAnomaly);
+
+    // Solve Kepler equation MeanAnomaly = EccentricAnomaly - ε * sin(EccentricAnomaly)
+    // using Newton iterations...
+    EccentricAnomaly = MeanAnomaly + Ecentricity * sin(MeanAnomaly);
+    do
+    {
+        EccentricAnomalyDelta = -(EccentricAnomaly - Ecentricity * sin(EccentricAnomaly) - MeanAnomaly) / 
+               (1.0f - Ecentricity * cos(EccentricAnomaly));
+        EccentricAnomaly = EccentricAnomaly + EccentricAnomalyDelta;
+    }
+    while(EccentricAnomalyDelta > 1.0e-6f);
+    
+    if(SignedMeanAnomaly < 0.0f)
+        EccentricAnomaly = -EccentricAnomaly;
+
+    // Compute true anomaly, now that eccentric anomaly is known...
+    const float TrueAnomaly = 
+        2.0f * atan(sqrt((1.0f + Ecentricity) / 
+        (1.0f - Ecentricity)) * tan(EccentricAnomaly / 2.0f));
+
+    // Compute Ls...
+    Ls = TrueAnomaly - TimePerihelion;
+    if(Ls < 0.0f)
+        Ls += 2.0f * M_PI;
+    if(Ls > 2.0f * M_PI)
+        Ls -= 2.0f * M_PI;
+
+    // Convert Ls from radians into degrees and return...
+    return (RadiansToDegrees * Ls);
 }
 
