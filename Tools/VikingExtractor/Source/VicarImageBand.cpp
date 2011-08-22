@@ -484,7 +484,7 @@ string VicarImageBand::GetMonth() const
     // Calculate Ls... (solar longitude)
     const float MartianSolsPerYear  = 668.5991f;
     const float Ls = 
-        SolarDayToLs(fmodf(LanderTouchdownAbsoluteSolarDay + m_SolarDay + 1, MartianSolsPerYear));
+        SolarDayToLs(1 + fmodf(LanderTouchdownAbsoluteSolarDay + m_SolarDay, MartianSolsPerYear));
 
     // Convert Ls to month...
     if(Ls <= 30.0f)                         return string("Gemini");

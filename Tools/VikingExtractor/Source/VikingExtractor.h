@@ -24,7 +24,7 @@
 #define _VIKING_EXTRACTOR_H_
 
 // Version...
-#define VIKING_EXTRACTOR_VERSION    "0.3a"
+#define VIKING_EXTRACTOR_VERSION    "0.4"
 
 // Includes...
 #include "VicarImageBand.h"

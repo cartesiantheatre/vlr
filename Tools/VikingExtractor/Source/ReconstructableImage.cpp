@@ -181,13 +181,13 @@ string ReconstructableImage::CreateOutputFileName(
         }
     }
 
-    // Images are reconstructed in subfolder of band type class if enabled...
-    if(Options::GetInstance().GetDirectorizeBandTypeClass() && !m_BandTypeClass.empty())
-        FullDirectory << m_BandTypeClass << '/';
-
     // Images are reconstructed in subfolder of month if enabled...
     if(Options::GetInstance().GetDirectorizeMonth() && !m_Month.empty())
         FullDirectory << m_Month << '/';
+
+    // Images are reconstructed in subfolder of band type class if enabled...
+    if(Options::GetInstance().GetDirectorizeBandTypeClass() && !m_BandTypeClass.empty())
+        FullDirectory << m_BandTypeClass << '/';
 
     // Images are reconstructed in subfolder of solar day it was 
     //  taken on, so create the subfolder, if enabled...
