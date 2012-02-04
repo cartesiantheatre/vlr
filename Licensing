@@ -6,7 +6,7 @@
     === Art ==========================================================
 
         Cinematics, models, audio and voice effects, textures,
-        materials, concept art, fonts, screenshots, and other relevant
+        materials, concept art, screenshots, and other relevant
         non-executable creative media are copyright (C) 2010, 2011,
         2012 Kshatra Corp under the terms of the Creative Commons
         Attribution-NonCommercial-ShareAlike (BY-NC-SA) 3.0 Unported.
@@ -16,7 +16,7 @@
         AresEngine, VikingExtractor, shaders, Lua scripts, build
         environment scripts, and any other relevant executable data
         are copyright (C) 2010, 2011, 2012 Kshatra Corp under the 
-        terms of the GNU General Public License v3.
+        terms of the GNU General Public License version 3.
 
     === Documentation ================================================
 
@@ -30,7 +30,7 @@
         2011, 2012 Kshatra Corp under the terms of the Creative 
         Commons Attribution-NonCommercial-ShareAlike 3.0 Unported 
         License.
-
+    
     === Music ========================================================
 
         Music in Ogg Vorbis, FLAC, or other formats, and associated
@@ -38,4 +38,10 @@
         or under the artist's name if denoted as such, under the terms 
         of the Creative Commons Attribution-NonCommercial-ShareAlike 
         (BY-NC-SA) 3.0 Unported, unless denoted otherwise.
+
+    === Typography ===================================================
+
+        The Avaneya Font Family and all source files are copyright (C) 
+        2010, 2011, 2012 Kshatra Corp under the terms of the Ubuntu 
+        Font Family version 1.0.
 
