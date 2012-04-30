@@ -18,6 +18,10 @@
         are copyright (C) 2010, 2011, 2012 Kshatra Corp under the 
         terms of the GNU General Public License version 3.
 
+        The Solnet server, build environment scripts, and any other relevant 
+        executable data are copyright (C) 2010, 2011, 2012, Kshatra Corp under 
+        the terms of the GNU Affero General Public License version 3.
+
     === Documentation ================================================
 
         UML and other design documents, doxygen output, man pages, and
