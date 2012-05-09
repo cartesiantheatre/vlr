@@ -1,7 +1,7 @@
 /*
     Sol2Ls, to translate a Martian absolute solar day in numerical form into a 
     Martian month, day, and solar longitute.
-    Copyright (C) 2010, 2012 Kshatra Corp <kip@thevertigo.com>.
+    Copyright (C) 2010, 2011, 2012 Cartesian Theatre <kip@thevertigo.com>.
     
     Public discussion on IRC available at #avaneya (irc.freenode.net) 
     or on the mailing list <avaneya@lists.avaneya.com>.
