@@ -212,8 +212,9 @@ class VicarImageBand
         //  detection, or set an error...
         bool ExamineImageVisually();
 
-        // Extract OCR within image band data...
-        std::string ExtractOCR(const RawBandDataType &RawBandData);
+        // Extract OCR within image band data to buffer...
+        bool ExtractOCR(
+            const RawBandDataType &RawBandData, std::string &Extracted);
 
         // Get the photosensor diode band type from VICAR token... (e.g. "RED/T")
         PSADiode GetDiodeBandTypeFromVicarToken(const std::string &DiodeBandTypeToken) const;

@@ -201,8 +201,9 @@ bool VicarImageBand::CheckForHorizontalAxisAndExtractText(
     // Rotated as requested...
     Rotate(Rotation, RawBandData, RotatedRawBandData);
 
-    // Extract the OCR text...
-    OCRBuffer = ExtractOCR(RotatedRawBandData);
+    // Extract the OCR text and check for error...
+    if(!ExtractOCR(RotatedRawBandData, OCRBuffer))
+        return false;
 
     // Look for words we would expect to see if oriented properly...
     if(OCRBuffer.find("AZ") != string::npos) return true;
@@ -229,8 +230,9 @@ bool VicarImageBand::CheckForLargeHistogramAndExtractText(
     // Rotated as requested...
     Rotate(Rotation, RawBandData, RotatedRawBandData);
 
-    // Extract the OCR text...
-    OCRBuffer = ExtractOCR(RotatedRawBandData);
+    // Extract the OCR text and check for error...
+    if(!ExtractOCR(RotatedRawBandData, OCRBuffer))
+        return false;
 
     // Look for words we would expect to see if oriented properly...
     if(OCRBuffer.find("VIKING") != string::npos) return true;
@@ -354,11 +356,15 @@ bool VicarImageBand::ExamineImageVisually()
     return true;
 }
 
-// Extract OCR within image band data...
-string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
+// Extract OCR within image band data to buffer...
+bool VicarImageBand::ExtractOCR(
+    const RawBandDataType &RawBandData, string &Extracted)
 {
     // Check some assumptions...
     assert(!RawBandData.empty());
+
+    // Clear the output buffer...
+    Extracted.clear();
 
     // Get the width and height of this raw band data...
     const size_t Height = RawBandData.size();
@@ -425,9 +431,6 @@ string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
         SetErrorAndReturnFalse("ocr pass failed");
     }
 
-    // Space for the OCR buffer...
-    string OCRBuffer;
-
     // Grab the text from each text block...
     for(int CurrentTextBlock = 0; 
         CurrentTextBlock < OCRAD_result_blocks(LibraryDescriptor); 
@@ -439,7 +442,7 @@ string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
           ++CurrentTextLine)
         {
             // Get the current text line from the current text block...
-            OCRBuffer += OCRAD_result_line(
+            Extracted += OCRAD_result_line(
                 LibraryDescriptor, CurrentTextBlock, CurrentTextLine);
         }
     }
@@ -447,15 +450,15 @@ string VicarImageBand::ExtractOCR(const RawBandDataType &RawBandData)
     /* Be verbose...
     Message(Console::Info) 
         << "optical character recognition found " 
-        << OCRBuffer.size() 
+        << Extracted.size() 
         << " characters" 
         << endl;*/
 
     // Cleanup...
     OCRAD_close(LibraryDescriptor);
 
-    // Return the buffer...
-    return OCRBuffer;
+    // Return ok...
+    return true;
 }
 
 // Get the diode band type as a human friendly string...

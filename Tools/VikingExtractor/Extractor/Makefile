@@ -48,5 +48,5 @@ $(BIN): $(OBJECT_FILES)
 
 # Clean up...
 clean:
-	-@$(RM) $(wildcard $(OBJECT_FILES) $(DEPENDENCY_FILES) $(BIN))
+	-@$(RM) -v $(wildcard $(OBJECT_FILES) $(DEPENDENCY_FILES) $(BIN))
 
