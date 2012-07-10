@@ -24,7 +24,7 @@
 # preinstalled packages. What they don't have, they need to be informed of in a 
 # way that makes their life simple. These are the runtimes that are needed:
 #
-# * Zenity
+# * Zenity (zenity)
 # * Python 3 (python3)
 # * Python GObject bindings (python-gi >= 3.0)
 #
@@ -40,7 +40,7 @@ declare -a PackagesMissing
 function PrepareUbuntu
 {
     # List of packages that are needed...
-    declare -a local PackagesRequired=("python" "python-gi");
+    declare -a local PackagesRequired=("python" "python-gi" "trousers");
     local PackagesRequiredCount=${#PackagesRequired[*]}
 
     # Use either gksudo or kdesudo to run a command as root, whichever is 
@@ -54,15 +54,24 @@ function PrepareUbuntu
             --error \
             --title="Error" \
             --window-icon=$Icon \
-            --text="I couldn't detect which GUI for sudo is appropriate on your system." \
+            --text="I couldn't detect how to ask you for your password to install any needed software." \
         exit 1
     fi  
     echo "Will use $SudoGui as sudo frontend..."
 
     # Check that each required package is installed...
+    zenity --progress \
+            --title="$Title" \
+            --window-icon=$Icon \
+            --text="Checking for required software. Please wait..." \
+            --pulsate \
+            --auto-close \
+            --no-cancel &
+    ZenityPID=$!
     for (( Index=0; Index<$PackagesRequiredCount; Index++)); do
         CheckDebInstalled ${PackagesRequired[${Index}]}
     done
+    kill $ZenityPID
 
     # Some packages still need to be installed...
     if [ ${#PackagesMissing[*]} -gt 0 ]; then
@@ -73,10 +82,9 @@ function PrepareUbuntu
             --question \
             --title="$Title" \
             --window-icon=$Icon \
-            --text="In order for you to use me, I need to install the following packages:\n\n ${PackagesMissing[*]}" \
-            --ok-label="Install" \
-            --cancel-label="Cancel"
-        
+            --text="I need to install the following software before you can use me. You will need a working internet connection:\n\n\t${PackagesMissing[*]}" \
+            --ok-label="Install"
+
         # User cancelled, so exit...
         if [ $? != 0 ]; then
             echo "User cancelled..."
@@ -84,7 +92,28 @@ function PrepareUbuntu
         
         # Otherwise install the packages...
         else
-            # TODO: Update the package database and install the packages...
+            zenity --progress \
+                --title="$Title" \
+                --text="Updating software database, please wait..." \
+                --pulsate \
+                --no-cancel \
+                --auto-close &
+            ZenityPID=$!
+
+            # Graphical password prompt and dialog as update executes...
+            $SudoGui "apt-get update"
+            kill $ZenityPID
+
+            zenity --progress \
+                --title="$Title" \
+                --text="Installing required software, please wait..." \
+                --pulsate \
+                --no-cancel \
+                --auto-close &
+            ZenityPID=$!
+
+            $SudoGui "apt-get -y install ${PackagesMissing[*]}"
+            kill $ZenityPID
         fi
 
     # User has everything that they need...
@@ -128,6 +157,8 @@ function Main
     if [ ! -x "`which zenity`" ]; then
 	    echo "You need to install zenity before you can use this software."
 	    exit 1
+	else
+        echo "Zenity `zenity --version` detected..."
     fi
 
     # Check for lsb_release...
