@@ -90,8 +90,8 @@ void ShowHelp()
 void ShowVersion()
 {
     cout << "VikingExtractor " VIKING_EXTRACTOR_VERSION << " (GNU Ocrad " << OCRAD_version() << ")" << endl
-         << "Copyright (C) 2010, 2011 Cartesian Theatre." << endl
-         << "This is free software; see the source for copying conditions. There is NO" << endl
+         << "Copyright (C) 2010, 2011, 2012 Cartesian Theatre." << endl
+         << "This is free software; see Copying for copying conditions. There is NO" << endl
          << "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE." << endl;
 }
 
