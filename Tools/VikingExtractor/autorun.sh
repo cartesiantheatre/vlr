@@ -271,7 +271,7 @@ Main()
     esac
 
     # Run the navigation menu...
-    echo -n "Finding best available Python runtime... "
+    echo -n "Running navigation menu with best available Python runtime... "
     
         # First try with Python 3...
         if [ -x "`which python3`" ]; then

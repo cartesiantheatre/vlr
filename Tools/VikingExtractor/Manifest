@@ -1,0 +1,5 @@
+autorun.sh=autorun.sh <- not preserving exec bit
+autorun.inf=autorun.inf
+Copying=../../Copying
+Navigator/=Navigator/
+XDG/=XDG/
