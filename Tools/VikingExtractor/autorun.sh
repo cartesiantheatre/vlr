@@ -104,7 +104,7 @@ PrepareDebianBased()
 
         # Ubuntu precise...
         precise)
-            PackagesRequired=("python3" "python-gi")
+            PackagesRequired=("python3-gi")
         ;;
         
         # Debian squeeze...
