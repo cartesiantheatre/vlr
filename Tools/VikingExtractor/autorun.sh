@@ -41,6 +41,7 @@
     # Distro name and codename...
     Distro=""
     DistroCodeName=""
+    DistroPackageManager=""
 
     # VT100 terminal constants...
     VT100_RESET=$'\033[0m'
@@ -75,12 +76,93 @@ TrapInterrupt()
 # Kill Zenity...
 KillZenity()
 {
-    # Kill any Zenity GUI if still open...
+    # Kill any Zenity GUI if still open...DistroCodeName
     if [ ZenityPID != 0 ]; then
         kill $ZenityPID
         wait $ZenityPID 2> /dev/null
     fi
     ZenityPID=0
+}
+
+# Identify distro name and release code... $Distro and $DistroCodeName
+IdentifyDistro()
+{
+    # Check for lsb_release...
+    echo -n "Identifying distribution... "
+
+	# Get the operating system family name...
+	local OS=`uname`
+	
+	# Not running GNU...
+	if [ "${OS}" != "Linux" ] ; then
+	    echo $STATUS_FAIL
+		echo "This autorun script is only suppoDistroCodeNamerted on GNU/Linux..."
+		exit 1
+	fi
+
+    # If lsb_release is present, this is easy to get distro and code name...
+    if [ -x "`which lsb_release`" ]; then
+        Distro=`lsb_release --id --short`
+        DistroCodeName=`lsb_release --short --codename`
+	    DistroPackageManager="apt"
+
+    # Otherwise fallback to tedious method of checking for distro specific signatures in /etc...
+	else
+
+	    echo $STATUS_FAIL
+		echo -n "Falling back to checking for distro specific signature in /etc... "
+
+        # RedHat... (e.g. Fedora / CentOS)
+	    if [ -f /etc/redhat-release ] ; then
+		    Distro=`cat /etc/redhat-release |sed s/\ release.*//`
+		    DistroCodeName=`cat /etc/redhat-release | sed s/.*\(// | sed s/\)//`
+		    DistroPackageManager="yum"
+	
+	    # SuSe...
+	    elif [ -f /etc/SuSE-release ] ; then
+		    Distro='SuSe'
+		    DistroCodeName=`cat /etc/SuSE-release | tr "\n" ' '| sed s/VERSION.*//`
+		    DistroPackageManager="zypp"
+	DistroCodeName
+	    # Mandrake...
+	    elif [ -f /etc/mandrake-release ] ; then
+		    Distro='Mandrake'
+		    DistroCodeName=`cat /etc/mandrake-release | sed s/.*\(// | sed s/\)//`
+		    DistroPackageManager="yum"
+
+        # Debian...
+	    elif [ -f /etc/debian_version ] ; then
+		    Distro=`cat /etc/lsb-release | grep '^DISTRIB_ID' | awk -F=  '{ print $2 }'`
+		    DistroCodeName=`cat /etc/lsb-release | grep '^DISTRIB_CODENAME' | awk -F=  '{ print $2 }'`
+		    DistroPackageManager="apt"
+		
+        # Unknown...
+		else
+		    echo $STATUS_FAIL
+            zenity --error \
+                --title="Error" \
+                --window-icon=$Icon \
+                --text="You need to install lsb_release before you can use this software. Use your distribution's package manager."
+		    exit 1
+	    fi
+    fi
+
+    # Lock distro identifiers...
+
+ 	readonly Distro
+ 	readonly DistroCodeName
+ 	readonly DistroPackageManager
+
+    # Alert user of what we found...
+    echo $STATUS_OK
+    echo "User is running ${Distro} / ${DistroCodeName}..."
+    echo "System's packages are managed by ${DistroPackageManager}..."
+}
+
+# Convert sole argument to all lowercase...
+LowerCase()
+{
+    echo "$1" | sed "y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/"
 }
 
 # Print banner...
@@ -102,15 +184,26 @@ PrepareDebianBased()
     # Calculate which packages we need...
     case "$DistroCodeName" in
 
-        # Ubuntu precise...
-        precise)
-            PackagesRequired=("python3-gi")
-        ;;
+        # Ubuntu...
+
+            # Ubuntu precise...
+            precise)
+                PackagesRequired=("python3-gi")
+            ;;
+
+        # Fedora...
+            
+            # Beefy Miracle...
+            "Beefy Miracle")
+                PackagesRequired=("python3-gobject")
+            ;;
+
+        # Debian...
         
-        # Debian squeeze...
-        squeeze)
-            PackagesRequired=("python3" "python-gtk2")
-        ;;
+            # Debian squeeze...
+            squeeze)
+                PackagesRequired=("python3" "python-gtk2")
+            ;;
 
         # Unknown distro...
         *)
@@ -126,22 +219,6 @@ PrepareDebianBased()
     # Number of packages that are always needed...
     local PackagesRequiredCount=${#PackagesRequired[*]}
 
-    # Use either gksudo or kdesudo to run a command as root, whichever is 
-    #  available...
-    if [ -x "`which gksudo`" ]; then
-        SudoGui=gksudo
-    elif [ -x "`which kdesudo`" ]; then
-        SudoGui=kdesudo
-    else
-        zenity \
-            --error \
-            --title="Error" \
-            --window-icon=$Icon \
-            --text="I couldn't detect how to ask you for your password to install any needed software." \
-        exit 1
-    fi  
-    echo "Will use $SudoGui as sudo frontend..."
-
     # Check that each required package is installed...
     zenity --progress \
             --title="$Title" \
@@ -152,7 +229,7 @@ PrepareDebianBased()
             --no-cancel &
     ZenityPID=$!
     for (( Index=0; Index<$PackagesRequiredCount; Index++)); do
-        CheckDebInstalled ${PackagesRequired[${Index}]}
+        CheckPackageInstalled ${PackagesRequired[${Index}]}
     done
     KillZenity
 
@@ -185,8 +262,37 @@ PrepareDebianBased()
     # TODO: Implement the launching of the navigation menu GUI here...
 }
 
+# Takes a package name as a single parameter and returns true if it is
+#  installed. Also adds the name of the package if missing to PackagesMissing
+#  global array...
+CheckPackageInstalled()
+{
+    case "$DistroPackageManager" in
+
+        # Apt based...
+        apt)
+            CheckDebInstalled $1
+        ;;
+        
+        # Yum based...
+        yum)
+            CheckRPMInstalled $1
+        ;;
+
+        # Unknown...
+        *)
+            zenity --error \
+                --title="Error" \
+                --window-icon=$Icon \
+                --text="I'm sorry, but your package manager is not supported..."
+            exit 1
+            ;;
+    esac
+}
+
 # Takes a debian package name as a single parameter and returns true if it is
-#  installed. This should work on all Debian based distros, including Ubuntu...
+#  installed. Also adds the name of the package if missing to PackagesMissing
+#  global array...
 CheckDebInstalled()
 {
     # Get name of package to check as only argument...
@@ -211,13 +317,42 @@ CheckDebInstalled()
     fi
 }
 
+# Takes a RPM package name as a single parameter and returns true if it is
+#  installed. Also adds the name of the package if missing to PackagesMissing
+#  global array...
+CheckRPMInstalled()
+{
+    # Get name of package to check as only argument...
+    local Package=$1
+
+    # Check if the package is installed...
+    echo -n "Checking if $Package is installed... "
+    yum list installed $Package &> /dev/null
+
+    # Installed...
+    if [ $? == 0 ]
+    then
+        echo -e $STATUS_OK
+        return 1
+
+    # Not installed...
+    else
+        echo -e $SYMBOL_FAIL
+        PackagesMissing=("${PackagesMissing[*]}" $Package)
+        return 0
+    fi
+}
+
 # Entry point...
 Main()
 {
     # Print banner...
     PrintBanner
 
-    # Zenity has come on every Ubuntu distro since at least 10.04...
+    # Setup traps...
+    trap TrapInterrupt SIGINT
+
+    # Zenity has come on most GNU distros...
     echo -n "Checking for zenity..."
     if [ ! -x "`which zenity`" ]; then
 	    echo $STATUS_FAIL
@@ -228,37 +363,20 @@ Main()
     fi
 
     # Check for lsb_release...
-    echo -n "Checking for lsb_release... "
-    if [ ! -x "`which lsb_release`" ]; then
-        echo $STATUS_FAIL
-        zenity --error \
-            --title="Error" \
-            --window-icon=$Icon \
-            --text="You need to install lsb_release before you can use this software. Use your distribution's package manager."
-	    exit 1
-	else
-	    echo $STATUS_OK
-    fi
+    IdentifyDistro
 
-    # Setup traps...
-    trap TrapInterrupt SIGINT
-
-    # Prepare for a given distro...
-    Distro=`lsb_release --id --short`
-    DistroCodeName=`lsb_release --short --codename`
     case "$Distro" in
 
         # Ubuntu, Debian, or some derivative...
         [Uu]buntu) ;&
         [Dd]ebian)
-            echo "Ubuntu or Debian distribution... (${Distro} ${DistroCodeName})"
             PrepareDebianBased
         ;;
 #        
 #        # Fedora...
-#        [Ff]edora)
-#            echo "Fedora distribution..."
-#        ;;
+        [Ff]edora)
+            PrepareDebianBased
+        ;;
         
         # Unknown distro...
         *)

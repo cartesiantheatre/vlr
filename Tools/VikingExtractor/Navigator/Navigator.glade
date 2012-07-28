@@ -1,86 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkWindow" id="MainWindowInstance">
+  <object class="GtkAssistant" id="AssistantInstance">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Avaneya: Viking Lander Remastered DVD</property>
-    <property name="window_position">center</property>
-    <property name="default_width">440</property>
-    <property name="default_height">250</property>
+    <property name="window_position">center-always</property>
     <property name="icon">Icon.png</property>
-    <child>
-      <object class="GtkBox" id="WelcomeBox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">3</property>
-        <child>
-          <object class="GtkNotebook" id="notebook1">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <child>
-              <object class="GtkBox" id="box1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel" id="label1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">page 1</property>
-              </object>
-              <packing>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel" id="label2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">page 2</property>
-              </object>
-              <packing>
-                <property name="position">1</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel" id="label3">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">page 3</property>
-              </object>
-              <packing>
-                <property name="position">2</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-      </object>
-    </child>
+    <signal name="close" handler="onDestroyEvent" swapped="no"/>
+    <signal name="delete-event" handler="onDestroyEvent" swapped="no"/>
+    <signal name="cancel" handler="onCancelEvent" swapped="no"/>
+    <signal name="prepare" handler="onPrepareEvent" swapped="no"/>
   </object>
   <object class="GtkWindow" id="SplashWindowInstance">
     <property name="can_focus">False</property>
@@ -94,13 +23,12 @@
     <property name="decorated">False</property>
     <property name="deletable">False</property>
     <property name="has_resize_grip">False</property>
-    <signal name="key-press-event" handler="SplashWindow.onSkipSplash" swapped="no"/>
-    <signal name="delete-event" handler="SplashWindow.onSkipSplash" swapped="no"/>
+    <signal name="key-press-event" handler="onSplashPressed" swapped="no"/>
     <child>
       <object class="GtkEventBox" id="eventBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <signal name="button-press-event" handler="SplashWindow.onSkipSplash" swapped="no"/>
+        <signal name="button-press-event" handler="onSplashPressed" swapped="no"/>
         <child>
           <object class="GtkImage" id="splashImage">
             <property name="visible">True</property>
@@ -109,6 +37,229 @@
           </object>
         </child>
       </object>
+    </child>
+  </object>
+  <object class="GtkBox" id="handbookPageBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">8</property>
+    <child>
+      <object class="GtkImage" id="handbookImage">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="pixbuf">Handbook.png</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">The Avaneya Project Crew Handbook was written to address the needs of contributors to the Avaneya project. Would you like to download the latest electronic copy free?</property>
+        <property name="wrap">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="fetchHandbookButton">
+        <property name="label">gtk-save-as</property>
+        <property name="use_action_appearance">False</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+        <property name="halign">center</property>
+        <property name="use_action_appearance">False</property>
+        <property name="use_stock">True</property>
+        <property name="image_position">top</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="padding">8</property>
+        <property name="position">2</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkBox" id="integrityInfoPageBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="border_width">8</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">8</property>
+    <child>
+      <object class="GtkImage" id="image1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="pixbuf">Disc.png</property>
+        <property name="icon-size">3</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">This disc contains a substantial amount of data that the recovery software will try to examine for recoverable images. Would you like to verify that the data contained on your disc is not corrupted? You really only ever need to do this once or if you suspect that your disc may be damaged. Note that this can take a while, depending on the speed of your hardware.</property>
+        <property name="wrap">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="performIntegrityCheckRadio">
+        <property name="label" translatable="yes">Perform DVD integrity check</property>
+        <property name="use_action_appearance">False</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="margin_left">20</property>
+        <property name="margin_top">20</property>
+        <property name="use_action_appearance">False</property>
+        <property name="xalign">0</property>
+        <property name="draw_indicator">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="skipIntegrityCheckRadio">
+        <property name="label" translatable="yes">Skip DVD integrity check</property>
+        <property name="use_action_appearance">False</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="margin_left">20</property>
+        <property name="margin_top">20</property>
+        <property name="use_action_appearance">False</property>
+        <property name="xalign">0</property>
+        <property name="active">True</property>
+        <property name="draw_indicator">True</property>
+        <property name="group">performIntegrityCheckRadio</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">3</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkBox" id="integrityProgressPageBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="valign">center</property>
+    <property name="hexpand">True</property>
+    <signal name="realize" handler="onIntegrityProgressPageRealizeEvent" swapped="no"/>
+    <child>
+      <object class="GtkProgressBar" id="integrityProgressBar">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="hexpand">True</property>
+        <property name="text" translatable="yes">Verifying disc, please wait...</property>
+        <property name="show_text">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button1">
+        <property name="label">gtk-stop</property>
+        <property name="use_action_appearance">False</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+        <property name="use_action_appearance">False</property>
+        <property name="use_stock">True</property>
+        <signal name="pressed" handler="onStopIntegrityPressed" swapped="no"/>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkTextBuffer" id="welcomeTextBuffer">
+    <property name="text" translatable="yes">This Avaneya: Viking Lander Remastered disc has an interesting story behind it. If you'd like to skip past this and go straight to the data recovery, select skip introduction below.
+
+The Avaneya project is an attempt at a libre cerebral science fiction libre game for the GNU platform. It takes place in the future on Mars and predominantly in a region of the planet known as Arcadia Planitia. This is approximately mid-latitude in the northern hemisphere.
+
+Getting the game experience right is important to us. That means we need to replicate the visual environmental conditions of the Martian landscape as closely as possible. We can do much better than simply making it red, and users appreciate this because it makes their experience feel more genuine.
+
+As such, our artists need access to large sets of high resolution reference photographs of the area nearest and most similar to Arcadia Planitia for study. Suitable photographs were taken in the late 1970s by NASA's Viking mission.
+
+In 1976 NASA successfully placed two spacecraft into Martian orbit after many years of failed American and Russian attempts. These initial failures became unofficially attributed to the Mars Curse, owing to their high number. The Viking orbiters both carried their own landers which they successfully landed. 
+
+The landers were capable of capturing high resolution photographs and other data from the surface of the planet, buffering temporarily onto internal magnetic tapes, and then relaying this data back to Earth through one the orbiters when it was in position, or sometimes directly through a UHF uplink when possible. They provided us with large amounts of data without any issues for four years before finally succumbing to a battery failure on one and a software update bug which shutdown the communication antenna on the other.</property>
+  </object>
+  <object class="GtkBox" id="welcomePageBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_left">8</property>
+    <property name="margin_right">8</property>
+    <property name="margin_top">8</property>
+    <property name="margin_bottom">8</property>
+    <property name="hexpand">True</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">8</property>
+    <child>
+      <object class="GtkImage" id="image2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="pixbuf">Icon.png</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow" id="scrolledwindow1">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="shadow_type">etched-in</property>
+        <property name="min_content_width">800</property>
+        <property name="min_content_height">300</property>
+        <child>
+          <object class="GtkTextView" id="welcomeTextView">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="editable">False</property>
+            <property name="wrap_mode">word</property>
+            <property name="left_margin">7</property>
+            <property name="right_margin">7</property>
+            <property name="cursor_visible">False</property>
+            <property name="buffer">welcomeTextBuffer</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
     </child>
   </object>
 </interface>
