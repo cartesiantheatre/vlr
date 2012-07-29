@@ -167,14 +167,12 @@
     <property name="can_focus">False</property>
     <property name="valign">center</property>
     <property name="hexpand">True</property>
-    <signal name="realize" handler="onIntegrityProgressPageRealizeEvent" swapped="no"/>
+    <property name="orientation">vertical</property>
     <child>
-      <object class="GtkProgressBar" id="integrityProgressBar">
+      <object class="GtkLabel" id="label3">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="hexpand">True</property>
-        <property name="text" translatable="yes">Verifying disc, please wait...</property>
-        <property name="show_text">True</property>
+        <property name="label" translatable="yes">Verifying disc integrity. Please wait...</property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -183,15 +181,39 @@
       </packing>
     </child>
     <child>
-      <object class="GtkButton" id="button1">
-        <property name="label">gtk-stop</property>
-        <property name="use_action_appearance">False</property>
+      <object class="GtkBox" id="hbox">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
-        <property name="use_action_appearance">False</property>
-        <property name="use_stock">True</property>
-        <signal name="pressed" handler="onStopIntegrityPressed" swapped="no"/>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkProgressBar" id="integrityProgressBar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="show_text">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="button1">
+            <property name="label">gtk-stop</property>
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_action_appearance">False</property>
+            <property name="use_stock">True</property>
+            <signal name="pressed" handler="onStopIntegrityPressed" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="expand">False</property>
