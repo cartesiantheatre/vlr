@@ -21,6 +21,7 @@
 # Imports...
 from gi.repository import Gtk, Gdk, GObject
 from optparse import OptionParser
+import urllib.request
 
 # Our other modules...
 from VerificationThread import VerificationThread
@@ -83,14 +84,80 @@ class NavigatorApp():
 
         # Fetch handbook page...
         self.handbookPageBox = self.builder.get_object("handbookPageBox")
-        fetchHandbookButton = self.builder.get_object("fetchHandbookButton")
-        fetchHandbookButton=fetchHandbookButton.get_children()[0]
-        fetchHandbookButton.get_children()[0].get_children()[1].set_label("Download")
         self.handbookPageBox.set_border_width(5)
         self.assistant.append_page(self.handbookPageBox)
         self.assistant.set_page_title(self.handbookPageBox, "Fetch Handbook")
         self.assistant.set_page_type(self.handbookPageBox, Gtk.AssistantPageType.CONTENT)
         self.assistant.set_page_complete(self.handbookPageBox, True)
+
+    # Download handbook button toggled...
+    def onDownloadHandbookToggled(self, button):
+
+        # Find the download progress bar...
+        progressBar = self.builder.get_object("handbookDownloadProgress")
+
+        # User requested to download the latest handbook...
+        if button.get_active():
+            
+            # Disable the next page button until done downloading...
+            self.assistant.set_page_complete(self.handbookPageBox, False)
+            
+            # Show the download progress bar...
+            progressBar.show()
+
+            # The URL to the latest copy of the handbook and just the filename...
+            handbookUrl = "https://www.avaneya.com/downloads/Avaneya_Project_Crew_Handbook.pdf"
+            fileName = handbookUrl.split('/')[-1]
+
+            # Create a URL stream...
+            urlStream = urllib.request.urlopen(handbookUrl)
+            
+            # Create the file on disk...
+            fileHandle = open(fileName, 'wb')
+            
+            # Get its length...
+            fileSize = int(urlStream.headers["Content-Length"])
+            
+            # Remember how much we have downloaded so far so we can calculate 
+            #  progress...
+            fileSizeCompleted = 0
+            
+            # Download block size of 8K...
+            blockSize = 8192
+
+            # Receive loop...
+            while True:
+            
+                # Fill the buffer...
+                fileBuffer = urlStream.read(blockSize)
+
+                # No more left...
+                if not fileBuffer:
+                    break
+
+                # Save to disk...
+                fileHandle.write(fileBuffer)
+
+                # Calculate progress and update progress bar...
+                fileSizeCompleted += len(fileBuffer)
+                progressBar.set_fraction(fileSizeCompleted / fileSize)
+
+                # Flush the event queue so we don't block...
+                while Gtk.events_pending():
+                    Gtk.main_iteration()
+
+            # Done. Close the stream and note that the page is ready to advance...
+            fileHandle.close()
+            self.assistant.set_page_complete(self.handbookPageBox, True)
+
+        # User did not want to download the handbook...
+        else:
+            
+            # Hide the progress bar...
+            progressBar.hide()
+            
+            # Flag the page as complete...
+            self.assistant.set_page_complete(self.handbookPageBox, True)
 
     # End of current page. Next page is being constructed but not visible yet...
     def onPrepareEvent(self, assistant, currentPage):
@@ -100,6 +167,11 @@ class NavigatorApp():
 
         # Transitioning into integrity progress page...
         if currentPage is self.integrityProgressPageBox:
+
+            # Don't start the disc verification thread if user requested to 
+            #  skip it...
+            if self.builder.get_object("skipIntegrityCheckRadio").get_active():
+                return
 
             # Change to busy cursor...
             cursorWatch = Gdk.Cursor.new(Gdk.CursorType.WATCH)
@@ -130,7 +202,7 @@ class NavigatorApp():
     def startDiscVerification(self):
 
         # Already running...
-        if self.verificationThread:
+        if self.verificationThread and self.verificationThread.isAlive():
             print("Disc verification thread already in progress...")
             return
 
@@ -216,8 +288,10 @@ class NavigatorApp():
         try:
             Gtk.main()
         except KeyboardInterrupt:
+            print("KeyboardInterrupt")
             raise
         except:
+            print("SomeOtherException")
             Gtk.main_quit()
 
     # Show the splash window...

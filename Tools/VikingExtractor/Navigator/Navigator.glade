@@ -3,6 +3,7 @@
   <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkAssistant" id="AssistantInstance">
     <property name="can_focus">False</property>
+    <property name="border_width">20</property>
     <property name="title" translatable="yes">Avaneya: Viking Lander Remastered DVD</property>
     <property name="window_position">center-always</property>
     <property name="icon">Icon.png</property>
@@ -42,6 +43,7 @@
   <object class="GtkBox" id="handbookPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <property name="spacing">8</property>
     <child>
@@ -70,29 +72,104 @@
       </packing>
     </child>
     <child>
-      <object class="GtkButton" id="fetchHandbookButton">
-        <property name="label">gtk-save-as</property>
+      <object class="GtkCheckButton" id="downloadHandbookButton">
+        <property name="label" translatable="yes">Yes, download a free copy of the handbook.</property>
         <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
+        <property name="receives_default">False</property>
         <property name="halign">center</property>
         <property name="use_action_appearance">False</property>
-        <property name="use_stock">True</property>
-        <property name="image_position">top</property>
+        <property name="xalign">0</property>
+        <property name="draw_indicator">True</property>
+        <signal name="toggled" handler="onDownloadHandbookToggled" swapped="no"/>
       </object>
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="padding">8</property>
+        <property name="padding">20</property>
         <property name="position">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkProgressBar" id="handbookDownloadProgress">
+        <property name="can_focus">False</property>
+        <property name="no_show_all">True</property>
+        <property name="show_text">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">3</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkBox" id="integrityProgressPageBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="valign">center</property>
+    <property name="hexpand">True</property>
+    <property name="border_width">20</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkLabel" id="label3">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Verifying disc integrity. Please wait...</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox" id="hbox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="border_width">20</property>
+        <child>
+          <object class="GtkProgressBar" id="integrityProgressBar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="show_text">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="button1">
+            <property name="label">gtk-stop</property>
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_action_appearance">False</property>
+            <property name="use_stock">True</property>
+            <signal name="pressed" handler="onStopIntegrityPressed" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
       </packing>
     </child>
   </object>
   <object class="GtkBox" id="integrityInfoPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="border_width">8</property>
+    <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <property name="spacing">8</property>
     <child>
@@ -159,66 +236,6 @@
         <property name="expand">False</property>
         <property name="fill">True</property>
         <property name="position">3</property>
-      </packing>
-    </child>
-  </object>
-  <object class="GtkBox" id="integrityProgressPageBox">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="valign">center</property>
-    <property name="hexpand">True</property>
-    <property name="orientation">vertical</property>
-    <child>
-      <object class="GtkLabel" id="label3">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Verifying disc integrity. Please wait...</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkBox" id="hbox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="GtkProgressBar" id="integrityProgressBar">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">True</property>
-            <property name="show_text">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="button1">
-            <property name="label">gtk-stop</property>
-            <property name="use_action_appearance">False</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="use_stock">True</property>
-            <signal name="pressed" handler="onStopIntegrityPressed" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
       </packing>
     </child>
   </object>
