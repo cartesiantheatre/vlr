@@ -40,6 +40,26 @@
       </object>
     </child>
   </object>
+  <object class="GtkBox" id="finalPageBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="halign">center</property>
+    <property name="valign">center</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">20</property>
+    <child>
+      <object class="GtkLabel" id="label5">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Last page</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+  </object>
   <object class="GtkBox" id="handbookPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -127,7 +147,9 @@
       <object class="GtkLabel" id="label1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">This disc contains a substantial amount of data that the recovery software will try to examine for recoverable images. Would you like to verify that the data contained on your disc is not corrupted? You really only ever need to do this once or if you suspect that your disc may be damaged. Note that this can take a while, depending on the speed of your hardware.</property>
+        <property name="label" translatable="yes">This disc contains a substantial amount of data that the recovery software will try to examine for recoverable images. Would you like to verify that the data contained on your disc is not corrupted?
+
+You really only ever need to do this once or if you suspect that your disc may be damaged. Note that this can take a while, depending on the speed of your hardware.</property>
         <property name="wrap">True</property>
       </object>
       <packing>
@@ -239,7 +261,7 @@
       </packing>
     </child>
   </object>
-  <object class="GtkBox" id="selectRecoveryFolderPage">
+  <object class="GtkBox" id="selectRecoveryFolderPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="valign">center</property>
@@ -253,7 +275,8 @@
         <property name="can_focus">False</property>
         <property name="halign">center</property>
         <property name="valign">center</property>
-        <property name="label" translatable="yes">Please select an empty folder where all recoverable images will be placed.</property>
+        <property name="label" translatable="yes">Please select an &lt;b&gt;empty&lt;/b&gt; folder where all recoverable images will be placed.</property>
+        <property name="use_markup">True</property>
         <property name="wrap">True</property>
       </object>
       <packing>
@@ -272,7 +295,6 @@
         <property name="action">select-folder</property>
         <property name="do_overwrite_confirmation">True</property>
         <property name="title" translatable="yes">Select folder to store recovered images</property>
-        <signal name="file-set" handler="onRecoveryFolderChooserFileSet" swapped="no"/>
       </object>
       <packing>
         <property name="expand">False</property>

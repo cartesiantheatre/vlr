@@ -23,6 +23,7 @@ from gi.repository import Gtk, Gdk, GObject
 from optparse import OptionParser
 import urllib.request
 import os
+import platform
 
 # Our other modules...
 from VerificationThread import VerificationThread
@@ -92,12 +93,20 @@ class NavigatorApp():
         self.assistant.set_page_complete(self.handbookPageBox, True)
 
         # Select recovery folder page...
-        self.selectRecoveryFolderPage = self.builder.get_object("selectRecoveryFolderPage")
-        self.selectRecoveryFolderPage.set_border_width(5)
-        self.assistant.append_page(self.selectRecoveryFolderPage)
-        self.assistant.set_page_title(self.selectRecoveryFolderPage, "Select Recovery Folder")
+        self.selectRecoveryFolderPageBox = self.builder.get_object("selectRecoveryFolderPageBox")
+        self.selectRecoveryFolderPageBox.set_border_width(5)
+        self.assistant.append_page(self.selectRecoveryFolderPageBox)
+        self.assistant.set_page_title(self.selectRecoveryFolderPageBox, "Select Recovery Folder")
         self.assistant.set_page_type(self.handbookPageBox, Gtk.AssistantPageType.CONTENT)
-        self.assistant.set_page_complete(self.selectRecoveryFolderPage, False)
+        self.assistant.set_page_complete(self.selectRecoveryFolderPageBox, True)
+
+        # Final page...
+        self.finalPageBox = self.builder.get_object("finalPageBox")
+        self.finalPageBox.set_border_width(5)
+        self.assistant.append_page(self.finalPageBox)
+        self.assistant.set_page_title(self.finalPageBox, "Goodbye")
+        self.assistant.set_page_type(self.finalPageBox, Gtk.AssistantPageType.SUMMARY)
+        self.assistant.set_page_complete(self.finalPageBox, True)
 
     # Download handbook button toggled...
     def onDownloadHandbookToggled(self, button):
@@ -210,7 +219,8 @@ class NavigatorApp():
                 messageDialog = Gtk.MessageDialog(
                     self.assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.QUESTION, 
                     Gtk.ButtonsType.YES_NO, 
-                    "The book downloaded successfully. Would you like to see it?")
+                    "The book downloaded successfully. Would you like to open it?")
+                messageDialog.set_default_response(Gtk.ResponseType.YES)
                 userResponse = messageDialog.run()
                 messageDialog.destroy()
                 
@@ -230,29 +240,27 @@ class NavigatorApp():
 
                 # Alert user...
                 messageDialog = Gtk.MessageDialog(
-                    self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
+                    self.assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
                     Gtk.ButtonsType.OK, 
                     "There was a problem contacting the remote server. Please try again later.\n\n{0}".
                         format(exception.reason()))
                 messageDialog.run()
                 messageDialog.destroy()
 
-                # Update the GUI...
-                button.set_sensitive(True)
-                progressBar.hide()
-                self.assistant.set_page_complete(self.handbookPageBox, True)
-
             # Couldn't write to disk...
             except IOError:
 
                 # Alert user...
                 messageDialog = Gtk.MessageDialog(
-                    self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
+                    self.assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
                     Gtk.ButtonsType.OK, 
                     "Unable to save the handbook to the requested location. Maybe you don't have permission?")
                 messageDialog.run()
                 messageDialog.destroy()
 
+            # Regardless of whether there was an exception or not...
+            finally:
+                
                 # Update the GUI...
                 button.set_sensitive(True)
                 progressBar.hide()
@@ -369,9 +377,6 @@ class NavigatorApp():
     def onDestroyEvent(self, *args):
         print("Quitting...")
         self.quit()
-
-    def onForwardClicked(self, button):
-        print("onForwardPressed")
 
     # Destroy the splash window after splash timer elapses...
     def splashTimerDone(self, userData):
