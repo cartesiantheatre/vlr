@@ -84,7 +84,7 @@ class VerificationThread(threading.Thread):
             fraction = self._totalVerifiedSize / self._totalFileSize
             
             # Schedule to update the GUI...
-            GObject.idle_add(self._updateGUI, fraction)
+            GObject.idle_add(self._updateGUI, fraction, priority=GObject.PRIORITY_LOW)
             
             # Something requested the thread quit...
             if self._finished:
@@ -121,7 +121,6 @@ class VerificationThread(threading.Thread):
 
     # Thread entry point...
     def run(self):
-        print("Verification thread executing...")
         
         # Calculate the total file size of all files...
         for (currentFile, correctHexDigest) in self._files:

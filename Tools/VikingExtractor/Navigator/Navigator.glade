@@ -73,7 +73,7 @@
     </child>
     <child>
       <object class="GtkCheckButton" id="downloadHandbookButton">
-        <property name="label" translatable="yes">Yes, download a free copy of the handbook.</property>
+        <property name="label" translatable="yes">Yes, download the latest copy!</property>
         <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
@@ -101,68 +101,6 @@
         <property name="expand">False</property>
         <property name="fill">True</property>
         <property name="position">3</property>
-      </packing>
-    </child>
-  </object>
-  <object class="GtkBox" id="integrityProgressPageBox">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="valign">center</property>
-    <property name="hexpand">True</property>
-    <property name="border_width">20</property>
-    <property name="orientation">vertical</property>
-    <child>
-      <object class="GtkLabel" id="label3">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Verifying disc integrity. Please wait...</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkBox" id="hbox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">20</property>
-        <child>
-          <object class="GtkProgressBar" id="integrityProgressBar">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">True</property>
-            <property name="show_text">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="button1">
-            <property name="label">gtk-stop</property>
-            <property name="use_action_appearance">False</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="use_stock">True</property>
-            <signal name="pressed" handler="onStopIntegrityPressed" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
       </packing>
     </child>
   </object>
@@ -239,6 +177,110 @@
       </packing>
     </child>
   </object>
+  <object class="GtkBox" id="integrityProgressPageBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="valign">center</property>
+    <property name="hexpand">True</property>
+    <property name="border_width">20</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkLabel" id="label3">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Verifying disc integrity. Please wait...</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox" id="hbox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="border_width">20</property>
+        <child>
+          <object class="GtkProgressBar" id="integrityProgressBar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="show_text">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="button1">
+            <property name="label">gtk-cancel</property>
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_action_appearance">False</property>
+            <property name="use_stock">True</property>
+            <signal name="pressed" handler="onStopIntegrityPressed" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkBox" id="selectRecoveryFolderPage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="valign">center</property>
+    <property name="hexpand">True</property>
+    <property name="border_width">20</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">20</property>
+    <child>
+      <object class="GtkLabel" id="label4">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="valign">center</property>
+        <property name="label" translatable="yes">Please select an empty folder where all recoverable images will be placed.</property>
+        <property name="wrap">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkFileChooserButton" id="recoveryFolderChooser">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="valign">center</property>
+        <property name="orientation">vertical</property>
+        <property name="action">select-folder</property>
+        <property name="do_overwrite_confirmation">True</property>
+        <property name="title" translatable="yes">Select folder to store recovered images</property>
+        <signal name="file-set" handler="onRecoveryFolderChooserFileSet" swapped="no"/>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">False</property>
+        <property name="position">2</property>
+      </packing>
+    </child>
+  </object>
   <object class="GtkTextBuffer" id="welcomeTextBuffer">
     <property name="text" translatable="yes">This Avaneya: Viking Lander Remastered disc has an interesting story behind it. If you'd like to skip past this and go straight to the data recovery, select skip introduction below.
 
@@ -260,6 +302,7 @@ The landers were capable of capturing high resolution photographs and other data
     <property name="margin_top">8</property>
     <property name="margin_bottom">8</property>
     <property name="hexpand">True</property>
+    <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <property name="spacing">8</property>
     <child>

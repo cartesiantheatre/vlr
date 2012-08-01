@@ -22,6 +22,7 @@
 from gi.repository import Gtk, Gdk, GObject
 from optparse import OptionParser
 import urllib.request
+import os
 
 # Our other modules...
 from VerificationThread import VerificationThread
@@ -90,6 +91,14 @@ class NavigatorApp():
         self.assistant.set_page_type(self.handbookPageBox, Gtk.AssistantPageType.CONTENT)
         self.assistant.set_page_complete(self.handbookPageBox, True)
 
+        # Select recovery folder page...
+        self.selectRecoveryFolderPage = self.builder.get_object("selectRecoveryFolderPage")
+        self.selectRecoveryFolderPage.set_border_width(5)
+        self.assistant.append_page(self.selectRecoveryFolderPage)
+        self.assistant.set_page_title(self.selectRecoveryFolderPage, "Select Recovery Folder")
+        self.assistant.set_page_type(self.handbookPageBox, Gtk.AssistantPageType.CONTENT)
+        self.assistant.set_page_complete(self.selectRecoveryFolderPage, False)
+
     # Download handbook button toggled...
     def onDownloadHandbookToggled(self, button):
 
@@ -99,64 +108,162 @@ class NavigatorApp():
         # User requested to download the latest handbook...
         if button.get_active():
             
-            # Disable the next page button until done downloading...
+            # Update the GUI...
+            button.set_sensitive(False)
             self.assistant.set_page_complete(self.handbookPageBox, False)
             
-            # Show the download progress bar...
-            progressBar.show()
-
             # The URL to the latest copy of the handbook and just the filename...
             handbookUrl = "https://www.avaneya.com/downloads/Avaneya_Project_Crew_Handbook.pdf"
             fileName = handbookUrl.split('/')[-1]
 
-            # Create a URL stream...
-            urlStream = urllib.request.urlopen(handbookUrl)
-            
-            # Create the file on disk...
-            fileHandle = open(fileName, 'wb')
-            
-            # Get its length...
-            fileSize = int(urlStream.headers["Content-Length"])
-            
-            # Remember how much we have downloaded so far so we can calculate 
-            #  progress...
-            fileSizeCompleted = 0
-            
-            # Download block size of 8K...
-            blockSize = 8192
+            # Prepare a save as file chooser dialog to save the handbook...
+            dialog = Gtk.FileChooserDialog(
+                "Please choose a download location...", 
+                self.assistant,
+                Gtk.FileChooserAction.SAVE,
+                (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_SAVE_AS, Gtk.ResponseType.OK))
+            dialog.set_local_only(True)
+            dialog.set_do_overwrite_confirmation(True)
+            dialog.set_current_name(fileName)
+            dialog.set_default_response(Gtk.ResponseType.OK)
 
-            # Receive loop...
-            while True:
+            # Run the dialog and capture the response...
+            userResponse = dialog.run()
             
-                # Fill the buffer...
-                fileBuffer = urlStream.read(blockSize)
+            # User cancelled...
+            if userResponse != Gtk.ResponseType.OK:
 
-                # No more left...
-                if not fileBuffer:
-                    break
+                # Update GUI...
+                progressBar.hide()
+                button.set_sensitive(True)
+                self.assistant.set_page_complete(self.handbookPageBox, True)
+                
+                # Deactivate the download button...
+                button.set_active(False)
 
-                # Save to disk...
-                fileHandle.write(fileBuffer)
+                # Cleanup the dialog...
+                dialog.destroy()
 
-                # Calculate progress and update progress bar...
-                fileSizeCompleted += len(fileBuffer)
-                progressBar.set_fraction(fileSizeCompleted / fileSize)
+                # Don't do anything further...
+                return
+            
+            # Get the selected file name...
+            fileName = dialog.get_filename()
+
+            # Cleanup the dialog...
+            dialog.destroy()
+
+            # Show the download progress bar...
+            progressBar.show()
+            progressBar.set_text("Contacting remote server, please wait...")
+
+            # Try to download...
+            try:
 
                 # Flush the event queue so we don't block...
                 while Gtk.events_pending():
                     Gtk.main_iteration()
 
-            # Done. Close the stream and note that the page is ready to advance...
-            fileHandle.close()
-            self.assistant.set_page_complete(self.handbookPageBox, True)
+                # Create a URL stream with a 10 second timeout...
+                urlStream = urllib.request.urlopen(handbookUrl, None, 10)
+                
+                # Create the file on disk...
+                fileHandle = open(fileName, 'wb')
+                
+                # Get its length...
+                fileSize = int(urlStream.headers["Content-Length"])
+                
+                # Remember how much we have downloaded so far so we can calculate 
+                #  progress...
+                fileSizeCompleted = 0
+                
+                # Download block size of 8K...
+                blockSize = 8192
+
+                # Receive loop...
+                while True:
+                
+                    # Fill the buffer...
+                    fileBuffer = urlStream.read(blockSize)
+
+                    # No more left...
+                    if not fileBuffer:
+                        break
+
+                    # Save to disk...
+                    fileHandle.write(fileBuffer)
+
+                    # Calculate progress and update progress bar...
+                    fileSizeCompleted += len(fileBuffer)
+                    progressBar.set_text(None)
+                    progressBar.set_fraction(fileSizeCompleted / fileSize)
+
+                    # Flush the event queue so we don't block...
+                    while Gtk.events_pending():
+                        Gtk.main_iteration()
+
+                # Done. Close the stream and note that the page is ready to advance...
+                fileHandle.close()
+                self.assistant.set_page_complete(self.handbookPageBox, True)
+
+                # Alert user that the download is done...
+                messageDialog = Gtk.MessageDialog(
+                    self.assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.QUESTION, 
+                    Gtk.ButtonsType.YES_NO, 
+                    "The book downloaded successfully. Would you like to see it?")
+                userResponse = messageDialog.run()
+                messageDialog.destroy()
+                
+                # User requested to open the book...
+                if userResponse == Gtk.ResponseType.YES:
+
+                    # GNU. Try via freedesktop method...
+                    if platform.system() == "Linux":
+                        os.system("xdg-open \"{0}\"".format(fileName))
+                    
+                    # Winblows system...
+                    elif platform.system() == "Windows":
+                        os.startfile(fileName)
+
+            # Problem finding the URL, e.g. 404...
+            except urllib.error.URLError as exception:
+
+                # Alert user...
+                messageDialog = Gtk.MessageDialog(
+                    self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
+                    Gtk.ButtonsType.OK, 
+                    "There was a problem contacting the remote server. Please try again later.\n\n{0}".
+                        format(exception.reason()))
+                messageDialog.run()
+                messageDialog.destroy()
+
+                # Update the GUI...
+                button.set_sensitive(True)
+                progressBar.hide()
+                self.assistant.set_page_complete(self.handbookPageBox, True)
+
+            # Couldn't write to disk...
+            except IOError:
+
+                # Alert user...
+                messageDialog = Gtk.MessageDialog(
+                    self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
+                    Gtk.ButtonsType.OK, 
+                    "Unable to save the handbook to the requested location. Maybe you don't have permission?")
+                messageDialog.run()
+                messageDialog.destroy()
+
+                # Update the GUI...
+                button.set_sensitive(True)
+                progressBar.hide()
+                self.assistant.set_page_complete(self.handbookPageBox, True)
 
         # User did not want to download the handbook...
         else:
-            
-            # Hide the progress bar...
+
+            # Update the GUI...
+            button.set_sensitive(True)
             progressBar.hide()
-            
-            # Flag the page as complete...
             self.assistant.set_page_complete(self.handbookPageBox, True)
 
     # End of current page. Next page is being constructed but not visible yet...
