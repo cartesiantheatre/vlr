@@ -100,6 +100,14 @@ class NavigatorApp():
         self.assistant.set_page_type(self.handbookPageBox, Gtk.AssistantPageType.CONTENT)
         self.assistant.set_page_complete(self.selectRecoveryFolderPageBox, True)
 
+        # Configure extractor page...
+        self.configureExtractorPageBox = self.builder.get_object("configureExtractorPageBox")
+        self.configureExtractorPageBox.set_border_width(5)
+        self.assistant.append_page(self.configureExtractorPageBox)
+        self.assistant.set_page_title(self.configureExtractorPageBox, "Configure Extractor")
+        self.assistant.set_page_type(self.configureExtractorPageBox, Gtk.AssistantPageType.CONTENT)
+        self.assistant.set_page_complete(self.configureExtractorPageBox, True)
+
         # Final page...
         self.finalPageBox = self.builder.get_object("finalPageBox")
         self.finalPageBox.set_border_width(5)
