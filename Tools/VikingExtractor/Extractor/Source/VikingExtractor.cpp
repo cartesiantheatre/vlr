@@ -43,7 +43,7 @@ void ShowHelp()
          << "Options:"                                                                          << endl
          << "      --directorize-band-class"                                                    << endl
          << "                              Put reconstructed images into subdirectories"        << endl
-         << "                              numbered by band type class (e.g. Colour)."          << endl
+         << "                              named after band type class (e.g. Colour)."          << endl
          << "      --directorize-location  Put reconstructed images into subdirectories"        << endl
          << "                              named after location taken from."                    << endl
          << "      --directorize-month     Put reconstructed images into subdirectories"        << endl

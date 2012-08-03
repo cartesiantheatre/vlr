@@ -139,7 +139,7 @@ void VicarImageAssembler::Reconstruct()
     try
     {
         // Alert user...
-        Message(Console::Summary) << "preparing list of prospective files to catalogue, please wait" << endl;
+        Message(Console::Summary) << "preparing catalogue, please wait" << endl;
 
         // If summarize only mode is enabled, mute current file name, warnings, info, and errors...
         if(Options::GetInstance().GetSummarizeOnly())

@@ -53,7 +53,7 @@ class Options
         const std::string &
                         GetFilterCameraEvent() const { return m_FilterCameraEvent; }
         const FilterDiodeBandSet &
-                        GetFilterDiodeBandSet() const { return m_FilterDiodeBandSet; }
+                         GetFilterDiodeBandSet() const { return m_FilterDiodeBandSet; }
         size_t          GetFilterLander() const { return m_FilterLander; }
         size_t          GetFilterSolarDay() const { return m_FilterSolarDay; }
         bool            GetIgnoreBadFiles() const { return m_IgnoreBadFiles; }

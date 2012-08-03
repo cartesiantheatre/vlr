@@ -70,7 +70,7 @@ class NavigatorApp():
         self.integrityInfoPageBox = self.builder.get_object("integrityInfoPageBox")
         self.integrityInfoPageBox.set_border_width(5)
         self.assistant.append_page(self.integrityInfoPageBox)
-        self.assistant.set_page_title(self.integrityInfoPageBox, "Disc Verification")
+        self.assistant.set_page_title(self.integrityInfoPageBox, "Verification Prompt")
         self.assistant.set_page_type(self.integrityInfoPageBox, Gtk.AssistantPageType.CONTENT)
         self.assistant.set_page_complete(self.integrityInfoPageBox, True)
 
@@ -79,7 +79,7 @@ class NavigatorApp():
         self.integrityProgressPageBox.set_border_width(5)
         self.assistant.append_page(self.integrityProgressPageBox)
         self.assistant.set_page_title(
-            self.integrityProgressPageBox, "Disc Verification\nProgress")
+            self.integrityProgressPageBox, "Verification Progress")
         self.assistant.set_page_type(
             self.integrityProgressPageBox, Gtk.AssistantPageType.PROGRESS)
         self.assistant.set_page_complete(self.integrityProgressPageBox, False)
@@ -88,7 +88,7 @@ class NavigatorApp():
         self.handbookPageBox = self.builder.get_object("handbookPageBox")
         self.handbookPageBox.set_border_width(5)
         self.assistant.append_page(self.handbookPageBox)
-        self.assistant.set_page_title(self.handbookPageBox, "Fetch Handbook")
+        self.assistant.set_page_title(self.handbookPageBox, "Handbook")
         self.assistant.set_page_type(self.handbookPageBox, Gtk.AssistantPageType.CONTENT)
         self.assistant.set_page_complete(self.handbookPageBox, True)
 
@@ -96,17 +96,25 @@ class NavigatorApp():
         self.selectRecoveryFolderPageBox = self.builder.get_object("selectRecoveryFolderPageBox")
         self.selectRecoveryFolderPageBox.set_border_width(5)
         self.assistant.append_page(self.selectRecoveryFolderPageBox)
-        self.assistant.set_page_title(self.selectRecoveryFolderPageBox, "Select Recovery Folder")
+        self.assistant.set_page_title(self.selectRecoveryFolderPageBox, "Select Recovery\n Folder")
         self.assistant.set_page_type(self.handbookPageBox, Gtk.AssistantPageType.CONTENT)
         self.assistant.set_page_complete(self.selectRecoveryFolderPageBox, True)
 
-        # Configure extractor page...
-        self.configureExtractorPageBox = self.builder.get_object("configureExtractorPageBox")
-        self.configureExtractorPageBox.set_border_width(5)
-        self.assistant.append_page(self.configureExtractorPageBox)
-        self.assistant.set_page_title(self.configureExtractorPageBox, "Configure Extractor")
-        self.assistant.set_page_type(self.configureExtractorPageBox, Gtk.AssistantPageType.CONTENT)
-        self.assistant.set_page_complete(self.configureExtractorPageBox, True)
+        # Configure extractor first page...
+        self.configureExtractorFirstPageBox = self.builder.get_object("configureExtractorFirstPageBox")
+        self.configureExtractorFirstPageBox.set_border_width(5)
+        self.assistant.append_page(self.configureExtractorFirstPageBox)
+        self.assistant.set_page_title(self.configureExtractorFirstPageBox, "Configure Image\n Organization")
+        self.assistant.set_page_type(self.configureExtractorFirstPageBox, Gtk.AssistantPageType.CONTENT)
+        self.assistant.set_page_complete(self.configureExtractorFirstPageBox, True)
+
+        # Configure extractor second page...
+        self.configureExtractorSecondPageBox = self.builder.get_object("configureExtractorSecondPageBox")
+        self.configureExtractorSecondPageBox.set_border_width(5)
+        self.assistant.append_page(self.configureExtractorSecondPageBox)
+        self.assistant.set_page_title(self.configureExtractorSecondPageBox, "Configure Image\n Recovery")
+        self.assistant.set_page_type(self.configureExtractorSecondPageBox, Gtk.AssistantPageType.CONTENT)
+        self.assistant.set_page_complete(self.configureExtractorSecondPageBox, True)
 
         # Final page...
         self.finalPageBox = self.builder.get_object("finalPageBox")
