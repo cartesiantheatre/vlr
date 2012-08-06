@@ -69,7 +69,7 @@ void ShowHelp()
          << "      --filter-solar-day[=#]  Look only for camera events taken on the specified"  << endl
          << "                              solar day."                                          << endl
          << "      --no-ansi-colours       Disable VT/100 ANSI coloured terminal output."       << endl
-         << "      --no-auto-rotate        Don't automaticaly rotate image as needed."          << endl
+         << "      --no-auto-rotate        Don't automatically rotate image as needed."          << endl
          << "      --no-reconstruct        Don't attempt to reconstruct camera events, just"    << endl
          << "                              dump all available band data as separate images."    << endl
          << "      --overwrite             Overwrite any existing output files."                << endl

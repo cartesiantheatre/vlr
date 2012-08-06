@@ -1,4 +1,5 @@
 *.o
 *~
 *.py[co]
+__pycache__
 

@@ -40,7 +40,66 @@
       </object>
     </child>
   </object>
-  <object class="GtkBox" id="configureExtractorFirstPageBox">
+  <object class="GtkBox" id="configureFiltersPageBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="valign">center</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">20</property>
+    <child>
+      <object class="GtkImage" id="image5">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="pixbuf">Configure.png</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label9">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">These configuration settings allow you to filter which specific types of data you are interested. If you leave these at their defaults, everything that can be recovered will be.</property>
+        <property name="use_markup">True</property>
+        <property name="wrap">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox" id="box3">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="border_width">20</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">10</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">2</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkBox" id="configureIntroPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="valign">center</property>
@@ -64,7 +123,40 @@
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">The &lt;b&gt;VikingExtractor&lt;/b&gt; has many different configuration options that control how it recovers images and what it does with them. Over the next few steps we'll configure them.
 
-Let's start with how you'd like the files &lt;b&gt;organized&lt;/b&gt; in the directory you previously selected. You can select more than one method of organization to have them automatically compounded. If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation.</property>
+If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
+        <property name="use_markup">True</property>
+        <property name="wrap">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkBox" id="configureOutputLayoutPageBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="valign">center</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">20</property>
+    <child>
+      <object class="GtkImage" id="image7">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="pixbuf">Box.png</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label8">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Let's start with how you'd like the files &lt;b&gt;organized&lt;/b&gt; in the directory you previously selected. If you select more than one method, they will be automatically nested within subfolders.</property>
         <property name="use_markup">True</property>
         <property name="wrap">True</property>
       </object>
@@ -75,20 +167,22 @@ Let's start with how you'd like the files &lt;b&gt;organized&lt;/b&gt; in the di
       </packing>
     </child>
     <child>
-      <object class="GtkBox" id="box1">
+      <object class="GtkBox" id="box5">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">20</property>
         <property name="orientation">vertical</property>
         <property name="spacing">10</property>
         <child>
-          <object class="GtkCheckButton" id="directorizeBandTypeClassCheckButton">
-            <property name="label" translatable="yes">Directorize by sensor band type</property>
+          <object class="GtkCheckButton" id="directorizeBandTypeClassCheckButton2">
+            <property name="label" translatable="yes">Organize by sensor band type</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
-            <property name="tooltip_markup" translatable="yes">Organizes the images into subdirectories named after the sensor band type used on the lander to capture the data, such as &lt;i&gt;Colour&lt;/i&gt; or &lt;i&gt;Infrared&lt;/i&gt;.</property>
+            <property name="has_tooltip">True</property>
+            <property name="tooltip_markup" translatable="yes">Organizes the images into subdirectories named after the sensor band type used on the lander to capture the data, such as Colour or Infrared.</property>
+            <property name="tooltip_text" translatable="yes">Organizes the images into subdirectories named after the sensor band type used on the lander to capture the data, such as Colour or Infrared.</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="active">True</property>
@@ -101,13 +195,15 @@ Let's start with how you'd like the files &lt;b&gt;organized&lt;/b&gt; in the di
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="directorizeLocationCheckButton">
-            <property name="label" translatable="yes">Directorize by location on Martian surface</property>
+          <object class="GtkCheckButton" id="directorizeLocationCheckButton2">
+            <property name="label" translatable="yes">Organize by location on Martian surface</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
-            <property name="tooltip_markup" translatable="yes">Organizes the images into subdirectories named after the physical location on the surface of Mars where they were taken. This will be either &lt;i&gt;Utopia Planitia&lt;/i&gt; or &lt;i&gt;Chryse Planitia&lt;/i&gt;.</property>
+            <property name="has_tooltip">True</property>
+            <property name="tooltip_markup" translatable="yes">Organizes the images into subdirectories named after the physical location on the surface of Mars where they were taken. This will be either Utopia Planitia or Chryse Planitia.</property>
+            <property name="tooltip_text" translatable="yes">Organizes the images into subdirectories named after the physical location on the surface of Mars where they were taken. This will be either Utopia Planitia or Chryse Planitia.</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="active">True</property>
@@ -120,13 +216,15 @@ Let's start with how you'd like the files &lt;b&gt;organized&lt;/b&gt; in the di
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="directorizeMonthCheckButton">
-            <property name="label" translatable="yes">Directorize by Martian month</property>
+          <object class="GtkCheckButton" id="directorizeMonthCheckButton2">
+            <property name="label" translatable="yes">Organize by Martian month</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
-            <property name="tooltip_markup" translatable="yes">Organizes the images into subdirectories named after the month they were taken on. The months follow a Martian calendar, such as &lt;i&gt;Gemini&lt;/i&gt;, &lt;i&gt;Cancer&lt;/i&gt;, &lt;i&gt;Leo&lt;/i&gt;, &lt;i&gt;Virgo&lt;/i&gt;, and so on. For more information, see section 8.15.4 of the &lt;b&gt;Avaneya Project Crew Handbook&lt;/b&gt;.</property>
+            <property name="has_tooltip">True</property>
+            <property name="tooltip_markup" translatable="yes">Organizes the images into subdirectories named after the month they were taken on. The months follow a Martian calendar, such as Gemini, Cancer, Leo, Virgo, and so on. For more information, see section 8.15.4 of the Avaneya Project Crew Handbook.</property>
+            <property name="tooltip_text" translatable="yes">Organizes the images into subdirectories named after the month they were taken on. The months follow a Martian calendar, such as Gemini, Cancer, Leo, Virgo, and so on. For more information, see section 8.15.4 of the Avaneya Project Crew Handbook.</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="active">True</property>
@@ -139,13 +237,15 @@ Let's start with how you'd like the files &lt;b&gt;organized&lt;/b&gt; in the di
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="directorizeSolCheckButton">
-            <property name="label" translatable="yes">Directorize by solar day</property>
+          <object class="GtkCheckButton" id="directorizeSolCheckButton2">
+            <property name="label" translatable="yes">Organize by solar day</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
-            <property name="tooltip_markup" translatable="yes">Put reconstructed images into subdirectories numbered after the solar day they were taken on, offset relative to zero. Solar day zero was the day the given lander touched down.</property>
+            <property name="has_tooltip">True</property>
+            <property name="tooltip_markup" translatable="yes">Put reconstructed images into subdirectories numbered after the solar day they were taken on, offset relative to zero. Solar day zero was the day of a given lander having touched down.</property>
+            <property name="tooltip_text" translatable="yes">Put reconstructed images into subdirectories numbered after the solar day they were taken on, offset relative to zero. Solar day zero was the day of a given lander having touched down.</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="active">True</property>
@@ -165,7 +265,7 @@ Let's start with how you'd like the files &lt;b&gt;organized&lt;/b&gt; in the di
       </packing>
     </child>
   </object>
-  <object class="GtkBox" id="configureExtractorSecondPageBox">
+  <object class="GtkBox" id="configureRecoveryPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="valign">center</property>
@@ -187,7 +287,7 @@ Let's start with how you'd like the files &lt;b&gt;organized&lt;/b&gt; in the di
       <object class="GtkLabel" id="label7">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Now let's customize some other options. Like before, if you are unsure of any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation.</property>
+        <property name="label" translatable="yes">These options control how the VikingExtractor's image recovery process.</property>
         <property name="use_markup">True</property>
         <property name="wrap">True</property>
       </object>
@@ -204,44 +304,6 @@ Let's start with how you'd like the files &lt;b&gt;organized&lt;/b&gt; in the di
         <property name="border_width">20</property>
         <property name="orientation">vertical</property>
         <property name="spacing">10</property>
-        <child>
-          <object class="GtkCheckButton" id="directorizeBandTypeClassCheckButton1">
-            <property name="label" translatable="yes">Interlaced images</property>
-            <property name="use_action_appearance">False</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="has_tooltip">True</property>
-            <property name="tooltip_markup" translatable="yes">The recovered images are encoded in PNG format. If you'd like them to also use interlacing, select this. Interlacing is a method of storing lower resolution copies of an image within itself to allow progressively loading.</property>
-            <property name="use_action_appearance">False</property>
-            <property name="xalign">0</property>
-            <property name="draw_indicator">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkCheckButton" id="directorizeLocationCheckButton1">
-            <property name="label" translatable="yes">Multicore recovery</property>
-            <property name="use_action_appearance">False</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="has_tooltip">True</property>
-            <property name="tooltip_markup" translatable="yes">Take advantage of machines with more than one processor by using them simultaneously. Note that this feature is currently &lt;b&gt;not&lt;/b&gt; supported.</property>
-            <property name="use_action_appearance">False</property>
-            <property name="xalign">0</property>
-            <property name="draw_indicator">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
         <child>
           <object class="GtkCheckButton" id="directorizeMonthCheckButton1">
             <property name="label" translatable="yes">No automatic rotation</property>
@@ -454,18 +516,6 @@ You really only ever need to do this once or if you suspect that your disc may b
     <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <child>
-      <object class="GtkImage" id="image7">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="pixbuf">Verification.png</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
       <object class="GtkLabel" id="label3">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
@@ -532,7 +582,7 @@ You really only ever need to do this once or if you suspect that your disc may b
       <object class="GtkImage" id="image4">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="pixbuf">Harddrive.png</property>
+        <property name="pixbuf">Save.png</property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -573,6 +623,25 @@ You really only ever need to do this once or if you suspect that your disc may b
         <property name="position">2</property>
       </packing>
     </child>
+    <child>
+      <object class="GtkCheckButton" id="overwriteOutputCheckButton">
+        <property name="label" translatable="yes">Overwrite existing output files</property>
+        <property name="use_action_appearance">False</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="tooltip_markup" translatable="yes">This will overwrite any existing output files that have the same name as the data recovered.</property>
+        <property name="use_action_appearance">False</property>
+        <property name="xalign">0</property>
+        <property name="active">True</property>
+        <property name="draw_indicator">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">3</property>
+      </packing>
+    </child>
   </object>
   <object class="GtkTextBuffer" id="welcomeTextBuffer">
     <property name="text" translatable="yes">This Avaneya: Viking Lander Remastered disc has an interesting story behind it. If you'd like to skip past this and go straight to the data recovery, select skip introduction below.
@@ -598,35 +667,10 @@ The landers were capable of capturing high resolution photographs and other data
     <property name="border_width">20</property>
     <property name="spacing">8</property>
     <child>
-      <object class="GtkBox" id="box2">
+      <object class="GtkImage" id="image2">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="homogeneous">True</property>
-        <child>
-          <object class="GtkImage" id="image2">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="pixbuf">Icon.png</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkImage" id="image5">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="pixbuf">Mars.png</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
+        <property name="pixbuf">Icon.png</property>
       </object>
       <packing>
         <property name="expand">False</property>
