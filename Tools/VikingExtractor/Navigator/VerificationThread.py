@@ -24,7 +24,7 @@ import threading
 import time
 from gi.repository import Gtk, GObject
 
-# This thread is responsible for verifying data integrity of the disc...
+# This thread is responsible for verifying data verification of the disc...
 class VerificationThread(threading.Thread):
 
     # Constructor...
@@ -46,7 +46,7 @@ class VerificationThread(threading.Thread):
         self._finished = False
 
         # Find the progress bar...
-        self._integrityProgressBar = self._builder.get_object("integrityProgressBar")
+        self._verificationProgressBar = self._builder.get_object("verificationProgressBar")
 
     # Calculate a file's MD5 checksum...
     def _calculateChecksum(self, filePath):
@@ -98,7 +98,7 @@ class VerificationThread(threading.Thread):
     def _updateGUI(self, fraction):
 
         # Update the progress bar...
-        self._integrityProgressBar.set_fraction(fraction)
+        self._verificationProgressBar.set_fraction(fraction)
 
         # Done...
         if fraction >= 1.0:

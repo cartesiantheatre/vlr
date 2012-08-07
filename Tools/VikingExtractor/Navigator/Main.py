@@ -56,6 +56,8 @@ class NavigatorApp():
 
         # Find the assistant...
         self.assistant = self.builder.get_object("AssistantInstance")
+        
+        # Set the forward function which determines next page to show...
         self.assistant.set_forward_page_func(self.forwardPage, None)
 
         # Welcome page...
@@ -66,29 +68,29 @@ class NavigatorApp():
         self.assistant.set_page_type(self.welcomePageBox, Gtk.AssistantPageType.INTRO)
         self.assistant.set_page_complete(self.welcomePageBox, True)
         
-        # Integrity info page...
-        self.integrityInfoPageBox = self.builder.get_object("integrityInfoPageBox")
-        self.integrityInfoPageBox.set_border_width(5)
-        self.assistant.append_page(self.integrityInfoPageBox)
-        self.assistant.set_page_title(self.integrityInfoPageBox, "Verification Prompt")
-        self.assistant.set_page_type(self.integrityInfoPageBox, Gtk.AssistantPageType.CONTENT)
-        self.assistant.set_page_complete(self.integrityInfoPageBox, True)
+        # Verification info page...
+        self.verificationInfoPageBox = self.builder.get_object("verificationInfoPageBox")
+        self.verificationInfoPageBox.set_border_width(5)
+        self.assistant.append_page(self.verificationInfoPageBox)
+        self.assistant.set_page_title(self.verificationInfoPageBox, "Verification Prompt")
+        self.assistant.set_page_type(self.verificationInfoPageBox, Gtk.AssistantPageType.CONTENT)
+        self.assistant.set_page_complete(self.verificationInfoPageBox, True)
 
-        # Integrity progress page...
-        self.integrityProgressPageBox = self.builder.get_object("integrityProgressPageBox")
-        self.integrityProgressPageBox.set_border_width(5)
-        self.assistant.append_page(self.integrityProgressPageBox)
+        # Verification progress page...
+        self.verificationProgressPageBox = self.builder.get_object("verificationProgressPageBox")
+        self.verificationProgressPageBox.set_border_width(5)
+        self.assistant.append_page(self.verificationProgressPageBox)
         self.assistant.set_page_title(
-            self.integrityProgressPageBox, "Verification Progress")
+            self.verificationProgressPageBox, "Verification Progress")
         self.assistant.set_page_type(
-            self.integrityProgressPageBox, Gtk.AssistantPageType.PROGRESS)
-        self.assistant.set_page_complete(self.integrityProgressPageBox, False)
+            self.verificationProgressPageBox, Gtk.AssistantPageType.PROGRESS)
+        self.assistant.set_page_complete(self.verificationProgressPageBox, False)
 
         # Fetch handbook page...
         self.handbookPageBox = self.builder.get_object("handbookPageBox")
         self.handbookPageBox.set_border_width(5)
         self.assistant.append_page(self.handbookPageBox)
-        self.assistant.set_page_title(self.handbookPageBox, "Handbook")
+        self.assistant.set_page_title(self.handbookPageBox, "Download Handbook")
         self.assistant.set_page_type(self.handbookPageBox, Gtk.AssistantPageType.CONTENT)
         self.assistant.set_page_complete(self.handbookPageBox, True)
 
@@ -96,25 +98,57 @@ class NavigatorApp():
         self.selectRecoveryFolderPageBox = self.builder.get_object("selectRecoveryFolderPageBox")
         self.selectRecoveryFolderPageBox.set_border_width(5)
         self.assistant.append_page(self.selectRecoveryFolderPageBox)
-        self.assistant.set_page_title(self.selectRecoveryFolderPageBox, "Select Recovery\n Folder")
+        self.assistant.set_page_title(self.selectRecoveryFolderPageBox, "Select Recovery Folder")
         self.assistant.set_page_type(self.handbookPageBox, Gtk.AssistantPageType.CONTENT)
         self.assistant.set_page_complete(self.selectRecoveryFolderPageBox, True)
 
-        # Configure extractor first page...
-        self.configureExtractorFirstPageBox = self.builder.get_object("configureExtractorFirstPageBox")
-        self.configureExtractorFirstPageBox.set_border_width(5)
-        self.assistant.append_page(self.configureExtractorFirstPageBox)
-        self.assistant.set_page_title(self.configureExtractorFirstPageBox, "Configure Image\n Organization")
-        self.assistant.set_page_type(self.configureExtractorFirstPageBox, Gtk.AssistantPageType.CONTENT)
-        self.assistant.set_page_complete(self.configureExtractorFirstPageBox, True)
+        # Configuration intro page...
+        self.configureIntroPageBox = self.builder.get_object("configureIntroPageBox")
+        self.configureIntroPageBox.set_border_width(5)
+        self.assistant.append_page(self.configureIntroPageBox)
+        self.assistant.set_page_title(self.configureIntroPageBox, "Configure Introduction")
+        self.assistant.set_page_type(self.configureIntroPageBox, Gtk.AssistantPageType.CONTENT)
+        self.assistant.set_page_complete(self.configureIntroPageBox, True)
+        
+        # Configure output layout page...
+        self.configureOutputLayoutPageBox = self.builder.get_object("configureOutputLayoutPageBox")
+        self.configureOutputLayoutPageBox.set_border_width(5)
+        self.assistant.append_page(self.configureOutputLayoutPageBox)
+        self.assistant.set_page_title(self.configureOutputLayoutPageBox, "Configure Layout")
+        self.assistant.set_page_type(self.configureOutputLayoutPageBox, Gtk.AssistantPageType.CONTENT)
+        self.assistant.set_page_complete(self.configureOutputLayoutPageBox, True)
 
-        # Configure extractor second page...
-        self.configureExtractorSecondPageBox = self.builder.get_object("configureExtractorSecondPageBox")
-        self.configureExtractorSecondPageBox.set_border_width(5)
-        self.assistant.append_page(self.configureExtractorSecondPageBox)
-        self.assistant.set_page_title(self.configureExtractorSecondPageBox, "Configure Image\n Recovery")
-        self.assistant.set_page_type(self.configureExtractorSecondPageBox, Gtk.AssistantPageType.CONTENT)
-        self.assistant.set_page_complete(self.configureExtractorSecondPageBox, True)
+        # Configure recovery page...
+        self.configureRecoveryPageBox = self.builder.get_object("configureRecoveryPageBox")
+        self.configureRecoveryPageBox.set_border_width(5)
+        self.assistant.append_page(self.configureRecoveryPageBox)
+        self.assistant.set_page_title(self.configureRecoveryPageBox, "Configure Recovery")
+        self.assistant.set_page_type(self.configureRecoveryPageBox, Gtk.AssistantPageType.CONTENT)
+        self.assistant.set_page_complete(self.configureRecoveryPageBox, True)
+
+        # Configure filters page...
+        self.configureFiltersPageBox = self.builder.get_object("configureFiltersPageBox")
+        self.configureFiltersPageBox.set_border_width(5)
+        self.assistant.append_page(self.configureFiltersPageBox)
+        self.assistant.set_page_title(self.configureFiltersPageBox, "Configure Filters")
+        self.assistant.set_page_type(self.configureFiltersPageBox, Gtk.AssistantPageType.CONTENT)
+        self.assistant.set_page_complete(self.configureFiltersPageBox, True)
+
+        # Configure advanced page...
+        self.configureAdvancedPageBox = self.builder.get_object("configureAdvancedPageBox")
+        self.configureAdvancedPageBox.set_border_width(5)
+        self.assistant.append_page(self.configureAdvancedPageBox)
+        self.assistant.set_page_title(self.configureAdvancedPageBox, "Configure Advanced")
+        self.assistant.set_page_type(self.configureAdvancedPageBox, Gtk.AssistantPageType.CONTENT)
+        self.assistant.set_page_complete(self.configureAdvancedPageBox, True)
+
+        # Confirm page...
+        self.confirmPageBox = self.builder.get_object("confirmPageBox")
+        self.confirmPageBox.set_border_width(5)
+        self.assistant.append_page(self.confirmPageBox)
+        self.assistant.set_page_title(self.confirmPageBox, "Confirmation")
+        self.assistant.set_page_type(self.confirmPageBox, Gtk.AssistantPageType.CONFIRM)
+        self.assistant.set_page_complete(self.confirmPageBox, True)
 
         # Final page...
         self.finalPageBox = self.builder.get_object("finalPageBox")
@@ -180,7 +214,7 @@ class NavigatorApp():
 
             # Show the download progress bar...
             progressBar.show()
-            progressBar.set_text("Contacting remote server, please wait...")
+            progressBar.set_text("Contacting server, please wait...")
 
             # Try to download...
             try:
@@ -254,23 +288,30 @@ class NavigatorApp():
             # Problem finding the URL, e.g. 404...
             except urllib.error.URLError as exception:
 
+                # Deactivate the download button...
+                button.set_active(False)
+
                 # Alert user...
                 messageDialog = Gtk.MessageDialog(
                     self.assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
                     Gtk.ButtonsType.OK, 
-                    "There was a problem contacting the remote server. Please try again later.\n\n{0}".
-                        format(exception.reason()))
+                    "There was a problem communicating with the remote server. Please try again later.\n\n{0}".
+                        format(exception.reason))
                 messageDialog.run()
                 messageDialog.destroy()
 
             # Couldn't write to disk...
-            except IOError:
+            except IOError as exception:
+
+                # Deactivate the download button...
+                button.set_active(False)
 
                 # Alert user...
                 messageDialog = Gtk.MessageDialog(
                     self.assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
                     Gtk.ButtonsType.OK, 
-                    "Unable to save the handbook to the requested location. Maybe you don't have permission?")
+                    "Unable to save the handbook to the requested location:\n\n{0}".
+                        format(exception.strerror))
                 messageDialog.run()
                 messageDialog.destroy()
 
@@ -296,12 +337,12 @@ class NavigatorApp():
         # Reset the cursor to normal in case something changed it...
         self.assistant.get_root_window().set_cursor(None)
 
-        # Transitioning into integrity progress page...
-        if currentPage is self.integrityProgressPageBox:
+        # Transitioning into verification progress page...
+        if currentPage is self.verificationProgressPageBox:
 
             # Don't start the disc verification thread if user requested to 
             #  skip it...
-            if self.builder.get_object("skipIntegrityCheckRadio").get_active():
+            if self.builder.get_object("skipVerificationCheckRadio").get_active():
                 return
 
             # Change to busy cursor...
@@ -317,11 +358,11 @@ class NavigatorApp():
         # Get what would be the next page...
         nextPage = self.assistant.get_nth_page(currentPageIndex)
 
-        # Transitioning into integrity progress page...
-        if nextPage is self.integrityProgressPageBox and \
-           self.builder.get_object("skipIntegrityCheckRadio").get_active():
+        # Transitioning into verification progress page...
+        if nextPage is self.verificationProgressPageBox and \
+           self.builder.get_object("skipVerificationCheckRadio").get_active():
 
-                # Skip the disc integrity check...
+                # Skip the disc verification check...
                 self.assistant.set_current_page(currentPageIndex + 1)
                 return currentPageIndex + 2
 
@@ -342,7 +383,7 @@ class NavigatorApp():
         self.verificationThread.start()
 
     # User requested to stop disc verification...
-    def onStopIntegrityPressed(self, button):
+    def onStopVerificationPressed(self, button):
 
         # Signal the thread to quit...
         self.verificationThread.setQuit()
@@ -361,7 +402,7 @@ class NavigatorApp():
         messageDialog.destroy()
         
         # Mark page as complete...
-        self.assistant.set_page_complete(self.integrityProgressPageBox, True)
+        self.assistant.set_page_complete(self.verificationProgressPageBox, True)
         
         # Advance to the next page...
         currentPageIndex = self.assistant.get_current_page()
@@ -391,7 +432,20 @@ class NavigatorApp():
 
     # Window about to close...
     def onDestroyEvent(self, *args):
+        
+        # For debugging purposes...
         print("Quitting...")
+        
+        # Check if the verification thread is still running...
+        if self.verificationThread:
+        
+            # Signal the thread to quit...
+            self.verificationThread.setQuit()
+            
+            # Wait for it to quit...
+            self.verificationThread.join()
+        
+        # Terminate...
         self.quit()
 
     # Destroy the splash window after splash timer elapses...
