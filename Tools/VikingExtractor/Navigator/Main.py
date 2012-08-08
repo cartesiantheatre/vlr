@@ -351,6 +351,13 @@ class NavigatorApp():
 
             # Start the disc verification...
             self.startDiscVerification()
+        
+        # Transitioning into confirm page...
+        elif currentPage is self.confirmPageBox:
+            
+            # Prepare the VikingExtractor arguments based on user selected
+            #  configuration and show the summary...
+            self.prepareVikingExtractor()
 
     # End of current page. Calculate index of next page...
     def forwardPage(self, currentPageIndex, userData):
@@ -369,6 +376,64 @@ class NavigatorApp():
         # Any other page just transition to the next one...
         else:
             return currentPageIndex + 1
+
+    # Prepare the VikingExtractor arguments based on user selected
+    #  configuration and show the summary...
+    def prepareVikingExtractor(self):
+    
+        # List that will contain all VikingExtractor command line options...
+        parametersList = []
+
+        # Get the confirmation text buffer...
+        confirmTextBuffer = self.builder.get_object("confirmTextBuffer")
+        
+        # Clear it, if not already...
+        confirmTextBuffer.set_text("")
+
+        # Output folder...
+        outputFolder = self.builder.get_object("recoveryFolderChooser").get_filename()
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "Output folder:\n\t{0}\n".format(outputFolder))
+
+        # Overwrite...
+        active = self.builder.get_object("overwriteOutputCheckButton").get_active()
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "Output will be overwritten:\n\t{0}\n".format(active))
+        if active:
+            parametersList.append("--overwrite")
+
+        # Directorize by diode band class...
+        active = self.builder.get_object("directorizeBandTypeClassCheckButton").get_active()
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "Directorize by diode band class:\n\t{0}\n".format(active))
+        if active:
+            parametersList.append("--directorize-band-class")
+
+        # Directorize by Martian location...
+        active = self.builder.get_object("directorizeLocationCheckButton").get_active()
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "Directorize by Martian location:\n\t{0}\n".format(active))
+        if active:
+            parametersList.append("--directorize-location")
+
+        # Directorize by Martian month...
+        active = self.builder.get_object("directorizeMonthCheckButton").get_active()
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "Directorize by Martian month:\n\t{0}\n".format(active))
+        if active:
+            parametersList.append("--directorize-month")
+
+        # Directorize by mission solar day...
+        active = self.builder.get_object("directorizeSolCheckButton").get_active()
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "Directorize by mission solar day:\n\t{0}\n".format(active))
+        if active:
+            parametersList.append("--directorize-sol")
+
+        # Create full commandline to invoke VikingExtractor...
+        commandLine = " ".join(parametersList)
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "Resulting Command:\n\t{0}\n".format(commandLine))
 
     # Start the disc verification...
     def startDiscVerification(self):
@@ -426,8 +491,13 @@ class NavigatorApp():
         # Cleanup the window...
         self.splashTimerDone(None)
 
+    # Apply button clicked...
+    def onApplyEvent(self, *args):
+        print("onApplyEvent stub")
+
     # Cancel button clicked...
     def onCancelEvent(self, *args):
+        print("Cancelling...")
         Gtk.main_quit()
 
     # Window about to close...
@@ -487,6 +557,9 @@ class NavigatorApp():
             self.splashTimeoutEvent = GObject.timeout_add(3000, self.splashTimerDone, None)
         else:
             self.splashTimeoutEvent = GObject.timeout_add(0, self.splashTimerDone, None)
+
+        # Set it to be always on top...
+        self.splashWindow.set_keep_above(True)
 
         # Display the window...
         self.splashWindow.show_all()

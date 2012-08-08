@@ -8,6 +8,7 @@
     <property name="window_position">center-always</property>
     <property name="icon">Icon.png</property>
     <signal name="close" handler="onDestroyEvent" swapped="no"/>
+    <signal name="apply" handler="onApplyEvent" swapped="no"/>
     <signal name="delete-event" handler="onDestroyEvent" swapped="no"/>
     <signal name="cancel" handler="onCancelEvent" swapped="no"/>
     <signal name="prepare" handler="onPrepareEvent" swapped="no"/>
@@ -401,7 +402,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
         <property name="orientation">vertical</property>
         <property name="spacing">10</property>
         <child>
-          <object class="GtkCheckButton" id="directorizeBandTypeClassCheckButton2">
+          <object class="GtkCheckButton" id="directorizeBandTypeClassCheckButton">
             <property name="label" translatable="yes">Organize by sensor band type</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -422,7 +423,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="directorizeLocationCheckButton2">
+          <object class="GtkCheckButton" id="directorizeLocationCheckButton">
             <property name="label" translatable="yes">Organize by location on Martian surface</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -443,7 +444,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="directorizeMonthCheckButton2">
+          <object class="GtkCheckButton" id="directorizeMonthCheckButton">
             <property name="label" translatable="yes">Organize by Martian month</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -464,8 +465,8 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="directorizeSolCheckButton2">
-            <property name="label" translatable="yes">Organize by solar day</property>
+          <object class="GtkCheckButton" id="directorizeSolCheckButton">
+            <property name="label" translatable="yes">Organize by mission solar day</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -578,12 +579,11 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
     </child>
   </object>
   <object class="GtkTextBuffer" id="confirmTextBuffer">
-    <property name="text" translatable="yes">This is a summary:</property>
+    <property name="text" translatable="yes" comments="This is set at runtime. Don't bother to translate.">(set at runtime)</property>
   </object>
   <object class="GtkBox" id="confirmPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="valign">center</property>
     <property name="orientation">vertical</property>
     <property name="spacing">20</property>
     <child>
@@ -623,7 +623,12 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
           <object class="GtkTextView" id="confirmTextView">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
             <property name="editable">False</property>
+            <property name="left_margin">7</property>
+            <property name="right_margin">7</property>
+            <property name="cursor_visible">False</property>
             <property name="buffer">confirmTextBuffer</property>
           </object>
         </child>
@@ -986,26 +991,11 @@ The landers were capable of capturing high resolution photographs and other data
   <object class="GtkBox" id="welcomePageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="margin_left">8</property>
-    <property name="margin_right">8</property>
-    <property name="margin_top">8</property>
-    <property name="margin_bottom">8</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <property name="border_width">20</property>
+    <property name="orientation">vertical</property>
     <property name="spacing">8</property>
-    <child>
-      <object class="GtkImage" id="image2">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="pixbuf">Icon.png</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
     <child>
       <object class="GtkScrolledWindow" id="scrolledwindow1">
         <property name="visible">True</property>
