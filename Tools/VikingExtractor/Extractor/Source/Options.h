@@ -62,7 +62,7 @@ class Options
         bool            GetNoReconstruct() const { return m_NoReconstruct; };
         bool            GetOverwrite() const { return m_Overwrite; }
         bool            GetRecursive() const { return m_Recursive; }
-        bool            GetSaveMetadata() const { return m_SaveMetadata; }
+        bool            GetGenerateMetadata() const { return m_GenerateMetadata; }
         bool            GetSummarizeOnly() const { return m_SummarizeOnly; }
 
         // Set options...
@@ -82,7 +82,7 @@ class Options
         void            SetNoReconstruct(const bool NoReconstruct = true) { m_NoReconstruct = NoReconstruct; }
         void            SetOverwrite(const bool Overwrite = true) { m_Overwrite = Overwrite; }
         void            SetRecursive(const bool Recursive = true) { m_Recursive = Recursive; }
-        void            SetSaveMetadata(const bool SaveMetadata = true) { m_SaveMetadata = SaveMetadata; }
+        void            SetGenerateMetadata(const bool GenerateMetadata = true) { m_GenerateMetadata = GenerateMetadata; }
         void            SetSummarizeOnly(const bool SummarizeOnly = true) { m_SummarizeOnly = SummarizeOnly; }
         
     // Protected methods...
@@ -150,8 +150,8 @@ class Options
         // Recursively scan subdirectories if the input is a directory...
         bool                m_Recursive;
         
-        // Save metadata...
-        bool                m_SaveMetadata;
+        // Generate metadata...
+        bool                m_GenerateMetadata;
         
         // Mute all console output channels, except the summary channel...
         bool                m_SummarizeOnly;

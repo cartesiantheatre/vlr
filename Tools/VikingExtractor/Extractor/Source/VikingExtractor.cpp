@@ -68,13 +68,14 @@ void ShowHelp()
          << "                              either (0, the default), 1, or 2."                   << endl
          << "      --filter-solar-day[=#]  Look only for camera events taken on the specified"  << endl
          << "                              solar day."                                          << endl
+         << "      --generate-metadata     Whenever a colour image is recovered, machine"       << endl
+         << "                              generate a text file containing various metadata."   << endl
          << "      --no-ansi-colours       Disable VT/100 ANSI coloured terminal output."       << endl
-         << "      --no-auto-rotate        Don't automatically rotate image as needed."          << endl
+         << "      --no-auto-rotate        Don't automatically rotate image as needed."         << endl
          << "      --no-reconstruct        Don't attempt to reconstruct camera events, just"    << endl
          << "                              dump all available band data as separate images."    << endl
          << "      --overwrite             Overwrite any existing output files."                << endl
          << "  -r, --recursive             Scan subfolders as well if input is a directory."    << endl
-         << "      --save-metadata         Save a metadata text file paired with each image"    << endl
          << "      --summarize-only        No warnings or errors displayed, summarize only."    << endl
          << "  -V, --verbose               Be verbose"                                          << endl
          << "  -v, --version               Show version information"                            << endl << endl
@@ -119,6 +120,7 @@ int main(int ArgumentCount, char *Arguments[])
         option_long_filter_diode_class,
         option_long_filter_lander,
         option_long_filter_solar_day,
+        option_long_generate_metadata,
         option_long_help,
         option_long_ignore_bad_files,
         option_long_interlace,
@@ -128,7 +130,6 @@ int main(int ArgumentCount, char *Arguments[])
         option_long_no_reconstruct,
         option_long_overwrite,
         option_long_recursive,
-        option_long_save_metadata,
         option_long_summarize_only,
         option_long_verbose,
         option_long_version
@@ -146,6 +147,7 @@ int main(int ArgumentCount, char *Arguments[])
         {"filter-diode",            required_argument,  NULL,   option_long_filter_diode_class},
         {"filter-lander",           required_argument,  NULL,   option_long_filter_lander},
         {"filter-solar-day",        required_argument,  NULL,   option_long_filter_solar_day},
+        {"generate-metadata",       no_argument,        NULL,   option_long_generate_metadata},
         {"help",                    no_argument,        NULL,   option_long_help},
         {"ignore-bad-files",        no_argument,        NULL,   option_long_ignore_bad_files},
         {"interlace",               no_argument,        NULL,   option_long_interlace},
@@ -155,7 +157,6 @@ int main(int ArgumentCount, char *Arguments[])
         {"no-reconstruct",          no_argument,        NULL,   option_long_no_reconstruct},
         {"overwrite",               no_argument,        NULL,   option_long_overwrite},
         {"recursive",               no_argument,        NULL,   option_long_recursive},
-        {"save-metadata",           no_argument,        NULL,   option_long_save_metadata},
         {"summarize-only",          no_argument,        NULL,   option_long_summarize_only},
         {"verbose",                 no_argument,        NULL,   option_long_verbose},
         {"version",                 no_argument,        NULL,   option_long_version},
@@ -219,6 +220,9 @@ int main(int ArgumentCount, char *Arguments[])
             case option_long_filter_solar_day:
             { assert(optarg); Options::GetInstance().SetFilterSolarDay(atoi(optarg)); break; }
 
+            // Generate metadata...
+            case option_long_generate_metadata: { Options::GetInstance().SetGenerateMetadata(); break; }
+
             // Help...
             case option_long_help:
             {
@@ -279,9 +283,6 @@ int main(int ArgumentCount, char *Arguments[])
             // Recursive scan of subfolders if input is a directory...
             case 'r':
             case option_long_recursive: { Options::GetInstance().SetRecursive(); break; }
-
-            // Save metadata...
-            case option_long_save_metadata: { Options::GetInstance().SetSaveMetadata(); break; }
 
             // Summarize only...
             case option_long_summarize_only: { Options::GetInstance().SetSummarizeOnly(); break; }

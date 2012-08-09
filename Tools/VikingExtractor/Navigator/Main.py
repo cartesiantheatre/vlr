@@ -24,6 +24,8 @@ from optparse import OptionParser
 import urllib.request
 import os
 import platform
+import re
+import dbus
 
 # Our other modules...
 from VerificationThread import VerificationThread
@@ -94,13 +96,13 @@ class NavigatorApp():
         self.assistant.set_page_type(self.handbookPageBox, Gtk.AssistantPageType.CONTENT)
         self.assistant.set_page_complete(self.handbookPageBox, True)
 
-        # Select recovery folder page...
-        self.selectRecoveryFolderPageBox = self.builder.get_object("selectRecoveryFolderPageBox")
-        self.selectRecoveryFolderPageBox.set_border_width(5)
-        self.assistant.append_page(self.selectRecoveryFolderPageBox)
-        self.assistant.set_page_title(self.selectRecoveryFolderPageBox, "Select Recovery Folder")
+        # Select save folder page...
+        self.selectSaveFolderPageBox = self.builder.get_object("selectSaveFolderPageBox")
+        self.selectSaveFolderPageBox.set_border_width(5)
+        self.assistant.append_page(self.selectSaveFolderPageBox)
+        self.assistant.set_page_title(self.selectSaveFolderPageBox, "Select Save Folder")
         self.assistant.set_page_type(self.handbookPageBox, Gtk.AssistantPageType.CONTENT)
-        self.assistant.set_page_complete(self.selectRecoveryFolderPageBox, True)
+        self.assistant.set_page_complete(self.selectSaveFolderPageBox, True)
 
         # Configuration intro page...
         self.configureIntroPageBox = self.builder.get_object("configureIntroPageBox")
@@ -166,10 +168,25 @@ class NavigatorApp():
 
         # User requested to download the latest handbook...
         if button.get_active():
-            
+
             # Update the GUI...
             button.set_sensitive(False)
             self.assistant.set_page_complete(self.handbookPageBox, False)
+
+            # Check network connectivity to the internet and alert user if 
+            #  caller requests if no connection available...
+            if not isInternetConnectionDetected(True, self.assistant, True):
+
+                # Update GUI...
+                progressBar.hide()
+                button.set_sensitive(True)
+                self.assistant.set_page_complete(self.handbookPageBox, True)
+                
+                # Deactivate the download button...
+                button.set_active(False)
+
+                # Don't do anything further...
+                return
             
             # The URL to the latest copy of the handbook and just the filename...
             handbookUrl = "https://www.avaneya.com/downloads/Avaneya_Project_Crew_Handbook.pdf"
@@ -382,7 +399,7 @@ class NavigatorApp():
     def prepareVikingExtractor(self):
     
         # List that will contain all VikingExtractor command line options...
-        parametersList = []
+        commandLineInterface = []
 
         # Get the confirmation text buffer...
         confirmTextBuffer = self.builder.get_object("confirmTextBuffer")
@@ -391,49 +408,124 @@ class NavigatorApp():
         confirmTextBuffer.set_text("")
 
         # Output folder...
-        outputFolder = self.builder.get_object("recoveryFolderChooser").get_filename()
+        outputFolder = self.builder.get_object("saveFolderChooser").get_filename()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Output folder:\n\t{0}\n".format(outputFolder))
+            "Save to: {0}\n".format(outputFolder))
 
         # Overwrite...
         active = self.builder.get_object("overwriteOutputCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Output will be overwritten:\n\t{0}\n".format(active))
+            "Output will be overwritten: {0}\n".format(boolToYesNo(active)))
         if active:
-            parametersList.append("--overwrite")
+            commandLineInterface.append("--overwrite")
 
-        # Directorize by diode band class...
+        # Directorize by...
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), "Directorize by...\n")
+        
+        # ...diode band class...
         active = self.builder.get_object("directorizeBandTypeClassCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Directorize by diode band class:\n\t{0}\n".format(active))
+            "\t...diode band class: {0}\n".format(boolToYesNo(active)))
         if active:
-            parametersList.append("--directorize-band-class")
+            commandLineInterface.append("--directorize-band-class")
 
-        # Directorize by Martian location...
+        # ...Martian location...
         active = self.builder.get_object("directorizeLocationCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Directorize by Martian location:\n\t{0}\n".format(active))
+            "\t...Martian location: {0}\n".format(boolToYesNo(active)))
         if active:
-            parametersList.append("--directorize-location")
+            commandLineInterface.append("--directorize-location")
 
-        # Directorize by Martian month...
+        # ...Martian month...
         active = self.builder.get_object("directorizeMonthCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Directorize by Martian month:\n\t{0}\n".format(active))
+            "\t...Martian month: {0}\n".format(boolToYesNo(active)))
         if active:
-            parametersList.append("--directorize-month")
+            commandLineInterface.append("--directorize-month")
 
-        # Directorize by mission solar day...
+        # ...mission solar day...
         active = self.builder.get_object("directorizeSolCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Directorize by mission solar day:\n\t{0}\n".format(active))
+            "\t...mission solar day: {0}\n".format(boolToYesNo(active)))
         if active:
-            parametersList.append("--directorize-sol")
+            commandLineInterface.append("--directorize-sol")
+
+        # No automatic rotation...
+        active = self.builder.get_object("noAutomaticRotationCheckButton").get_active()
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "Disable automatic image component orientation: {0}\n".format(boolToYesNo(active)))
+        if active:
+            commandLineInterface.append("--no-auto-rotate")
+
+        # No reconstruction...
+        active = self.builder.get_object("noReconstructionCheckButton").get_active()
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "Dump components without reconstruction: {0}\n".format(boolToYesNo(active)))
+        if active:
+            commandLineInterface.append("--no-reconstruct")
+
+        # Filters...
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), "Filters...\n")
+
+        # ...band type class...
+        diodeFilterComboBox = self.builder.get_object("diodeFilterComboBox")
+        
+        iterator = diodeFilterComboBox.get_active_iter()
+        
+        model = diodeFilterComboBox.get_model()
+        humanValue = model.get_value(iterator, 1)
+        commandLineValue = model.get_value(iterator, 1)
+
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "\t...diode band type class: {0}\n".format(model.get_value(iterator, 0)))
+        commandLineInterface.append("--filter-diode={0}".format(commandLineValue))
+        
+        # ...lander...
+        landerFilterComboBox = self.builder.get_object("landerFilterComboBox")
+        
+        iterator = landerFilterComboBox.get_active_iter()
+        
+        model = landerFilterComboBox.get_model()
+        humanValue = model.get_value(iterator, 0)
+        humanValue = re.sub('<[^>]*>', '', humanValue)
+        commandLineValue = model.get_value(iterator, 1)
+
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "\t...lander: {0}\n".format(humanValue))
+        commandLineInterface.append("--filter-lander={0}".format(commandLineValue))
+
+        # Use image interlacing...
+        active = self.builder.get_object("useInterlacingCheckButton").get_active()
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "Interlace images: {0}\n".format(boolToYesNo(active)))
+        if active:
+            commandLineInterface.append("--interlace")
+
+        # Generate metadata...
+        active = self.builder.get_object("generateMetadataCheckButton").get_active()
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "Generate metadata: {0}\n".format(boolToYesNo(active)))
+        if active:
+            commandLineInterface.append("--generate-metadata")
+
+        # Verbosity...
+        active = self.builder.get_object("verbosityCheckButton").get_active()
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "Be verbose: {0}\n".format(boolToYesNo(active)))
+        if active:
+            commandLineInterface.append("--verbose")
+
+        # Multithreading...
+        active = self.builder.get_object("multithreadingCheckButton").get_active()
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
+            "Use multithreading: {0}\n".format(boolToYesNo(active)))
+        if active:
+            commandLineInterface.append("--jobs")
 
         # Create full commandline to invoke VikingExtractor...
-        commandLine = " ".join(parametersList)
+        commandLine = " ".join(commandLineInterface)
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Resulting Command:\n\t{0}\n".format(commandLine))
+            "Will execute: $ {0}\n".format(commandLine))
 
     # Start the disc verification...
     def startDiscVerification(self):
@@ -465,7 +557,7 @@ class NavigatorApp():
             Gtk.ButtonsType.OK, "Disc verification was cancelled.")
         messageDialog.run()
         messageDialog.destroy()
-        
+
         # Mark page as complete...
         self.assistant.set_page_complete(self.verificationProgressPageBox, True)
         
@@ -493,22 +585,35 @@ class NavigatorApp():
 
     # Apply button clicked...
     def onApplyEvent(self, *args):
-        print("onApplyEvent stub")
-
-    # Cancel button clicked...
-    def onCancelEvent(self, *args):
-        print("Cancelling...")
-        Gtk.main_quit()
-
-    # Window about to close...
-    def onDestroyEvent(self, *args):
         
         # For debugging purposes...
-        print("Quitting...")
+        print("onApplyEvent")
+
+    # Cancel signal emitted when cancel button clicked...
+    def onCancelEvent(self, assistant, *args):
         
+        # For debugging purposes...
+        print("onCancelEvent...")
+
+        # Prompt the user for if they'd really like to quit...
+        messageDialog = Gtk.MessageDialog(
+            self.assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.QUESTION, 
+            Gtk.ButtonsType.YES_NO, 
+            "Are you sure you'd like to quit?")
+        messageDialog.set_default_response(Gtk.ResponseType.NO)
+        userResponse = messageDialog.run()
+        messageDialog.destroy()
+        
+        # User requested not to quit, cancel...
+        if userResponse != Gtk.ResponseType.YES:
+            return
+
         # Check if the verification thread is still running...
-        if self.verificationThread:
-        
+        if self.verificationThread and self.verificationThread.isAlive():
+
+            # Alert...
+            print("Stopping disc verification thread...")
+
             # Signal the thread to quit...
             self.verificationThread.setQuit()
             
@@ -518,6 +623,26 @@ class NavigatorApp():
         # Terminate...
         self.quit()
 
+    # User requested that assistant be closed. The default signal handler would 
+    #  just destroys the window. Cancel signal is sent automatically after this
+    #  signal is handled...
+    def onDeleteEvent(self, *args):
+
+        # For debugging purposes...
+        print("onDeleteEvent...")
+        
+        # Let cancel handler determine whether to exit or not...
+
+    # Either close button of summary page clicked or apply button in last page
+    #  in flow of type CONFIRM clicked...
+    def onCloseEvent(self, assistant, *args):
+        
+        # For debugging purposes...
+        print("onCloseEvent")
+        
+        # No threads should be running by this point, so safe to terminate...
+        self.quit()
+        
     # Destroy the splash window after splash timer elapses...
     def splashTimerDone(self, userData):
 
@@ -539,9 +664,12 @@ class NavigatorApp():
         # Start processing events...    
         try:
             Gtk.main()
+        
+        # TODO: This doesn't work. The exception is never raised on a ctrl-c...
         except KeyboardInterrupt:
             print("KeyboardInterrupt")
             raise
+
         except:
             print("SomeOtherException")
             Gtk.main_quit()
@@ -568,12 +696,73 @@ class NavigatorApp():
     def quit(self):
         Gtk.main_quit()
 
+# Helper function takes a boolean value and converts to a yes or no string...
+def boolToYesNo(value):
+    
+    # Type check...
+    assert(type(value) is bool)
+
+    if value is True:
+        return "Yes"
+    else:
+        return "No"
+
+# Check network connectivity to the internet and alert user if caller requests 
+#  if no connection available...
+def isInternetConnectionDetected(alertUser, parent, unqueriableDefault):
+
+    # Some useful constants for DBus NetworkManager interface...
+    NM_STATE_CONNECTED = 3          # For 0.8 interface
+    NM_STATE_CONNECTED_GLOBAL = 70  # For 0.9 interface
+
+    # Open the session bus...
+    systemBus = dbus.SystemBus()
+    
+    # Try to get the NetworkManager remote proxy object...
+    try:
+        networkManagerRemoteProxy = systemBus.get_object(
+            "org.freedesktop.NetworkManager",  # Service name
+            "/org/freedesktop/NetworkManager") # Object on the service
+    
+    # Something went wrong, but most likely the service isn't available...
+    except dbus.exceptions.DBusException as exception:
+        print("NetworkManager service not found. Silently ignoring...")
+
+        # Alert caller...
+        return unqueriableDefault
+
+    # Get the connection state...
+    connectionState = networkManagerRemoteProxy.state()
+
+    # Connected. We're good...
+    if connectionState == NM_STATE_CONNECTED or \
+       connectionState == NM_STATE_CONNECTED_GLOBAL:
+
+        # Inform caller...
+        return True
+    
+    # Not connected...
+    else:
+
+        # Alert user, if caller requested...
+        if alertUser:
+            messageDialog = Gtk.MessageDialog(
+                parent, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
+                Gtk.ButtonsType.OK, 
+                "You need a working internet connection in order to do this. " \
+                "You don't appear to have one right now.")
+            messageDialog.run()
+            messageDialog.destroy()
+
+        # Inform caller...
+        return False
+
 # Entry point...
 if __name__ == '__main__':
 
     # Initialize threading environment...
     GObject.threads_init()
-
+    
     # Start the navigator GUI...
     navigator = NavigatorApp()
     navigator.run()

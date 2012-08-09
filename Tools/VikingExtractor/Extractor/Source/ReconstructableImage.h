@@ -97,6 +97,11 @@ class ReconstructableImage
             ImageBandListType &ImageBandList, 
             ImageBandListReverseIterator &ReverseIterator) const;
 
+        // Generate metadata for file...
+        void GenerateMetadata(
+            const std::string &OutputFileName, 
+            const ImageBandListType &ImageBandList);
+
         // Reconstruct a colour image from requested image bands...
         bool ReconstructColourImage(
             const std::string &OutputFileName, 
@@ -108,11 +113,6 @@ class ReconstructableImage
         bool ReconstructGrayscaleImage(
             const std::string &OutputFileName, 
             VicarImageBand &BestGrayscaleImageBand);
-
-        // Save metadata for file...
-        void SaveMetadata(
-            const std::string &OutputFileName, 
-            const ImageBandListType &ImageBandList);
 
         // Set the error message...
         void SetErrorMessage(const std::string &ErrorMessage)

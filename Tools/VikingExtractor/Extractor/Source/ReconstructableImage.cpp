@@ -263,10 +263,9 @@ bool ReconstructableImage::DumpUnreconstructable(ImageBandListType &ImageBandLis
             // Remember this...
           ++m_DumpedImagesCount;
 
-            // Saved successfully, now if saving metadata is 
-            //  enabled, dump it...
-            if(Options::GetInstance().GetSaveMetadata())
-                SaveMetadata(CreateOutputFileName(true, "txt", UnreconstructableName.str()), ImageBandList);
+            // Saved successfully, now if generating metadata is enabled, dump...
+            if(Options::GetInstance().GetGenerateMetadata())
+                GenerateMetadata(CreateOutputFileName(true, "txt", UnreconstructableName.str()), ImageBandList);
         }
     }
     
@@ -320,6 +319,72 @@ ReconstructableImage::FindBestImageBandWithNoAxis(
     
     // Nothing found, return rend...
     return ImageBandList.rend();
+}
+
+// Generate metadata for file...
+void ReconstructableImage::GenerateMetadata(
+    const string &OutputFileName, 
+    const ImageBandListType &ImageBandList)
+{
+    // Check for dry run...
+    if(Options::GetInstance().GetDryRun())
+        return;
+
+    // Overwrite not enabled and file already existed, don't overwrite...
+    if(!Options::GetInstance().GetOverwrite() && 
+       (access(OutputFileName.c_str(), F_OK) == 0))
+    {
+        Message(Console::Warning) << "output metadata already exists, not overwriting (use --overwrite to override)";
+        return;
+    }
+
+    // Create the metadata text file...
+    ofstream OutputFileStream(OutputFileName.c_str());
+    
+        // Failed...
+        if(!OutputFileStream.is_open())
+        {
+            // Just give a warning and abort...
+            Message(Console::Warning) << "couldn't save metadata" << endl;
+            return;
+        }
+
+    // Give user some basic information about the metadata...
+    OutputFileStream
+        << "The following is a machine generated collection of metadata of each of" << endl
+        << "the image bands used to reconstruct a colour image." << endl
+        << endl;
+
+    // Dump each section...
+    for(ImageBandListConstIterator Iterator = ImageBandList.begin(); 
+        Iterator != ImageBandList.end(); 
+      ++Iterator)
+    {
+        // Get image...
+        const VicarImageBand &ImageBand = *Iterator;
+
+        // Dump metadata...
+        OutputFileStream 
+            << "basic heuristic method: " << ImageBand.GetBasicMetadataParserHeuristic() << endl
+            << "camera azimuth / elevation: " << ImageBand.GetAzimuthElevation() << endl
+            << "camera event: " << ImageBand.GetCameraEventLabelNoSol() << endl
+            << "camera event solar day: " << ImageBand.GetSolarDay() << endl
+            << "diode band type: " << ImageBand.GetDiodeBandTypeFriendlyString() << endl
+            << "file size: " << ImageBand.GetFileSize() << endl
+            << "input file: " << ImageBand.GetInputFileNameOnly() << endl
+            << "magnetic tape: " << ImageBand.GetMagneticTapeNumber() << endl
+            << "magnetic tape file ordinal: " << ImageBand.GetFileOnMagneticTapeOrdinal() << endl
+            << "mean pixel value: " << ImageBand.GetMeanPixelValue() << endl
+            << "month: " << ImageBand.GetMonth() << endl
+            << "overlay axis present: " << ImageBand.IsAxisPresent() << endl
+            << "overlay full histogram present: " << ImageBand.IsFullHistogramPresent() << endl
+            << "physical record size: " << ImageBand.GetPhysicalRecordSize() << endl
+            << "physical record padding: " << ImageBand.GetPhysicalRecordPadding() << endl
+            << "phase offset required: " << ImageBand.GetPhaseOffsetRequired() << endl
+            << "raw image offset: " << ImageBand.GetRawImageOffset() << endl
+            << endl 
+            << endl;
+    }
 }
 
 // Extract the image out as a PNG, or return false if failed...
@@ -574,15 +639,15 @@ bool ReconstructableImage::ReconstructColourImage(
     if(!Options::GetInstance().GetDryRun())
         PngImage.write(OutputFileName);
 
-    // If saving metadata is enabled, dump it...
-    if(Options::GetInstance().GetSaveMetadata())
+    // If generation of metadata is enabled, dump it...
+    if(Options::GetInstance().GetGenerateMetadata())
     {
         // Prepare list of components...
         ImageBandListType ImageBandList;
         ImageBandList.push_back(*BestRedIterator);
         ImageBandList.push_back(*BestGreenIterator);
         ImageBandList.push_back(*BestBlueIterator);
-        SaveMetadata(CreateOutputFileName(false, "txt"), ImageBandList);
+        GenerateMetadata(CreateOutputFileName(false, "txt"), ImageBandList);
     }
 
     // Done...
@@ -642,71 +707,5 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
 
     // Done...
     return true;
-}
-
-// Save metadata for file...
-void ReconstructableImage::SaveMetadata(
-    const string &OutputFileName, 
-    const ImageBandListType &ImageBandList)
-{
-    // Check for dry run...
-    if(Options::GetInstance().GetDryRun())
-        return;
-
-    // Overwrite not enabled and file already existed, don't overwrite...
-    if(!Options::GetInstance().GetOverwrite() && 
-       (access(OutputFileName.c_str(), F_OK) == 0))
-    {
-        Message(Console::Warning) << "output metadata already exists, not overwriting (use --overwrite to override)";
-        return;
-    }
-
-    // Create the metadata text file...
-    ofstream OutputFileStream(OutputFileName.c_str());
-    
-        // Failed...
-        if(!OutputFileStream.is_open())
-        {
-            // Just give a warning and abort...
-            Message(Console::Warning) << "couldn't save metadata" << endl;
-            return;
-        }
-
-    // Give user some basic information about the metadata...
-    OutputFileStream
-        << "The following is a machine generated collection of metadata of each of" << endl
-        << "the image bands used to reconstruct a colour image." << endl
-        << endl;
-
-    // Dump each section...
-    for(ImageBandListConstIterator Iterator = ImageBandList.begin(); 
-        Iterator != ImageBandList.end(); 
-      ++Iterator)
-    {
-        // Get image...
-        const VicarImageBand &ImageBand = *Iterator;
-
-        // Dump metadata...
-        OutputFileStream 
-            << "basic heuristic method: " << ImageBand.GetBasicMetadataParserHeuristic() << endl
-            << "camera azimuth / elevation: " << ImageBand.GetAzimuthElevation() << endl
-            << "camera event: " << ImageBand.GetCameraEventLabelNoSol() << endl
-            << "camera event solar day: " << ImageBand.GetSolarDay() << endl
-            << "diode band type: " << ImageBand.GetDiodeBandTypeFriendlyString() << endl
-            << "file size: " << ImageBand.GetFileSize() << endl
-            << "input file: " << ImageBand.GetInputFileNameOnly() << endl
-            << "magnetic tape: " << ImageBand.GetMagneticTapeNumber() << endl
-            << "magnetic tape file ordinal: " << ImageBand.GetFileOnMagneticTapeOrdinal() << endl
-            << "mean pixel value: " << ImageBand.GetMeanPixelValue() << endl
-            << "month: " << ImageBand.GetMonth() << endl
-            << "overlay axis present: " << ImageBand.IsAxisPresent() << endl
-            << "overlay full histogram present: " << ImageBand.IsFullHistogramPresent() << endl
-            << "physical record size: " << ImageBand.GetPhysicalRecordSize() << endl
-            << "physical record padding: " << ImageBand.GetPhysicalRecordPadding() << endl
-            << "phase offset required: " << ImageBand.GetPhaseOffsetRequired() << endl
-            << "raw image offset: " << ImageBand.GetRawImageOffset() << endl
-            << endl 
-            << endl;
-    }
 }
 

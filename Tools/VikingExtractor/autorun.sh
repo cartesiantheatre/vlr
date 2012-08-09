@@ -24,9 +24,11 @@
 # preinstalled packages. What they don't have, they need to be informed of in a 
 # way that makes their life simple. These are the runtimes that are needed:
 #
-# * Zenity (zenity)
-# * Python 3 (python3)
-# * Python GObject bindings (python-gi >= 3.0)
+#   * Zenity (zenity)
+#   * Python 3 (python3)
+#   * Python GObject bindings (python-gi >= 3.0), which, correct me if wrong,
+#      includes or should pull the distro's Gtk3+ runtimes
+#   * Python DBus interface
 #
 
 # Useful constants...
@@ -187,22 +189,23 @@ PrepareDebianBased()
         # Ubuntu...
 
             # Ubuntu precise...
-            precise)
-                PackagesRequired=("python3-gi")
+            "precise")
+                PackagesRequired=("python3-gi" "python3-dbus")
             ;;
 
         # Fedora...
             
             # Beefy Miracle...
             "Beefy Miracle")
-                PackagesRequired=("python3-gobject")
+                PackagesRequired=("python3-gobject" "dbus-python")
             ;;
 
         # Debian...
         
-            # Debian squeeze...
-            squeeze)
-                PackagesRequired=("python3" "python-gtk2")
+            # Debian wheezy. Squeeze doesn't have the latter two needed
+            #  packages...
+            "wheeze")
+                PackagesRequired=("python3" "python3-gi" "python3-dbus")
             ;;
 
         # Unknown distro...
@@ -253,13 +256,14 @@ PrepareDebianBased()
         else
             echo -e $STATUS_FAIL
         fi
+        
+        # Exit with error...
+        exit 1
 
     # User has everything that they need...
     else
         echo "No packages needed to be installed..."
     fi
-    
-    # TODO: Implement the launching of the navigation menu GUI here...
 }
 
 # Takes a package name as a single parameter and returns true if it is
@@ -389,16 +393,16 @@ Main()
     esac
 
     # Run the navigation menu...
-    echo -n "Running navigation menu with best available Python runtime... "
+    echo -n "Launching GUI using... "
     
         # First try with Python 3...
         if [ -x "`which python3`" ]; then
-            echo $STATUS_OK
+            echo "python3 $STATUS_OK"
             /usr/bin/env python3 ${PYTHON_NAVMENU_MAIN}
         
         # ...if that doesn't work, try what's probably an alias for Python 2...
         elif [ -x "`which python`" ]; then
-            echo $STATUS_OK
+            echo "python $STATUS_OK"
             /usr/bin/env python ${PYTHON_NAVMENU_MAIN}
         
         # ...and if that still doesn't work, then we're out of luck...
