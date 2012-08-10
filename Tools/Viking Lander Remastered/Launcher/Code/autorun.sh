@@ -57,7 +57,7 @@
     STATUS_FAIL="${VT100_BOLD}${VT100_COLOUR_RED}✗${VT100_RESET}"
     
     # Local path from disc root to navigation menu...
-    PYTHON_NAVMENU_MAIN=./Navigator/Main.py
+    PYTHON_NAVMENU_MAIN=Main.py
 
 #Zenity process ID...
 ZenityPID=0
@@ -150,7 +150,6 @@ IdentifyDistro()
     fi
 
     # Lock distro identifiers...
-
  	readonly Distro
  	readonly DistroCodeName
  	readonly DistroPackageManager
@@ -394,7 +393,7 @@ Main()
 
     # Run the navigation menu...
     echo -n "Launching GUI using... "
-    
+
         # First try with Python 3...
         if [ -x "`which python3`" ]; then
             echo "python3 $STATUS_OK"

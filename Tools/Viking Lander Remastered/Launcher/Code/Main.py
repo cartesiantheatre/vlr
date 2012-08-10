@@ -18,17 +18,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# Imports...
+# System imports...
 from gi.repository import Gtk, Gdk, GObject
-from optparse import OptionParser
 import urllib.request
 import os
 import platform
 import re
 import dbus
 
-# Our other modules...
+# Our support modules...
+import Options
+from Splash import NavigatorSplash
+
 from VerificationThread import VerificationThread
+from VerificationPages import VerificationPages
 
 # Navigator class...
 class NavigatorApp():
@@ -36,29 +39,25 @@ class NavigatorApp():
     # Constructor...
     def __init__(self):
 
-        # Parse the command line...
-        self.parseCommandLine()
-
-        # Initialize Glade builder and connect signals...
+        # Initialize Glade builder...
         self.builder = Gtk.Builder()
-        self.builder.add_from_file("Navigator/Navigator.glade")
+        self.builder.add_from_file("../Gooey/Launcher.glade")
+
+        # Find the assistant...
+        self.assistant = self.builder.get_object("Assistant")
+
+        # Construct composites objects...
+        self.navigatorSplash = NavigatorSplash(self)
+        self.verificationPages = VerificationPages(self)
+
+        print("NavigatorApp constructing...")
+
+
         self.builder.connect_signals(self)
 
         # Show the splash window...
-        self.showSplash()
+        self.navigatorSplash.showSplash()
 
-        # Setup the assistant...
-        self.setupAssistant()
-        
-        # Disc verification thread not active yet...
-        self.verificationThread = None
-
-    # Setup the assistant window...
-    def setupAssistant(self):
-
-        # Find the assistant...
-        self.assistant = self.builder.get_object("AssistantInstance")
-        
         # Set the forward function which determines next page to show...
         self.assistant.set_forward_page_func(self.forwardPage, None)
 
@@ -527,62 +526,6 @@ class NavigatorApp():
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
             "Will execute: $ {0}\n".format(commandLine))
 
-    # Start the disc verification...
-    def startDiscVerification(self):
-
-        # Already running...
-        if self.verificationThread and self.verificationThread.isAlive():
-            print("Disc verification thread already in progress...")
-            return
-
-        # Allocate and start the thread...
-        self.verificationThread = VerificationThread(self.builder)
-        self.verificationThread.start()
-
-    # User requested to stop disc verification...
-    def onStopVerificationPressed(self, button):
-
-        # Signal the thread to quit...
-        self.verificationThread.setQuit()
-        
-        # Wait for it to quit...
-        self.verificationThread.join()
-        
-        # Mark as dead...
-        self.verificationThread = None
-        
-        # Alert user...
-        messageDialog = Gtk.MessageDialog(
-            self.assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.WARNING, 
-            Gtk.ButtonsType.OK, "Disc verification was cancelled.")
-        messageDialog.run()
-        messageDialog.destroy()
-
-        # Mark page as complete...
-        self.assistant.set_page_complete(self.verificationProgressPageBox, True)
-        
-        # Advance to the next page...
-        currentPageIndex = self.assistant.get_current_page()
-        self.assistant.set_current_page(currentPageIndex + 1)
-
-    # Parse command line...
-    def parseCommandLine(self):
-
-        # Initialize and parse...
-        optionParser = OptionParser()
-        optionParser.add_option("--skip-splash", 
-            action="store_true", 
-            dest="skipSplash", 
-            help="skip the splash screen", 
-            default=False)
-        (self.options, arguments) = optionParser.parse_args()
-
-    # Keyboard or mouse pressed on the splash......
-    def onSplashPressed(self, *arguments):
-        
-        # Cleanup the window...
-        self.splashTimerDone(None)
-
     # Apply button clicked...
     def onApplyEvent(self, *args):
         
@@ -642,21 +585,6 @@ class NavigatorApp():
         
         # No threads should be running by this point, so safe to terminate...
         self.quit()
-        
-    # Destroy the splash window after splash timer elapses...
-    def splashTimerDone(self, userData):
-
-        # Destroy the splash window...
-        self.splashWindow.destroy()
-        
-        # Make the main window visible now...
-        self.assistant.show_all()
-
-        # Kill the timer...
-        GObject.source_remove(self.splashTimeoutEvent)
-
-        # Kill the timer...
-        return False
 
     # Run the GUI...
     def run(self):
@@ -673,24 +601,6 @@ class NavigatorApp():
         except:
             print("SomeOtherException")
             Gtk.main_quit()
-
-    # Show the splash window...
-    def showSplash(self):
-
-        # Find the window instance...
-        self.splashWindow = self.builder.get_object("SplashWindowInstance")
-
-        # Set timer for three seconds, or zero time if disabled...
-        if not self.options.skipSplash:
-            self.splashTimeoutEvent = GObject.timeout_add(3000, self.splashTimerDone, None)
-        else:
-            self.splashTimeoutEvent = GObject.timeout_add(0, self.splashTimerDone, None)
-
-        # Set it to be always on top...
-        self.splashWindow.set_keep_above(True)
-
-        # Display the window...
-        self.splashWindow.show_all()
 
     # Terminate...
     def quit(self):
