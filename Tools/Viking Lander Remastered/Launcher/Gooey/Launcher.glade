@@ -721,7 +721,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
       </packing>
     </child>
     <child>
-      <object class="GtkCheckButton" id="downloadHandbookButton">
+      <object class="GtkCheckButton" id="downloadHandbookToggle">
         <property name="label" translatable="yes">Yes, download the latest copy.</property>
         <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
@@ -730,7 +730,6 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
         <property name="use_action_appearance">False</property>
         <property name="xalign">0</property>
         <property name="draw_indicator">True</property>
-        <signal name="toggled" handler="onDownloadHandbookToggled" swapped="no"/>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -749,6 +748,56 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
         <property name="expand">False</property>
         <property name="fill">True</property>
         <property name="position">3</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkTextBuffer" id="introductionTextBuffer">
+    <property name="text" translatable="yes">This Avaneya: Viking Lander Remastered disc has an interesting story behind it. If you'd like to skip past this and go straight to the data recovery, select skip introduction below.
+
+The Avaneya project is an attempt at a libre cerebral science fiction libre game for the GNU platform. It takes place in the future on Mars and predominantly in a region of the planet known as Arcadia Planitia. This is approximately mid-latitude in the northern hemisphere.
+
+Getting the game experience right is important to us. That means we need to replicate the visual environmental conditions of the Martian landscape as closely as possible. We can do much better than simply making it red, and users appreciate this because it makes their experience feel more genuine.
+
+As such, our artists need access to large sets of high resolution reference photographs of the area nearest and most similar to Arcadia Planitia for study. Suitable photographs were taken in the late 1970s by NASA's Viking mission.
+
+In 1976 NASA successfully placed two spacecraft into Martian orbit after many years of failed American and Russian attempts. These initial failures became unofficially attributed to the Mars Curse, owing to their high number. The Viking orbiters both carried their own landers which they successfully landed. 
+
+The landers were capable of capturing high resolution photographs and other data from the surface of the planet, buffering temporarily onto internal magnetic tapes, and then relaying this data back to Earth through one the orbiters when it was in position, or sometimes directly through a UHF uplink when possible. They provided us with large amounts of data without any issues for four years before finally succumbing to a battery failure on one and a software update bug which shutdown the communication antenna on the other.</property>
+  </object>
+  <object class="GtkBox" id="introductionPageBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
+    <property name="border_width">20</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">8</property>
+    <child>
+      <object class="GtkScrolledWindow" id="scrolledwindow1">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="shadow_type">etched-in</property>
+        <property name="min_content_width">0</property>
+        <property name="min_content_height">0</property>
+        <child>
+          <object class="GtkTextView" id="introductionTextView">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="editable">False</property>
+            <property name="wrap_mode">word</property>
+            <property name="left_margin">7</property>
+            <property name="right_margin">7</property>
+            <property name="cursor_visible">False</property>
+            <property name="buffer">introductionTextBuffer</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
       </packing>
     </child>
   </object>
@@ -981,56 +1030,6 @@ You really only ever need to do this once or if you suspect that your disc may b
         <property name="expand">False</property>
         <property name="fill">True</property>
         <property name="position">2</property>
-      </packing>
-    </child>
-  </object>
-  <object class="GtkTextBuffer" id="welcomeTextBuffer">
-    <property name="text" translatable="yes">This Avaneya: Viking Lander Remastered disc has an interesting story behind it. If you'd like to skip past this and go straight to the data recovery, select skip introduction below.
-
-The Avaneya project is an attempt at a libre cerebral science fiction libre game for the GNU platform. It takes place in the future on Mars and predominantly in a region of the planet known as Arcadia Planitia. This is approximately mid-latitude in the northern hemisphere.
-
-Getting the game experience right is important to us. That means we need to replicate the visual environmental conditions of the Martian landscape as closely as possible. We can do much better than simply making it red, and users appreciate this because it makes their experience feel more genuine.
-
-As such, our artists need access to large sets of high resolution reference photographs of the area nearest and most similar to Arcadia Planitia for study. Suitable photographs were taken in the late 1970s by NASA's Viking mission.
-
-In 1976 NASA successfully placed two spacecraft into Martian orbit after many years of failed American and Russian attempts. These initial failures became unofficially attributed to the Mars Curse, owing to their high number. The Viking orbiters both carried their own landers which they successfully landed. 
-
-The landers were capable of capturing high resolution photographs and other data from the surface of the planet, buffering temporarily onto internal magnetic tapes, and then relaying this data back to Earth through one the orbiters when it was in position, or sometimes directly through a UHF uplink when possible. They provided us with large amounts of data without any issues for four years before finally succumbing to a battery failure on one and a software update bug which shutdown the communication antenna on the other.</property>
-  </object>
-  <object class="GtkBox" id="welcomePageBox">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="hexpand">True</property>
-    <property name="vexpand">True</property>
-    <property name="border_width">20</property>
-    <property name="orientation">vertical</property>
-    <property name="spacing">8</property>
-    <child>
-      <object class="GtkScrolledWindow" id="scrolledwindow1">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="shadow_type">etched-in</property>
-        <property name="min_content_width">0</property>
-        <property name="min_content_height">0</property>
-        <child>
-          <object class="GtkTextView" id="welcomeTextView">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
-            <property name="editable">False</property>
-            <property name="wrap_mode">word</property>
-            <property name="left_margin">7</property>
-            <property name="right_margin">7</property>
-            <property name="cursor_visible">False</property>
-            <property name="buffer">welcomeTextBuffer</property>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="expand">True</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
       </packing>
     </child>
   </object>

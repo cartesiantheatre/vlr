@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # VikingExtractor, to recover images from Viking Lander operations.
 # Copyright (C) 2010, 2011, 2012 Cartesian Theatre <kip@thevertigo.com>.
 #
@@ -18,11 +19,126 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # System imports...
+from gi.repository import Gtk, Gdk, GObject
 import hashlib
 import os
 import threading
 import time
-from gi.repository import Gtk, GObject
+
+# Our support modules...
+import Options
+
+# Class containing behaviour for the two disc verification pages...
+class VerificationPages():
+
+    # Constructor...
+    def __init__(self, navigatorApp):
+
+        # For debugging purposes...
+        print("VerificationPages constructing...")
+
+        # Initialize...
+        self._assistant = navigatorApp.assistant
+        self._builder   = navigatorApp.builder
+        self._thread    = None
+
+        # Add the verification info page to the assistant...
+        self._verificationInfoPageBox = self._builder.get_object("verificationInfoPageBox")
+        self._verificationInfoPageBox.set_border_width(5)
+        self._assistant.append_page(self._verificationInfoPageBox)
+        self._assistant.set_page_title(self._verificationInfoPageBox, "Verification Prompt")
+        self._assistant.set_page_type(self._verificationInfoPageBox, Gtk.AssistantPageType.CONTENT)
+        self._assistant.set_page_complete(self._verificationInfoPageBox, True)
+
+        # Add the verification progress page to the assistant...
+        self._verificationProgressPageBox = self._builder.get_object("verificationProgressPageBox")
+        self._verificationProgressPageBox.set_border_width(5)
+        self._assistant.append_page(self._verificationProgressPageBox)
+        self._assistant.set_page_title(
+            self._verificationProgressPageBox, "Verification Progress")
+        self._assistant.set_page_type(
+            self._verificationProgressPageBox, Gtk.AssistantPageType.PROGRESS)
+        self._assistant.set_page_complete(self._verificationProgressPageBox, False)
+
+        # Connect the signals...
+        stopVerificationButton = self._builder.get_object("stopVerificationButton")
+        stopVerificationButton.connect("pressed", self.onStopVerificationPressed)
+
+    # Get the verification progress page box...
+    def getProgressPageBox(self):
+        return self._verificationProgressPageBox
+
+    # Our page in the assistent is being constructed, but not visible yet...
+    def onPrepare(self):
+
+        # Don't start the disc verification thread if user requested to 
+        #  skip it...
+        if self._builder.get_object("skipVerificationCheckRadio").get_active():
+            return
+
+        # Otherwise begin the verification...
+        else:
+
+            # Change to busy cursor...
+            cursorWatch = Gdk.Cursor.new(Gdk.CursorType.WATCH)
+            self._assistant.get_root_window().set_cursor(cursorWatch)
+
+            # Launch the thread...
+            self.startDiscVerification()
+
+    # Start the disc verification...
+    def startDiscVerification(self):
+
+        # Already running...
+        if self._thread and self._thread.isAlive():
+            print("Verification thread already running, not relaunching...")
+            return
+
+        # Allocate and start the thread...
+        self._thread = VerificationThread(self._builder)
+        self._thread.start()
+
+    # User requested to stop disc verification...
+    def onStopVerificationPressed(self, button):
+
+        # Signal the thread to quit...
+        self._thread.setQuit()
+        
+        # Wait for it to quit...
+        self._thread.join()
+        
+        # Mark as dead...
+        self._thread = None
+        
+        # Alert user...
+        messageDialog = Gtk.MessageDialog(
+            self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.WARNING, 
+            Gtk.ButtonsType.OK, "Disc verification was cancelled.")
+        messageDialog.run()
+        messageDialog.destroy()
+
+        # Mark page as complete...
+        self._assistant.set_page_complete(self._verificationProgressPageBox, True)
+        
+        # Advance to the next page...
+        currentPageIndex = self._assistant.get_current_page()
+        self._assistant.set_current_page(currentPageIndex + 1)
+
+    # Check if the verification thread is still running, and if so, signal
+    #  it to quit and block until it does...
+    def waitThreadQuit(self):
+
+        # Check if the thread exists, and if so, if it still running...
+        if self._thread and self._thread.isAlive():
+
+            # Alert...
+            print("Stopping disc verification thread...")
+
+            # Signal the thread to quit...
+            self._thread.setQuit()
+            
+            # Wait for it to quit...
+            self._thread.join()
 
 # This thread is responsible for verifying data verification of the disc...
 class VerificationThread(threading.Thread):
@@ -30,20 +146,20 @@ class VerificationThread(threading.Thread):
     # Constructor...
     def __init__(self, builder):
 
-        # Call the base class's constructor...
+        # Call the inherited threading class's constructor...
         super(VerificationThread, self).__init__()
 
         # Initialize state...
         self._builder = builder
-        self._assistant = self._builder.get_object("AssistantInstance")
+        self._assistant = self._builder.get_object("Assistant")
 
         # List of file pairs (path, checksum) to check...
         self._files = [("/home/kip/Projects/Avaneya: Viking Lander Remastered/Mastered/Science Digital Data Preservation Task/Processed Images-9.7z", "1569e25c8b159d32025f9ed4467adcc9")]
         self._totalVerifiedSize = 0
         self._totalFileSize = 0
         
-        # When this is true, the thread is done...
-        self._finished = False
+        # When this is true, the thread has been requested to terminate...
+        self._terminateRequested = False
 
         # Find the progress bar...
         self._verificationProgressBar = self._builder.get_object("verificationProgressBar")
@@ -87,7 +203,7 @@ class VerificationThread(threading.Thread):
             GObject.idle_add(self._updateGUI, fraction, priority=GObject.PRIORITY_LOW)
             
             # Something requested the thread quit...
-            if self._finished:
+            if self._terminateRequested:
                 return 0
 
         # Return the calculated hash...
@@ -107,7 +223,7 @@ class VerificationThread(threading.Thread):
             messageDialog = Gtk.MessageDialog(
                 self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.INFO, 
                 Gtk.ButtonsType.OK, 
-                "Disc verification was successful. Your disc appears to be fully intact.")
+                "Disc verification was successful. Your disc is probably fine.")
             messageDialog.run()
             messageDialog.destroy()
 
@@ -128,6 +244,8 @@ class VerificationThread(threading.Thread):
             # Try to read it...
             try:
                 fileSize = os.path.getsize(currentFile)
+            
+            # Something bad happened, bail...
             except OSError:
                 self._setQuitWithError(
                     "I was not able to check a file I require:\n\n{0}".format(filePath))
@@ -142,7 +260,7 @@ class VerificationThread(threading.Thread):
             currentHexDigest = self._calculateChecksum(currentFile)
 
             # Something requested the thread quit...
-            if self._finished:
+            if self._terminateRequested:
                 return
 
             # Mismatch...
@@ -185,5 +303,6 @@ class VerificationThread(threading.Thread):
 
     # Quit the thread...
     def setQuit(self):
-        self._finished = True
+        self._terminateRequested = True
+
 

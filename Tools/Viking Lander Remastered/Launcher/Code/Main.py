@@ -20,18 +20,18 @@
 
 # System imports...
 from gi.repository import Gtk, Gdk, GObject
-import urllib.request
-import os
-import platform
 import re
-import dbus
 
 # Our support modules...
 import Options
+
+# Splash window...
 from Splash import NavigatorSplash
 
-from VerificationThread import VerificationThread
-from VerificationPages import VerificationPages
+# Assistant pages and related logic...
+from Introduction import IntroductionPage
+from Verification import VerificationPages
+from Handbook import HandbookPage
 
 # Navigator class...
 class NavigatorApp():
@@ -46,61 +46,22 @@ class NavigatorApp():
         # Find the assistant...
         self.assistant = self.builder.get_object("Assistant")
 
-        # Construct composites objects...
+        # Construct and show the splash window...
         self.navigatorSplash = NavigatorSplash(self)
-        self.verificationPages = VerificationPages(self)
-
-        print("NavigatorApp constructing...")
-
-
-        self.builder.connect_signals(self)
-
-        # Show the splash window...
         self.navigatorSplash.showSplash()
 
-        # Set the forward function which determines next page to show...
-        self.assistant.set_forward_page_func(self.forwardPage, None)
-
-        # Welcome page...
-        self.welcomePageBox = self.builder.get_object("welcomePageBox")
-        self.welcomePageBox.set_border_width(5)
-        self.assistant.append_page(self.welcomePageBox)
-        self.assistant.set_page_title(self.welcomePageBox, "Introduction")
-        self.assistant.set_page_type(self.welcomePageBox, Gtk.AssistantPageType.INTRO)
-        self.assistant.set_page_complete(self.welcomePageBox, True)
-        
-        # Verification info page...
-        self.verificationInfoPageBox = self.builder.get_object("verificationInfoPageBox")
-        self.verificationInfoPageBox.set_border_width(5)
-        self.assistant.append_page(self.verificationInfoPageBox)
-        self.assistant.set_page_title(self.verificationInfoPageBox, "Verification Prompt")
-        self.assistant.set_page_type(self.verificationInfoPageBox, Gtk.AssistantPageType.CONTENT)
-        self.assistant.set_page_complete(self.verificationInfoPageBox, True)
-
-        # Verification progress page...
-        self.verificationProgressPageBox = self.builder.get_object("verificationProgressPageBox")
-        self.verificationProgressPageBox.set_border_width(5)
-        self.assistant.append_page(self.verificationProgressPageBox)
-        self.assistant.set_page_title(
-            self.verificationProgressPageBox, "Verification Progress")
-        self.assistant.set_page_type(
-            self.verificationProgressPageBox, Gtk.AssistantPageType.PROGRESS)
-        self.assistant.set_page_complete(self.verificationProgressPageBox, False)
-
-        # Fetch handbook page...
-        self.handbookPageBox = self.builder.get_object("handbookPageBox")
-        self.handbookPageBox.set_border_width(5)
-        self.assistant.append_page(self.handbookPageBox)
-        self.assistant.set_page_title(self.handbookPageBox, "Download Handbook")
-        self.assistant.set_page_type(self.handbookPageBox, Gtk.AssistantPageType.CONTENT)
-        self.assistant.set_page_complete(self.handbookPageBox, True)
+        # Construct pages and register them with the assistant...
+        self.introductionPage = IntroductionPage(self)
+        self.verificationPages = VerificationPages(self)
+        self.handbookPage = HandbookPage(self)
 
         # Select save folder page...
+        # TODO: Move the rest of this page logic into appropriate composite classes...
         self.selectSaveFolderPageBox = self.builder.get_object("selectSaveFolderPageBox")
         self.selectSaveFolderPageBox.set_border_width(5)
         self.assistant.append_page(self.selectSaveFolderPageBox)
         self.assistant.set_page_title(self.selectSaveFolderPageBox, "Select Save Folder")
-        self.assistant.set_page_type(self.handbookPageBox, Gtk.AssistantPageType.CONTENT)
+        self.assistant.set_page_type(self.selectSaveFolderPageBox, Gtk.AssistantPageType.CONTENT)
         self.assistant.set_page_complete(self.selectSaveFolderPageBox, True)
 
         # Configuration intro page...
@@ -159,193 +120,10 @@ class NavigatorApp():
         self.assistant.set_page_type(self.finalPageBox, Gtk.AssistantPageType.SUMMARY)
         self.assistant.set_page_complete(self.finalPageBox, True)
 
-    # Download handbook button toggled...
-    def onDownloadHandbookToggled(self, button):
+        # Set the forward function which determines next page to show...
+        self.assistant.set_forward_page_func(self.forwardPage, None)
 
-        # Find the download progress bar...
-        progressBar = self.builder.get_object("handbookDownloadProgress")
-
-        # User requested to download the latest handbook...
-        if button.get_active():
-
-            # Update the GUI...
-            button.set_sensitive(False)
-            self.assistant.set_page_complete(self.handbookPageBox, False)
-
-            # Check network connectivity to the internet and alert user if 
-            #  caller requests if no connection available...
-            if not isInternetConnectionDetected(True, self.assistant, True):
-
-                # Update GUI...
-                progressBar.hide()
-                button.set_sensitive(True)
-                self.assistant.set_page_complete(self.handbookPageBox, True)
-                
-                # Deactivate the download button...
-                button.set_active(False)
-
-                # Don't do anything further...
-                return
-            
-            # The URL to the latest copy of the handbook and just the filename...
-            handbookUrl = "https://www.avaneya.com/downloads/Avaneya_Project_Crew_Handbook.pdf"
-            fileName = handbookUrl.split('/')[-1]
-
-            # Prepare a save as file chooser dialog to save the handbook...
-            dialog = Gtk.FileChooserDialog(
-                "Please choose a download location...", 
-                self.assistant,
-                Gtk.FileChooserAction.SAVE,
-                (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_SAVE_AS, Gtk.ResponseType.OK))
-            dialog.set_local_only(True)
-            dialog.set_do_overwrite_confirmation(True)
-            dialog.set_current_name(fileName)
-            dialog.set_default_response(Gtk.ResponseType.OK)
-
-            # Run the dialog and capture the response...
-            userResponse = dialog.run()
-            
-            # User cancelled...
-            if userResponse != Gtk.ResponseType.OK:
-
-                # Update GUI...
-                progressBar.hide()
-                button.set_sensitive(True)
-                self.assistant.set_page_complete(self.handbookPageBox, True)
-                
-                # Deactivate the download button...
-                button.set_active(False)
-
-                # Cleanup the dialog...
-                dialog.destroy()
-
-                # Don't do anything further...
-                return
-            
-            # Get the selected file name...
-            fileName = dialog.get_filename()
-
-            # Cleanup the dialog...
-            dialog.destroy()
-
-            # Show the download progress bar...
-            progressBar.show()
-            progressBar.set_text("Contacting server, please wait...")
-
-            # Try to download...
-            try:
-
-                # Flush the event queue so we don't block...
-                while Gtk.events_pending():
-                    Gtk.main_iteration()
-
-                # Create a URL stream with a 10 second timeout...
-                urlStream = urllib.request.urlopen(handbookUrl, None, 10)
-                
-                # Create the file on disk...
-                fileHandle = open(fileName, 'wb')
-                
-                # Get its length...
-                fileSize = int(urlStream.headers["Content-Length"])
-                
-                # Remember how much we have downloaded so far so we can calculate 
-                #  progress...
-                fileSizeCompleted = 0
-                
-                # Download block size of 8K...
-                blockSize = 8192
-
-                # Receive loop...
-                while True:
-                
-                    # Fill the buffer...
-                    fileBuffer = urlStream.read(blockSize)
-
-                    # No more left...
-                    if not fileBuffer:
-                        break
-
-                    # Save to disk...
-                    fileHandle.write(fileBuffer)
-
-                    # Calculate progress and update progress bar...
-                    fileSizeCompleted += len(fileBuffer)
-                    progressBar.set_text(None)
-                    progressBar.set_fraction(fileSizeCompleted / fileSize)
-
-                    # Flush the event queue so we don't block...
-                    while Gtk.events_pending():
-                        Gtk.main_iteration()
-
-                # Done. Close the stream and note that the page is ready to advance...
-                fileHandle.close()
-                self.assistant.set_page_complete(self.handbookPageBox, True)
-
-                # Alert user that the download is done...
-                messageDialog = Gtk.MessageDialog(
-                    self.assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.QUESTION, 
-                    Gtk.ButtonsType.YES_NO, 
-                    "The book downloaded successfully. Would you like to open it?")
-                messageDialog.set_default_response(Gtk.ResponseType.YES)
-                userResponse = messageDialog.run()
-                messageDialog.destroy()
-                
-                # User requested to open the book...
-                if userResponse == Gtk.ResponseType.YES:
-
-                    # GNU. Try via freedesktop method...
-                    if platform.system() == "Linux":
-                        os.system("xdg-open \"{0}\"".format(fileName))
-                    
-                    # Winblows system...
-                    elif platform.system() == "Windows":
-                        os.startfile(fileName)
-
-            # Problem finding the URL, e.g. 404...
-            except urllib.error.URLError as exception:
-
-                # Deactivate the download button...
-                button.set_active(False)
-
-                # Alert user...
-                messageDialog = Gtk.MessageDialog(
-                    self.assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
-                    Gtk.ButtonsType.OK, 
-                    "There was a problem communicating with the remote server. Please try again later.\n\n{0}".
-                        format(exception.reason))
-                messageDialog.run()
-                messageDialog.destroy()
-
-            # Couldn't write to disk...
-            except IOError as exception:
-
-                # Deactivate the download button...
-                button.set_active(False)
-
-                # Alert user...
-                messageDialog = Gtk.MessageDialog(
-                    self.assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
-                    Gtk.ButtonsType.OK, 
-                    "Unable to save the handbook to the requested location:\n\n{0}".
-                        format(exception.strerror))
-                messageDialog.run()
-                messageDialog.destroy()
-
-            # Regardless of whether there was an exception or not...
-            finally:
-                
-                # Update the GUI...
-                button.set_sensitive(True)
-                progressBar.hide()
-                self.assistant.set_page_complete(self.handbookPageBox, True)
-
-        # User did not want to download the handbook...
-        else:
-
-            # Update the GUI...
-            button.set_sensitive(True)
-            progressBar.hide()
-            self.assistant.set_page_complete(self.handbookPageBox, True)
+        self.builder.connect_signals(self)
 
     # End of current page. Next page is being constructed but not visible yet...
     def onPrepareEvent(self, assistant, currentPage):
@@ -354,20 +132,11 @@ class NavigatorApp():
         self.assistant.get_root_window().set_cursor(None)
 
         # Transitioning into verification progress page...
-        if currentPage is self.verificationProgressPageBox:
+        if currentPage is self.verificationPages.getProgressPageBox():
 
-            # Don't start the disc verification thread if user requested to 
-            #  skip it...
-            if self.builder.get_object("skipVerificationCheckRadio").get_active():
-                return
+            # Give a chance to prepare...
+            self.verificationPages.onPrepare()
 
-            # Change to busy cursor...
-            cursorWatch = Gdk.Cursor.new(Gdk.CursorType.WATCH)
-            self.assistant.get_root_window().set_cursor(cursorWatch)
-
-            # Start the disc verification...
-            self.startDiscVerification()
-        
         # Transitioning into confirm page...
         elif currentPage is self.confirmPageBox:
             
@@ -382,7 +151,7 @@ class NavigatorApp():
         nextPage = self.assistant.get_nth_page(currentPageIndex)
 
         # Transitioning into verification progress page...
-        if nextPage is self.verificationProgressPageBox and \
+        if nextPage is self.verificationPages.getProgressPageBox() and \
            self.builder.get_object("skipVerificationCheckRadio").get_active():
 
                 # Skip the disc verification check...
@@ -532,7 +301,8 @@ class NavigatorApp():
         # For debugging purposes...
         print("onApplyEvent")
 
-    # Cancel signal emitted when cancel button clicked...
+    # Cancel signal emitted when cancel button clicked or assistant being 
+    #  closed...
     def onCancelEvent(self, assistant, *args):
         
         # For debugging purposes...
@@ -551,18 +321,10 @@ class NavigatorApp():
         if userResponse != Gtk.ResponseType.YES:
             return
 
-        # Check if the verification thread is still running...
-        if self.verificationThread and self.verificationThread.isAlive():
+        # Check if the verification thread is still running, and if so, signal
+        #  it to quit and block until it does...
+        self.verificationPages.waitThreadQuit()
 
-            # Alert...
-            print("Stopping disc verification thread...")
-
-            # Signal the thread to quit...
-            self.verificationThread.setQuit()
-            
-            # Wait for it to quit...
-            self.verificationThread.join()
-        
         # Terminate...
         self.quit()
 
@@ -583,7 +345,8 @@ class NavigatorApp():
         # For debugging purposes...
         print("onCloseEvent")
         
-        # No threads should be running by this point, so safe to terminate...
+        # No threads should be running by this point because at the end of the 
+        #  assistant's page flow, so safe to terminate...
         self.quit()
 
     # Run the GUI...
@@ -616,56 +379,6 @@ def boolToYesNo(value):
         return "Yes"
     else:
         return "No"
-
-# Check network connectivity to the internet and alert user if caller requests 
-#  if no connection available...
-def isInternetConnectionDetected(alertUser, parent, unqueriableDefault):
-
-    # Some useful constants for DBus NetworkManager interface...
-    NM_STATE_CONNECTED = 3          # For 0.8 interface
-    NM_STATE_CONNECTED_GLOBAL = 70  # For 0.9 interface
-
-    # Open the session bus...
-    systemBus = dbus.SystemBus()
-    
-    # Try to get the NetworkManager remote proxy object...
-    try:
-        networkManagerRemoteProxy = systemBus.get_object(
-            "org.freedesktop.NetworkManager",  # Service name
-            "/org/freedesktop/NetworkManager") # Object on the service
-    
-    # Something went wrong, but most likely the service isn't available...
-    except dbus.exceptions.DBusException as exception:
-        print("NetworkManager service not found. Silently ignoring...")
-
-        # Alert caller...
-        return unqueriableDefault
-
-    # Get the connection state...
-    connectionState = networkManagerRemoteProxy.state()
-
-    # Connected. We're good...
-    if connectionState == NM_STATE_CONNECTED or \
-       connectionState == NM_STATE_CONNECTED_GLOBAL:
-
-        # Inform caller...
-        return True
-    
-    # Not connected...
-    else:
-
-        # Alert user, if caller requested...
-        if alertUser:
-            messageDialog = Gtk.MessageDialog(
-                parent, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
-                Gtk.ButtonsType.OK, 
-                "You need a working internet connection in order to do this. " \
-                "You don't appear to have one right now.")
-            messageDialog.run()
-            messageDialog.destroy()
-
-        # Inform caller...
-        return False
 
 # Entry point...
 if __name__ == '__main__':
