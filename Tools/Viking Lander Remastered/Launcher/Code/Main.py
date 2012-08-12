@@ -26,12 +26,15 @@ import re
 import Options
 
 # Splash window...
-from Splash import NavigatorSplash
+from Splash import SplashProxy
 
 # Assistant pages and related logic...
-from Introduction import IntroductionPage
-from Verification import VerificationPages
-from Handbook import HandbookPage
+from Introduction import IntroductionPageProxy
+from Verification import VerificationPagesProxy
+from Handbook import HandbookPageProxy
+from SelectRecovery import SelectRecoveryPageProxy
+from Configure import ConfigurePagesProxy
+from Confirm import ConfirmPageProxy
 
 # Navigator class...
 class NavigatorApp():
@@ -47,70 +50,16 @@ class NavigatorApp():
         self.assistant = self.builder.get_object("Assistant")
 
         # Construct and show the splash window...
-        self.navigatorSplash = NavigatorSplash(self)
-        self.navigatorSplash.showSplash()
+        self.splashProxy = SplashProxy(self)
+        self.splashProxy.showSplash()
 
         # Construct pages and register them with the assistant...
-        self.introductionPage = IntroductionPage(self)
-        self.verificationPages = VerificationPages(self)
-        self.handbookPage = HandbookPage(self)
-
-        # Select save folder page...
-        # TODO: Move the rest of this page logic into appropriate composite classes...
-        self.selectSaveFolderPageBox = self.builder.get_object("selectSaveFolderPageBox")
-        self.selectSaveFolderPageBox.set_border_width(5)
-        self.assistant.append_page(self.selectSaveFolderPageBox)
-        self.assistant.set_page_title(self.selectSaveFolderPageBox, "Select Save Folder")
-        self.assistant.set_page_type(self.selectSaveFolderPageBox, Gtk.AssistantPageType.CONTENT)
-        self.assistant.set_page_complete(self.selectSaveFolderPageBox, True)
-
-        # Configuration intro page...
-        self.configureIntroPageBox = self.builder.get_object("configureIntroPageBox")
-        self.configureIntroPageBox.set_border_width(5)
-        self.assistant.append_page(self.configureIntroPageBox)
-        self.assistant.set_page_title(self.configureIntroPageBox, "Configure Introduction")
-        self.assistant.set_page_type(self.configureIntroPageBox, Gtk.AssistantPageType.CONTENT)
-        self.assistant.set_page_complete(self.configureIntroPageBox, True)
-        
-        # Configure output layout page...
-        self.configureOutputLayoutPageBox = self.builder.get_object("configureOutputLayoutPageBox")
-        self.configureOutputLayoutPageBox.set_border_width(5)
-        self.assistant.append_page(self.configureOutputLayoutPageBox)
-        self.assistant.set_page_title(self.configureOutputLayoutPageBox, "Configure Layout")
-        self.assistant.set_page_type(self.configureOutputLayoutPageBox, Gtk.AssistantPageType.CONTENT)
-        self.assistant.set_page_complete(self.configureOutputLayoutPageBox, True)
-
-        # Configure recovery page...
-        self.configureRecoveryPageBox = self.builder.get_object("configureRecoveryPageBox")
-        self.configureRecoveryPageBox.set_border_width(5)
-        self.assistant.append_page(self.configureRecoveryPageBox)
-        self.assistant.set_page_title(self.configureRecoveryPageBox, "Configure Recovery")
-        self.assistant.set_page_type(self.configureRecoveryPageBox, Gtk.AssistantPageType.CONTENT)
-        self.assistant.set_page_complete(self.configureRecoveryPageBox, True)
-
-        # Configure filters page...
-        self.configureFiltersPageBox = self.builder.get_object("configureFiltersPageBox")
-        self.configureFiltersPageBox.set_border_width(5)
-        self.assistant.append_page(self.configureFiltersPageBox)
-        self.assistant.set_page_title(self.configureFiltersPageBox, "Configure Filters")
-        self.assistant.set_page_type(self.configureFiltersPageBox, Gtk.AssistantPageType.CONTENT)
-        self.assistant.set_page_complete(self.configureFiltersPageBox, True)
-
-        # Configure advanced page...
-        self.configureAdvancedPageBox = self.builder.get_object("configureAdvancedPageBox")
-        self.configureAdvancedPageBox.set_border_width(5)
-        self.assistant.append_page(self.configureAdvancedPageBox)
-        self.assistant.set_page_title(self.configureAdvancedPageBox, "Configure Advanced")
-        self.assistant.set_page_type(self.configureAdvancedPageBox, Gtk.AssistantPageType.CONTENT)
-        self.assistant.set_page_complete(self.configureAdvancedPageBox, True)
-
-        # Confirm page...
-        self.confirmPageBox = self.builder.get_object("confirmPageBox")
-        self.confirmPageBox.set_border_width(5)
-        self.assistant.append_page(self.confirmPageBox)
-        self.assistant.set_page_title(self.confirmPageBox, "Confirmation")
-        self.assistant.set_page_type(self.confirmPageBox, Gtk.AssistantPageType.CONFIRM)
-        self.assistant.set_page_complete(self.confirmPageBox, True)
+        self.introductionPageProxy = IntroductionPageProxy(self)
+        self.verificationPagesProxy = VerificationPagesProxy(self)
+        self.handbookPageProxy = HandbookPageProxy(self)
+        self.selectRecoveryPageProxy = SelectRecoveryPageProxy(self)
+        self.configurePagesProxy = ConfigurePagesProxy(self)
+        self.confirmPageProxy = ConfirmPageProxy(self)
 
         # Final page...
         self.finalPageBox = self.builder.get_object("finalPageBox")
@@ -132,13 +81,13 @@ class NavigatorApp():
         self.assistant.get_root_window().set_cursor(None)
 
         # Transitioning into verification progress page...
-        if currentPage is self.verificationPages.getProgressPageBox():
+        if currentPage is self.verificationPagesProxy.getProgressPageBox():
 
             # Give a chance to prepare...
-            self.verificationPages.onPrepare()
+            self.verificationPagesProxy.onPrepare()
 
         # Transitioning into confirm page...
-        elif currentPage is self.confirmPageBox:
+        elif currentPage is self.confirmPageProxy.getPageBox():
             
             # Prepare the VikingExtractor arguments based on user selected
             #  configuration and show the summary...
@@ -151,7 +100,7 @@ class NavigatorApp():
         nextPage = self.assistant.get_nth_page(currentPageIndex)
 
         # Transitioning into verification progress page...
-        if nextPage is self.verificationPages.getProgressPageBox() and \
+        if nextPage is self.verificationPagesProxy.getProgressPageBox() and \
            self.builder.get_object("skipVerificationCheckRadio").get_active():
 
                 # Skip the disc verification check...
@@ -323,7 +272,7 @@ class NavigatorApp():
 
         # Check if the verification thread is still running, and if so, signal
         #  it to quit and block until it does...
-        self.verificationPages.waitThreadQuit()
+        self.verificationPagesProxy.waitThreadQuit()
 
         # Terminate...
         self.quit()

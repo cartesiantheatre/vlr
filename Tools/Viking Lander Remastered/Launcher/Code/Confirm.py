@@ -21,24 +21,28 @@
 # System imports...
 from gi.repository import Gtk
 
-# Introduction page proxy class...
-class IntroductionPageProxy():
+# Confirm page proxy class...
+class ConfirmPageProxy():
 
     # Constructor...
     def __init__(self, navigatorApp):
     
         # For debugging purposes...
-        print("IntroductionPageProxy constructing...")
+        print("ConfirmPageProxy constructing...")
 
         # Initialize...
         self._assistant     = navigatorApp.assistant
         self._builder       = navigatorApp.builder
 
-        # Add the introduction page to the assistant...
-        self._introductionPageBox = self._builder.get_object("introductionPageBox")
-        self._introductionPageBox.set_border_width(5)
-        self._assistant.append_page(self._introductionPageBox)
-        self._assistant.set_page_title(self._introductionPageBox, "Introduction")
-        self._assistant.set_page_type(self._introductionPageBox, Gtk.AssistantPageType.INTRO)
-        self._assistant.set_page_complete(self._introductionPageBox, True)
+        # Add the confirm page to the assistant...
+        self._confirmPageBox = self._builder.get_object("confirmPageBox")
+        self._confirmPageBox.set_border_width(5)
+        self._assistant.append_page(self._confirmPageBox)
+        self._assistant.set_page_title(self._confirmPageBox, "Confirmation")
+        self._assistant.set_page_type(self._confirmPageBox, Gtk.AssistantPageType.CONFIRM)
+        self._assistant.set_page_complete(self._confirmPageBox, True)
+
+    # Get the page box...
+    def getPageBox(self):
+        return self._confirmPageBox
 

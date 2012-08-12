@@ -25,14 +25,14 @@ import os
 import platform
 import dbus
 
-# Handbook page class...
-class HandbookPage():
+# Handbook page proxy class...
+class HandbookPageProxy():
 
     # Constructor...
     def __init__(self, navigatorApp):
     
         # For debugging purposes...
-        print("HandbookPage constructing...")
+        print("HandbookPageProxy constructing...")
 
         # Initialize...
         self._assistant     = navigatorApp.assistant

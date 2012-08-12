@@ -29,13 +29,13 @@ import time
 import Options
 
 # Class containing behaviour for the two disc verification pages...
-class VerificationPages():
+class VerificationPagesProxy():
 
     # Constructor...
     def __init__(self, navigatorApp):
 
         # For debugging purposes...
-        print("VerificationPages constructing...")
+        print("VerificationPagesProxy constructing...")
 
         # Initialize...
         self._assistant = navigatorApp.assistant

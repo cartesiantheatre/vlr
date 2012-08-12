@@ -24,13 +24,13 @@ from gi.repository import Gtk, GObject
 # Our support modules...
 import Options
 
-# NavigatorSplash superclass...
-class NavigatorSplash():
+# Splash proxy class...
+class SplashProxy():
 
     # Constructor...
     def __init__(self, navigatorApp):
     
-        print("NavigatorSplash constructing...")
+        print("SplashProxy constructing...")
         
         # Initialize...
         self._navigatorApp = navigatorApp

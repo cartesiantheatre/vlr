@@ -823,7 +823,7 @@ The landers were capable of capturing high resolution photographs and other data
       </row>
     </data>
   </object>
-  <object class="GtkBox" id="selectSaveFolderPageBox">
+  <object class="GtkBox" id="selectRecoveryFolderPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="valign">center</property>
