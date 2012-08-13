@@ -154,7 +154,10 @@ class VerificationThread(threading.Thread):
         self._assistant = self._builder.get_object("Assistant")
 
         # List of file pairs (path, checksum) to check...
-        self._files = [("/home/kip/Projects/Avaneya: Viking Lander Remastered/Mastered/Science Digital Data Preservation Task/Processed Images-9.7z", "1569e25c8b159d32025f9ed4467adcc9")]
+        self._files = [
+            ("/home/kip/Projects/Avaneya: Viking Lander Remastered/Mastered/Science Digital Data Preservation Task/Processed Images-9.7z", 
+             "1569e25c8b159d32025f9ed4467adcc9")
+        ]
         self._totalVerifiedSize = 0
         self._totalFileSize = 0
         
@@ -216,21 +219,6 @@ class VerificationThread(threading.Thread):
         # Update the progress bar...
         self._verificationProgressBar.set_fraction(fraction)
 
-        # Done...
-        if fraction >= 1.0:
-
-            # Alert user...
-            messageDialog = Gtk.MessageDialog(
-                self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.INFO, 
-                Gtk.ButtonsType.OK, 
-                "Disc verification was successful. Your disc is probably fine.")
-            messageDialog.run()
-            messageDialog.destroy()
-
-            # Advance to the next page...
-            currentPageIndex = self._assistant.get_current_page()
-            self._assistant.set_current_page(currentPageIndex + 1)
-
         # Remove function from list of event sources and don't call again until 
         #  needed...
         return False
@@ -247,8 +235,14 @@ class VerificationThread(threading.Thread):
             
             # Something bad happened, bail...
             except OSError:
-                self._setQuitWithError(
+
+                # Alert user from main thread...
+                GObject.idle_add(
+                    self._setQuitWithError, 
                     "I was not able to check a file I require:\n\n{0}".format(filePath))
+                
+                # Exit the thread...
+                return
 
             # Add the file's size to the total size...
             self._totalFileSize += fileSize
@@ -259,32 +253,50 @@ class VerificationThread(threading.Thread):
             # Calculate checksum...
             currentHexDigest = self._calculateChecksum(currentFile)
 
-            # Something requested the thread quit...
-            if self._terminateRequested:
+            # Something requested the thread quit or there was a problem
+            #  generating the checksum ...
+            if self._terminateRequested or not currentHexDigest:
                 return
 
             # Mismatch...
             if currentHexDigest != correctHexDigest:
                 
-                # Alert user...
-                messageDialog = Gtk.MessageDialog(
-                    self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.WARNING, 
-                    Gtk.ButtonsType.YES_NO, 
-                    "Disc verification failed.")
-                messageDialog.format_secondary_text(
-                    "The following file appears to be corrupt:\n\n{0}\n\nDo you wish to continue?".format(
-                        currentFile))
-                userResponse = messageDialog.run()
-                messageDialog.destroy()
+                # Alert user from main thread...
+                GObject.idle_add(
+                    self._setQuitWithError, 
+                    "The following file appears to be corrupt:\n\n{0}\n\n" \
+                    "You should probably replace the disc.".format(currentFile))
 
-                # User wants to continue...
-                if userResponse == Gtk.ResponseType.YES:
-                    continue
-                
-                # User doesn't want to continue...
-                else:
-                    self._setQuitWithError("User requested to the verification process.")
-                    return
+                # Quit the thread...
+                return
+
+        # Reset the cursor to normal in case something changed it...
+        self._assistant.get_root_window().set_cursor(None)
+
+        # Mark page as complete...
+        self._assistant.set_page_complete(self._verificationProgressPageBox, True)
+
+        # Alert user everything went fine from the main thread...
+        GObject.idle_add(self._setQuitOk)
+
+    # Quit the thread and show user everything went fine...
+    def _setQuitOk(self):
+
+        # Alert user...
+        messageDialog = Gtk.MessageDialog(
+            self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.INFO, 
+            Gtk.ButtonsType.OK, 
+            "Disc verification was successful. Your disc is probably fine.")
+        messageDialog.run()
+        messageDialog.destroy()
+
+        # Advance to the next page...
+        currentPageIndex = self._assistant.get_current_page()
+        self._assistant.set_current_page(currentPageIndex + 1)
+        
+        # Remove function from list of event sources and don't call again until 
+        #  needed...
+        return False
 
     # Quit the thread and show an error message...
     def _setQuitWithError(self, message):
@@ -298,8 +310,17 @@ class VerificationThread(threading.Thread):
             Gtk.ButtonsType.OK, 
             "Disc verification failed.")
         messageDialog.format_secondary_text(message)
+        messageDialog.set_default_response(Gtk.ResponseType.NO)
         messageDialog.run()
         messageDialog.destroy()
+
+        # Advance to the next page...
+        currentPageIndex = self._assistant.get_current_page()
+        self._assistant.set_current_page(currentPageIndex + 1)
+
+        # Remove function from list of event sources and don't call again until 
+        #  needed...
+        return False
 
     # Quit the thread...
     def setQuit(self):

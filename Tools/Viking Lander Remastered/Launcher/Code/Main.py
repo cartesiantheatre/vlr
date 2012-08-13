@@ -20,7 +20,7 @@
 
 # System imports...
 from gi.repository import Gtk, Gdk, GObject
-import re
+from gi.repository import Vte
 
 # Our support modules...
 import Options
@@ -35,6 +35,7 @@ from Handbook import HandbookPageProxy
 from SelectRecovery import SelectRecoveryPageProxy
 from Configure import ConfigurePagesProxy
 from Confirm import ConfirmPageProxy
+from Farewell import FarewellPageProxy
 
 # Navigator class...
 class NavigatorApp():
@@ -53,26 +54,24 @@ class NavigatorApp():
         self.splashProxy = SplashProxy(self)
         self.splashProxy.showSplash()
 
-        # Construct pages and register them with the assistant...
+        # Construct pages and register them with the assistant in order...
         self.introductionPageProxy = IntroductionPageProxy(self)
         self.verificationPagesProxy = VerificationPagesProxy(self)
         self.handbookPageProxy = HandbookPageProxy(self)
         self.selectRecoveryPageProxy = SelectRecoveryPageProxy(self)
         self.configurePagesProxy = ConfigurePagesProxy(self)
         self.confirmPageProxy = ConfirmPageProxy(self)
-
-        # Final page...
-        self.finalPageBox = self.builder.get_object("finalPageBox")
-        self.finalPageBox.set_border_width(5)
-        self.assistant.append_page(self.finalPageBox)
-        self.assistant.set_page_title(self.finalPageBox, "Goodbye")
-        self.assistant.set_page_type(self.finalPageBox, Gtk.AssistantPageType.SUMMARY)
-        self.assistant.set_page_complete(self.finalPageBox, True)
+        self.farewellPageProxy = FarewellPageProxy(self)
 
         # Set the forward function which determines next page to show...
         self.assistant.set_forward_page_func(self.forwardPage, None)
 
-        self.builder.connect_signals(self)
+        # Connect the assistant's signals...
+        self.assistant.connect("close", self.onCloseEvent)
+        self.assistant.connect("apply", self.onApplyEvent)
+        self.assistant.connect("delete-event", self.onDeleteEvent)
+        self.assistant.connect("cancel", self.onCancelEvent)
+        self.assistant.connect("prepare", self.onPrepareEvent)
 
     # End of current page. Next page is being constructed but not visible yet...
     def onPrepareEvent(self, assistant, currentPage):
@@ -91,7 +90,7 @@ class NavigatorApp():
             
             # Prepare the VikingExtractor arguments based on user selected
             #  configuration and show the summary...
-            self.prepareVikingExtractor()
+            self.confirmPageProxy.onPrepare()
 
     # End of current page. Calculate index of next page...
     def forwardPage(self, currentPageIndex, userData):
@@ -110,139 +109,6 @@ class NavigatorApp():
         # Any other page just transition to the next one...
         else:
             return currentPageIndex + 1
-
-    # Prepare the VikingExtractor arguments based on user selected
-    #  configuration and show the summary...
-    def prepareVikingExtractor(self):
-    
-        # List that will contain all VikingExtractor command line options...
-        commandLineInterface = []
-
-        # Get the confirmation text buffer...
-        confirmTextBuffer = self.builder.get_object("confirmTextBuffer")
-        
-        # Clear it, if not already...
-        confirmTextBuffer.set_text("")
-
-        # Output folder...
-        outputFolder = self.builder.get_object("saveFolderChooser").get_filename()
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Save to: {0}\n".format(outputFolder))
-
-        # Overwrite...
-        active = self.builder.get_object("overwriteOutputCheckButton").get_active()
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Output will be overwritten: {0}\n".format(boolToYesNo(active)))
-        if active:
-            commandLineInterface.append("--overwrite")
-
-        # Directorize by...
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), "Directorize by...\n")
-        
-        # ...diode band class...
-        active = self.builder.get_object("directorizeBandTypeClassCheckButton").get_active()
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "\t...diode band class: {0}\n".format(boolToYesNo(active)))
-        if active:
-            commandLineInterface.append("--directorize-band-class")
-
-        # ...Martian location...
-        active = self.builder.get_object("directorizeLocationCheckButton").get_active()
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "\t...Martian location: {0}\n".format(boolToYesNo(active)))
-        if active:
-            commandLineInterface.append("--directorize-location")
-
-        # ...Martian month...
-        active = self.builder.get_object("directorizeMonthCheckButton").get_active()
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "\t...Martian month: {0}\n".format(boolToYesNo(active)))
-        if active:
-            commandLineInterface.append("--directorize-month")
-
-        # ...mission solar day...
-        active = self.builder.get_object("directorizeSolCheckButton").get_active()
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "\t...mission solar day: {0}\n".format(boolToYesNo(active)))
-        if active:
-            commandLineInterface.append("--directorize-sol")
-
-        # No automatic rotation...
-        active = self.builder.get_object("noAutomaticRotationCheckButton").get_active()
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Disable automatic image component orientation: {0}\n".format(boolToYesNo(active)))
-        if active:
-            commandLineInterface.append("--no-auto-rotate")
-
-        # No reconstruction...
-        active = self.builder.get_object("noReconstructionCheckButton").get_active()
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Dump components without reconstruction: {0}\n".format(boolToYesNo(active)))
-        if active:
-            commandLineInterface.append("--no-reconstruct")
-
-        # Filters...
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), "Filters...\n")
-
-        # ...band type class...
-        diodeFilterComboBox = self.builder.get_object("diodeFilterComboBox")
-        
-        iterator = diodeFilterComboBox.get_active_iter()
-        
-        model = diodeFilterComboBox.get_model()
-        humanValue = model.get_value(iterator, 1)
-        commandLineValue = model.get_value(iterator, 1)
-
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "\t...diode band type class: {0}\n".format(model.get_value(iterator, 0)))
-        commandLineInterface.append("--filter-diode={0}".format(commandLineValue))
-        
-        # ...lander...
-        landerFilterComboBox = self.builder.get_object("landerFilterComboBox")
-        
-        iterator = landerFilterComboBox.get_active_iter()
-        
-        model = landerFilterComboBox.get_model()
-        humanValue = model.get_value(iterator, 0)
-        humanValue = re.sub('<[^>]*>', '', humanValue)
-        commandLineValue = model.get_value(iterator, 1)
-
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "\t...lander: {0}\n".format(humanValue))
-        commandLineInterface.append("--filter-lander={0}".format(commandLineValue))
-
-        # Use image interlacing...
-        active = self.builder.get_object("useInterlacingCheckButton").get_active()
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Interlace images: {0}\n".format(boolToYesNo(active)))
-        if active:
-            commandLineInterface.append("--interlace")
-
-        # Generate metadata...
-        active = self.builder.get_object("generateMetadataCheckButton").get_active()
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Generate metadata: {0}\n".format(boolToYesNo(active)))
-        if active:
-            commandLineInterface.append("--generate-metadata")
-
-        # Verbosity...
-        active = self.builder.get_object("verbosityCheckButton").get_active()
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Be verbose: {0}\n".format(boolToYesNo(active)))
-        if active:
-            commandLineInterface.append("--verbose")
-
-        # Multithreading...
-        active = self.builder.get_object("multithreadingCheckButton").get_active()
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Use multithreading: {0}\n".format(boolToYesNo(active)))
-        if active:
-            commandLineInterface.append("--jobs")
-
-        # Create full commandline to invoke VikingExtractor...
-        commandLine = " ".join(commandLineInterface)
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Will execute: $ {0}\n".format(commandLine))
 
     # Apply button clicked...
     def onApplyEvent(self, *args):
@@ -317,17 +183,6 @@ class NavigatorApp():
     # Terminate...
     def quit(self):
         Gtk.main_quit()
-
-# Helper function takes a boolean value and converts to a yes or no string...
-def boolToYesNo(value):
-    
-    # Type check...
-    assert(type(value) is bool)
-
-    if value is True:
-        return "Yes"
-    else:
-        return "No"
 
 # Entry point...
 if __name__ == '__main__':

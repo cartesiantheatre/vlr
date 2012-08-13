@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <!-- interface-requires vte 0.0 -->
   <object class="GtkAssistant" id="Assistant">
     <property name="can_focus">False</property>
     <property name="border_width">20</property>
     <property name="title" translatable="yes">Avaneya: Viking Lander Remastered DVD</property>
     <property name="window_position">center-always</property>
     <property name="icon">Icon.png</property>
-    <signal name="close" handler="onCloseEvent" swapped="no"/>
-    <signal name="apply" handler="onApplyEvent" swapped="no"/>
-    <signal name="delete-event" handler="onDeleteEvent" swapped="no"/>
-    <signal name="cancel" handler="onCancelEvent" swapped="no"/>
-    <signal name="prepare" handler="onPrepareEvent" swapped="no"/>
   </object>
   <object class="GtkWindow" id="Splash">
     <property name="can_focus">False</property>
@@ -668,7 +664,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
       </row>
     </data>
   </object>
-  <object class="GtkBox" id="finalPageBox">
+  <object class="GtkBox" id="farewellPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="halign">center</property>
@@ -823,6 +819,95 @@ The landers were capable of capturing high resolution photographs and other data
       </row>
     </data>
   </object>
+  <object class="GtkWindow" id="recoveryWindow">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Extractor Status</property>
+    <child>
+      <object class="GtkBox" id="box6">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="border_width">7</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">10</property>
+        <child>
+          <object class="GtkExpander" id="expander1">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="tooltip_text" translatable="yes">Click the plus sign to see more details on the recovery process.</property>
+            <property name="expanded">True</property>
+            <child>
+              <object class="VteTerminal" id="terminal">
+                <property name="visible">True</property>
+                <property name="app_paintable">True</property>
+                <property name="can_focus">True</property>
+                <property name="hscroll_policy">natural</property>
+                <property name="vscroll_policy">natural</property>
+                <property name="background_opacity">0.20000000000000001</property>
+                <property name="background_saturation">0.39000000000000001</property>
+                <property name="background_tint_color">#000000000000</property>
+                <property name="background_transparent">True</property>
+                <property name="encoding">UTF-8</property>
+                <property name="scroll_on_keystroke">True</property>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label14">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Recovery details:</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box8">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">7</property>
+            <child>
+              <object class="GtkProgressBar" id="extractionProgressBar">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="text" translatable="yes">Please wait...</property>
+                <property name="show_text">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="cancelExtract">
+                <property name="label">gtk-cancel</property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkBox" id="selectRecoveryFolderPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -860,7 +945,7 @@ The landers were capable of capturing high resolution photographs and other data
       </packing>
     </child>
     <child>
-      <object class="GtkFileChooserButton" id="saveFolderChooser">
+      <object class="GtkFileChooserButton" id="recoveryFolderChooser">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="halign">start</property>
