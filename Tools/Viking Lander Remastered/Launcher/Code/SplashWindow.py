@@ -22,23 +22,21 @@
 from gi.repository import Gtk, GObject
 
 # Our support modules...
-import Options
+import LauncherOptions
 
-# Splash proxy class...
-class SplashProxy():
+# Splash window proxy class...
+class SplashWindowProxy():
 
     # Constructor...
-    def __init__(self, navigatorApp):
-    
-        print("SplashProxy constructing...")
-        
+    def __init__(self, launcherApp):
+
         # Initialize...
-        self._navigatorApp = navigatorApp
-        self._assistant = navigatorApp.assistant
-        self._builder = navigatorApp.builder
+        self._launcherApp = launcherApp
+        self._assistant = launcherApp.assistant
+        self._builder = launcherApp.builder
 
         # Find the window widgets...
-        self.splashWindow = self._builder.get_object("Splash")
+        self.splashWindow = self._builder.get_object("splashWindow")
         self.splashEventBox = self._builder.get_object("splashEventBox")
         
         # Connect the signals...
@@ -54,9 +52,8 @@ class SplashProxy():
     # Show the splash window...
     def showSplash(self):
 
-
         # Set timer for three seconds, or zero time if disabled...
-        if not Options.getOptions().skipSplash:
+        if not LauncherOptions.getOptions().skipSplash:
             self.splashTimeoutEvent = GObject.timeout_add(3000, self.splashTimerDone, None)
         else:
             self.splashTimeoutEvent = GObject.timeout_add(0, self.splashTimerDone, None)

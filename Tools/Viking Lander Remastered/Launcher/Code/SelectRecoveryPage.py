@@ -21,24 +21,21 @@
 # System imports...
 from gi.repository import Gtk
 
-# Introduction page proxy class...
-class IntroductionPageProxy():
+# Select recovery page proxy class...
+class SelectRecoveryPageProxy():
 
     # Constructor...
-    def __init__(self, navigatorApp):
-    
-        # For debugging purposes...
-        print("IntroductionPageProxy constructing...")
+    def __init__(self, launcherApp):
 
         # Initialize...
-        self._assistant     = navigatorApp.assistant
-        self._builder       = navigatorApp.builder
+        self._assistant     = launcherApp.assistant
+        self._builder       = launcherApp.builder
 
-        # Add the introduction page to the assistant...
-        self._introductionPageBox = self._builder.get_object("introductionPageBox")
-        self._introductionPageBox.set_border_width(5)
-        self._assistant.append_page(self._introductionPageBox)
-        self._assistant.set_page_title(self._introductionPageBox, "Introduction")
-        self._assistant.set_page_type(self._introductionPageBox, Gtk.AssistantPageType.INTRO)
-        self._assistant.set_page_complete(self._introductionPageBox, True)
+        # Add the select recovery page to the assistant...
+        self._selectRecoveryFolderPageBox = self._builder.get_object("selectRecoveryFolderPageBox")
+        self._selectRecoveryFolderPageBox.set_border_width(5)
+        self._assistant.append_page(self._selectRecoveryFolderPageBox)
+        self._assistant.set_page_title(self._selectRecoveryFolderPageBox, "Select Recovery Folder")
+        self._assistant.set_page_type(self._selectRecoveryFolderPageBox, Gtk.AssistantPageType.CONTENT)
+        self._assistant.set_page_complete(self._selectRecoveryFolderPageBox, True)
 

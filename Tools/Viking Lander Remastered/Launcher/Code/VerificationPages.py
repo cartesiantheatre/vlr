@@ -25,21 +25,16 @@ import os
 import threading
 import time
 
-# Our support modules...
-import Options
-
 # Class containing behaviour for the two disc verification pages...
 class VerificationPagesProxy():
 
     # Constructor...
-    def __init__(self, navigatorApp):
-
-        # For debugging purposes...
-        print("VerificationPagesProxy constructing...")
+    def __init__(self, launcherApp):
 
         # Initialize...
-        self._assistant = navigatorApp.assistant
-        self._builder   = navigatorApp.builder
+        self._launcher  = launcherApp
+        self._assistant = launcherApp.assistant
+        self._builder   = launcherApp.builder
         self._thread    = None
 
         # Add the verification info page to the assistant...
@@ -80,8 +75,7 @@ class VerificationPagesProxy():
         else:
 
             # Change to busy cursor...
-            cursorWatch = Gdk.Cursor.new(Gdk.CursorType.WATCH)
-            self._assistant.get_root_window().set_cursor(cursorWatch)
+            self._launcher.setBusy(True)
 
             # Launch the thread...
             self.startDiscVerification()
@@ -151,7 +145,7 @@ class VerificationThread(threading.Thread):
 
         # Initialize state...
         self._builder = builder
-        self._assistant = self._builder.get_object("Assistant")
+        self._assistant = self._builder.get_object("assistantWindow")
 
         # List of file pairs (path, checksum) to check...
         self._files = [
@@ -274,7 +268,8 @@ class VerificationThread(threading.Thread):
         self._assistant.get_root_window().set_cursor(None)
 
         # Mark page as complete...
-        self._assistant.set_page_complete(self._verificationProgressPageBox, True)
+        self._assistant.set_page_complete(
+            self._builder.get_object("verificationProgressPageBox"), True)
 
         # Alert user everything went fine from the main thread...
         GObject.idle_add(self._setQuitOk)
@@ -325,5 +320,4 @@ class VerificationThread(threading.Thread):
     # Quit the thread...
     def setQuit(self):
         self._terminateRequested = True
-
 

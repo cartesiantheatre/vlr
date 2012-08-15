@@ -29,14 +29,11 @@ import dbus
 class HandbookPageProxy():
 
     # Constructor...
-    def __init__(self, navigatorApp):
-    
-        # For debugging purposes...
-        print("HandbookPageProxy constructing...")
+    def __init__(self, launcherApp):
 
         # Initialize...
-        self._assistant     = navigatorApp.assistant
-        self._builder       = navigatorApp.builder
+        self._assistant     = launcherApp.assistant
+        self._builder       = launcherApp.builder
         self._handbookUrl   = "https://www.avaneya.com/downloads/Avaneya_Project_Crew_Handbook.pdf"
 
         # Add handbook page to assistant...

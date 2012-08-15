@@ -25,14 +25,11 @@ from gi.repository import Gtk
 class ConfigurePagesProxy():
 
     # Constructor...
-    def __init__(self, navigatorApp):
-    
-        # For debugging purposes...
-        print("ConfigurePagesProxy constructing...")
+    def __init__(self, launcherApp):
 
         # Initialize...
-        self._assistant     = navigatorApp.assistant
-        self._builder       = navigatorApp.builder
+        self._assistant     = launcherApp.assistant
+        self._builder       = launcherApp.builder
 
         # Add the configure intro page to the assistant...
         self._configureIntroPageBox = self._builder.get_object("configureIntroPageBox")

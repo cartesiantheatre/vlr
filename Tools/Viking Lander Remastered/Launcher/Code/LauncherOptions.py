@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-"""Options: Contains routines for parsing command line switches to the launcher"""
+"""LauncherOptions: Contains routines for parsing command line switches to the launcher"""
 
 # Imports...
 import optparse

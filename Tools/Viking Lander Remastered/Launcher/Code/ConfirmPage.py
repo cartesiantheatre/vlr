@@ -26,14 +26,11 @@ import re
 class ConfirmPageProxy():
 
     # Constructor...
-    def __init__(self, navigatorApp):
+    def __init__(self, launcherApp):
     
-        # For debugging purposes...
-        print("ConfirmPageProxy constructing...")
-
         # Initialize...
-        self._assistant     = navigatorApp.assistant
-        self._builder       = navigatorApp.builder
+        self._assistant     = launcherApp.assistant
+        self._builder       = launcherApp.builder
 
         # Add the confirm page to the assistant...
         self._confirmPageBox = self._builder.get_object("confirmPageBox")
