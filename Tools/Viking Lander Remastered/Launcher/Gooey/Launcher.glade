@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
-  <!-- interface-requires vte 0.0 -->
   <object class="GtkAssistant" id="assistantWindow">
     <property name="can_focus">False</property>
     <property name="border_width">20</property>
@@ -795,7 +794,11 @@ The landers were capable of capturing high resolution photographs and other data
   </object>
   <object class="GtkWindow" id="recoveryWindow">
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Extractor Status</property>
+    <property name="title" translatable="yes">VikingExtractor Status</property>
+    <property name="window_position">center</property>
+    <property name="default_width">1000</property>
+    <property name="default_height">200</property>
+    <property name="icon">Icon.png</property>
     <child>
       <object class="GtkBox" id="box6">
         <property name="visible">True</property>
@@ -804,24 +807,20 @@ The landers were capable of capturing high resolution photographs and other data
         <property name="orientation">vertical</property>
         <property name="spacing">10</property>
         <child>
-          <object class="GtkExpander" id="expander1">
+          <object class="GtkExpander" id="recoveryExpander">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="tooltip_text" translatable="yes">Click the plus sign to see more details on the recovery process.</property>
             <property name="expanded">True</property>
+            <property name="use_underline">True</property>
             <child>
-              <object class="VteTerminal" id="terminal">
+              <object class="GtkScrolledWindow" id="recoveryScrolledWindow">
                 <property name="visible">True</property>
-                <property name="app_paintable">True</property>
                 <property name="can_focus">True</property>
-                <property name="hscroll_policy">natural</property>
-                <property name="vscroll_policy">natural</property>
-                <property name="background_opacity">0.20000000000000001</property>
-                <property name="background_saturation">0.39000000000000001</property>
-                <property name="background_tint_color">#000000000000</property>
-                <property name="background_transparent">True</property>
-                <property name="encoding">UTF-8</property>
-                <property name="scroll_on_keystroke">True</property>
+                <property name="shadow_type">in</property>
+                <child>
+                  <placeholder/>
+                </child>
               </object>
             </child>
             <child type="label">
@@ -844,7 +843,7 @@ The landers were capable of capturing high resolution photographs and other data
             <property name="can_focus">False</property>
             <property name="spacing">7</property>
             <child>
-              <object class="GtkProgressBar" id="extractionProgressBar">
+              <object class="GtkProgressBar" id="recoveryProgressBar">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="text" translatable="yes">Please wait...</property>
@@ -857,7 +856,7 @@ The landers were capable of capturing high resolution photographs and other data
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="cancelExtract">
+              <object class="GtkButton" id="cancelRecoveryButton">
                 <property name="label">gtk-cancel</property>
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>

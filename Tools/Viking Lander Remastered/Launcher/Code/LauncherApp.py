@@ -20,7 +20,6 @@
 
 # System imports...
 from gi.repository import Gtk, Gdk, GObject
-from gi.repository import Vte, GLib
 
 # Splash window...
 from SplashWindow import SplashWindowProxy
@@ -33,6 +32,8 @@ from SelectRecoveryPage import SelectRecoveryPageProxy
 from ConfigurePages import ConfigurePagesProxy
 from ConfirmPage import ConfirmPageProxy
 from FarewellPage import FarewellPageProxy
+
+from RecoveryWindow import RecoveryWindowProxy
 
 # Launcher class...
 class LauncherApp():
@@ -48,8 +49,9 @@ class LauncherApp():
         self.assistant = self.builder.get_object("assistantWindow")
 
         # Construct and show the splash window...
-        self.splashWindowProxy = SplashWindowProxy(self)
-        self.splashWindowProxy.showSplash()
+        #self.splashWindowProxy = SplashWindowProxy(self)
+        #self.splashWindowProxy.showSplash()
+        self.recoveryWindowProxy = RecoveryWindowProxy(self)
 
         # Construct pages and register them with the assistant in order...
         self.introductionPagesProxy = IntroductionPagesProxy(self)
