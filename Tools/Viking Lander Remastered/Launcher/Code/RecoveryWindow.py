@@ -31,16 +31,16 @@ class RecoveryWindowProxy():
     def __init__(self, launcherApp):
         
         # Initialize...
-        self._launcherApp = launcherApp
-        self._assistant = launcherApp.assistant
-        self._builder = launcherApp.builder
+        self._launcherApp       = launcherApp
+        self._assistant         = launcherApp.assistant
+        self._builder           = launcherApp.builder
 
         # Find the window and its widgets...
-        self._recoveryWindow = self._builder.get_object("recoveryWindow")
-        self._recoveryExpander = self._builder.get_object("recoveryExpander")
-        self._recoveryScrolledWindow = self._builder.get_object("recoveryScrolledWindow")
-        self._recoveryProgressBar = self._builder.get_object("recoveryProgressBar")
-        self._cancelRecoveryButton = self._builder.get_object("cancelRecoveryButton")
+        self._recoveryWindow            = self._builder.get_object("recoveryWindow")
+        self._recoveryExpander          = self._builder.get_object("recoveryExpander")
+        self._recoveryScrolledWindow    = self._builder.get_object("recoveryScrolledWindow")
+        self._recoveryProgressBar       = self._builder.get_object("recoveryProgressBar")
+        self._cancelRecoveryButton      = self._builder.get_object("cancelRecoveryButton")
         
         # Create the terminal widget...
         self._terminal = Vte.Terminal()
@@ -61,13 +61,12 @@ class RecoveryWindowProxy():
         # This is just for debugging purposes...
         self._terminal.fork_command_full(
             Vte.PtyFlags.DEFAULT,
-            os.environ['HOME'],
+            os.environ["HOME"],
             ["/usr/bin/find", "/etc"],
             [],
-            GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+            GLib.SpawnFlags.DO_NOT_REAP_CHILD, # This method automatically adds this flag anyways. Here for clarity...
             None,
-            None,
-            )
+            None)
 
         # Set the window width to 1000 pixels, unless user's resolution too low
         #  in which case just use the maximum available...

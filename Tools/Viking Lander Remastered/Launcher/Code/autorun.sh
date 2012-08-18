@@ -52,9 +52,9 @@
     VT100_COLOUR_GREEN=$'\033[32m'
     VT100_COLOUR_BLUE=$'\033[34m'
     
-    # Status constants...
-    STATUS_OK="${VT100_BOLD}${VT100_COLOUR_GREEN}✓${VT100_RESET}"
-    STATUS_FAIL="${VT100_BOLD}${VT100_COLOUR_RED}✗${VT100_RESET}"
+    # Status symbol constants...
+    SYMBOL_STATUS_OK="${VT100_BOLD}${VT100_COLOUR_GREEN}✓${VT100_RESET}"
+    SYMBOL_STATUS_FAIL="${VT100_BOLD}${VT100_COLOUR_RED}✗${VT100_RESET}"
     
     # Local path from disc root to navigation menu...
     PYTHON_NAVMENU_MAIN=Main.py
@@ -97,7 +97,7 @@ IdentifyDistro()
 	
 	# Not running GNU...
 	if [ "${OS}" != "Linux" ] ; then
-	    echo $STATUS_FAIL
+	    echo $SYMBOL_STATUS_FAIL
 		echo "This autorun script is only suppoDistroCodeNamerted on GNU/Linux..."
 		exit 1
 	fi
@@ -111,7 +111,7 @@ IdentifyDistro()
     # Otherwise fallback to tedious method of checking for distro specific signatures in /etc...
 	else
 
-	    echo $STATUS_FAIL
+	    echo $SYMBOL_STATUS_FAIL
 		echo -n "Falling back to checking for distro specific signature in /etc... "
 
         # RedHat... (e.g. Fedora / CentOS)
@@ -140,7 +140,7 @@ IdentifyDistro()
 		
         # Unknown...
 		else
-		    echo $STATUS_FAIL
+		    echo $SYMBOL_STATUS_FAIL
             zenity --error \
                 --title="Error" \
                 --window-icon=$Icon \
@@ -155,7 +155,7 @@ IdentifyDistro()
  	readonly DistroPackageManager
 
     # Alert user of what we found...
-    echo $STATUS_OK
+    echo $SYMBOL_STATUS_OK
     echo "User is running ${Distro} / ${DistroCodeName}..."
     echo "System's packages are managed by ${DistroPackageManager}..."
 }
@@ -251,9 +251,9 @@ PrepareDebianBased()
         echo -n "Eject disc... "
         eject -r -s 2> /dev/null
         if [ $? == 0 ]; then
-            echo -e $STATUS_OK
+            echo -e $SYMBOL_STATUS_OK
         else
-            echo -e $STATUS_FAIL
+            echo -e $SYMBOL_STATUS_FAIL
         fi
         
         # Exit with error...
@@ -308,13 +308,13 @@ CheckDebInstalled()
     # Installed...
     if [[ (-n "${test_installed}") && ("${test_installed[1]}" != "(none)")]]
     then
-        echo -e $STATUS_OK
+        echo -e $SYMBOL_STATUS_OK
         return 1
 
     # Found in the package database, but not installed, or not even found in 
     #  the package data, and therefore not installed...
     else
-        echo -e $SYMBOL_FAIL
+        echo -e $SYMBOL_STATUS_FAIL
         PackagesMissing=("${PackagesMissing[*]}" $Package)
         return 0
     fi
@@ -335,7 +335,7 @@ CheckRPMInstalled()
     # Installed...
     if [ $? == 0 ]
     then
-        echo -e $STATUS_OK
+        echo -e $SYMBOL_STATUS_OK
         return 1
 
     # Not installed...
@@ -358,10 +358,10 @@ Main()
     # Zenity has come on most GNU distros...
     echo -n "Checking for zenity..."
     if [ ! -x "`which zenity`" ]; then
-	    echo $STATUS_FAIL
+	    echo $SYMBOL_STATUS_FAIL
 	    exit 1
 	else
-	    echo $STATUS_OK
+	    echo $SYMBOL_STATUS_OK
         echo "Using zenity `zenity --version` ..."
     fi
 
@@ -396,17 +396,17 @@ Main()
 
         # First try with Python 3...
         if [ -x "`which python3`" ]; then
-            echo "python3 $STATUS_OK"
+            echo "python3 $SYMBOL_STATUS_OK"
             /usr/bin/env python3 ${PYTHON_NAVMENU_MAIN}
         
         # ...if that doesn't work, try what's probably an alias for Python 2...
         elif [ -x "`which python`" ]; then
-            echo "python $STATUS_OK"
+            echo "python $SYMBOL_STATUS_OK"
             /usr/bin/env python ${PYTHON_NAVMENU_MAIN}
         
         # ...and if that still doesn't work, then we're out of luck...
         else
-            echo $STATUS_FAIL
+            echo $SYMBOL_STATUS_FAIL
             zenity --error \
                 --title="Error" \
                 --window-icon=$Icon \

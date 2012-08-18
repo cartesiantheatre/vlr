@@ -41,6 +41,11 @@ class LauncherApp():
     # Constructor...
     def __init__(self):
 
+        # Calculate paths to our needed files...
+        # TODO: Implement this. Remember that __file__ may not be available if
+        #        running via py2exe. In which case use os.path.dirname(sys.argv[0])
+        #print(os.path.realpath(__file__))
+
         # Initialize Glade builder...
         self.builder = Gtk.Builder()
         self.builder.add_from_file("../Gooey/Launcher.glade")
