@@ -26,9 +26,6 @@ SOURCE_FILES        := $(shell find $(SOURCE_DIRECTORIES) -type f -name "*.cpp")
 DEPENDENCY_FILES    := $(patsubst %.cpp, %.d, $(SOURCE_FILES))
 OBJECT_FILES        := $(patsubst %.cpp, %.o, $(SOURCE_FILES))
 
-# Disable checking for files by these names...
-#.PHONY: all clean check
-
 # Default target is to built the executable...
 all: $(BIN)
 
@@ -46,7 +43,17 @@ $(BIN): $(OBJECT_FILES)
 	@echo "Compiling $<"
 	@$(CPP) $(CXXFLAGS) -MMD -MP -c $< -o $@
 
+# Run self diagnostics here. For now, just check to make sure it executes...
+check: all
+	@./$(BIN) --version | grep -q ".*Cartesian Theatre."
+	@echo "*** All tests passed..."
+
 # Clean up...
 clean:
 	-@$(RM) -v $(wildcard $(OBJECT_FILES) $(DEPENDENCY_FILES) $(BIN))
+
+# Directive indicating that that these targets don't generate filesystem 
+#  objects / products, no need to check time stamps, and therefore always run
+#  each target's commands...
+.PHONY: all check clean
 

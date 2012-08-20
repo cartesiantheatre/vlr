@@ -17,27 +17,50 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-ISO = Viking_Lander_Remastered.iso
-GENISOIMAGE_PARAMETERS = -graft-points -input-charset utf-8 -r -J -udf \
-    -iso-level 3 -path-list Manifest -volid "VIKING_LANDER_REMASTERED"
+ISO                 = Avaneya_Viking_Lander_Remastered.iso
+PREPARER_ID         = "Cartesian Theatre"
+PUBLISHER_ID        = "Cartesian Theatre"
+VOLUME_ID           = "Avaneya_VLR"
+MANIFEST            = ./Manifest
+LAYOUT_OPTIMIZATION = ./LayoutOptimization
+GENISOIMAGE_PARAMETERS \
+                    = -graft-points \
+                      -input-charset utf-8 \
+                      -iso-level 3 \
+                      -J \
+                      -no-bak \
+                      -path-list ./Manifest \
+                      -p $(PREPARER_ID) \
+                      -publisher $(PUBLISHER_ID) \
+                      -r \
+                      -sort $(LAYOUT_OPTIMIZATION) \
+                      -udf \
+                      -volid $(VOLUME_ID)
 
 # Disable checking for files by these names...
 #.PHONY: all clean check
 
 # Default target is to built the complete ISO...
-all: $(ISO)
+all: iso
 
 # Build the ISO...
-$(ISO): Extractor/viking-extractor autorun.sh Manifest Makefile
-	chmod +x -c ./autorun.sh
+# TODO: This iso isn't exclusively udf, but appears to be iso9660. We need to
+#        be exclusively udf to ensure exec bits are always correctly set...
+iso: $(ISO)
+$(ISO): viking-extractor Manifest Makefile
+	chmod +x -c ../Launcher/Code/autorun.sh
 	genisoimage $(GENISOIMAGE_PARAMETERS) -o $(ISO)
 
-# Build viking-extractor...
-Extractor/viking-extractor:
-	@(cd Extractor; $(MAKE))
+# Recurse into viking-extractor's makefile for supported targets...
+all check viking-extractor:
+	cd ../Extractor && $(MAKE) $@
 
 # Clean up...
 clean:
-	-@$(RM) $(ISO)
-	@(cd Extractor; $(MAKE) clean) 
+	-@$(RM) -v $(ISO)
+	cd ../Extractor && $(MAKE) $@
+
+# Directive to make to let it know that these targets don't generate filesystem 
+#  objects / products and therefore no need to check time stamps...
+.PHONY: all check clean iso
 

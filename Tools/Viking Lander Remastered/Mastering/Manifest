@@ -1,5 +1,5 @@
-autorun.sh=autorun.sh <- not preserving exec bit
+autorun.sh=../Launcher/Code/autorun.sh
 autorun.inf=autorun.inf
-Copying=../../Copying
-Navigator/=Navigator/
+Copying=../../../Copying
+Launcher/=../Launcher/
 .directory=XDG/avaneya_vlr.directory

@@ -53,7 +53,7 @@ class SplashWindowProxy():
     def showSplash(self):
 
         # Set timer for three seconds, or zero time if disabled...
-        if not LauncherOptions.getOptions().skipSplash:
+        if not LauncherOptions.getOptions().noSplash:
             self.splashTimeoutEvent = GObject.timeout_add(3000, self.splashTimerDone, None)
         else:
             self.splashTimeoutEvent = GObject.timeout_add(0, self.splashTimerDone, None)

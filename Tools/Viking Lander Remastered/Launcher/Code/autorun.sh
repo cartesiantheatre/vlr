@@ -37,6 +37,9 @@
     Title="Avaneya: Viking Lander Remastered DVD"
     Version="0.1"
     
+    # Command line arguments...
+    Arguments=$@
+    
     # Icon to use in windows...
     Icon=XDG/Avaneya.png
 
@@ -57,7 +60,7 @@
     SYMBOL_STATUS_FAIL="${VT100_BOLD}${VT100_COLOUR_RED}✗${VT100_RESET}"
     
     # Local path from disc root to navigation menu...
-    PYTHON_NAVMENU_MAIN=Main.py
+    PYTHON_LAUNCHER_MAIN=Main.py
 
 #Zenity process ID...
 ZenityPID=0
@@ -397,12 +400,12 @@ Main()
         # First try with Python 3...
         if [ -x "`which python3`" ]; then
             echo "python3 $SYMBOL_STATUS_OK"
-            /usr/bin/env python3 ${PYTHON_NAVMENU_MAIN}
+            /usr/bin/env python3 ${PYTHON_LAUNCHER_MAIN} ${Arguments}
         
         # ...if that doesn't work, try what's probably an alias for Python 2...
         elif [ -x "`which python`" ]; then
             echo "python $SYMBOL_STATUS_OK"
-            /usr/bin/env python ${PYTHON_NAVMENU_MAIN}
+            /usr/bin/env python ${PYTHON_LAUNCHER_MAIN} ${Arguments}
         
         # ...and if that still doesn't work, then we're out of luck...
         else
@@ -420,4 +423,5 @@ Main()
 
 # Begin execution in Main...
 Main;
+
 

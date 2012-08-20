@@ -36,11 +36,11 @@ def _initializeOptions():
     # Initialize the option parser...
     optionParser = optparse.OptionParser()
     
-    # Define behaviour for --skip-splash...
-    optionParser.add_option("--skip-splash", 
+    # Define behaviour for --no-splash...
+    optionParser.add_option("--no-splash", 
         action="store_true", 
-        dest="skipSplash", 
-        help="skip the splash screen", 
+        dest="noSplash", 
+        help="Do not show the splash screen.", 
         default=False)
     
     # Parse the command line...
