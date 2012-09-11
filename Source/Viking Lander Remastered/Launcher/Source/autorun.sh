@@ -378,8 +378,8 @@ Main()
         [Dd]ebian)
             PrepareDebianBased
         ;;
-#        
-#        # Fedora...
+
+        # Fedora...
         [Ff]edora)
             PrepareDebianBased
         ;;

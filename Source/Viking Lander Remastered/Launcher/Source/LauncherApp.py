@@ -48,7 +48,7 @@ class LauncherApp():
 
         # Initialize Glade builder...
         self.builder = Gtk.Builder()
-        self.builder.add_from_file("../Gooey/Launcher.glade")
+        self.builder.add_from_file("../Data/Launcher.glade")
 
         # Find the assistant...
         self.assistant = self.builder.get_object("assistantWindow")
