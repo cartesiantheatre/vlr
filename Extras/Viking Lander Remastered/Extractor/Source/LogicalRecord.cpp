@@ -20,10 +20,17 @@
 */
 
 // Includes...
-#include "LogicalRecord.h"
-#include <iostream>
-#include <cassert>
-#include <cstring>
+
+    // Provided by Autoconf...
+    #include <config.h>
+    
+    // Our headers...
+    #include "LogicalRecord.h"
+    
+    // System headers...
+    #include <iostream>
+    #include <cassert>
+    #include <cstring>
 
 // Using the standard namespace...
 using namespace std;

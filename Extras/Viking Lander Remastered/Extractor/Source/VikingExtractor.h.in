@@ -1,4 +1,6 @@
 /*
+    @configure_input@
+
     VikingExtractor, to recover images from Viking Lander operations.
     Copyright (C) 2010, 2011, 2012 Cartesian Theatre <kip@thevertigo.com>.
     
@@ -23,8 +25,9 @@
 #ifndef _VIKING_EXTRACTOR_H_
 #define _VIKING_EXTRACTOR_H_
 
-// Version...
-#define VIKING_EXTRACTOR_VERSION    "0.4"
+// Version and bug report url or email...
+#define VIKING_EXTRACTOR_VERSION    "@PACKAGE_VERSION@"
+#define VIKING_EXTRACTOR_BUGREPORT  "<@PACKAGE_BUGREPORT@>"
 
 // Includes...
 #include "VicarImageBand.h"

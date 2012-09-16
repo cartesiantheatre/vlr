@@ -24,12 +24,16 @@
 #define _RECONSTRUCTED_IMAGE_H_
 
 // Includes...
-#include <ostream>
-#include <vector>
-#include <string>
-#include <fstream>
-#include "Options.h"
-#include "VicarImageBand.h"
+
+    // Our headers...
+    #include "Options.h"
+    #include "VicarImageBand.h"
+
+    // System headers...
+    #include <ostream>
+    #include <vector>
+    #include <string>
+    #include <fstream>
 
 // Reconstructable image...
 class ReconstructableImage

@@ -1,10 +1,10 @@
-- Implement --filter-lander
+✓ Implement --filter-lander
 
 - Correct missing scanline situations so that complete colour bands
 are not out of phase leaving colour bleeding when combined with bands
 missing some lines.
 
-- Autotoolify the source
+✓ Autoconfiscate the source
 
 - Implement --jobs parallelization
 

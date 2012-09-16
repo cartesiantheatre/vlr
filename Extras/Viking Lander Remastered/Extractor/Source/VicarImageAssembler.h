@@ -24,14 +24,18 @@
 #define _VICAR_IMAGE_ASSEMBLER_H_
 
 // Includes...
-#include <ostream>
-#include <vector>
-#include <set>
-#include <map>
-#include <string>
-#include "Options.h"
-#include "VicarImageBand.h"
-#include "ReconstructableImage.h"
+
+    // Our headers...
+    #include "Options.h"
+    #include "VicarImageBand.h"
+    #include "ReconstructableImage.h"
+    
+    // System headers...
+    #include <ostream>
+    #include <vector>
+    #include <set>
+    #include <map>
+    #include <string>
 
 // Assemble 1970s era VICAR colour images from individual VICAR images...
 class VicarImageAssembler

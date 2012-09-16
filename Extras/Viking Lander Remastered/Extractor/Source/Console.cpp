@@ -20,9 +20,16 @@
 */
 
 // Includes...
-#include "Console.h"
-#include <iostream>
-#include <cassert>
+
+    // Provided by Autoconf...
+    #include <config.h>
+    
+    // Our headers...
+    #include "Console.h"
+    
+    // System headers...
+    #include <iostream>
+    #include <cassert>
 
 // Using the standard namespace...
 using namespace std;

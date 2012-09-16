@@ -30,9 +30,6 @@
 // Create a directory and all of its parents, if necessary...
 bool CreateDirectoryRecursively(const std::string &Path);
 
-// Check if GOCR is installed and available...
-bool IsGocrAvailable();
-
 // Three way min() / max() function templates...
 template<class T> const T &min3(const T &A, const T &B, const T &C) { return min(A, min(B, C)); }
 template<class T> const T &max3(const T &A, const T &B, const T &C) { return max(A, max(B, C)); }

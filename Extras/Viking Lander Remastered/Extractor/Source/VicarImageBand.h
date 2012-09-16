@@ -24,15 +24,19 @@
 #define _VICAR_IMAGE_BAND_H_
 
 // Includes...
-#include "LogicalRecord.h"
-#include <cassert>
-#include <fstream>
-#include <map>
-#include <ostream>
-#include <set>
-#include <stdint.h>
-#include <string>
-#include <vector>
+
+    // Our headers...
+    #include "LogicalRecord.h"
+    
+    // System headers...
+    #include <cassert>
+    #include <fstream>
+    #include <map>
+    #include <ostream>
+    #include <set>
+    #include <stdint.h>
+    #include <string>
+    #include <vector>
 
 // 1970s era VICAR image class...
 class VicarImageBand

@@ -81,7 +81,7 @@ TrapInterrupt()
 # Kill Zenity...
 KillZenity()
 {
-    # Kill any Zenity GUI if still open...DistroCodeName
+    # Kill any Zenity GUI if still open...
     if [ ZenityPID != 0 ]; then
         kill $ZenityPID
         wait $ZenityPID 2> /dev/null
@@ -101,7 +101,7 @@ IdentifyDistro()
 	# Not running GNU...
 	if [ "${OS}" != "Linux" ] ; then
 	    echo $SYMBOL_STATUS_FAIL
-		echo "This autorun script is only suppoDistroCodeNamerted on GNU/Linux..."
+		echo "This autorun script is only supported on GNU/Linux..."
 		exit 1
 	fi
 
@@ -128,7 +128,7 @@ IdentifyDistro()
 		    Distro='SuSe'
 		    DistroCodeName=`cat /etc/SuSE-release | tr "\n" ' '| sed s/VERSION.*//`
 		    DistroPackageManager="zypp"
-	DistroCodeName
+
 	    # Mandrake...
 	    elif [ -f /etc/mandrake-release ] ; then
 		    Distro='Mandrake'
@@ -182,7 +182,7 @@ PrintBanner()
 # Prepare a Debian based system, such as Ubuntu...
 PrepareDebianBased()
 {
-    # Array for a list of packages that are always needed...
+    # Array for a list of packages that's always needed...
     declare -a local PackagesRequired;
 
     # Calculate which packages we need...

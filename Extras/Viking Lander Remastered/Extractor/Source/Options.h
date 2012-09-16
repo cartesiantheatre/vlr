@@ -24,9 +24,13 @@
 #define _OPTIONS_H_
 
 // Includes...
-#include "VicarImageBand.h"
-#include <string>
-#include <set>
+
+    // Our headers...
+    #include "VicarImageBand.h"
+    
+    // System headers...
+    #include <string>
+    #include <set>
 
 // Options singleton class...
 class Options

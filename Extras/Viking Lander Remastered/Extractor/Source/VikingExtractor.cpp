@@ -20,18 +20,27 @@
 */
 
 // Includes...
-#include "Console.h"
-#include "VikingExtractor.h"
-#include "VicarImageAssembler.h"
-#include "VicarImageBand.h"
-#include <cassert>
-#include <iostream>
-#include <string>
-#include <cstring>
-#include <cstdlib>
-#include <getopt.h>
-#include <unistd.h>
-#include <ocradlib.h>
+
+    // Provided by Autoconf...
+    #include <config.h>
+    
+    // Our headers...
+    #include "Console.h"
+    #include "VikingExtractor.h"
+    #include "VicarImageAssembler.h"
+    #include "VicarImageBand.h"
+    
+    // Standard C / POSIX system headers...
+    #include <cassert>
+    #include <iostream>
+    #include <string>
+    #include <cstring>
+    #include <cstdlib>
+    #include <getopt.h>
+    #include <unistd.h>
+    
+    // GNU OCRAD...
+    #include <ocradlib.h>
 
 // Using the standard namespace...
 using namespace std;
@@ -84,7 +93,7 @@ void ShowHelp()
          << "'input' can be either a single VICAR file or a directory containing VICAR files"   << endl
          << "to attempt reconstruction into the provided output directory."                     << endl << endl
 
-         << "Report bugs to <https://bugs.launchpad.net/avaneya>" << endl;
+         << "Report bugs to " VIKING_EXTRACTOR_BUGREPORT << endl;
 }
 
 // Show version information...
@@ -93,7 +102,9 @@ void ShowVersion()
     cout << "VikingExtractor " VIKING_EXTRACTOR_VERSION << " (GNU Ocrad " << OCRAD_version() << ")" << endl
          << "Copyright (C) 2010, 2011, 2012 Cartesian Theatre." << endl
          << "This is free software; see Copying for copying conditions. There is NO" << endl
-         << "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE." << endl;
+         << "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE." << endl << endl;
+
+    cout << "Configured with: " VIKING_EXTRACTOR_CONFIG_FLAGS << endl;
 }
 
 // Entry point...
@@ -337,7 +348,7 @@ int main(int ArgumentCount, char *Arguments[])
         }
 
         // Too old...
-        if(OCRAD_version()[2] < 2)
+        if(OCRAD_version()[2] < '2')
         {
             // Alert, abort...
             Message(Console::Error) 

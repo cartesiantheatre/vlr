@@ -21,6 +21,9 @@
 
 // Includes...
 
+    // Provided by Autoconf...
+    #include <config.h>
+
     // Our headers...    
     #include "Console.h"
     #include "LogicalRecord.h"

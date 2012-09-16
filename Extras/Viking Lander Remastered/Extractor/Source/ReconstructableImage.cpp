@@ -20,16 +20,25 @@
 */
 
 // Includes...
-#include "ReconstructableImage.h"
-#include "Miscellaneous.h"
-#include "Console.h"
-#include <cassert>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <algorithm>
-#include <climits>
-#include <png++/png.hpp>
+
+    // Provided by Autoconf...
+    #include <config.h>
+    
+    // Our headers...
+    #include "ReconstructableImage.h"
+    #include "Miscellaneous.h"
+    #include "Console.h"
+    
+    // System headers...
+    #include <cassert>
+    #include <iostream>
+    #include <fstream>
+    #include <sstream>
+    #include <algorithm>
+    #include <climits>
+
+    // Portable network graphics API...
+    #include <png++/png.hpp>
 
 // Using the standard namespace...
 using namespace std;
@@ -317,7 +326,7 @@ ReconstructableImage::FindBestImageBandWithNoAxis(
             return Current;
     }
     
-    // Nothing found, return rend...
+    // Nothing found, return reverse end of list ...
     return ImageBandList.rend();
 }
 

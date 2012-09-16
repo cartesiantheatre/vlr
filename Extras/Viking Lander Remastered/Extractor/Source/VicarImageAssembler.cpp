@@ -20,16 +20,22 @@
 */
 
 // Includes...
-#include "VicarImageAssembler.h"
-#include "Console.h"
-#include <cassert>
-#include <iostream>
-#include <iomanip>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <errno.h>
-#include <sys/types.h>
-#include <fnmatch.h>
+
+    // Provided by Autoconf...
+    #include <config.h>
+    
+    // Our headers...
+    #include "VicarImageAssembler.h"
+    #include "Console.h"
+    
+    // System headers...
+    #include <cassert>
+    #include <iostream>
+    #include <iomanip>
+    #include <dirent.h>
+    #include <sys/stat.h>
+    #include <errno.h>
+    #include <fnmatch.h>
 
 // Using the standard namespace...
 using namespace std;
@@ -61,8 +67,8 @@ VicarImageAssembler::VicarImageAssembler(
 void VicarImageAssembler::GenerateProspectiveFileList(const string &InputFileOrDirectory)
 {
     // Variables...
-    DIR            *Directory       = NULL;
-    struct dirent  *DirectoryEntry  = NULL;
+    DIR             *Directory       = NULL;
+    struct dirent   *DirectoryEntry  = NULL;
     
     // Is this just a file?
 

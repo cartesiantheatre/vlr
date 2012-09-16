@@ -1,0 +1,13 @@
+These files were taken from NASA's Science Digital Data Preservation Task 
+(SDDPT) magnetic tape number 1422. They were released by NASA under the public 
+domain. We use them here to perform a sample recovery pass for the 'make check' 
+target to recover camera event 22D180 taken on mission solar day 233.
+
+    vl_1422.001  
+    vl_1422.002
+    vl_1422.003  
+
+The 'check' target will compare your sample recovery's machine generated 
+metadata and the actual reconstructed image generated against a previous known 
+to be successful sample run on the same input data. 
+

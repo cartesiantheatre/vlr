@@ -1,0 +1,249 @@
+#
+#    VikingExtractor, to recover images from Viking Lander operations.
+#    Copyright (C) 2010, 2011, 2012 Cartesian Theatre <kip@thevertigo.com>.
+#    
+#    Public discussion on IRC available at #avaneya (irc.freenode.net) 
+#    or on the mailing list <avaneya@lists.avaneya.com>.
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    Process this file with autoconf to produce a configure script...
+#
+
+# Minimum version of Autoconf used to successfully process configure.ac...
+AC_PREREQ([2.67])
+
+# Initialize Autoconf...
+AC_INIT([VikingExtractor],
+         [0.4],
+         [https://bugs.launchpad.net/avaneya],  
+         [viking-extractor],
+         [https://www.avaneya.com])
+
+# Location to find Autoconf plugins...
+AC_CONFIG_MACRO_DIR([Macros])
+
+# Preserve all arguments for products that want them into config.h...
+config_flags="$0 $*"
+AC_DEFINE_UNQUOTED(
+    [CONFIG_FLAGS], 
+    ["$config_flags"], 
+    [All flags that were passed to configure at configuration time.])
+
+# Initialize Automake...
+    
+    # Setup flags...
+    AM_INIT_AUTOMAKE([color-tests dist-bzip2 no-dist-gzip silent-rules \
+         subdir-objects -Wall -Werror foreign])
+
+    # Set by default to use silent build rules...
+    AM_SILENT_RULES([yes])
+
+# Sanity check to ensure generated ./configure script knows the directory on 
+#  which it is being executed is actually the project directory by providing any
+#  unique source file...
+AC_CONFIG_SRCDIR([Source/VikingExtractor.cpp])
+
+# Configure config.h...
+
+    # Location to generate headers from templates containing Autoconf substitution variables...
+    AC_CONFIG_HEADERS([Source/config.h])
+    
+    # Prefix definitions with VLR...
+    AX_PREFIX_CONFIG_H([Source/config.h], [VIKING_EXTRACTOR])
+
+# Checks for programs needed to build and test VikingExtractor...
+
+    # C++ preprocessor...
+    AC_PROG_CXXCPP
+
+    # C++ compiler...
+    AC_PROG_CXX
+
+    # Install utility to copy files and set attributes...
+    AC_PROG_INSTALL
+    
+    # MD5 checksum tool required to perform test suite...
+    AC_PATH_PROG([MD5SUM], [md5sum])
+    if test "x$MD5SUM" = "x"; then
+        AC_MSG_ERROR([md5sum tool required to perform test suite...])
+    fi
+
+# Select our native language of C++ to perform tests in...
+AC_LANG([C++])
+
+# Check for command-line options...
+
+    # D-Bus interface...
+    AC_ARG_ENABLE([dbus-interface],
+        [AS_HELP_STRING([--disable-dbus-interface],
+            [disable D-Bus interface (VLR GUI needs interface) @<:@default: no@:>@])],
+        [dbus_interface=${enableval}], 
+        [dbus_interface=yes])
+
+# Substitute autoconfig macros in various non-make related files...
+
+    # System manual page...
+    AC_CONFIG_FILES([Manual/viking-extractor.man])
+    
+    # Update version string...
+    AC_CONFIG_FILES([Source/VikingExtractor.h])
+
+# Checks for headers, libraries, and features...
+
+    # Locates pkg-config tool on system and checks compatibility...
+    PKG_PROG_PKG_CONFIG([0.25])
+
+    # C++ standard library headers...
+    AC_CHECK_HEADERS([cassert cstdlib algorithm errno.h ostream map set vector iomanip limits sstream], [],
+        [AC_MSG_ERROR([missing some required standard C++ headers...])])
+    
+    # POSIX headers...
+    AC_CHECK_HEADERS([sys/stat.h dirent.h fnmatch.h getopt.h unistd.h], [],
+        [AC_MSG_ERROR([missing a required POSIX header...])])
+
+    # D-Bus interface feature requested...
+    if test "x${dbus_interface}" = xyes; then
+
+        # Check for the D-Bus library...
+        PKG_CHECK_MODULES([dbus_cxx], [dbus-c++-1], [have_dbus_cxx=yes], 
+            [have_dbus_cxx=no])
+
+        # D-Bus interface was requested, but API isn't available...
+        if test "x${have_dbus_cxx}" = xno; then
+            AC_MSG_ERROR([D-Bus interface was requested, but dbus-c++-1 was not available...])
+        fi
+
+        # D-Bus interface available...
+        if test "x${have_dbus_cxx}" = xyes; then
+
+            # Alert user and update config.h of the result of the check...
+            AC_DEFINE([DBUS_INTERFACE], 1, [D-Bus interface available and enabled.])
+            
+            # Store the needed compiler and linker flags for automake since this
+            #  doesn't happen automatically like with AC_CHECK_LIB...
+            CXXFLAGS="$CXXFLAGS $dbus_cxx_CFLAGS"
+            LIBS="$LIBS $dbus_cxx_LIBS"
+
+        fi
+    fi
+
+    # GNU OCRAD minimum required version needs to be at least 0.21...
+    AC_LIB_OCRAD_MIN_VERSION([0.21])
+
+    # Government...
+    AC_MSG_CHECKING([if government is good])
+    AC_MSG_RESULT([yes])
+
+    # Portable network graphics...
+    
+        # Check for C++ interface header...
+        AC_CHECK_HEADERS([png++/png.hpp], [have_png_cxx=yes], [have_png_cxx=no])
+        if test "x${have_png_cxx}" = xno; then
+            AC_MSG_ERROR([libpng++ headers are required, but were not detected...])
+        fi
+
+        # Check for C header and library...
+        PKG_CHECK_MODULES([libpng], [libpng12], [have_png=yes], [have_png=no])
+        if test "x${have_png}" = xno; then
+            AC_MSG_ERROR([libpng runtime library is required, but was not detected...])
+        fi
+
+        # Store the needed compiler and linker flags for automake since this
+        #  doesn't happen automatically like with AC_CHECK_LIB...
+        CXXFLAGS="$CXXFLAGS $libpng_CFLAGS"
+        LIBS="$LIBS $libpng_LIBS"
+
+# Checks for typedefs, structures, and compiler characteristics...
+
+    # Endianness...
+    AC_C_BIGENDIAN
+
+    # Fixed width primitives...
+    AC_TYPE_INT8_T
+    AC_TYPE_INT16_T
+    AC_TYPE_INT32_T
+    AC_TYPE_UINT8_T
+    AC_TYPE_UINT16_T
+    AC_TYPE_UINT32_T
+    
+    # Other basic types...
+    AC_TYPE_SIZE_T
+
+    # Check for M_PI since some compilers still don't define it in math.h / cmath...
+
+        # Alert user...
+        AC_MSG_CHECKING(for M_PI in cmath)
+        
+        # Check if cmath has it already by trying to compile this prologue and body. 
+        #  If it compiles, toggle have_m_pi...
+        have_m_pi=no
+        AC_COMPILE_IFELSE(
+            [AC_LANG_PROGRAM([#include <cmath>], [ double f = M_PI ])], 
+            [have_m_pi=yes])
+            
+        # Did not compile...
+        if test "$have_m_pi" = no; then
+        
+            # Tweak compiler flag and try again...
+            SAVE_CXXFLAGS="$CXXFLAGS"
+            CXXFLAGS="$CXXFLAGS -U__STRICT_ANSI__"
+            AC_COMPILE_IFELSE(
+                [AC_LANG_PROGRAM([#include <cmath>], [ double f = M_PI ])],
+                [mpi="yes, with -U__STRICT_ANSI__"],
+                [CXXFLAGS="$SAVE_CXXFLAGS"])
+
+        fi
+
+        # Still didn't work, bail...
+        if test "$have_m_pi" = no; then
+            AC_MSG_ERROR([can't work out how to make <cmath> define M_PI])
+        fi
+
+        # Alert user of test result...
+        AC_MSG_RESULT([$have_m_pi])
+
+# Checks for library functions...
+
+    # Standard C and GNU C library extensions...
+    AC_CHECK_FUNCS([access fnmatch getcwd getopt_long memset mkdir sqrt], [], 
+        [AC_MSG_ERROR([missing some needed standard C or GNU C library functions...])])
+
+# Generate makefiles from templates containing Autoconf substitution variables...
+AC_CONFIG_FILES([Makefile])
+                   
+# Generates config.status which generates all files from templates...
+AC_OUTPUT
+
+# Show a user summary of the configuration...
+echo \
+"-----------------------------------------
+
+${PACKAGE_NAME} ${PACKAGE_VERSION}
+
+Prefix............: $prefix
+C++ Compiler......: $CXX $CFLAGS $CXXFLAGS $CPPFLAGS
+Linker............: $LD $LDFLAGS $LIBS
+
+Optional package features:
+    D-Bus interface...: $dbus_interface
+
+Now type 'make @<:@<target>@:>@' where the 
+optional <target> is:
+    all            ...builds all binaries
+    check          ...run all diagnostics
+    install        ...install everything
+
+-----------------------------------------"
+

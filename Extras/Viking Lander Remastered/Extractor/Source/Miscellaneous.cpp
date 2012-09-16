@@ -20,15 +20,22 @@
 */
 
 // Includes...
-#include "Miscellaneous.h"
-#include <cstdio>
-#include <cmath>
-#include <cassert>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <cstring>
-#include <sys/stat.h>
+
+    // Provided by Autoconf...
+    #include <config.h>
+    
+    // Our headers...
+    #include "Miscellaneous.h"
+    
+    // System headers...
+    #include <cstdio>
+    #include <cmath>
+    #include <cassert>
+    #include <fstream>
+    #include <sstream>
+    #include <string>
+    #include <cstring>
+    #include <sys/stat.h>
 
 // Using the standard name space...
 using namespace std;
