@@ -26,20 +26,29 @@ dnl    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #  though its API has sometimes remained the same which can make testing for 
 #  features difficult...
 #
-#  Usage: AC_LIB_OCRAD_MIN_VERSION(MIN_VERSION)
+#  Usage: AC_CHECK_OCRAD(MIN_VERSION)
 #
-AC_DEFUN([AC_LIB_OCRAD_MIN_VERSION],
+AC_DEFUN([AC_CHECK_OCRAD],
 [
     # Sanity check arguments...
     m4_if([$1], [], [m4_fatal([$0 expected missing minimum version argument])]) dnl
 
+    # This test requires the C++ compiler and preprocessor...
+    AC_REQUIRE([AC_PROG_CXX])
+    AC_REQUIRE_CPP
+
+    # Perform tests using the C++ compiler. Even though OCRAD's native bindings 
+    #  are available as C interfaces, their implementations require a standard
+    #  C++ runtime which the C++ compiler should automatically link against...
+    AC_LANG_PUSH([C++])
+
     # Make sure header is present and usable...
     AC_CHECK_HEADERS([ocradlib.h], [], 
-        [AC_MSG_ERROR([GNU OCRAD header is required, but was not detected...])])
+        [AC_MSG_ERROR([GNU OCRAD header is required, but unavailable...])])
 
     # Make sure library is present and usable...
     AC_CHECK_LIB([ocrad], [OCRAD_version], [], 
-        [AC_MSG_ERROR([GNU OCRAD library is required, but was not detected...])])
+        [AC_MSG_ERROR([GNU OCRAD library is required, but unavailable...])])
 
     # Now check the library version...
     AC_MSG_CHECKING([GNU OCRAD >= $1])
@@ -62,6 +71,9 @@ AC_DEFUN([AC_LIB_OCRAD_MIN_VERSION],
             AC_MSG_RESULT([no])
             AC_MSG_ERROR([GNU OCRAD library is too old... (need >= $1)])
         ])
+    
+    # Done with the C++ compiler for this test...
+    AC_LANG_POP([C++])
 ])
 
 

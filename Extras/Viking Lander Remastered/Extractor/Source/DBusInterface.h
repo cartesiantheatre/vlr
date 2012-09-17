@@ -1,5 +1,3 @@
-// @configure_input@. Do not edit...
-
 /*
     VikingExtractor, to recover images from Viking Lander operations.
     Copyright (C) 2010, 2011, 2012 Cartesian Theatre <kip@thevertigo.com>.
@@ -22,23 +20,29 @@
 */
 
 // Multiple include protection...
-#ifndef _VIKING_EXTRACTOR_H_
-#define _VIKING_EXTRACTOR_H_
-
-// Version and bug report url or email...
-#define VIKING_EXTRACTOR_VERSION    "@PACKAGE_VERSION@"
-#define VIKING_EXTRACTOR_BUGREPORT  "<@PACKAGE_BUGREPORT@>"
+#ifndef _DBUS_INTERFACE_H_
+#define _DBUS_INTERFACE_H_
 
 // Includes...
-#include "VicarImageBand.h"
 
-// Function prototypes...
+    // Provided by Autoconf...
+    #include <config.h>
 
-    // Show help...
-    void ShowHelp();
+    // Sanity check...
+    #ifndef VIKING_EXTRACTOR_USE_DBUS_INTERFACE
+        #error "D-Bus interface was disabled at configure time. This header should not have been used."
+    #endif
 
-    // Show version information...
-    void ShowVersion();
+    // D-Bus C++ API...
+    #include <dbus-c++/dbus.h>
+
+// D-Bus VikingExtractor interface constants...
+
+    // D-Bus service name...
+    #define DBUS_SERVICE_NAME   "org.CartesianTheatre.VikingExtractor"
+    
+    // D-Bus object on the aforementioned service...
+    #define DBUS_OBJECT         "/org/CartesianTheatre/VikingExtractor"
 
 // Multiple include protection...
 #endif

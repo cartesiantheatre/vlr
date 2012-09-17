@@ -44,11 +44,16 @@ AC_DEFINE_UNQUOTED(
 # Initialize Automake...
     
     # Setup flags...
-    AM_INIT_AUTOMAKE([color-tests dist-bzip2 no-dist-gzip silent-rules \
+    AM_INIT_AUTOMAKE([color-tests dist-lzip no-dist-gzip silent-rules \
          subdir-objects -Wall -Werror foreign])
 
     # Set by default to use silent build rules...
     AM_SILENT_RULES([yes])
+
+# Prepare canonical values for the platform we are compiling on and the platform
+#  to host the generated files on...
+AC_CANONICAL_BUILD
+AC_CANONICAL_HOST
 
 # Sanity check to ensure generated ./configure script knows the directory on 
 #  which it is being executed is actually the project directory by providing any
@@ -105,13 +110,15 @@ AC_LANG([C++])
     # Locates pkg-config tool on system and checks compatibility...
     PKG_PROG_PKG_CONFIG([0.25])
 
-    # C++ standard library headers...
+    # Standard C++ library headers...
     AC_CHECK_HEADERS([cassert cstdlib algorithm errno.h ostream map set vector iomanip limits sstream], [],
         [AC_MSG_ERROR([missing some required standard C++ headers...])])
     
     # POSIX headers...
+    AC_LANG_PUSH([C])
     AC_CHECK_HEADERS([sys/stat.h dirent.h fnmatch.h getopt.h unistd.h], [],
         [AC_MSG_ERROR([missing a required POSIX header...])])
+    AC_LANG_POP([C])
 
     # D-Bus interface feature requested...
     if test "x${dbus_interface}" = xyes; then
@@ -129,18 +136,26 @@ AC_LANG([C++])
         if test "x${have_dbus_cxx}" = xyes; then
 
             # Alert user and update config.h of the result of the check...
-            AC_DEFINE([DBUS_INTERFACE], 1, [D-Bus interface available and enabled.])
+            AC_DEFINE([USE_DBUS_INTERFACE], 1, [D-Bus interface available and enabled.])
             
             # Store the needed compiler and linker flags for automake since this
             #  doesn't happen automatically like with AC_CHECK_LIB...
             CXXFLAGS="$CXXFLAGS $dbus_cxx_CFLAGS"
             LIBS="$LIBS $dbus_cxx_LIBS"
-
         fi
+
+        # Provide automake with a flag to know whether to conditionally compile 
+        #  D-Bus related code...
+        AM_CONDITIONAL(USE_DBUS_INTERFACE, test "$dbus_interface" = yes && test "$have_dbus_cxx" = yes)
+
+    # D-Bus interface was not requested. Provide automake with a flag to know to
+    #  not compile D-Bus related code...
+    else
+        AM_CONDITIONAL(USE_DBUS_INTERFACE, false)
     fi
 
     # GNU OCRAD minimum required version needs to be at least 0.21...
-    AC_LIB_OCRAD_MIN_VERSION([0.21])
+    AC_CHECK_OCRAD([0.21])
 
     # Government...
     AC_MSG_CHECKING([if government is good])
@@ -219,6 +234,11 @@ AC_LANG([C++])
     # Standard C and GNU C library extensions...
     AC_CHECK_FUNCS([access fnmatch getcwd getopt_long memset mkdir sqrt], [], 
         [AC_MSG_ERROR([missing some needed standard C or GNU C library functions...])])
+
+# Set additional compilation flags...
+
+    # Enable all warnings and treat them as errors...
+    CXXFLAGS="$CXXFLAGS -Wall -Werror"
 
 # Generate makefiles from templates containing Autoconf substitution variables...
 AC_CONFIG_FILES([Makefile])

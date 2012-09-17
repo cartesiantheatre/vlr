@@ -44,6 +44,18 @@ viking_extractor_SOURCES = \
     Source/VicarImageBand.h \
     Source/VikingExtractor.cpp
 
+# If D-Bus interface was enabled through Autoconf, then we also need to compile
+#  these sources too...
+if USE_DBUS_INTERFACE
+viking_extractor_SOURCES += \
+    Source/DBusInterface.h \
+    Source/DBusInterface.cpp
+endif
+
+# These files must exist before anything is compiled. Can be machine generated...
+BUILT_SOURCES = \
+    Source/VikingExtractor.h
+
 # viking-extractor product option variables for list of source not to be 
 #  distributed because they are machine generated...
 nodist_viking_extractor_SOURCES = \
@@ -101,6 +113,8 @@ RecoveryTest.sh: RecoveryChecksums.md5
 MAINTAINERCLEANFILES =              \
 	$(srcdir)/Source/config.h.in    \
 	$(srcdir)/aclocal.m4            \
+	$(srcdir)/config.guess          \
+	$(srcdir)/config.sub            \
 	$(srcdir)/configure             \
 	$(srcdir)/depcomp               \
 	$(srcdir)/install-sh            \
@@ -110,10 +124,11 @@ MAINTAINERCLEANFILES =              \
 # Additional files left behind during dist target that need to be cleaned...
 DISTCLEANFILES = \
 	_configs.sed \
-    $(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar.bz2
+    $(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar.*
 
 # List of files to clean up during clean target...
 CLEANFILES =                    \
+    Source/VikingExtractor.h    \
     Tests/Recovery/22D180.png   \
     Tests/Recovery/22D180.txt   \
     GrepTest.sh                 \

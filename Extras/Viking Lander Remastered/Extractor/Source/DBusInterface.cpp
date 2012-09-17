@@ -1,5 +1,3 @@
-// @configure_input@. Do not edit...
-
 /*
     VikingExtractor, to recover images from Viking Lander operations.
     Copyright (C) 2010, 2011, 2012 Cartesian Theatre <kip@thevertigo.com>.
@@ -21,25 +19,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Multiple include protection...
-#ifndef _VIKING_EXTRACTOR_H_
-#define _VIKING_EXTRACTOR_H_
-
-// Version and bug report url or email...
-#define VIKING_EXTRACTOR_VERSION    "@PACKAGE_VERSION@"
-#define VIKING_EXTRACTOR_BUGREPORT  "<@PACKAGE_BUGREPORT@>"
-
 // Includes...
-#include "VicarImageBand.h"
 
-// Function prototypes...
+    // Provided by Autoconf...
+    #include <config.h>
 
-    // Show help...
-    void ShowHelp();
-
-    // Show version information...
-    void ShowVersion();
-
-// Multiple include protection...
-#endif
+    // Our headers...    
+    #include "DBusInterface.h"
 
