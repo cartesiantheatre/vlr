@@ -24,12 +24,21 @@
 #define _CONSOLE_H_
 
 // Includes...
-#include <ostream>
-#include <map>
 
-// Console singleton class...
-class Console
+    // Our headers...
+    #include "ExplicitSingleton.h"
+
+    // System headers...
+    #include <ostream>
+    #include <map>
+
+// Console explicit singleton class...
+class Console : public ExplicitSingleton<Console>
 {
+    // Because we are a singleton, only ExplicitSingleton can control our 
+    //  creation...
+    friend class ExplicitSingleton<Console>;
+
     // Public types...
     public:
 
@@ -45,9 +54,6 @@ class Console
 
     // Public methods...
     public:
-
-        // Get the singleton instance...
-        static Console &GetInstance();
 
         // Get an output stream, if enabled, or dummy stream otherwise...
         std::ostream &Message(const Console::ChannelID ID);
@@ -67,8 +73,8 @@ class Console
         void SetCurrentFileName(const std::string &CurrentFileName)
             { m_CurrentFileName = CurrentFileName; }
 
-    // Protected methods...
-    protected:
+    // Private methods...
+    private:
 
         // Default constructor...
         Console();
@@ -140,12 +146,6 @@ class Console
         
         // Precede output with current file name...
         bool                m_UseCurrentFileName;
-
-    // Private data...
-    private:
-
-        // Singleton instance...
-        static Console     *m_SingletonInstance;
 };
 
 // Wrapper around the global singleton instance...

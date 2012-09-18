@@ -37,7 +37,7 @@ AC_CONFIG_MACRO_DIR([Macros])
 # Preserve all arguments for products that want them into config.h...
 config_flags="$0 $*"
 AC_DEFINE_UNQUOTED(
-    [CONFIG_FLAGS], 
+    [CONFIGURATION_FLAGS], 
     ["$config_flags"], 
     [All flags that were passed to configure at configuration time.])
 
@@ -62,11 +62,9 @@ AC_CONFIG_SRCDIR([Source/VikingExtractor.cpp])
 
 # Configure config.h...
 
-    # Location to generate headers from templates containing Autoconf substitution variables...
+    # Location to generate headers from templates containing Autoconf 
+    #  substitution variables...
     AC_CONFIG_HEADERS([Source/config.h])
-    
-    # Prefix definitions with VLR...
-    AX_PREFIX_CONFIG_H([Source/config.h], [VIKING_EXTRACTOR])
 
 # Checks for programs needed to build and test VikingExtractor...
 
@@ -124,29 +122,29 @@ AC_LANG([C++])
     if test "x${dbus_interface}" = xyes; then
 
         # Check for the D-Bus library...
-        PKG_CHECK_MODULES([dbus_cxx], [dbus-c++-1], [have_dbus_cxx=yes], 
-            [have_dbus_cxx=no])
+        PKG_CHECK_MODULES([dbus], [dbus-1], [have_dbus=yes], 
+            [have_dbus=no])
 
         # D-Bus interface was requested, but API isn't available...
-        if test "x${have_dbus_cxx}" = xno; then
-            AC_MSG_ERROR([D-Bus interface was requested, but dbus-c++-1 was not available...])
+        if test "x${have_dbus}" = xno; then
+            AC_MSG_ERROR([D-Bus interface was requested, but dbus-1 was not available...])
         fi
 
         # D-Bus interface available...
-        if test "x${have_dbus_cxx}" = xyes; then
+        if test "x${have_dbus}" = xyes; then
 
             # Alert user and update config.h of the result of the check...
             AC_DEFINE([USE_DBUS_INTERFACE], 1, [D-Bus interface available and enabled.])
             
             # Store the needed compiler and linker flags for automake since this
             #  doesn't happen automatically like with AC_CHECK_LIB...
-            CXXFLAGS="$CXXFLAGS $dbus_cxx_CFLAGS"
-            LIBS="$LIBS $dbus_cxx_LIBS"
+            CXXFLAGS="$CXXFLAGS $dbus_CFLAGS"
+            LIBS="$LIBS $dbus_LIBS"
         fi
 
         # Provide automake with a flag to know whether to conditionally compile 
         #  D-Bus related code...
-        AM_CONDITIONAL(USE_DBUS_INTERFACE, test "$dbus_interface" = yes && test "$have_dbus_cxx" = yes)
+        AM_CONDITIONAL(USE_DBUS_INTERFACE, test "$dbus_interface" = yes && test "$have_dbus" = yes)
 
     # D-Bus interface was not requested. Provide automake with a flag to know to
     #  not compile D-Bus related code...

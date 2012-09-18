@@ -27,14 +27,19 @@
 
     // Our headers...
     #include "VicarImageBand.h"
+    #include "ExplicitSingleton.h"
     
     // System headers...
     #include <string>
     #include <set>
 
-// Options singleton class...
-class Options
+// Options explicit singleton class...
+class Options : public ExplicitSingleton<Options>
 {
+    // Because we are a singleton, only ExplicitSingleton can control our 
+    //  creation...
+    friend class ExplicitSingleton<Options>;
+
     // Public types...
     public:
 
@@ -43,9 +48,6 @@ class Options
 
     // Public methods...
     public:
-
-        // Get the singleton instance...
-        static Options &GetInstance();
 
         // Get options...
         bool            GetAutoRotate() const { return m_AutoRotate; }
@@ -88,13 +90,13 @@ class Options
         void            SetRecursive(const bool Recursive = true) { m_Recursive = Recursive; }
         void            SetGenerateMetadata(const bool GenerateMetadata = true) { m_GenerateMetadata = GenerateMetadata; }
         void            SetSummarizeOnly(const bool SummarizeOnly = true) { m_SummarizeOnly = SummarizeOnly; }
-        
-    // Protected methods...
-    protected:
+
+    // Private methods...
+    private:
 
         // Default constructor...
         Options();
-        
+
         // Deconstructor...
        ~Options();
 
@@ -159,12 +161,6 @@ class Options
         
         // Mute all console output channels, except the summary channel...
         bool                m_SummarizeOnly;
-
-    // Private data...
-    private:
-
-        // Singleton instance...
-        static Options     *m_SingletonInstance;
 };
 
 // Multiple include protection...

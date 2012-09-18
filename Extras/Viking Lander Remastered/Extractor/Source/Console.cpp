@@ -34,9 +34,6 @@
 // Using the standard namespace...
 using namespace std;
 
-// Console singleton instance...
-Console *Console::m_SingletonInstance = NULL;
-
 // Default constructor...
 Console::Console()
     : m_UseColours(true),
@@ -52,17 +49,6 @@ Console::Console()
     // Set default floating point settings...
     cout.setf(ios::fixed, ios::floatfield);
     cout.precision(1);
-}
-
-// Get the singleton instance...
-Console &Console::GetInstance()
-{
-    // Unconstructed, construct...
-    if(!m_SingletonInstance)
-        m_SingletonInstance = new Console;
-
-    // Return the only instance...
-    return *m_SingletonInstance;
 }
 
 // Get an output stream, if enabled, or dummy stream otherwise...
@@ -129,10 +115,12 @@ void Console::SetChannelEnabled(const Console::ChannelID ID, const bool Enabled)
 Console::~Console()
 {
     // Clear the channel map...
-    ChannelMapType::iterator Iterator = m_ChannelMap.begin();
-    while(Iterator != m_ChannelMap.end())
+    for(ChannelMapType::iterator Iterator = m_ChannelMap.begin();
+        Iterator != m_ChannelMap.end();
+      ++Iterator)
     {
         delete Iterator->second;
         m_ChannelMap.erase(Iterator);
     }
 }
+

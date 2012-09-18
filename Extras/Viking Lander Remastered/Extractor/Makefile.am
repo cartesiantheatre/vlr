@@ -30,6 +30,7 @@ bin_PROGRAMS = viking-extractor
 viking_extractor_SOURCES = \
     Source/Console.cpp \
     Source/Console.h \
+    Source/ExplicitSingleton.h \
     Source/LogicalRecord.cpp \
     Source/LogicalRecord.h \
     Source/Miscellaneous.cpp \

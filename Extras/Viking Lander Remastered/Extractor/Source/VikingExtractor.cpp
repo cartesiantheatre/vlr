@@ -29,6 +29,9 @@
     #include "VikingExtractor.h"
     #include "VicarImageAssembler.h"
     #include "VicarImageBand.h"
+#ifdef USE_DBUS_INTERFACE
+    #include "DBusInterface.h"
+#endif
     
     // Standard C / POSIX system headers...
     #include <cassert>
@@ -104,7 +107,19 @@ void ShowVersion()
          << "This is free software; see Copying for copying conditions. There is NO" << endl
          << "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE." << endl << endl;
 
-    cout << "Configured with: " VIKING_EXTRACTOR_CONFIG_FLAGS << endl;
+    cout << "Configured with: " CONFIGURATION_FLAGS << endl;
+}
+
+// Some cleanup code to run on termination...
+static void AtExitCleanup()
+{
+    // Explicit instantiation of several subsystem singletons need to now be
+    //  explicitly deconstructed. Order matters...
+#ifdef USE_DBUS_INTERFACE
+    DBusInterface::DestroySingleton();
+#endif
+    Options::DestroySingleton();
+    Console::DestroySingleton();
 }
 
 // Entry point...
@@ -118,6 +133,16 @@ int main(int ArgumentCount, char *Arguments[])
     
     // Some user options...
     bool        VerboseConsole          = false;
+
+    // Explicit instantiation of several subsystem singletons. Order matters...
+    Console::CreateSingleton();
+    Options::CreateSingleton();
+#ifdef USE_DBUS_INTERFACE
+    DBusInterface::CreateSingleton();
+#endif
+
+    // Cleanup code to run on termination...
+    atexit(AtExitCleanup);
 
     // Enumerator of long command line option identifiers...
     enum option_long_enum
@@ -411,6 +436,6 @@ int main(int ArgumentCount, char *Arguments[])
         }
 
     // Done...
-    return 0;
+    return EXIT_SUCCESS;
 }
 

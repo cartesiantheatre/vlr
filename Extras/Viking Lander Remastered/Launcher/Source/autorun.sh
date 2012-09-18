@@ -27,8 +27,9 @@
 #   * Zenity (zenity)
 #   * Python 3 (python3)
 #   * Python GObject bindings (python-gi >= 3.0), which, correct me if wrong,
-#      includes or should pull the distro's Gtk3+ runtimes
-#   * Python DBus interface
+#      includes or should pull the distro's Gtk3+ runtimes on Ubuntu Precise
+#   * Python D-Bus interface
+#   # C D-Bus runtime library
 #
 
 # Useful constants...
@@ -192,7 +193,7 @@ PrepareDebianBased()
 
             # Ubuntu precise...
             "precise")
-                PackagesRequired=("python3-gi" "python3-dbus")
+                PackagesRequired=("python3-gi" "python3-dbus" "libdbus-1-3")
             ;;
 
         # Fedora...

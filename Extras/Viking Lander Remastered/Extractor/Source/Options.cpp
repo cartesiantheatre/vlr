@@ -32,12 +32,9 @@
     #include <cctype>
     #include <limits>
     #include <iostream>
-
+    
 // Using the standard namespace...
 using namespace std;
-
-// Options singleton instance...
-Options *Options::m_SingletonInstance = NULL;
 
 // Default constructor...
 Options::Options()
@@ -59,17 +56,6 @@ Options::Options()
         m_SummarizeOnly(false)
 {
 
-}
-
-// Get the singleton instance...
-Options &Options::GetInstance()
-{
-    // Unconstructed, construct...
-    if(!m_SingletonInstance)
-        m_SingletonInstance = new Options;
-
-    // Return the only instance...
-    return *m_SingletonInstance;
 }
 
 // Set the camera event filter...

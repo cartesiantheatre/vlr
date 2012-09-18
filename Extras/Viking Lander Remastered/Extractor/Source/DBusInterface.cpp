@@ -26,4 +26,29 @@
 
     // Our headers...    
     #include "DBusInterface.h"
+    #include "Console.h"
+
+    // D-Bus...
+    #include <dbus/dbus.h>
+
+// Using the standard namespace...
+using namespace std;
+
+// Default constructor...
+DBusInterface::DBusInterface()
+  : m_BusName("com.cartesiantheatre.VikingExtractorService"),
+    m_ObjectPath("/com/cartesiantheatre/VikingExtractorObject"),
+    m_Interface("com.cartesiantheatre.VikingExtractorInterface"),
+    m_SignalInitialized("Initialized"),
+    m_SignalProgress("Progress"),
+    m_SignalTerminating("Terminating")
+{
+    Message(Console::Summary) << "DBusInterface::DBusInterface()" << endl;
+}
+
+// Deconstructor...
+DBusInterface::~DBusInterface()
+{
+    Message(Console::Summary) << "DBusInterface::~DBusInterface()" << endl;
+}
 
