@@ -116,7 +116,7 @@ class VicarImageBand
         const std::string &GetErrorMessage() const { return m_ErrorMessage; }
 
         // Get the original file on the magnetic tape number, or zero if unknown...
-        size_t GetFileOnMagneticTapeOrdinal() const { return m_FileOnMagneticTapeOrdinal; }
+        size_t GetFileOrdinalOnMagneticTape() const { return m_FileOrdinalOnMagneticTape; }
 
         // Get the file size, or -1 on error...
         int GetFileSize() const; 
@@ -128,7 +128,7 @@ class VicarImageBand
         std::string GetInputFileNameOnly() const; 
 
         // Get the lander number, or zero if unknown...
-        const size_t GetLanderNumber() const { return m_LanderNumber; }
+        size_t GetLanderNumber() const { return m_LanderNumber; }
 
         // Get the original magnetic tape number, or zero if unknown...
         size_t GetMagneticTapeNumber() const { return m_MagneticTapeNumber; }
@@ -320,8 +320,8 @@ class VicarImageBand
         // If m_Ok is false, this is the error message...
         std::string             m_ErrorMessage;
 
-        // File on magnetic tape ordinal...
-        size_t                  m_FileOnMagneticTapeOrdinal;
+        // File ordinal on magnetic tape...
+        size_t                  m_FileOrdinalOnMagneticTape;
 
         // True if the image has a full histogram present...
         bool                    m_FullHistogramPresent;

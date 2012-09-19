@@ -212,7 +212,7 @@ void LogicalRecord::operator<<(std::istream &InputStream)
 char &LogicalRecord::operator[](const size_t Index)
 {
     // Bounds check...
-    assert(Index >= 0 && Index < LOGICAL_RECORD_SIZE);
+    assert(Index < LOGICAL_RECORD_SIZE);
 
     // Return reference...
     return m_Buffer[Index];
@@ -222,7 +222,7 @@ char &LogicalRecord::operator[](const size_t Index)
 const char &LogicalRecord::operator[](const size_t Index) const
 {
     // Bounds check...
-    assert(Index >= 0 && Index < LOGICAL_RECORD_SIZE);
+    assert(Index < LOGICAL_RECORD_SIZE);
 
     // Return reference...
     return m_Buffer[Index];

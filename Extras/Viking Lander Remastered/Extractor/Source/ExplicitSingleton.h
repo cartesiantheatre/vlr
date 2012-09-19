@@ -58,7 +58,7 @@ class ExplicitSingleton
             delete ms_Instance;
             ms_Instance = 0;
         }
-        
+
         // Get the instance. Error if called and it didn't already exist...
         static SingletonType &GetInstance()
         {
@@ -66,8 +66,22 @@ class ExplicitSingleton
             return *ms_Instance;
         }
 
+        // Get the read only instance. Error if called and it didn't already exist...
+        static const SingletonType &GetInstanceConst()
+        {
+            assert(IsInstantiated());
+            return *ms_Instance;
+        }
+
         // Get the instance. Error if called and it didn't already exist...
         static SingletonType *GetInstancePointer()
+        {
+            assert(IsInstantiated());
+            return ms_Instance;
+        }
+
+        // Get the read only instance. Error if called and it didn't already exist...
+        static const SingletonType *GetInstancePointerConst()
         {
             assert(IsInstantiated());
             return ms_Instance;

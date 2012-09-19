@@ -24,12 +24,16 @@
 # Minimum version of Autoconf used to successfully process configure.ac...
 AC_PREREQ([2.67])
 
+# Copyright notice...
+AC_COPYRIGHT([Copyright (C) 2010, 2011, 2012 Cartesian Theatre.])
+
 # Initialize Autoconf...
-AC_INIT([VikingExtractor],
-         [0.4],
-         [https://bugs.launchpad.net/avaneya],  
-         [viking-extractor],
-         [https://www.avaneya.com])
+AC_INIT(
+    [VikingExtractor],
+    [0.5],
+    [https://bugs.launchpad.net/avaneya],  
+    [viking-extractor],
+    [https://www.avaneya.com])
 
 # Location to find Autoconf plugins...
 AC_CONFIG_MACRO_DIR([Macros])
@@ -236,7 +240,7 @@ AC_LANG([C++])
 # Set additional compilation flags...
 
     # Enable all warnings and treat them as errors...
-    CXXFLAGS="$CXXFLAGS -Wall -Werror"
+    CXXFLAGS="$CXXFLAGS -Wall -Werror -Wshadow -Wextra"
 
 # Generate makefiles from templates containing Autoconf substitution variables...
 AC_CONFIG_FILES([Makefile])

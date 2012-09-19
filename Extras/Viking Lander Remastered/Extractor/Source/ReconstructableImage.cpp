@@ -382,7 +382,7 @@ void ReconstructableImage::GenerateMetadata(
             << "file size: " << ImageBand.GetFileSize() << endl
             << "input file: " << ImageBand.GetInputFileNameOnly() << endl
             << "magnetic tape: " << ImageBand.GetMagneticTapeNumber() << endl
-            << "magnetic tape file ordinal: " << ImageBand.GetFileOnMagneticTapeOrdinal() << endl
+            << "magnetic tape file ordinal: " << ImageBand.GetFileOrdinalOnMagneticTape() << endl
             << "mean pixel value: " << ImageBand.GetMeanPixelValue() << endl
             << "month: " << ImageBand.GetMonth() << endl
             << "overlay axis present: " << ImageBand.IsAxisPresent() << endl

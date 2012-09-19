@@ -59,7 +59,7 @@ VicarImageBand::VicarImageBand(
       m_BasicMetadataParserHeuristic(0),
       m_BytesPerColour(0),
       m_DiodeBandType(Unknown),
-      m_FileOnMagneticTapeOrdinal(0),
+      m_FileOrdinalOnMagneticTape(0),
       m_FullHistogramPresent(false),
       m_InputFile(InputFile),
       m_LanderNumber(0),
@@ -182,9 +182,9 @@ VicarImageBand::VicarImageBand(
                 const string MagneticTapeNumber(InputFileNameOnly, 3, SeparatorIndex - 3);
                 m_MagneticTapeNumber = atoi(MagneticTapeNumber.c_str());
 
-                // Extract the file on magnetic tape ordinal...
-                const string FileOnMagneticTapeOrdinal(InputFileNameOnly, SeparatorIndex + 1);
-                m_FileOnMagneticTapeOrdinal = atoi(FileOnMagneticTapeOrdinal.c_str());
+                // Extract the file ordinal on the original magnetic tape...
+                const string FileOrdinalOnMagneticTape(InputFileNameOnly, SeparatorIndex + 1);
+                m_FileOrdinalOnMagneticTape = atoi(FileOrdinalOnMagneticTape.c_str());
             }
         }
 }
@@ -551,7 +551,7 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
         for(size_t X = 0; X < m_OriginalWidth; ++X)
         {
             // Extract the current pixel value...
-            const uint8_t Byte = ExtractionStream.get();
+            const uint8_t CurrentByte = ExtractionStream.get();
 
             // Check for error...
             if(!ExtractionStream.good())
@@ -564,12 +564,12 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
                Y <= SampleRegion_Bottom)
             {
                 // Add to mean pixel value accumulator...
-                m_MeanPixelValue += Byte;
+                m_MeanPixelValue += CurrentByte;
                 SampleRegionSize++;
             }
 
             // Add to row...
-            CurrentRow.push_back(Byte);
+            CurrentRow.push_back(CurrentByte);
         }
 
         // Add row to list of columns...

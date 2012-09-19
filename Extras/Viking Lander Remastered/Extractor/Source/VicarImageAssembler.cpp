@@ -27,6 +27,9 @@
     // Our headers...
     #include "VicarImageAssembler.h"
     #include "Console.h"
+#ifdef USE_DBUS_INTERFACE
+    #include "DBusInterface.h"
+#endif
     
     // System headers...
     #include <cassert>
@@ -146,7 +149,9 @@ void VicarImageAssembler::Reconstruct()
     {
         // Alert user...
         Message(Console::Summary) << "preparing catalogue, please wait" << endl;
-
+#ifdef USE_DBUS_INTERFACE
+        DBusInterface::GetInstance().EmitNotificationSignal("Preparing catalogue, please wait...");
+#endif
         // If summarize only mode is enabled, mute current file name, warnings, info, and errors...
         if(Options::GetInstance().GetSummarizeOnly())
         {
@@ -188,7 +193,14 @@ void VicarImageAssembler::Reconstruct()
             // Calculate progress...
             const size_t ProspectiveFilesExamined = CurrentFileIterator - m_ProspectiveFiles.begin() + 1;
             const size_t TotalProspectiveFiles = m_ProspectiveFiles.size();
-            const float  PercentageExamined = static_cast<float>(ProspectiveFilesExamined) / TotalProspectiveFiles * 100.0f;
+            const double PercentageExamined = static_cast<double>(ProspectiveFilesExamined) / TotalProspectiveFiles * 100.0;
+
+#ifdef USE_DBUS_INTERFACE
+
+            // Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+            DBusInterface::GetInstance().EmitProgressSignal(PercentageExamined);
+
+#endif
 
             // Update summary, if enabled...
             if(Options::GetInstance().GetSummarizeOnly())
@@ -429,17 +441,17 @@ void VicarImageAssembler::Reconstruct()
     }
 
         // Failed...
-        catch(const string &ErrorMessage)
+        catch(const string &AssemblerErrorMessage)
         {
             // Update summary, if enabled, beginning with new line since last was \r only...
             if(Options::GetInstance().GetSummarizeOnly())
-                Message(Console::Summary) << ErrorMessage << endl;
+                Message(Console::Summary) << AssemblerErrorMessage << endl;
             
             // Reset assembler state...
             Reset();
 
             // Propagate up the chain...
-            throw ErrorMessage;
+            throw AssemblerErrorMessage;
         }
 }
 
