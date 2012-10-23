@@ -742,25 +742,50 @@ The landers were capable of capturing high resolution photographs and other data
     <property name="orientation">vertical</property>
     <property name="spacing">8</property>
     <child>
-      <object class="GtkScrolledWindow" id="scrolledwindow1">
+      <object class="GtkBox" id="box9">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="shadow_type">etched-in</property>
-        <property name="min_content_width">0</property>
-        <property name="min_content_height">0</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkTextView" id="introductionTextView">
+          <object class="GtkImage" id="image2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">CartesianTheatre.png</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="padding">20</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
-            <property name="editable">False</property>
-            <property name="wrap_mode">word</property>
-            <property name="left_margin">7</property>
-            <property name="right_margin">7</property>
-            <property name="cursor_visible">False</property>
-            <property name="buffer">introductionTextBuffer</property>
+            <property name="shadow_type">etched-in</property>
+            <property name="min_content_width">0</property>
+            <property name="min_content_height">0</property>
+            <child>
+              <object class="GtkTextView" id="introductionTextView">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="editable">False</property>
+                <property name="wrap_mode">word</property>
+                <property name="left_margin">7</property>
+                <property name="right_margin">7</property>
+                <property name="cursor_visible">False</property>
+                <property name="buffer">introductionTextBuffer</property>
+              </object>
+            </child>
           </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
         </child>
       </object>
       <packing>

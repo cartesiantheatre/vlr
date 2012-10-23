@@ -21,8 +21,14 @@
 # Imports...
 from gi.repository import Gtk, Gdk, GObject, GLib, Vte
 import os
+import dbus
+from dbus.exceptions import DBusException
+from dbus.mainloop.glib import DBusGMainLoop
+from time import sleep
+import sys
 
 # Our support modules...
+import LauncherArguments
 
 # Recovery window proxy class...
 class RecoveryWindowProxy():
@@ -34,6 +40,7 @@ class RecoveryWindowProxy():
         self._launcherApp       = launcherApp
         self._assistant         = launcherApp.assistant
         self._builder           = launcherApp.builder
+        self._confirmPageProxy  = launcherApp.confirmPageProxy
 
         # Find the window and its widgets...
         self._recoveryWindow            = self._builder.get_object("recoveryWindow")
@@ -58,16 +65,6 @@ class RecoveryWindowProxy():
         # Add the terminal widget to the expander's scrolled window widget...
         self._recoveryScrolledWindow.add(self._terminal)
 
-        # This is just for debugging purposes...
-        self._terminal.fork_command_full(
-            Vte.PtyFlags.DEFAULT,
-            os.environ["HOME"],
-            ["/usr/bin/find", "/etc"],
-            [],
-            GLib.SpawnFlags.DO_NOT_REAP_CHILD, # This method automatically adds this flag anyways. Here for clarity...
-            None,
-            None)
-
         # Set the window width to 1000 pixels, unless user's resolution too low
         #  in which case just use the maximum available...
         screen = self._recoveryWindow.get_screen()
@@ -77,14 +74,111 @@ class RecoveryWindowProxy():
         else:
             self._recoveryWindow.resize(screenWidth, 200)
         
-        # Connect the signals...
+        # Connect the Gtk+ signals...
         self._recoveryWindow.connect("delete-event", Gtk.main_quit)
         self._cancelRecoveryButton.connect("clicked", self.onCancelClicked)
         self._recoveryExpander.connect("notify::expanded", self.onExpanded)
         self._terminal.connect("child-exited", self.onChildProcessExit)
 
+        # Try to start the VikingExtractor process...
+        try:
+            launchStatus = self._terminal.fork_command_full(
+                Vte.PtyFlags.DEFAULT,
+                None,
+                [LauncherArguments.getArguments().vikingExtractorBinaryPath] +
+                    self._confirmPageProxy.getVikingExtractorArguments(),
+                [],
+                GLib.SpawnFlags.DO_NOT_REAP_CHILD, # This method automatically adds this flag anyways. Here for clarity...
+                None,
+                None)
+
+        # Failed to launch. VTE's documentation is not clear on the way to check
+        #  for this...
+        except GLib.GError:
+            self._fatalLaunchError()
+        if launchStatus == False:
+            self._fatalLaunchError()
+
+        # Hide the assistant...
+        self._assistant.iconify()
+
+        # Set it to be always on top...
+        self._recoveryWindow.set_keep_above(True)
+
         # Display the window...
         self._recoveryWindow.show_all()
+
+        # Register our D-Bus signal handler callbacks...
+        print("Waiting for VikingExtractor D-Bus service...")
+        while not self.initializeDBus():
+
+            # Pump the Gtk+ event handler while we wait...
+            while Gtk.events_pending():
+                Gtk.main_iteration()
+
+            # Try again in a tenth of a second...
+            sleep(0.1)
+
+        # Debugging hint...
+        print("Found VikingExtractor D-Bus service...")
+
+    # VikingExtractor could not be executed...
+    def _fatalLaunchError(self):
+
+            # Alert user...
+            messageDialog = Gtk.MessageDialog(
+                self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
+                Gtk.ButtonsType.OK, 
+                "Error")
+            messageDialog.format_secondary_text(
+                "The VikingExtractor could not be launched. " \
+                "The following location was attempted:\n\n{0}".
+                    format(LauncherArguments.getArguments().vikingExtractorBinaryPath))
+            messageDialog.run()
+            messageDialog.destroy()
+            
+            # Terminate...
+            sys.exit(1)
+
+    # Initialize D-Bus. True if VikingExtractor is found, False otherwise...
+    def initializeDBus(self):
+
+        # Some constants to help find the VikingExtractor...
+        DBUS_SERVICE_NAME           = "com.cartesiantheatre.VikingExtractorService"
+        DBUS_OBJECT_PATH            = "/com/cartesiantheatre/VikingExtractorObject"
+        DBUS_INTERFACE              = "com.cartesiantheatre.VikingExtractorInterface"
+        DBUS_SIGNAL_NOTIFICATION    = "Notification"
+        DBUS_SIGNAL_PROGRESS        = "Progress"
+
+        # Connect to the session bus...
+        dbus_loop = DBusGMainLoop()
+        sessionBus = dbus.SessionBus(mainloop=dbus_loop)
+
+        # Try to connect to the VikingExtractor...
+        try:
+            
+            # Initialize the remote proxy...
+            vikingExtractorProxy = sessionBus.get_object(
+                DBUS_SERVICE_NAME, DBUS_OBJECT_PATH)
+
+            # Connect D-Bus notification signal to callback...
+            vikingExtractorProxy.connect_to_signal(
+                DBUS_SIGNAL_NOTIFICATION, 
+                self.onVikingExtractorNotificationDBusSignal, 
+                dbus_interface=DBUS_INTERFACE)
+
+            # Connect D-Bus progress signal to callback...
+            vikingExtractorProxy.connect_to_signal(
+                DBUS_SIGNAL_PROGRESS, 
+                self.onVikingExtractorProgressDBusSignal, 
+                dbus_interface=DBUS_INTERFACE)
+
+        # VikingExtractor probably isn't running...
+        except DBusException as error:
+            return False
+
+        # Ready to roll...
+        return True
 
     # Cancel recovery button clicked...
     def onCancelClicked(self, button, *junk):
@@ -95,8 +189,36 @@ class RecoveryWindowProxy():
     # VikingExtractor terminated...
     def onChildProcessExit(self, *junk):
 
-        # Stubbed...
-        pass
+        # Get the exit code...
+        exitCode = self._terminal.get_child_exit_status()
+
+        print("onChildProcessExit {0}".format(exitCode))
+
+        # Any other code than zero denotes an error...
+        if exitCode is not 0:
+
+            # Alert user...
+            messageDialog = Gtk.MessageDialog(
+                self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
+                Gtk.ButtonsType.OK, 
+                "The recovery process was unsuccessful.")
+            messageDialog.format_secondary_text(
+                "The VikingExtractor ran, but reported an error. ({0})"
+                    .format(exitCode))
+            messageDialog.run()
+            messageDialog.destroy()
+            
+            # Terminate...
+            sys.exit(1)
+        
+        # Otherwise VikingExtractor completed successfully...
+        else:
+
+            # Destroy the recovery window...
+            self._recoveryWindow.destroy()
+            
+            # Make the main window visible now...
+            self._assistant.deiconify()
 
     # Expander toggled...
     def onExpanded(self, expander, *junk):
@@ -117,4 +239,12 @@ class RecoveryWindowProxy():
             # Keep whole window's width, but expand whole window to previous height...
             (currentWidth, collapsedHeight) = self._recoveryWindow.get_size()
             self._recoveryWindow.resize(currentWidth, self._expandedHeight)
+
+    # VikingExtractor is trying to tell us something in a human readable string...
+    def onVikingExtractorNotificationDBusSignal(self, notification):
+        self._recoveryProgressBar.set_text(notification)
+
+    # VikingExtractor is telling us it has completed some work...
+    def onVikingExtractorProgressDBusSignal(self, fraction):
+        self._recoveryProgressBar.set_fraction(fraction / 100.0)
 

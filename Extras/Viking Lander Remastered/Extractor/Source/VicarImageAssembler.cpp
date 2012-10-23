@@ -30,6 +30,9 @@
 #ifdef USE_DBUS_INTERFACE
     #include "DBusInterface.h"
 #endif
+
+    // zziplib...
+    #include <zzip/zzip.h>
     
     // System headers...
     #include <cassert>
@@ -39,6 +42,16 @@
     #include <sys/stat.h>
     #include <errno.h>
     #include <fnmatch.h>
+
+/*
+    $ make && ./viking-extractor --overwrite --directorize-band-class --directorize-location --directorize-month --directorize-sol --filter-diode=any --filter-lander=0 --interlace --generate-metadata --recursive --ignore-bad-files Tests/ /home/kip/Desktop/output
+
+    preparing catalogue, please wait...
+    info: Checking Tests/Recovery
+    no prospective files found
+
+*/
+#include <cstdlib>
 
 // Using the standard namespace...
 using namespace std;
@@ -66,75 +79,104 @@ VicarImageAssembler::VicarImageAssembler(
         m_OutputRootDirectory += '/';
 }
 
-// Generate input file list from the input file or directory, or throw an error... (recursive)
-void VicarImageAssembler::GenerateProspectiveFileList(const string &InputFileOrDirectory)
+// Add the given file to the list of prospective files to examine later...
+void VicarImageAssembler::AddProspectiveFile(const string &InputFile)
+{
+    // Add to the list of prospective files to examine later...
+
+Message(Console::Info) << "Adding " << InputFile << endl;
+    m_ProspectiveFiles.push_back(InputFile);
+}
+
+// Index archive contents into list of prospective files, or throw an error...
+void VicarImageAssembler::IndexArchive(const string &InputArchiveFile)
 {
     // Variables...
-    DIR             *Directory       = NULL;
-    struct dirent   *DirectoryEntry  = NULL;
-    
-    // Is this just a file?
-
-        // Fetch attributes...
-        struct stat FileAttributes;
-        if(stat(InputFileOrDirectory.c_str(), &FileAttributes) != 0)
-            throw string("could not stat ") + InputFileOrDirectory;
-
-        // Yes, just a file...
-        if(S_ISREG(FileAttributes.st_mode))
-        {
-            // Add to list and done...
-            m_ProspectiveFiles.push_back(InputFileOrDirectory);
-            return;
-        }
-
-    // Make an editable copy of the original input file or directory...
-    string InputDirectory = InputFileOrDirectory;
-
-    // Path should end with path separator which is needed for recursing...
-    if(InputDirectory.at(InputDirectory.length() - 1) != '/')
-        InputDirectory += '/';
+    ZZIP_DIR       *Directory       = NULL;
+    ZZIP_DIRENT    *DirectoryEntry  = NULL;
 
     // Open directory and check for error...
-    if(!(Directory = opendir(InputDirectory.c_str())))
-        throw string("unable to open input directory for indexing ") + InputDirectory;
+    if(!(Directory = zzip_opendir(InputArchiveFile.c_str())))
+        throw string("unable to open input directory for indexing ") + InputArchiveFile;
 
-    // Add all files found and recurse through subdirectories...
-    while((DirectoryEntry = readdir(Directory)))
+    // Add all VICAR files found...
+    while((DirectoryEntry = zzip_readdir(Directory)))
     {
-        // Regular file...
-        if(DirectoryEntry->d_type == DT_REG)
-        {
-            // Skip if extension doesn't match that of a potential Viking 
-            //  Lander VICAR file...
-            if(fnmatch("vl_*.[0-9][0-9][0-9]", DirectoryEntry->d_name, 0) != 0)
-                continue;
+        // Skip aliases for current and parent directory...
+        if((string(".") == DirectoryEntry->d_name) ||
+           (string("..") == DirectoryEntry->d_name))
+            continue;
 
-            // Otherwise, add it...
-            else
-                m_ProspectiveFiles.push_back(InputDirectory + DirectoryEntry->d_name);
-        }
+        // Get the full path to the file name, including the file name itself...
+        const string CurrentFileName = InputArchiveFile + ":/" + DirectoryEntry->d_name;
 
-        // Directory, recurse...
-        else if((DirectoryEntry->d_type == DT_DIR) && 
-                Options::GetInstance().GetRecursive() &&
-                (string(".") != DirectoryEntry->d_name) && 
-                (string("..") != DirectoryEntry->d_name))
-        {
-            // Get the subdirectory...
-            string SubDirectory = DirectoryEntry->d_name;
-
-            // Path should end with path separator...
-            if(SubDirectory.at(SubDirectory.length() - 1) != '/')
-                SubDirectory += '/';
-
-            // Recurse and scan subdirectory...
-            GenerateProspectiveFileList(InputDirectory + SubDirectory);
-        }
+        // Extension matches that of a potential Viking lander VICAR file...
+        if((fnmatch("*vl_*.[0-9][0-9][0-9]", DirectoryEntry->d_name, 0) == 0))
+            AddProspectiveFile(CurrentFileName);
     }
 
-    // Done with the directory, unwind stack...
+    // Cleanup...
+    zzip_closedir(Directory);
+}
+
+// Generate input file list from the input directory, or throw an 
+//  error... (recursive)
+void VicarImageAssembler::IndexDirectory(const string &InputDirectory)
+{
+    // Variables...
+    DIR            *Directory       = NULL;
+    struct dirent  *DirectoryEntry  = NULL;
+
+    // Make an editable copy of the original input directory...
+    string NewInputDirectory = InputDirectory;
+
+    // Path should end with path separator which is needed for recursing...
+    if((InputDirectory.at(InputDirectory.length() - 1) != '/'))
+        NewInputDirectory += '/';
+
+    // Open directory and check for error...
+    if(!(Directory = opendir(NewInputDirectory.c_str())))
+        throw string("unable to open input directory for indexing ") + NewInputDirectory;
+
+    // Add prospective files found and recurse through subdirectories...
+    while((DirectoryEntry = readdir(Directory)))
+    {
+        // Skip aliases for current and parent directory...
+        if((string(".") == DirectoryEntry->d_name) ||
+           (string("..") == DirectoryEntry->d_name))
+            continue;
+
+        // Get the full path to directory entry...
+        const string CurrentEntry = NewInputDirectory + DirectoryEntry->d_name;
+
+        // Fetch entry attributes...
+        struct stat FileAttributes;
+        if(stat(CurrentEntry.c_str(), &FileAttributes) != 0)
+            throw string("could not stat ") + CurrentEntry;
+
+        // It's a file, index it...
+        if(S_ISREG(FileAttributes.st_mode))
+            IndexFile(CurrentEntry);
+        
+        // Directory. Recurse...
+        else if(S_ISDIR(FileAttributes.st_mode))
+            IndexDirectory(CurrentEntry);
+    }
+
+    // Cleanup and possibly unwind the stack...
     closedir(Directory);
+}
+
+// Index file into list of prospective files, or throw an error...
+void VicarImageAssembler::IndexFile(const string &InputFile)
+{
+    // If it is a zip archive, index its contents...
+    if(fnmatch("*.[Zz][Ii][Pp]", InputFile.c_str(), 0) == 0)
+        IndexArchive(InputFile);
+
+    // Extension matches that of a potential Viking lander VICAR file...
+    else if((fnmatch("*vl_*.[0-9][0-9][0-9]", InputFile.c_str(), 0) == 0))
+        AddProspectiveFile(InputFile);
 }
 
 // Reconstruct all possible images found of either the input 
@@ -144,14 +186,17 @@ void VicarImageAssembler::Reconstruct()
     // Variables...
     string ErrorMessage;
 
-    // Try to index the directory...
+    // Try to index the file or directory...
     try
     {
         // Alert user...
-        Message(Console::Summary) << "preparing catalogue, please wait" << endl;
+        Message(Console::Summary) << "preparing catalogue, please wait..." << endl;
+        
 #ifdef USE_DBUS_INTERFACE
+        // Provide a notification to the Viking Lander Launcher...
         DBusInterface::GetInstance().EmitNotificationSignal("Preparing catalogue, please wait...");
 #endif
+
         // If summarize only mode is enabled, mute current file name, warnings, info, and errors...
         if(Options::GetInstance().GetSummarizeOnly())
         {
@@ -165,7 +210,19 @@ void VicarImageAssembler::Reconstruct()
         Reset();
 
         // Generate input file list from the input file or directory...
-        GenerateProspectiveFileList(m_InputFileOrRootDirectory);
+
+            // Fetch attributes...
+            struct stat FileAttributes;
+            if(stat(m_InputFileOrRootDirectory.c_str(), &FileAttributes) != 0)
+                throw string("could not stat ") + m_InputFileOrRootDirectory;
+
+            // Yes, just index a file...
+            if(S_ISREG(FileAttributes.st_mode))
+                IndexFile(m_InputFileOrRootDirectory);
+            
+            // Directory...
+            else if(S_ISDIR(FileAttributes.st_mode))
+                IndexDirectory(m_InputFileOrRootDirectory);
 
         // No prospective files to examine...
         if(m_ProspectiveFiles.empty())
@@ -178,6 +235,28 @@ void VicarImageAssembler::Reconstruct()
             // Done...
             return;
         }
+
+#ifdef USE_DBUS_INTERFACE
+        // Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+        DBusInterface::GetInstance().EmitNotificationSignal("Analyzing catalogue, please wait...");
+#endif
+        /* DEBUG: Testing zzlib file accessibility...
+        for(vector<string>::iterator CurrentFileIterator = m_ProspectiveFiles.begin();
+            CurrentFileIterator != m_ProspectiveFiles.end();
+          ++CurrentFileIterator)
+        {
+            const string CurrentFile = *CurrentFileIterator;
+            
+            ZZIP_FILE *fd = zzip_open_ext_io(CurrentFile.c_str(), O_RDONLY, ZZIP_PREFERZIP, NULL, 0);
+            
+            if(!fd)
+            {
+                cout << "zzip ERROR opening \"" << CurrentFile << "\" " << zzip_strerror(errno) << endl;
+                exit(1);
+            }
+            
+            zzip_close(fd);
+        }*/
 
         // Keep reading entries while there are some...
         for(vector<string>::iterator CurrentFileIterator = m_ProspectiveFiles.begin();
@@ -196,10 +275,8 @@ void VicarImageAssembler::Reconstruct()
             const double PercentageExamined = static_cast<double>(ProspectiveFilesExamined) / TotalProspectiveFiles * 100.0;
 
 #ifdef USE_DBUS_INTERFACE
-
             // Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
             DBusInterface::GetInstance().EmitProgressSignal(PercentageExamined);
-
 #endif
 
             // Update summary, if enabled...
@@ -279,8 +356,8 @@ void VicarImageAssembler::Reconstruct()
             CameraEventDictionaryIterator EventIterator = 
                 m_CameraEventDictionary.find(CameraEventLabel);
 
-            // Place for the reconstructable image object...
-            ReconstructableImage *Reconstructable = NULL;
+                // Place for the reconstructable image object...
+                ReconstructableImage *Reconstructable = NULL;
 
                 // No, construct a new one...
                 if(EventIterator == m_CameraEventDictionary.end())
@@ -355,6 +432,11 @@ void VicarImageAssembler::Reconstruct()
         size_t SuccessfullyReconstructed    = 0;
         size_t DumpedImages                 = 0;
 
+#ifdef USE_DBUS_INTERFACE
+        // Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+        DBusInterface::GetInstance().EmitNotificationSignal("Attempting forensic data recovery...");
+#endif
+
         // Reconstruct each image...
         for(CameraEventDictionaryIterator EventIterator = m_CameraEventDictionary.begin();
             EventIterator != m_CameraEventDictionary.end();
@@ -362,6 +444,16 @@ void VicarImageAssembler::Reconstruct()
         {
             // Note one more attempted reconstruction effort...
           ++AttemptedReconstruction;
+
+            // Calculate recovery progress...
+            const double RecoveryProgress = 
+                static_cast<double>(AttemptedReconstruction) / 
+                m_CameraEventDictionary.size() * 100.0;
+
+#ifdef USE_DBUS_INTERFACE
+            // Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+            DBusInterface::GetInstance().EmitProgressSignal(RecoveryProgress);
+#endif
 
             // Update summary, if enabled...
             if(Options::GetInstance().GetSummarizeOnly())
@@ -371,14 +463,14 @@ void VicarImageAssembler::Reconstruct()
                     Message(Console::Summary) 
                         << "\rattempting reconstruction " 
                         << AttemptedReconstruction << "/" << m_CameraEventDictionary.size()
-                        << " (" << static_cast<float>(AttemptedReconstruction) / m_CameraEventDictionary.size() * 100.0f << " %)";
+                        << " (" << RecoveryProgress << " %)";
                 
                 // Just dumping components...
                 else
                     Message(Console::Summary) 
                         << "\rdumping components from " 
                         << AttemptedReconstruction << "/" << m_CameraEventDictionary.size()
-                        << " (" << static_cast<float>(AttemptedReconstruction) / m_CameraEventDictionary.size() * 100.0f << " %)";
+                        << " (" << RecoveryProgress << " %)";
             }
 
             // Get the reconstructable image object...
@@ -418,6 +510,11 @@ void VicarImageAssembler::Reconstruct()
             else
               ++SuccessfullyReconstructed;
         }
+
+#ifdef USE_DBUS_INTERFACE
+        // Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+        DBusInterface::GetInstance().EmitNotificationSignal("Recovery completed...");
+#endif
 
         // Update summary, if enabled, beginning with new line since last was \r only...
         if(Options::GetInstance().GetSummarizeOnly())

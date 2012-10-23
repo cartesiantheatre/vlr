@@ -22,6 +22,9 @@
 from gi.repository import Gtk
 import re
 
+# Our support modules...
+import LauncherArguments
+
 # Confirm page proxy class...
 class ConfirmPageProxy():
 
@@ -40,6 +43,13 @@ class ConfirmPageProxy():
         self._assistant.set_page_type(self._confirmPageBox, Gtk.AssistantPageType.CONFIRM)
         self._assistant.set_page_complete(self._confirmPageBox, True)
 
+        # List that will contain all VikingExtractor command line options...
+        self._commandLineInterface = []
+
+    # Get the arguments to pass to VikingExtractor...
+    def getVikingExtractorArguments(self):
+        return self._commandLineInterface
+
     # Get the page box...
     def getPageBox(self):
         return self._confirmPageBox
@@ -51,7 +61,7 @@ class ConfirmPageProxy():
     def onPrepare(self):
 
         # List that will contain all VikingExtractor command line options...
-        commandLineInterface = []
+        self._commandLineInterface = []
 
         # Get the confirmation text buffer...
         confirmTextBuffer = self._builder.get_object("confirmTextBuffer")
@@ -69,7 +79,7 @@ class ConfirmPageProxy():
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
             "Output will be overwritten: {0}\n".format(_boolToYesNo(active)))
         if active:
-            commandLineInterface.append("--overwrite")
+            self._commandLineInterface.append("--overwrite")
 
         # Directorize by...
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), "Directorize by...\n")
@@ -79,42 +89,42 @@ class ConfirmPageProxy():
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
             "\t...diode band class: {0}\n".format(_boolToYesNo(active)))
         if active:
-            commandLineInterface.append("--directorize-band-class")
+            self._commandLineInterface.append("--directorize-band-class")
 
         # ...Martian location...
         active = self._builder.get_object("directorizeLocationCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
             "\t...Martian location: {0}\n".format(_boolToYesNo(active)))
         if active:
-            commandLineInterface.append("--directorize-location")
+            self._commandLineInterface.append("--directorize-location")
 
         # ...Martian month...
         active = self._builder.get_object("directorizeMonthCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
             "\t...Martian month: {0}\n".format(_boolToYesNo(active)))
         if active:
-            commandLineInterface.append("--directorize-month")
+            self._commandLineInterface.append("--directorize-month")
 
         # ...mission solar day...
         active = self._builder.get_object("directorizeSolCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
             "\t...mission solar day: {0}\n".format(_boolToYesNo(active)))
         if active:
-            commandLineInterface.append("--directorize-sol")
+            self._commandLineInterface.append("--directorize-sol")
 
         # No automatic rotation...
         active = self._builder.get_object("noAutomaticRotationCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
             "Disable automatic image component orientation: {0}\n".format(_boolToYesNo(active)))
         if active:
-            commandLineInterface.append("--no-auto-rotate")
+            self._commandLineInterface.append("--no-auto-rotate")
 
         # No reconstruction...
         active = self._builder.get_object("noReconstructionCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
             "Dump components without reconstruction: {0}\n".format(_boolToYesNo(active)))
         if active:
-            commandLineInterface.append("--no-reconstruct")
+            self._commandLineInterface.append("--no-reconstruct")
 
         # Filters...
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), "Filters...\n")
@@ -130,7 +140,7 @@ class ConfirmPageProxy():
 
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
             "\t...diode band type class: {0}\n".format(model.get_value(iterator, 0)))
-        commandLineInterface.append("--filter-diode={0}".format(commandLineValue))
+        self._commandLineInterface.append("--filter-diode={0}".format(commandLineValue))
         
         # ...lander...
         landerFilterComboBox = self._builder.get_object("landerFilterComboBox")
@@ -144,40 +154,51 @@ class ConfirmPageProxy():
 
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
             "\t...lander: {0}\n".format(humanValue))
-        commandLineInterface.append("--filter-lander={0}".format(commandLineValue))
+        self._commandLineInterface.append("--filter-lander={0}".format(commandLineValue))
 
         # Use image interlacing...
         active = self._builder.get_object("useInterlacingCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
             "Interlace images: {0}\n".format(_boolToYesNo(active)))
         if active:
-            commandLineInterface.append("--interlace")
+            self._commandLineInterface.append("--interlace")
 
         # Generate metadata...
         active = self._builder.get_object("generateMetadataCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
             "Generate metadata: {0}\n".format(_boolToYesNo(active)))
         if active:
-            commandLineInterface.append("--generate-metadata")
+            self._commandLineInterface.append("--generate-metadata")
 
         # Verbosity...
         active = self._builder.get_object("verbosityCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
             "Be verbose: {0}\n".format(_boolToYesNo(active)))
         if active:
-            commandLineInterface.append("--verbose")
+            self._commandLineInterface.append("--verbose")
 
         # Multithreading...
         active = self._builder.get_object("multithreadingCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
             "Use multithreading: {0}\n".format(_boolToYesNo(active)))
         if active:
-            commandLineInterface.append("--jobs")
+            self._commandLineInterface.append("--jobs")
 
-        # Create full commandline to invoke VikingExtractor...
-        commandLine = " ".join(commandLineInterface)
+        # Other switches implicitly added...
+        self._commandLineInterface.append("--recursive")
+        self._commandLineInterface.append("--ignore-bad-files")
+
+        # Location of input...
+        self._commandLineInterface.append(
+            LauncherArguments.getArguments().recoveryDataPath)
+
+        # Location of output...
+        self._commandLineInterface.append(recoveryFolder)
+        
+        # Display the full command line in the confirmation summary window...
+        commandLine = " ".join(self._commandLineInterface)
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Will execute: $ {0}\n".format(commandLine))
+            "VikingExtractor arguments: {0}\n".format(commandLine))
 
 # Helper function takes a boolean value and converts to a yes or no string...
 def _boolToYesNo(value):

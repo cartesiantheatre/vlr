@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # VikingExtractor, to recover images from Viking Lander operations.
 # Copyright (C) 2010, 2011, 2012 Cartesian Theatre <kip@thevertigo.com>.
 #
@@ -24,6 +23,10 @@ import hashlib
 import os
 import threading
 import time
+from sys import exit
+
+# Our support modules...
+import LauncherArguments
 
 # Class containing behaviour for the two disc verification pages...
 class VerificationPagesProxy():
@@ -149,8 +152,8 @@ class VerificationThread(threading.Thread):
 
         # List of file pairs (path, checksum) to check...
         self._files = [
-            ("/home/kip/Projects/Avaneya: Viking Lander Remastered/Mastered/Science Digital Data Preservation Task/Processed Images-9.7z", 
-             "1569e25c8b159d32025f9ed4467adcc9")
+            (LauncherArguments.getArguments().recoveryDataPath, 
+             "6ebb8e853ad57ac4422668f01b271fb8")
         ]
         self._totalVerifiedSize = 0
         self._totalFileSize = 0
@@ -169,7 +172,7 @@ class VerificationThread(threading.Thread):
             fileHandle = open(filePath, 'rb')
 
         # Or check for failure...
-        except IOError:
+        except OSError:
             GObject.idle_add(
                 self._setQuitWithError, 
                 "I was not able to check a file I require:\n\n{0}".format(filePath))
@@ -233,10 +236,10 @@ class VerificationThread(threading.Thread):
                 # Alert user from main thread...
                 GObject.idle_add(
                     self._setQuitWithError, 
-                    "I was not able to check a file I require:\n\n{0}".format(filePath))
+                    "I was not able to check a file I require:\n\n{0}".format(currentFile))
                 
                 # Exit the thread...
-                return
+                exit(1)
 
             # Add the file's size to the total size...
             self._totalFileSize += fileSize

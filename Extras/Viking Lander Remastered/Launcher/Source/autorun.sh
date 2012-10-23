@@ -60,14 +60,44 @@
     SYMBOL_STATUS_OK="${VT100_BOLD}${VT100_COLOUR_GREEN}✓${VT100_RESET}"
     SYMBOL_STATUS_FAIL="${VT100_BOLD}${VT100_COLOUR_RED}✗${VT100_RESET}"
     
-    # Local path from disc root to navigation menu...
-    PYTHON_LAUNCHER_MAIN=Main.py
+    # Complete path to launcher entry point......
+    PYTHON_LAUNCHER_MAIN=""
 
 #Zenity process ID...
 ZenityPID=0
 
 # Array of packages the user is missing that we need...
 declare -a PackagesMissing
+
+# Find the complete path to the script containing the launcher's entry point...
+FindLauncherMain()
+{
+    # Alert user...
+    echo -n "Looking for launcher... "
+
+    # Get the complete path to the directory containing this script...
+    AUTORUN_SCRIPT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+    # Check for Source/Main.py first...
+    if [ -f "$AUTORUN_SCRIPT_DIRECTORY/Source/Main.py" ] ; then
+        echo "Source/Main.py " $SYMBOL_STATUS_OK
+        PYTHON_LAUNCHER_MAIN=$AUTORUN_SCRIPT_DIRECTORY/Source/Main.py
+    
+    # Nope. Check in the same directory...
+    elif [ -f "$AUTORUN_SCRIPT_DIRECTORY/Main.py" ] ; then
+        echo "Main.py " $SYMBOL_STATUS_OK
+        PYTHON_LAUNCHER_MAIN=$AUTORUN_SCRIPT_DIRECTORY/Main.py
+
+    # Couldn't find it anywhere...
+    else
+	    echo $SYMBOL_STATUS_FAIL
+        zenity --error \
+            --title="Error" \
+            --window-icon=$Icon \
+            --text="Unable to find the Viking Lander Remastered application."
+	    exit 1
+    fi
+}
 
 # Trap an interrupt... (e.g. ctrl-c)
 TrapInterrupt()
@@ -93,7 +123,7 @@ KillZenity()
 # Identify distro name and release code... $Distro and $DistroCodeName
 IdentifyDistro()
 {
-    # Check for lsb_release...
+    # Alert user...
     echo -n "Identifying distribution... "
 
 	# Get the operating system family name...
@@ -207,7 +237,7 @@ PrepareDebianBased()
         
             # Debian wheezy. Squeeze doesn't have the latter two needed
             #  packages...
-            "wheeze")
+            "wheezy")
                 PackagesRequired=("python3" "python3-gi" "python3-dbus")
             ;;
 
@@ -395,18 +425,21 @@ Main()
             ;;
     esac
 
-    # Run the navigation menu...
+    # Find the launcher...
+    FindLauncherMain
+
+    # Run the launcher...
     echo -n "Launching GUI using... "
 
         # First try with Python 3...
         if [ -x "`which python3`" ]; then
             echo "python3 $SYMBOL_STATUS_OK"
-            /usr/bin/env python3 ${PYTHON_LAUNCHER_MAIN} ${Arguments}
+            /usr/bin/env python3 "${PYTHON_LAUNCHER_MAIN}" ${Arguments}
         
         # ...if that doesn't work, try what's probably an alias for Python 2...
         elif [ -x "`which python`" ]; then
             echo "python $SYMBOL_STATUS_OK"
-            /usr/bin/env python ${PYTHON_LAUNCHER_MAIN} ${Arguments}
+            /usr/bin/env python "${PYTHON_LAUNCHER_MAIN}" ${Arguments}
         
         # ...and if that still doesn't work, then we're out of luck...
         else

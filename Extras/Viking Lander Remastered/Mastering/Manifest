@@ -1,5 +1,6 @@
-autorun.sh=../Launcher/Code/autorun.sh
+autorun.sh=../Launcher/Source/autorun.sh
 autorun.inf=autorun.inf
 Copying=../../../Copying
+Extractor/=../Extractor/viking-extractor
 Launcher/=../Launcher/
 .directory=XDG/avaneya_vlr.directory

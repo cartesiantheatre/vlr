@@ -160,8 +160,21 @@ AC_LANG([C++])
     AC_CHECK_OCRAD([0.21])
 
     # Government...
-    AC_MSG_CHECKING([if government is good])
-    AC_MSG_RESULT([yes])
+    AC_MSG_CHECKING([if government is])
+    AC_MSG_RESULT([good])
+
+    # zziplib...
+
+        # Check for C header and library...
+        PKG_CHECK_MODULES([libzzip], [zziplib], [have_zzip=yes], [have_zzip=no])
+        if test "x${have_zzip}" = xno; then
+            AC_MSG_ERROR([zziplib runtime library is required, but was not detected...])
+        fi
+
+        # Store the needed compiler and linker flags for automake since this
+        #  doesn't happen automatically like with AC_CHECK_LIB...
+        CXXFLAGS="$CXXFLAGS $libzzip_CFLAGS"
+        LIBS="$LIBS $libzzip_LIBS"
 
     # Portable network graphics...
     
@@ -223,13 +236,13 @@ AC_LANG([C++])
 
         fi
 
+        # Alert user of test result...
+        AC_MSG_RESULT([$have_m_pi])
+
         # Still didn't work, bail...
         if test "$have_m_pi" = no; then
             AC_MSG_ERROR([can't work out how to make <cmath> define M_PI])
         fi
-
-        # Alert user of test result...
-        AC_MSG_RESULT([$have_m_pi])
 
 # Checks for library functions...
 

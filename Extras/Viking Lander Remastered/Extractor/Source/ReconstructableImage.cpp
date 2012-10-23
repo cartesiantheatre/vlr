@@ -31,7 +31,6 @@
     
     // System headers...
     #include <cassert>
-    #include <iostream>
     #include <fstream>
     #include <sstream>
     #include <algorithm>

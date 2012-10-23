@@ -40,7 +40,7 @@ DBusInterface::DBusInterface()
   : m_BusName("com.cartesiantheatre.VikingExtractorService"),
     m_ObjectPath("/com/cartesiantheatre/VikingExtractorObject"),
     m_Interface("com.cartesiantheatre.VikingExtractorInterface"),
-    m_NotificationSignal("Message"),
+    m_NotificationSignal("Notification"),
     m_ProgressSignal("Progress"),
     m_Connection(NULL)
 {

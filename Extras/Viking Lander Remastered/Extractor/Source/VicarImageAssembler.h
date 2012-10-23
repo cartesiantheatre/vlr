@@ -58,9 +58,19 @@ class VicarImageAssembler
     // Protected methods...
     protected:
 
-        // Generate input file list from the input file or directory, or 
-        //  throw an error... (recursive)
-        void GenerateProspectiveFileList(const std::string &InputFileOrDirectory);
+        // Add the given file to the list of prospective files to examine later...
+        void AddProspectiveFile(const std::string &InputFile);
+
+        // Index archive contents into list of prospective files, or throw an
+        //  error...
+        void IndexArchive(const std::string &InputArchiveFile);
+
+        // Generate input file list from the input directory, or throw an 
+        //  error... (recursive)
+        void IndexDirectory(const std::string &InputDirectory);
+
+        // Index file into list of prospective files, or throw an error...
+        void IndexFile(const std::string &InputFile);
 
         // Reset the assembler state...
         void Reset();
@@ -73,20 +83,24 @@ class VicarImageAssembler
         typedef CameraEventDictionaryType::iterator             CameraEventDictionaryIterator;
         typedef std::pair<std::string, ReconstructableImage *>  CameraEventDictionaryPair;
 
+        // Archived file name... (archive name, file in archive)
+        typedef std::pair<std::string, std::string>             ArchivedFileNameType;
+
     // Protected data...
     protected:
 
         // Camera event dictionary multimap...
-        CameraEventDictionaryType       m_CameraEventDictionary;
+        CameraEventDictionaryType           m_CameraEventDictionary;
 
         // Input file or directory...
-        std::string                     m_InputFileOrRootDirectory;
+        std::string                         m_InputFileOrRootDirectory;
         
         // List of all potential files to examine...
-        std::vector<std::string>        m_ProspectiveFiles;
+        std::vector<std::string>            m_ProspectiveFiles;
+        std::vector<ArchivedFileNameType>   m_ProspectiveArchivedFiles;
         
         // Output root directory...
-        std::string                     m_OutputRootDirectory;
+        std::string                         m_OutputRootDirectory;
 };
 
 // Multiple include protection...

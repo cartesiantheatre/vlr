@@ -84,6 +84,16 @@ LogicalRecord::LogicalRecord()
     Reset();
 }
 
+// Constructor from an input stream...
+LogicalRecord::LogicalRecord(std::istream &InputStream)
+{
+    // Clear the buffer...
+    Reset();
+
+    // Load from stream...
+   *this << InputStream;
+}
+
 // Get a string or substring, stripping non-friendly bytes. If trim is
 //  true will strip leading and trailing whitespace and logical record 
 //  markers...
@@ -124,16 +134,6 @@ string LogicalRecord::GetString(
 
     // Done...
     return Selection;
-}
-
-// Constructor from an input stream...
-LogicalRecord::LogicalRecord(std::istream &InputStream)
-{
-    // Clear the buffer...
-    Reset();
-
-    // Load from stream...
-   *this << InputStream;
 }
 
 // Convert ASCII to EBCDIC encoded character...

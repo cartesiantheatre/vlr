@@ -21,6 +21,9 @@
 # System imports...
 from gi.repository import Gtk, Gdk, GObject
 
+# Arguments...
+import LauncherArguments
+
 # Splash window...
 from SplashWindow import SplashWindowProxy
 
@@ -33,6 +36,7 @@ from ConfigurePages import ConfigurePagesProxy
 from ConfirmPage import ConfirmPageProxy
 from FarewellPage import FarewellPageProxy
 
+# Recovery window...
 from RecoveryWindow import RecoveryWindowProxy
 
 # Launcher class...
@@ -41,22 +45,16 @@ class LauncherApp():
     # Constructor...
     def __init__(self):
 
-        # Calculate paths to our needed files...
-        # TODO: Implement this. Remember that __file__ may not be available if
-        #        running via py2exe. In which case use os.path.dirname(sys.argv[0])
-        #print(os.path.realpath(__file__))
-
         # Initialize Glade builder...
         self.builder = Gtk.Builder()
-        self.builder.add_from_file("../Data/Launcher.glade")
+        self.builder.add_from_file(LauncherArguments.getArguments().gladeXMLPath)
 
         # Find the assistant...
         self.assistant = self.builder.get_object("assistantWindow")
 
         # Construct and show the splash window...
-        #self.splashWindowProxy = SplashWindowProxy(self)
-        #self.splashWindowProxy.showSplash()
-        self.recoveryWindowProxy = RecoveryWindowProxy(self)
+        self.splashWindowProxy = SplashWindowProxy(self)
+        self.splashWindowProxy.showSplash()
 
         # Construct pages and register them with the assistant in order...
         self.introductionPagesProxy = IntroductionPagesProxy(self)
@@ -117,15 +115,15 @@ class LauncherApp():
     # Apply button clicked...
     def onApplyEvent(self, *args):
         
-        # For debugging purposes...
-        print("onApplyEvent")
+        # Create and run the recovery window...
+        recoveryWindowProxy = RecoveryWindowProxy(self)
 
     # Cancel signal emitted when cancel button clicked or assistant being 
     #  closed...
     def onCancelEvent(self, assistant, *args):
         
         # For debugging purposes...
-        print("onCancelEvent...")
+        #print("onCancelEvent...")
 
         # Prompt the user for if they'd really like to quit...
         messageDialog = Gtk.MessageDialog(
@@ -184,6 +182,7 @@ class LauncherApp():
             print("SomeOtherException")
             Gtk.main_quit()
 
+    # Toggle a busy state...
     def setBusy(self, Busy = True):
 
         # Toggle busy state...

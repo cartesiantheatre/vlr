@@ -247,8 +247,7 @@ def hasInternetConnection(alertUser, parent, unqueriableDefault):
     
     # Try to get the NetworkManager remote proxy object...
     try:
-        networkManagerRemoteProxy = systemBus.get_object(
-            DBUS_SERVICE, DBUS_OBJECT)
+        networkManagerProxy = systemBus.get_object(DBUS_SERVICE, DBUS_OBJECT)
     
     # Something went wrong, but most likely the service isn't available...
     except dbus.exceptions.DBusException as exception:
@@ -258,7 +257,7 @@ def hasInternetConnection(alertUser, parent, unqueriableDefault):
         return unqueriableDefault
 
     # Get the connection state...
-    connectionState = networkManagerRemoteProxy.state()
+    connectionState = networkManagerProxy.state()
 
     # Connected. We're good...
     if connectionState == NM_STATE_CONNECTED or \

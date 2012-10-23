@@ -38,6 +38,9 @@
     #include <string>
     #include <vector>
 
+// Forward declarations...
+class ZZipFileHandle;
+
 // 1970s era VICAR image class...
 class VicarImageBand
 {
@@ -233,10 +236,14 @@ class VicarImageBand
         // Check ifthis is actually from the Viking Lander EDR...
         bool IsVikingLanderOrigin() const;
 
+        // Get a file stream to access the raw file. Returned handle tests as 
+        //  false if error...
+        ZZipFileHandle Open() const;
+
         // Parse basic metadata. Calls one of the implementations below based on its 
         //  formatting. Basic metadata includes bands, dimensions, pixel format, 
         //  bytes per colour, photosensor diode band type, etc...
-        void ParseBasicMetadata(std::ifstream &InputFileStream);
+        void ParseBasicMetadata(std::istream &InputFileStream);
         void ParseBasicMetadataImplementation_Format1(const LogicalRecord &HeaderRecord);
         void ParseBasicMetadataImplementation_Format2(const LogicalRecord &HeaderRecord);
         void ParseBasicMetadataImplementation_Format3(const LogicalRecord &HeaderRecord);

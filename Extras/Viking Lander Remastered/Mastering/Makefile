@@ -17,39 +17,36 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-ISO                 = Avaneya_Viking_Lander_Remastered.iso
+UDF                 = Avaneya_Viking_Lander_Remastered.udf
+DVD_9_SIZE          = 8540000000 # Single sided, dual layer, 8.54 billion bytes...
+DISC_SIZE           = DVD_9_SIZE
 PREPARER_ID         = "Cartesian Theatre"
 PUBLISHER_ID        = "Cartesian Theatre"
-VOLUME_ID           = "Avaneya_VLR"
+VOLUME_ID           = "Avaneya VLR"
 MANIFEST            = ./Manifest
 LAYOUT_OPTIMIZATION = ./LayoutOptimization
-GENISOIMAGE_PARAMETERS \
-                    = -graft-points \
-                      -input-charset utf-8 \
-                      -iso-level 3 \
-                      -J \
-                      -no-bak \
-                      -path-list ./Manifest \
-                      -p $(PREPARER_ID) \
-                      -publisher $(PUBLISHER_ID) \
-                      -r \
-                      -sort $(LAYOUT_OPTIMIZATION) \
-                      -udf \
-                      -volid $(VOLUME_ID)
+MKUDFFS_PARAMETERS  = --udfrev=0x0201 \
+                      --media-type=dvd \
+                      --blocksize=2048 \
+                      --utf8
+USER_ID             = $(USER)
 
 # Disable checking for files by these names...
 #.PHONY: all clean check
 
 # Default target is to built the complete ISO...
-all: iso
+all: udf
 
-# Build the ISO...
-# TODO: This iso isn't exclusively udf, but appears to be iso9660. We need to
-#        be exclusively udf to ensure exec bits are always correctly set...
-iso: $(ISO)
-$(ISO): viking-extractor Manifest Makefile
-	chmod +x -c ../Launcher/Code/autorun.sh
-	genisoimage $(GENISOIMAGE_PARAMETERS) -o $(ISO)
+# Build the image...
+udf: $(UDF)
+$(UDF): viking-extractor Manifest Makefile
+	chmod +x -c ../Launcher/Source/autorun.sh
+	#truncate -s $(DISC_SIZE)
+	mkudffs $(MKUDFFS_PARAMETERS) $(UDF)
+	mkdir -vp udfmount/
+	sudo mount -t udf -o loop,user,rw,uid=$(USER_ID) $(UDF) udfmount/
+	touch udfmount/foo
+	sudo umount /dev/loop
 
 # Recurse into viking-extractor's makefile for supported targets...
 all check viking-extractor:

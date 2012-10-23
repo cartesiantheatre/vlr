@@ -43,7 +43,9 @@ viking_extractor_SOURCES = \
     Source/VicarImageAssembler.h \
     Source/VicarImageBand.cpp \
     Source/VicarImageBand.h \
-    Source/VikingExtractor.cpp
+    Source/VikingExtractor.cpp \
+    Source/ZZipFileHandle.cpp \
+    Source/ZZipFileHandle.h
 
 # If D-Bus interface was enabled through Autoconf, then we also need to compile
 #  these sources too...
@@ -94,19 +96,19 @@ TESTS = $(check_SCRIPTS)
 
 # Rule to create the viking-extractor test script. Just tests to make sure it 
 #  compiled and linked correctly...
-GrepTest.sh:
+GrepTest.sh: Makefile.am
 	@echo './viking-extractor --version | grep -q ".*Cartesian Theatre."' > $@
 	@chmod +x $@
 
 # Checksums to for recovery_test.sh target to check against...
-RecoveryChecksums.md5:
+RecoveryChecksums.md5: Makefile.am
 	@echo '5e37828fe338c8a12ef387ca2bbb2b85  Tests/Recovery/22D180.png' > $@
 	@echo 'b4c641d7b0c30079e73298e05522cae6  Tests/Recovery/22D180.txt' >> $@
 
 # Rule to test a sample viking-extractor recovery against one known to have been 
 #  successful...
-RecoveryTest.sh: RecoveryChecksums.md5
-	@echo './viking-extractor --verbose --no-ansi-colours --overwrite --generate-metadata $(top_srcdir)/Tests/Recovery/ Tests/Recovery/' > $@
+RecoveryTest.sh: RecoveryChecksums.md5 Makefile.am
+	@echo './viking-extractor --recursive --no-ansi-colours --overwrite --generate-metadata $(top_srcdir)/Tests/Recovery/ Tests/Recovery/' > $@
 	@echo '$(MD5SUM) --warn --check $<' >> $@
 	@chmod +x $@
 

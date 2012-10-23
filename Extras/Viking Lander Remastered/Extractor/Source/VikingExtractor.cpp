@@ -130,7 +130,7 @@ int main(int ArgumentCount, char *Arguments[])
     int         OptionIndex             = 0;
     string      InputFileOrRootDirectory;
     string      OutputRootDirectory;
-    
+
     // Some user options...
     bool        VerboseConsole          = false;
 

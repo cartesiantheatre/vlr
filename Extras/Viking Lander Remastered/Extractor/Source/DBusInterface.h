@@ -45,7 +45,9 @@
 /*
     Notes: To monitor the session bus for any of the aforementioned signals...
 
-        $ dbus-monitor "type='signal',sender='com.cartesiantheatre.VikingExtractorService',interface='com.cartesiantheatre.VikingExtractorInterface'"
+        $ dbus-monitor "type='signal',sender='com.cartesiantheatre.\
+            VikingExtractorService',interface='com.cartesiantheatre.\
+            VikingExtractorInterface'"
 */
 
 // DBus interface singleton class...
