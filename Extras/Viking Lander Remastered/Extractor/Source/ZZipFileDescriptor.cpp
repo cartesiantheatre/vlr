@@ -25,7 +25,7 @@
     #include <config.h>
 
     // Our headers...    
-    #include "ZZipFileHandle.h"
+    #include "ZZipFileDescriptor.h"
 
     // zziplib...
     #include <zzip/zzip.h>
@@ -34,27 +34,31 @@
     #include <cstring>
 
 // Use the standard namespace...
-using std namespace;
+using namespace std;
 
 // Constructor...
-ZZipFileHandle::ZZipFileHandle(
-    const ZZIP_DIR *ArchiveHandle, const ZZIP_FILE *FileHandle)
-    : m_ArchiveHandle(ArchiveHandle),
-      m_FileHandle(FileHandle)
+ZZipFileDescriptor::ZZipFileDescriptor(const ZZIP_FILE *FileDescriptor)
+    : m_ArchiveDescriptor(NULL),
+      m_FileDescriptor(FileDescriptor)
 {
-    
+    // Try and get the archive handle if not a real file...
+    m_ArchiveHandle = zzip_dirhandle(m_FileDescriptor);
 }
 
-// Check if the handle is valid...
-bool ZZipFileHandle::IsGood() const;
+// Check if the handle is valid and not EOF...
+bool ZZipFileDescriptor::IsGood() const;
 {
     // We need a file handle...
-    if(!m_FileHandle)
+    if(!m_FileDescriptor)
         return false;
 
     // Try to stat the file within the archive...
     ZZIP_STAT FileStatus;
-    if(zzip_file_stat(m_FileHandle, &FileStatus) == -1)
+    if(zzip_file_stat(m_FileDescriptor, &FileStatus) == -1)
+        return false;
+
+    // Check if it is EOF or other problem...
+    if(zzip_tell(m_FileDescriptor) == -1)
         return false;
 
     // Check if the file has a name...
@@ -62,11 +66,11 @@ bool ZZipFileHandle::IsGood() const;
 }
 
 // Destructor...
-ZZipFileHandle::~ZZipFileHandle()
+ZZipFileDescriptor::~ZZipFileDescriptor()
 {
     // Close the file...
-    zzip_file_close(m_FileHandle);
-    m_FileHandle = NULL;
+    zzip_file_close(m_FileDescriptor);
+    m_FileDescriptor = NULL;
 
     // Close the archive, if it was within one...
     if(m_ArchiveHandle)

@@ -24,8 +24,13 @@
 #define _LOGICAL_RECORD_H_
 
 // Includes...
-#include <string>
-#include <stdint.h>
+
+    // Our headers...
+    #include "ZZipFileDescriptor.h"
+
+    // System headers...
+    #include <string>
+    #include <stdint.h>
 
 // Logical buffer size...
 #define LOGICAL_RECORD_SIZE 72
@@ -40,7 +45,7 @@ class LogicalRecord
         LogicalRecord();
         
         // Constructor from an input stream...
-        LogicalRecord(std::istream &InputStream);
+        LogicalRecord(ZZipFileDescriptor FileDescriptor);
 
         // Get a string or substring, stripping non-friendly bytes. If
         //  trim is true will strip leading and trailing whitespace 
@@ -57,7 +62,7 @@ class LogicalRecord
         bool IsValidLabel() const;
 
         // Load the buffer from a stream and decode, or throw an error...
-        void operator<<(std::istream &InputStream);
+        void operator<<(ZZipFileDescriptor FileDescriptor);
         
         // Convert to a string...
         operator std::string() const { return GetString(); }

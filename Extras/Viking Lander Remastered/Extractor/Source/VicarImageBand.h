@@ -27,6 +27,7 @@
 
     // Our headers...
     #include "LogicalRecord.h"
+    #include "ZZipFileDescriptor.h"
     
     // System headers...
     #include <cassert>
@@ -39,7 +40,7 @@
     #include <vector>
 
 // Forward declarations...
-class ZZipFileHandle;
+class ZZipFileDescriptor;
 
 // 1970s era VICAR image class...
 class VicarImageBand
@@ -52,27 +53,27 @@ class VicarImageBand
         {
             // Not known... (e.g. or could be just not read)
             Unknown = 0,
-            
+
             // Narrow band low resolution colour diodes...
             Blue,
             Green,
             Red,
-            
+
             // Narrow band low resolution infrared diodes. These 
             //  deteriorated slowly due to neutron radiation from the 
             //  RTG...
             Infrared1,
             Infrared2,
             Infrared3,
-            
+
             // Narrow band low resolution sun diode...
             Sun,
-            
+
             // Survey diode...
             Survey
 
         }PSADiode;
-        
+
         // Image rotation...
         typedef enum
         {
@@ -89,7 +90,7 @@ class VicarImageBand
         // Band type to friendly map and pair types...
         typedef std::map<const PSADiode, std::string>   BandTypeToFriendlyMap;
         typedef std::pair<const PSADiode, std::string>  BandTypeToFriendlyMapPair;
-        
+
         // Raw image band data, each nested vector is a row containing column data...
         typedef std::vector< std::vector<uint8_t> >     RawBandDataType;
 
@@ -238,12 +239,12 @@ class VicarImageBand
 
         // Get a file stream to access the raw file. Returned handle tests as 
         //  false if error...
-        ZZipFileHandle Open() const;
+        ZZipFileDescriptor Open() const;
 
         // Parse basic metadata. Calls one of the implementations below based on its 
         //  formatting. Basic metadata includes bands, dimensions, pixel format, 
         //  bytes per colour, photosensor diode band type, etc...
-        void ParseBasicMetadata(std::istream &InputFileStream);
+        void ParseBasicMetadata(ZZipFileDescriptor FileDescriptor);
         void ParseBasicMetadataImplementation_Format1(const LogicalRecord &HeaderRecord);
         void ParseBasicMetadataImplementation_Format2(const LogicalRecord &HeaderRecord);
         void ParseBasicMetadataImplementation_Format3(const LogicalRecord &HeaderRecord);

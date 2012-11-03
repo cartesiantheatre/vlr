@@ -30,7 +30,7 @@
     #include "Miscellaneous.h"
     #include "Options.h"
     #include "VicarImageBand.h"
-    #include "ZZipFileHandle.h"
+    #include "ZZipFileDescriptor.h"
 
     // PNG writing...
     #include <png++/png.hpp>
@@ -525,14 +525,14 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
         SetErrorAndReturnFalse("input was not loaded")
 
     // Open the input file...
-    ZZipFileHandle FileHandle(Open());
+    ZZipFileDescriptor FileDescriptor(Open());
 
         // Failed...
-        if(!FileHandle.IsGood())
+        if(!FileDescriptor.IsGood())
             SetErrorAndReturnFalse("could not open input for reading");
 
     // Seek to raw image offset and make sure it was successful...
-    if(zzip_seek(FileHandle, m_RawImageOffset, SEEK_SET) == -1)
+    if(zzip_seek(FileDescriptor, m_RawImageOffset, SEEK_SET) == -1)
         SetErrorAndReturnFalse("file ended prematurely before raw image");
 
     // Clear the mean pixel value...
@@ -558,10 +558,10 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
         {
             // Extract the current pixel value...
             uint8_t CurrentByte = 0xff;
-            zzip_read(FileHandle, &CurrentByte, sizeof(CurrentByte));
+            zzip_read(FileDescriptor, &CurrentByte, sizeof(CurrentByte));
 
             // Check for error...
-            if(!FileHandle.IsGood())
+            if(!FileDescriptor.IsGood())
                 SetErrorAndReturnFalse("band data extraction i/o error");
 
             // Check if within the pixel sample region...
@@ -611,15 +611,15 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
 int VicarImageBand::GetFileSize() const
 {
     // Open the file...
-    ZZipFileHandle FileHandle(Open());
+    ZZipFileDescriptor FileDescriptor(Open());
     
         // Failed...
-        if(!FileHandle.IsGood())
+        if(!FileDescriptor.IsGood())
             return -1;
 
     // Seek to the end and return the size...
-    zzip_seek(FileHandle, 0, SEEK_END);
-    return zzip_tell(FileHandle);
+    zzip_seek(FileDescriptor, 0, SEEK_END);
+    return zzip_tell(FileDescriptor);
 }
 
 // Get the input file name only without path...
@@ -676,10 +676,10 @@ bool VicarImageBand::IsVicarTokenDiodeBandType(const string &DiodeBandTypeToken)
 bool VicarImageBand::IsHeaderIntact(size_t &PhaseOffsetRequired) const
 {
     // Open the file...
-    ZZipFileHandle FileHandle(Open());
+    ZZipFileDescriptor FileDescriptor(Open());
 
         // Load() already succeeded in opening, so this shouldn't ever happen...
-        assert(FileHandle.IsGood());
+        assert(FileDescriptor.IsGood());
 
     // Sometimes the records are out of phase due to being preceeded 
     //  with VAX/VMS prefix bytes, so check for threshold of at most
@@ -687,11 +687,11 @@ bool VicarImageBand::IsHeaderIntact(size_t &PhaseOffsetRequired) const
     for(PhaseOffsetRequired = 0; PhaseOffsetRequired < 4; ++PhaseOffsetRequired)
     {
         // Seek to offset and check for error...
-        if(zzip_seek(FileHandle, PhaseOffsetRequired, SEEK_SET) == -1)
+        if(zzip_seek(FileDescriptor, PhaseOffsetRequired, SEEK_SET) == -1)
             return false;
 
         // Load the first logical record...
-        const LogicalRecord HeaderRecord(*InputFileStream);
+        const LogicalRecord HeaderRecord(FileDescriptor);
 
         // Check if valid first end of logical record marker......
         if(HeaderRecord.IsValidLabel())
@@ -710,17 +710,18 @@ bool VicarImageBand::IsVikingLanderOrigin() const
     vector<char>    Buffer(256, 0x00);
 
     // Open the file...
-    auto_ptr< istream > InputFileStream(Open());
+    ZZipFileDescriptor FileDescriptor(Open());
 
         // Load() already succeeded in opening, so this shouldn't ever happen...
-        assert(InputFileStream->good());
+        assert(FileDescriptor.IsGood());
 
-    // Don't skip white space... (implicit if opening in binary mode?)
-   *InputFileStream >> std::noskipws;
+    /* Don't skip white space... (implicit if opening in binary mode?)
+   *InputFileStream >> std::noskipws;*/
 
     // Fully fill the buffer with the first 256 bytes of the file...
-    InputFileStream->read(&Buffer.front(), Buffer.size());
-    assert(InputFileStream->gcount() == static_cast<signed>(Buffer.size()));
+    const size_t BytesRead = zzip_read(
+        FileDescriptor, &Buffer.front(), Buffer.size());
+    assert(BytesRead == Buffer.size());
 
     // Signature to search for in EBCDIC ("VIKING LANDER " in ASCII)
     const char Signature[] = {
@@ -754,10 +755,10 @@ void VicarImageBand::Load()
     Message(Console::Verbose) << "opening" << endl;
 
     // Open the file...
-    auto_ptr< istream > InputFileStream(Open());
+    ZZipFileDescriptor FileDescriptor(Open());
 
         // Failed...
-        if(!InputFileStream->good())
+        if(!FileDescriptor.IsGood())
             SetErrorAndReturn("could not open input for reading")
 
     // Check size...
@@ -783,14 +784,14 @@ void VicarImageBand::Load()
         SetErrorAndReturn("did not originate from a Viking Lander")
 
     // Extract the basic image metadata...
-    ParseBasicMetadata(*InputFileStream);
+    ParseBasicMetadata(FileDescriptor);
     
         // Error occured, stop...
         if(IsError())
             return;
 
     // Now rewind again to start of file, plus any phase offset necessary...
-    InputFileStream->seekg(0 + m_PhaseOffsetRequired, ios_base::beg);
+    zzip_seek(FileDescriptor, 0 + m_PhaseOffsetRequired, SEEK_SET);
 
     // Clear saved labels buffer, in case it already had data in it...
     m_SavedLabelsBuffer.clear();
@@ -798,14 +799,14 @@ void VicarImageBand::Load()
     // Go through all physical records, parsing extended metadata, skipping past
     //  padding between physical records, and calculating the raw image data's 
     //  absolute offset...
-    for(size_t PhysicalRecordIndex = 0; InputFileStream->good(); ++PhysicalRecordIndex)
+    for(size_t PhysicalRecordIndex = 0; FileDescriptor.IsGood(); ++PhysicalRecordIndex)
     {
         // Verbosity...
         Message(Console::Verbose)
             << "entering physical record " 
             << PhysicalRecordIndex + 1 
             << " starting at " 
-            << static_cast<int>(InputFileStream->tellg()) 
+            << static_cast<int>(zzip_tell(FileDescriptor)) 
             << endl;
 
         // Local offset into the current physical record...
@@ -824,11 +825,11 @@ void VicarImageBand::Load()
                 << "extracting logical record " 
                 << LocalLogicalRecordIndex + 1 
                 << "/5 starting at " 
-                << static_cast<int>(InputFileStream->tellg()) 
+                << static_cast<int>(zzip_tell(FileDescriptor)) 
                 << endl;
 
             // Extract a logical record...
-            Record << *InputFileStream;
+            Record << FileDescriptor;
             
             // Record isn't valid...
             if(!Record.IsValidLabel())
@@ -838,7 +839,7 @@ void VicarImageBand::Load()
                     << "bad logical record terminator " 
                     << LocalLogicalRecordIndex + 1 
                     << "/5 starting at " 
-                    << static_cast<int>(InputFileStream->tellg()) 
+                    << static_cast<int>(zzip_tell(FileDescriptor)) 
                     << endl;
                 
                 // Give a hint if this was suppose to be a physical record boundary...
@@ -873,7 +874,7 @@ void VicarImageBand::Load()
                     m_PhysicalRecordPadding;
 
                 // Seek to the raw image data...
-                InputFileStream->seekg(RawImageDataRelativeOffset, ios_base::cur);
+                zzip_seek(FileDescriptor, RawImageDataRelativeOffset, SEEK_CUR);
 
                 // Done...
                 RawImageDataFound = true;
@@ -888,16 +889,16 @@ void VicarImageBand::Load()
         // Deal with padding...
         
             // Remember the current read pointer offset in case we decide to rewind...
-            const streampos CurrentPosition = InputFileStream->tellg();
+            const streampos CurrentPosition = zzip_tell(FileDescriptor);
             
             // Check to see if next physical record boundary was tangential...
-            Record << *InputFileStream;
+            Record << FileDescriptor;
             if(Record.IsValidLabel())
             {
                 // It was, so rewind and carry on since there is no 
                 //  physical record padding...
                 Message(Console::Verbose) << "tangential physical record boundary detected, ignoring padding" << endl;
-                InputFileStream->seekg(CurrentPosition);
+                zzip_seek(FileDescriptor, CurrentPosition, SEEK_SET);
             }
             
             // Otherwise, seek passed any padding that may have followed
@@ -906,17 +907,17 @@ void VicarImageBand::Load()
             {
                 // Alert and seek...
                 Message(Console::Verbose) << "seeking passed " << m_PhysicalRecordPadding << " physical record padding" << endl;
-                InputFileStream->seekg(CurrentPosition);
-                InputFileStream->seekg(m_PhysicalRecordPadding, ios_base::cur);
+                zzip_seek(FileDescriptor, CurrentPosition, SEEK_SET);
+                zzip_seek(FileDescriptor, m_PhysicalRecordPadding, SEEK_CUR);
             }
     }
 
     // Got to the end of the file and did not find the last label record...
-    if(!InputFileStream->good())
+    if(!FileDescriptor.IsGood())
         SetErrorAndReturn("unable to locate last logical record label")
 
     // Store raw image offset...
-    m_RawImageOffset = InputFileStream->tellg();
+    m_RawImageOffset = zzip_tell(FileDescriptor);
 
     // Show user, if requested...
     Message(Console::Verbose) << "raw image offset: " << m_RawImageOffset << hex << showbase << " (" << m_RawImageOffset<< ")" << dec << endl;
@@ -951,7 +952,7 @@ void VicarImageBand::Load()
 
 // Get a file stream to access the raw file. Returned handle tests as false if 
 //  error...
-ZZipFileHandle VicarImageBand::Open() const
+ZZipFileDescriptor VicarImageBand::Open() const
 {
     // Is this an archive? If so, open it as such...
     if(fnmatch("*.[Zz][Ii][Pp]:/*", m_InputFile.c_str(), 0) == 0)
@@ -963,39 +964,40 @@ ZZipFileHandle VicarImageBand::Open() const
 
         // Check that path to compressed file within archive is sane...
         if(Index + 2 >= m_InputFile.size())
-            return ZZipFileHandle(NULL, NULL);
+            return ZZipFileDescriptor(NULL);
 
         // Create the path to just the compressed file within the archive...
         const string CompressedFileName(m_InputFile, Index + 2);
 
         // Open archive...
-        ZZIP_DIR *ArchiveHandle = zzip_opendir(ArchiveFileName.c_str());
+        ZZIP_DIR *ArchiveDescriptor = zzip_opendir(ArchiveFileName.c_str());
         
             // Failed...
-            if(!ArchiveHandle)
-                return ZZipFileHandle(NULL, NULL);
+            if(!ArchiveDescriptor)
+                return ZZipFileDescriptor(NULL);
 
         // Open the compressed file within the archive...
-        ZZIP_FILE *FileHandle = zzip_file_open(
-            ArchiveHandle, CompressedFileName.c_str(), 0);
+        ZZIP_FILE *FileDescriptor = zzip_file_open(
+            ArchiveDescriptor, CompressedFileName.c_str(), 0);
 
             // Failed...
-            if(!FileHandle)
+            if(!FileDescriptor)
             {
                 // Cleanup, abort...
-                zzip_closedir(ArchiveHandle);
-                return ZZipFileHandle(NULL, NULL);
+                zzip_closedir(ArchiveDescriptor);
+                return ZZipFileDescriptor(NULL);
             }
 
         // Return the handle...
-        return ZZipFileHandle(ArchiveHandle, FileHandle);
+        return ZZipFileDescriptor(FileDescriptor);
     }
 
     // Not an archive, open real file...
     else
     {
         // Open the file and return the object...
-        return new ifstream(m_InputFile.c_str(), ifstream::in | ifstream::binary);
+        return ZZipFileDescriptor(
+            zzip_fopen(m_InputFile.c_str(), O_RDONLY));
     }
 }
 
@@ -1037,7 +1039,7 @@ bool VicarImageBand::operator<(const VicarImageBand &RightSide) const
 
 // Parse basic metadata. Basic metadata includes bands, dimensions, 
 //  pixel format, bytes per colour, photosensor diode band type, etc...
-void VicarImageBand::ParseBasicMetadata(istream &InputFileStream)
+void VicarImageBand::ParseBasicMetadata(ZZipFileDescriptor FileDescriptor)
 {
     // Variables...
     string          Token;
@@ -1046,7 +1048,7 @@ void VicarImageBand::ParseBasicMetadata(istream &InputFileStream)
     size_t          TokenLength[32];
 
     // Stream should have already been validated...
-    assert(InputFileStream.good());
+    assert(FileDescriptor.IsGood());
 
     // Probe for the photosensor diode band type...
     m_DiodeBandType = ProbeDiodeBandType(DiodeBandTypeHint);
@@ -1070,7 +1072,7 @@ void VicarImageBand::ParseBasicMetadata(istream &InputFileStream)
         }
 
     // Extract the header record...
-    const LogicalRecord HeaderRecord(InputFileStream);
+    const LogicalRecord HeaderRecord(FileDescriptor);
 
     // Clear token length buffer...
     memset(TokenLength, 0, sizeof(TokenLength));
@@ -1859,13 +1861,13 @@ void VicarImageBand::ParseExtendedMetadata(
 VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &DiodeBandTypeHint) const
 {
     // Open the file...
-    auto_ptr< istream > InputFileStream(Open());
+    ZZipFileDescriptor FileDescriptor(Open());
     
         // Should have already been openable, since we did so in Load()...
-        assert(InputFileStream->good());
+        assert(FileDescriptor.IsGood());
 
     // Account for any required phase offset...
-    InputFileStream->seekg(m_PhaseOffsetRequired);
+    zzip_seek(FileDescriptor, m_PhaseOffsetRequired, SEEK_SET);
 
     // Setup caller's default return value...
     DiodeBandTypeHint = "unknown";
@@ -1878,7 +1880,7 @@ VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &DiodeBandTyp
         string  CurrentToken;
 
         // Extract record...
-        LogicalRecord Record(*InputFileStream);
+        LogicalRecord Record(FileDescriptor);
 
         // Initialize tokenizer, skipping first two magnetic tape marker 
         //  bytes if first record...

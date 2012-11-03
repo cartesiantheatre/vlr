@@ -44,8 +44,8 @@ viking_extractor_SOURCES = \
     Source/VicarImageBand.cpp \
     Source/VicarImageBand.h \
     Source/VikingExtractor.cpp \
-    Source/ZZipFileHandle.cpp \
-    Source/ZZipFileHandle.h
+    Source/ZZipFileDescriptor.cpp \
+    Source/ZZipFileDescriptor.h
 
 # If D-Bus interface was enabled through Autoconf, then we also need to compile
 #  these sources too...

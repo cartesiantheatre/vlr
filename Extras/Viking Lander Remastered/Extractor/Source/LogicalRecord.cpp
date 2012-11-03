@@ -26,7 +26,7 @@
     
     // Our headers...
     #include "LogicalRecord.h"
-    
+
     // System headers...
     #include <iostream>
     #include <cassert>
@@ -85,13 +85,13 @@ LogicalRecord::LogicalRecord()
 }
 
 // Constructor from an input stream...
-LogicalRecord::LogicalRecord(std::istream &InputStream)
+LogicalRecord::LogicalRecord(ZZipFileDescriptor FileDescriptor)
 {
     // Clear the buffer...
     Reset();
 
     // Load from stream...
-   *this << InputStream;
+   *this << FileDescriptor;
 }
 
 // Get a string or substring, stripping non-friendly bytes. If trim is
@@ -197,10 +197,10 @@ bool LogicalRecord::IsValidLabel() const
 
 // Load the buffer from a stream and decode, or throw an error. Always 
 //  consumes exactly LOGICAL_RECORD_SIZE bytes when successful...
-void LogicalRecord::operator<<(std::istream &InputStream)
+void LogicalRecord::operator<<(ZZipFileDescriptor FileDescriptor)
 {
     // Fill the whole buffer and check for error...
-    if(LOGICAL_RECORD_SIZE != InputStream.readsome(m_Buffer, LOGICAL_RECORD_SIZE))
+    if(LOGICAL_RECORD_SIZE != zzip_file_read(FileDescriptor, m_Buffer, LOGICAL_RECORD_SIZE))
         throw std::string("failed to read from input stream");
 
     // Decode...
