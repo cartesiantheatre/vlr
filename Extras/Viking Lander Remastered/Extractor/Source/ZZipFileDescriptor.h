@@ -38,7 +38,7 @@ class ZZipFileDescriptor
     public:
     
         // Constructor...
-        ZZipFileDescriptor(const ZZIP_FILE *FileDescriptor);
+        ZZipFileDescriptor(ZZIP_FILE *FileDescriptor);
 
         // Check if the handle is valid, not EOF, etc...
         bool IsGood() const;
