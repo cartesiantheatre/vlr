@@ -969,36 +969,13 @@ ZZipFileDescriptor VicarImageBand::Open() const
         // Create the path to just the compressed file within the archive...
         const string CompressedFileName(m_InputFile, Index + 2);
 
-        // Open archive...
-        ZZIP_DIR *ArchiveDescriptor = zzip_opendir(ArchiveFileName.c_str());
-        
-            // Failed...
-            if(!ArchiveDescriptor)
-                return ZZipFileDescriptor(NULL);
-
-        // Open the compressed file within the archive...
-        ZZIP_FILE *FileDescriptor = zzip_file_open(
-            ArchiveDescriptor, CompressedFileName.c_str(), 0);
-
-            // Failed...
-            if(!FileDescriptor)
-            {
-                // Cleanup, abort...
-                zzip_closedir(ArchiveDescriptor);
-                return ZZipFileDescriptor(NULL);
-            }
-
         // Return the handle...
-        return ZZipFileDescriptor(FileDescriptor);
+        return ZZipFileDescriptor(ArchiveFileName, CompressedFileName);
     }
 
-    // Not an archive, open real file...
+    // Not an archive, open as a real file...
     else
-    {
-        // Open the file and return the object...
-        return ZZipFileDescriptor(
-            zzip_fopen(m_InputFile.c_str(), O_RDONLY));
-    }
+        return ZZipFileDescriptor(m_InputFile.c_str());
 }
 
 // For comparing quality between images of the same camera event 

@@ -83,8 +83,6 @@ VicarImageAssembler::VicarImageAssembler(
 void VicarImageAssembler::AddProspectiveFile(const string &InputFile)
 {
     // Add to the list of prospective files to examine later...
-
-Message(Console::Info) << "Adding " << InputFile << endl;
     m_ProspectiveFiles.push_back(InputFile);
 }
 
@@ -240,23 +238,6 @@ void VicarImageAssembler::Reconstruct()
         // Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
         DBusInterface::GetInstance().EmitNotificationSignal("Analyzing catalogue, please wait...");
 #endif
-        /* DEBUG: Testing zzlib file accessibility...
-        for(vector<string>::iterator CurrentFileIterator = m_ProspectiveFiles.begin();
-            CurrentFileIterator != m_ProspectiveFiles.end();
-          ++CurrentFileIterator)
-        {
-            const string CurrentFile = *CurrentFileIterator;
-            
-            ZZIP_FILE *fd = zzip_open_ext_io(CurrentFile.c_str(), O_RDONLY, ZZIP_PREFERZIP, NULL, 0);
-            
-            if(!fd)
-            {
-                cout << "zzip ERROR opening \"" << CurrentFile << "\" " << zzip_strerror(errno) << endl;
-                exit(1);
-            }
-            
-            zzip_close(fd);
-        }*/
 
         // Keep reading entries while there are some...
         for(vector<string>::iterator CurrentFileIterator = m_ProspectiveFiles.begin();

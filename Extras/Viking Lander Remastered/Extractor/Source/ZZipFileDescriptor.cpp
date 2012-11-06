@@ -29,19 +29,82 @@
 
     // zziplib...
     #include <zzip/zzip.h>
-    
-    // System headers...
-    #include <cstring>
 
 // Use the standard namespace...
 using namespace std;
 
-// Constructor...
-ZZipFileDescriptor::ZZipFileDescriptor(ZZIP_FILE *FileDescriptor)
-    : m_ArchiveDescriptor(zzip_dirhandle(FileDescriptor)),
-      m_FileDescriptor(FileDescriptor)
+// Construct around a real file...
+ZZipFileDescriptor::ZZipFileDescriptor(const std::string &RealFileName)
+    : m_RealFileName(RealFileName),
+      m_ArchiveDescriptor(NULL),
+      m_FileDescriptor(NULL)
 {
+    // Open the real file...
+    m_FileDescriptor = zzip_fopen(RealFileName.c_str(), O_RDONLY);
+}
 
+// Construct around a compressed file within an archive...
+ZZipFileDescriptor::ZZipFileDescriptor(
+    const std::string &ArchiveFileName, const std::string &CompressedFileName)
+    : m_ArchiveFileName(ArchiveFileName),
+      m_CompressedFileName(CompressedFileName),
+      m_ArchiveDescriptor(NULL),
+      m_FileDescriptor(NULL)
+{
+    // Open archive...
+    m_ArchiveDescriptor = zzip_opendir(m_ArchiveFileName.c_str());
+
+        // Failed...
+        if(!m_ArchiveDescriptor)
+            return;
+
+    // Open the compressed file within the archive...
+    m_FileDescriptor = zzip_file_open(m_ArchiveDescriptor, CompressedFileName.c_str(), 0);
+
+        // Failed...
+        if(!m_FileDescriptor)
+        {
+            // Cleanup, abort...
+            zzip_closedir(m_ArchiveDescriptor);
+            return;
+        }
+}
+
+// Copy constructor...
+ZZipFileDescriptor::ZZipFileDescriptor(const ZZipFileDescriptor &Source)
+    : m_RealFileName(Source.m_RealFileName),
+      m_ArchiveFileName(Source.m_ArchiveFileName),
+      m_CompressedFileName(Source.m_CompressedFileName),
+      m_ArchiveDescriptor(NULL),
+      m_FileDescriptor(NULL)
+{
+    // The source wraps a real file...
+    if(zzip_file_real(Source.m_FileDescriptor))
+        m_FileDescriptor = zzip_fopen(m_RealFileName.c_str(), O_RDONLY);
+
+    // The source wraps a compressed file within an archive...
+    else
+    {
+        // Open archive...
+        m_ArchiveDescriptor = zzip_opendir(m_ArchiveFileName.c_str());
+
+            // Failed...
+            if(!m_ArchiveDescriptor)
+                return;
+
+        // Open the compressed file within the archive...
+        m_FileDescriptor = zzip_file_open(
+            m_ArchiveDescriptor, m_CompressedFileName.c_str(), 0);
+
+            // Failed...
+            if(!m_FileDescriptor)
+            {
+                // Cleanup, abort...
+                zzip_closedir(m_ArchiveDescriptor);
+                m_ArchiveDescriptor = NULL;
+                return;
+            }
+    }
 }
 
 // Check if the handle is valid and not EOF...
@@ -67,11 +130,12 @@ bool ZZipFileDescriptor::IsGood() const
 // Destructor...
 ZZipFileDescriptor::~ZZipFileDescriptor()
 {
-    // Close the file...
-    zzip_file_close(m_FileDescriptor);
+    // Close the file, if opened...
+    if(m_FileDescriptor)
+        zzip_file_close(m_FileDescriptor);
 
-    // Close the archive, if it was within one...
+    // Close the containing archive, if it was within one...
     if(m_ArchiveDescriptor)
-        zzip_closedir(m_ArchiveDescriptor);
+        zzip_dir_close(m_ArchiveDescriptor);
 }
 
