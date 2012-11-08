@@ -752,7 +752,7 @@ void VicarImageBand::Load()
     Console::GetInstance().SetCurrentFileName(GetInputFileNameOnly());
 
     // Be verbose...
-    Message(Console::Verbose) << "opening" << endl;
+    Message(Console::Verbose) << "loading" << endl;
 
     // Open the file...
     ZZipFileDescriptor FileDescriptor(Open());
@@ -1016,7 +1016,7 @@ bool VicarImageBand::operator<(const VicarImageBand &RightSide) const
 
 // Parse basic metadata. Basic metadata includes bands, dimensions, 
 //  pixel format, bytes per colour, photosensor diode band type, etc...
-void VicarImageBand::ParseBasicMetadata(ZZipFileDescriptor FileDescriptor)
+void VicarImageBand::ParseBasicMetadata(ZZipFileDescriptor &FileDescriptor)
 {
     // Variables...
     string          Token;
@@ -1843,11 +1843,12 @@ VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &DiodeBandTyp
         // Should have already been openable, since we did so in Load()...
         assert(FileDescriptor.IsGood());
 
-    // Account for any required phase offset...
-    zzip_seek(FileDescriptor, m_PhaseOffsetRequired, SEEK_SET);
-
     // Setup caller's default return value...
     DiodeBandTypeHint = "unknown";
+
+    // Account for any required phase offset...
+    if(zzip_seek(FileDescriptor, m_PhaseOffsetRequired, SEEK_SET) == -1)
+        return Unknown;
 
     // Check anywhere within the first physical record...
     for(size_t LogicalRecordIndex = 0; LogicalRecordIndex < 5; ++LogicalRecordIndex)
@@ -1884,7 +1885,7 @@ VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &DiodeBandTyp
             if(CurrentToken == "BROADBAND")
             {
                 // Set caller hint and return unsupported...
-                DiodeBandTypeHint = "unidenfiable broadband";
+                DiodeBandTypeHint = "unidentifiable broadband";
                 return Unknown;
             }
 

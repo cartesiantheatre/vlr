@@ -63,7 +63,9 @@ DBusInterface::DBusInterface()
 
     // Register ourselves on the session bus...
     const int Result = dbus_bus_request_name(
-        m_Connection, m_BusName.c_str(), DBUS_NAME_FLAG_REPLACE_EXISTING, &m_Error);
+        m_Connection, m_BusName.c_str(), 
+        DBUS_NAME_FLAG_ALLOW_REPLACEMENT | DBUS_NAME_FLAG_REPLACE_EXISTING, 
+        &m_Error);
 
         // Failed...
         if(dbus_error_is_set(&m_Error))
@@ -83,7 +85,8 @@ DBusInterface::DBusInterface()
     {
         // Alert user and terminate...
         Message(Console::Error) 
-            << "d-bus: already running instance detected..." << endl;
+            << "d-bus: already running instance detected that could not be replaced..." 
+            << endl;
 
         // Cleanup and terminate...
         exit(EXIT_FAILURE);

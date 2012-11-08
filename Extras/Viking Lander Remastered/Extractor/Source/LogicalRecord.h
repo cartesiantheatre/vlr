@@ -45,7 +45,7 @@ class LogicalRecord
         LogicalRecord();
         
         // Constructor from an input stream...
-        LogicalRecord(ZZipFileDescriptor FileDescriptor);
+        LogicalRecord(ZZipFileDescriptor &FileDescriptor);
 
         // Get a string or substring, stripping non-friendly bytes. If
         //  trim is true will strip leading and trailing whitespace 
@@ -62,7 +62,7 @@ class LogicalRecord
         bool IsValidLabel() const;
 
         // Load the buffer from a stream and decode, or throw an error...
-        void operator<<(ZZipFileDescriptor FileDescriptor);
+        void operator<<(ZZipFileDescriptor &FileDescriptor);
         
         // Convert to a string...
         operator std::string() const { return GetString(); }

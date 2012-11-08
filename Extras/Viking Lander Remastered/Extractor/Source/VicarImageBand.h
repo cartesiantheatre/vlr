@@ -244,7 +244,7 @@ class VicarImageBand
         // Parse basic metadata. Calls one of the implementations below based on its 
         //  formatting. Basic metadata includes bands, dimensions, pixel format, 
         //  bytes per colour, photosensor diode band type, etc...
-        void ParseBasicMetadata(ZZipFileDescriptor FileDescriptor);
+        void ParseBasicMetadata(ZZipFileDescriptor &FileDescriptor);
         void ParseBasicMetadataImplementation_Format1(const LogicalRecord &HeaderRecord);
         void ParseBasicMetadataImplementation_Format2(const LogicalRecord &HeaderRecord);
         void ParseBasicMetadataImplementation_Format3(const LogicalRecord &HeaderRecord);

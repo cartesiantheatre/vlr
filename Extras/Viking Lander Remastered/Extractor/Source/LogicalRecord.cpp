@@ -85,7 +85,7 @@ LogicalRecord::LogicalRecord()
 }
 
 // Constructor from an input stream...
-LogicalRecord::LogicalRecord(ZZipFileDescriptor FileDescriptor)
+LogicalRecord::LogicalRecord(ZZipFileDescriptor &FileDescriptor)
 {
     // Clear the buffer...
     Reset();
@@ -197,10 +197,10 @@ bool LogicalRecord::IsValidLabel() const
 
 // Load the buffer from a stream and decode, or throw an error. Always 
 //  consumes exactly LOGICAL_RECORD_SIZE bytes when successful...
-void LogicalRecord::operator<<(ZZipFileDescriptor FileDescriptor)
+void LogicalRecord::operator<<(ZZipFileDescriptor &FileDescriptor)
 {
     // Fill the whole buffer and check for error...
-    if(LOGICAL_RECORD_SIZE != zzip_file_read(FileDescriptor, m_Buffer, LOGICAL_RECORD_SIZE))
+    if(LOGICAL_RECORD_SIZE != zzip_read(FileDescriptor, m_Buffer, LOGICAL_RECORD_SIZE))
         throw std::string("failed to read from input stream");
 
     // Decode...

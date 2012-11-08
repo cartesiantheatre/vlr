@@ -52,7 +52,7 @@ ZZipFileDescriptor::ZZipFileDescriptor(
       m_FileDescriptor(NULL)
 {
     // Open archive...
-    m_ArchiveDescriptor = zzip_opendir(m_ArchiveFileName.c_str());
+    m_ArchiveDescriptor = zzip_dir_open(m_ArchiveFileName.c_str(), NULL);
 
         // Failed...
         if(!m_ArchiveDescriptor)
@@ -86,7 +86,7 @@ ZZipFileDescriptor::ZZipFileDescriptor(const ZZipFileDescriptor &Source)
     else
     {
         // Open archive...
-        m_ArchiveDescriptor = zzip_opendir(m_ArchiveFileName.c_str());
+        m_ArchiveDescriptor = zzip_dir_open(m_ArchiveFileName.c_str(), NULL);
 
             // Failed...
             if(!m_ArchiveDescriptor)
@@ -105,6 +105,15 @@ ZZipFileDescriptor::ZZipFileDescriptor(const ZZipFileDescriptor &Source)
                 return;
             }
     }
+    
+    // Restore the archive descriptor pointer...
+    const zzip_off_t ArchiveReadPointer = zzip_telldir(Source.m_ArchiveDescriptor);
+    zzip_seekdir(m_ArchiveDescriptor, ArchiveReadPointer);
+
+    // Restore the file descriptor pointer...
+    const zzip_off_t CompressedFileReadPointer = 
+        zzip_tell(Source.m_FileDescriptor);
+    zzip_seek(m_FileDescriptor, CompressedFileReadPointer, SEEK_SET);
 }
 
 // Check if the handle is valid and not EOF...
@@ -132,10 +141,12 @@ ZZipFileDescriptor::~ZZipFileDescriptor()
 {
     // Close the file, if opened...
     if(m_FileDescriptor)
-        zzip_file_close(m_FileDescriptor);
+        zzip_close(m_FileDescriptor);
 
     // Close the containing archive, if it was within one...
     if(m_ArchiveDescriptor)
-        zzip_dir_close(m_ArchiveDescriptor);
+    {
+        zzip_closedir(m_ArchiveDescriptor);
+    }
 }
 
