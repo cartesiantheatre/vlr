@@ -955,7 +955,7 @@ void VicarImageBand::Load()
 ZZipFileDescriptor VicarImageBand::Open() const
 {
     // Is this an archive? If so, open it as such...
-    if(fnmatch("*.[Zz][Ii][Pp]:/*", m_InputFile.c_str(), 0) == 0)
+    if(fnmatch(FNMATCH_ANY_ZIP ":/*", m_InputFile.c_str(), 0) == 0)
     {
         // Create the path to just the archive portion...
         const size_t Index = m_InputFile.find(":/");

@@ -7,6 +7,11 @@ target to recover camera event 22D180 taken on mission solar day 233.
     vl_1422.002
     vl_1422.003  
 
+The first and last file are compressed inside of 'stuff.zip', but the three 
+together form a composite image. Some files are inside of the zip to test the
+utility's ability to perform extraction and recognition from within the 
+compressed archive and combine with uncompressed files.
+
 The 'check' target will compare your sample recovery's machine generated 
 metadata and the actual reconstructed image generated against a previous known 
 to be successful sample run on the same input data. 

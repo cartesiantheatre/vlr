@@ -42,6 +42,10 @@ float SolarDayToLs(const size_t SolarDay);
 #define SetErrorAndReturnNullStream(Message)    { SetErrorMessage((Message)); return ostream(0); }
 #define SetErrorAndReturnFalse(Message)         { SetErrorMessage((Message)); return false; }
 
+// fnmatch() shell matching patterns...
+#define FNMATCH_ANY_ZIP     "*.[Zz][Ii][Pp]"
+#define FNMATCH_ANY_VICAR   "*vl_[0-9][0-9][0-9][0-9].[0-9][0-9][0-9]"
+
 // Multiple include protection...
 #endif
 

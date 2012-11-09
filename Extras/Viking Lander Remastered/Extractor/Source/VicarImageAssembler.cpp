@@ -30,6 +30,7 @@
 #ifdef USE_DBUS_INTERFACE
     #include "DBusInterface.h"
 #endif
+    #include "Miscellaneous.h"
 
     // zziplib...
     #include <zzip/zzip.h>
@@ -109,7 +110,7 @@ void VicarImageAssembler::IndexArchive(const string &InputArchiveFile)
         const string CurrentFileName = InputArchiveFile + ":/" + DirectoryEntry->d_name;
 
         // Extension matches that of a potential Viking lander VICAR file...
-        if((fnmatch("*vl_*.[0-9][0-9][0-9]", DirectoryEntry->d_name, 0) == 0))
+        if((fnmatch(FNMATCH_ANY_VICAR, DirectoryEntry->d_name, 0) == 0))
             AddProspectiveFile(CurrentFileName);
     }
 
@@ -169,11 +170,11 @@ void VicarImageAssembler::IndexDirectory(const string &InputDirectory)
 void VicarImageAssembler::IndexFile(const string &InputFile)
 {
     // If it is a zip archive, index its contents...
-    if(fnmatch("*.[Zz][Ii][Pp]", InputFile.c_str(), 0) == 0)
+    if(fnmatch(FNMATCH_ANY_ZIP, InputFile.c_str(), 0) == 0)
         IndexArchive(InputFile);
 
     // Extension matches that of a potential Viking lander VICAR file...
-    else if((fnmatch("*vl_*.[0-9][0-9][0-9]", InputFile.c_str(), 0) == 0))
+    else if((fnmatch(FNMATCH_ANY_VICAR, InputFile.c_str(), 0) == 0))
         AddProspectiveFile(InputFile);
 }
 
