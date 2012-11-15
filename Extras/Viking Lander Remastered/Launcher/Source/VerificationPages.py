@@ -150,11 +150,10 @@ class VerificationThread(threading.Thread):
         self._builder = builder
         self._assistant = self._builder.get_object("assistantWindow")
 
-        # List of file pairs (path, checksum) to check...
-        self._files = [
-            (LauncherArguments.getArguments().recoveryDataPath, 
-             "6ebb8e853ad57ac4422668f01b271fb8")
-        ]
+        # Create list of file pairs (path, checksum) to check...
+        self._parseChecksumManifest()
+        
+        # Counters for tracking progress...
         self._totalVerifiedSize = 0
         self._totalFileSize = 0
         
@@ -169,13 +168,14 @@ class VerificationThread(threading.Thread):
 
         # Try to open the file in readonly binary mode...
         try:
-            fileHandle = open(filePath, 'rb')
+            fileDescriptor = open(filePath, 'rb')
 
         # Or check for failure...
-        except OSError:
+        except OSError as Error:
             GObject.idle_add(
                 self._setQuitWithError, 
-                "I was not able to check a file I require:\n\n{0}".format(filePath))
+                "I was not able to check a file I require. {0}:\n\n{1}".
+                    format(Error.strerror, currentFile))
             return 0
 
         # Construct a hash object for MD5 algorithm...
@@ -185,7 +185,7 @@ class VerificationThread(threading.Thread):
         while True:
             
             # Read at most an 8K chunk...
-            fileBuffer = fileHandle.read(8192)
+            fileBuffer = fileDescriptor.read(8192)
             
             # I/O error or reached the end of the file...
             if not fileBuffer:
@@ -209,6 +209,37 @@ class VerificationThread(threading.Thread):
         # Return the calculated hash...
         return md5Hash.hexdigest()
 
+    # Create list of file pairs (path, checksum) to check...
+    def _parseChecksumManifest(self):
+
+        # Reset the files list...
+        self._files = []
+
+        # Open the checksum manifest file...
+        manifestFile = open(
+            os.path.join(LauncherArguments.getArguments().missionDataRoot, 
+            "Checksums"))
+
+        # Parse each line...
+        for line in manifestFile:
+            
+            # Check to make sure line is sane...
+            assert(len(line) > 35)
+            
+            # First 32 characters, followed by two characters of white space, 
+            #  then file path...
+            (fileChecksum, relativePath) = line.split('  ', 1)
+            
+            # Prefix the file path with the mission data root...
+            fullPath = os.path.join(
+                LauncherArguments.getArguments().missionDataRoot, relativePath)
+            
+            # Add the checksum and path to the list...
+            self._files.append((fileChecksum, fullPath))
+
+        # Done...
+        manifestFile.close()
+
     # Update the GUI. This callback is safe to update the GUI because it has
     #  been scheduled to execute safely...
     def _updateGUI(self, fraction):
@@ -224,19 +255,20 @@ class VerificationThread(threading.Thread):
     def run(self):
         
         # Calculate the total file size of all files...
-        for (currentFile, correctHexDigest) in self._files:
+        for (correctHexDigest, currentFile) in self._files:
             
             # Try to read it...
             try:
                 fileSize = os.path.getsize(currentFile)
             
             # Something bad happened, bail...
-            except OSError:
+            except OSError as Error:
 
                 # Alert user from main thread...
                 GObject.idle_add(
                     self._setQuitWithError, 
-                    "I was not able to check a file I require:\n\n{0}".format(currentFile))
+                    "I was not able to check a file I require. {0}:\n\n{1}".
+                        format(Error.strerror, currentFile))
                 
                 # Exit the thread...
                 exit(1)
@@ -245,7 +277,7 @@ class VerificationThread(threading.Thread):
             self._totalFileSize += fileSize
 
         # Check the checksums of all files...
-        for (currentFile, correctHexDigest) in self._files:
+        for (correctHexDigest, currentFile) in self._files:
 
             # Calculate checksum...
             currentHexDigest = self._calculateChecksum(currentFile)

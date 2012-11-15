@@ -22,6 +22,7 @@
 # Imports...
 import argparse
 import os
+import sys
 
 # Privates...
 _arguments    = None
@@ -63,12 +64,12 @@ def _initializeArguments():
         dest="gladeXMLPath", 
         help="Path to Glade user interface XML file.")
 
-    # Define behaviour for --recovery-data...
-    argumentParser.add_argument("--recovery-data", 
+    # Define behaviour for --mission-data-root...
+    argumentParser.add_argument("--mission-data-root", 
         action="store", 
-        default=os.path.normpath(os.path.join(sourceDirectory, "../Data/RecoveryData.7z")),
-        dest="recoveryDataPath", 
-        help="Path to Viking lander data to recover.")
+        default=os.path.normpath(os.path.join(sourceDirectory, "../Mission Data/")),
+        dest="missionDataRoot", 
+        help="Path to Viking lander mission data root.")
 
     # Define behaviour for --viking-extractor-bin...
     argumentParser.add_argument("--viking-extractor-bin", 

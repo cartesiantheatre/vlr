@@ -38,9 +38,10 @@
     Title="Avaneya: Viking Lander Remastered DVD"
     Version="0.1"
     
-    # Command line arguments...
-    Arguments=$@
-    
+    # Preserve command line arguments because $@ is clobbered after calling any
+    #  functions...
+    Arguments=( "$@" )
+
     # Icon to use in windows...
     Icon=XDG/Avaneya.png
 
@@ -434,12 +435,12 @@ Main()
         # First try with Python 3...
         if [ -x "`which python3`" ]; then
             echo "python3 $SYMBOL_STATUS_OK"
-            /usr/bin/env python3 "${PYTHON_LAUNCHER_MAIN}" ${Arguments}
+            /usr/bin/env python3 "${PYTHON_LAUNCHER_MAIN}" "${Arguments[@]}"
         
         # ...if that doesn't work, try what's probably an alias for Python 2...
         elif [ -x "`which python`" ]; then
             echo "python $SYMBOL_STATUS_OK"
-            /usr/bin/env python "${PYTHON_LAUNCHER_MAIN}" ${Arguments}
+            /usr/bin/env python "${PYTHON_LAUNCHER_MAIN}" "${Arguments[@]}"
         
         # ...and if that still doesn't work, then we're out of luck...
         else
