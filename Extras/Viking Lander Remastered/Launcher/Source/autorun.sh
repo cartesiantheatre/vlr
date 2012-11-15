@@ -391,13 +391,13 @@ Main()
     trap TrapInterrupt SIGINT
 
     # Zenity has come on most GNU distros...
-    echo -n "Checking for zenity..."
+    echo -n "Checking for zenity... "
     if [ ! -x "`which zenity`" ]; then
 	    echo $SYMBOL_STATUS_FAIL
 	    exit 1
 	else
 	    echo $SYMBOL_STATUS_OK
-        echo "Using zenity `zenity --version` ..."
+        echo "Using zenity `zenity --version`... "
     fi
 
     # Check for lsb_release...

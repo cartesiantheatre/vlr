@@ -20,8 +20,10 @@
 """LauncherArguments: Contains routines for parsing command line switches to the launcher"""
 
 # Imports...
+from gi.repository import Gtk, Gdk, GObject, GLib, Vte
 import argparse
 import os
+import platform
 import sys
 
 # Privates...
@@ -45,36 +47,24 @@ def _initializeArguments():
         help="Do not show the splash screen.", 
         default=False)
 
-    # Calculate paths to our needed files...
-    # TODO: Implement this. Remember that __file__ may not be available if
-    #        running via py2exe. In which case use os.path.dirname(sys.argv[0])
-    #print(os.path.realpath(__file__))
-
-    # Get the directory containing this source file and handle the case where
-    #  realpath will fail because running through py2exe...
-    sourceFile = os.path.realpath(__file__)
-    if len(sourceFile) == 0:
-        sourceFile = os.path.dirname(sys.argv[0])
-    sourceDirectory = os.path.dirname(sourceFile)
-
     # Define behaviour for --glade-xml...
     argumentParser.add_argument("--glade-xml", 
         action="store", 
-        default=os.path.normpath(os.path.join(sourceDirectory, "../Data/Launcher.glade")),
+        default=os.path.normpath(os.path.join(_getSourceDirectory(), "../Data/Launcher.glade")),
         dest="gladeXMLPath", 
         help="Path to Glade user interface XML file.")
 
     # Define behaviour for --mission-data-root...
     argumentParser.add_argument("--mission-data-root", 
         action="store", 
-        default=os.path.normpath(os.path.join(sourceDirectory, "../Mission Data/")),
+        default=os.path.normpath(os.path.join(_getSourceDirectory(), "../Mission Data/")),
         dest="missionDataRoot", 
         help="Path to Viking lander mission data root.")
 
     # Define behaviour for --viking-extractor-bin...
     argumentParser.add_argument("--viking-extractor-bin", 
         action="store", 
-        default=os.path.normpath(os.path.join(sourceDirectory, "../Executables/viking-extractor")),
+        default=_getDefaultVikingExtractorPath(),
         dest="vikingExtractorBinaryPath", 
         help="Path to VikingExtractor executable.")
 
@@ -90,6 +80,78 @@ def getArguments():
 
     # Return the object...
     return _arguments
+
+# Create the default value for the path to an appropriate VikingExtractor binary
+#  for the user's platform...
+def _getDefaultVikingExtractorPath():
+
+    # Get the operating system name and check for common misnomer...
+    operatingSystem = platform.system()
+    assert(operatingSystem)
+    if operatingSystem == "Linux":
+        operatingSystem = "GNU"
+
+    # Get the machine architecture and make it sane...
+    machineArchitecture = platform.machine()
+    assert(machineArchitecture)
+    if machineArchitecture == "x86_64":
+        machineArchitecture = "amd64"
+    elif machineArchitecture == "x86":
+        machineArchitecture = "i386"
+
+    # Get the executable name...
+    executableName = "viking-extractor"
+    if operatingSystem == "Windows":
+        executableName += ".exe"
+
+    # Construct a path to an appropriate executable...
+    extractorPath = os.path.abspath(os.path.join(
+        _getSourceDirectory(), "../Executables/", operatingSystem, 
+        machineArchitecture, executableName))
+
+    # Dead. Probably no executable built for this platform...
+    if not os.path.isfile(extractorPath):
+
+        # Show debugging info...
+        print("Warning: No executable detected... \"{0}\"".format(extractorPath))
+
+        # Alert user...
+        messageDialog = Gtk.MessageDialog(
+            None, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
+            Gtk.ButtonsType.OK, 
+            "Avaneya: Viking Lander Remastered")
+        messageDialog.format_secondary_text(
+            "Unfortunately your platform is not yet supported.\n\n" \
+            "\tOperating System: {0}\n"
+            "\tMachine Architecture: {1}".
+                format(operatingSystem, machineArchitecture))
+        messageDialog.run()
+        messageDialog.destroy()
+
+        # Return nothing because this is an error...
+        return None
+
+    # Otherwise, return the path to the caller...
+    else:
+        return extractorPath
+
+# Return the absolute path to the directory containing this source file...
+def _getSourceDirectory():
+
+    # Calculate paths to our needed files...
+    # TODO: Implement this. Remember that __file__ may not be available if
+    #        running via py2exe. In which case use os.path.dirname(sys.argv[0])
+    #print(os.path.realpath(__file__))
+
+    # Get the directory containing this source file and handle the case where
+    #  realpath will fail because running through py2exe...
+    sourceFile = os.path.realpath(__file__)
+    if len(sourceFile) == 0:
+        sourceFile = os.path.dirname(sys.argv[0])
+    sourceDirectory = os.path.dirname(sourceFile)
+    
+    # Return to caller...
+    return sourceDirectory
 
 # Called on module initialization...
 _initializeArguments()

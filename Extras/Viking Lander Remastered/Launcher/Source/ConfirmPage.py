@@ -190,7 +190,7 @@ class ConfirmPageProxy():
 
         # Location of input...
         self._commandLineInterface.append(
-            LauncherArguments.getArguments().recoveryDataPath)
+            LauncherArguments.getArguments().missionDataRoot)
 
         # Location of output...
         self._commandLineInterface.append(recoveryFolder)

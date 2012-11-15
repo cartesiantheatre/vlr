@@ -80,12 +80,20 @@ class RecoveryWindowProxy():
         self._recoveryExpander.connect("notify::expanded", self.onExpanded)
         self._terminal.connect("child-exited", self.onChildProcessExit)
 
+        # Get the path to the VikingExtractor binary...
+        self._vikingExtractorBinaryPath = \
+            LauncherArguments.getArguments().vikingExtractorBinaryPath
+            
+        # None found, bail...
+        if not self._vikingExtractorBinaryPath:
+            self._fatalLaunchError()
+
         # Try to start the VikingExtractor process...
         try:
             launchStatus = self._terminal.fork_command_full(
                 Vte.PtyFlags.DEFAULT,
                 None,
-                [LauncherArguments.getArguments().vikingExtractorBinaryPath] +
+                [self._vikingExtractorBinaryPath] +
                     self._confirmPageProxy.getVikingExtractorArguments(),
                 [],
                 GLib.SpawnFlags.DO_NOT_REAP_CHILD, # This method automatically adds this flag anyways. Here for clarity...
@@ -133,7 +141,7 @@ class RecoveryWindowProxy():
             messageDialog.format_secondary_text(
                 "The VikingExtractor could not be launched. " \
                 "The following location was attempted:\n\n{0}".
-                    format(LauncherArguments.getArguments().vikingExtractorBinaryPath))
+                    format(self._vikingExtractorBinaryPath))
             messageDialog.run()
             messageDialog.destroy()
             

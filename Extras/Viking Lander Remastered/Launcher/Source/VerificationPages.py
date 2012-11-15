@@ -160,7 +160,7 @@ class VerificationThread(threading.Thread):
         # When this is true, the thread has been requested to terminate...
         self._terminateRequested = False
 
-        # Find the progress bar...
+        # Find the user interface elements...
         self._verificationProgressBar = self._builder.get_object("verificationProgressBar")
 
     # Calculate a file's MD5 checksum...
@@ -200,7 +200,7 @@ class VerificationThread(threading.Thread):
             fraction = self._totalVerifiedSize / self._totalFileSize
             
             # Schedule to update the GUI...
-            GObject.idle_add(self._updateGUI, fraction, priority=GObject.PRIORITY_LOW)
+            GObject.idle_add(self._updateGUI, filePath, fraction, priority=GObject.PRIORITY_LOW)
             
             # Something requested the thread quit...
             if self._terminateRequested:
@@ -227,8 +227,8 @@ class VerificationThread(threading.Thread):
             assert(len(line) > 35)
             
             # First 32 characters, followed by two characters of white space, 
-            #  then file path...
-            (fileChecksum, relativePath) = line.split('  ', 1)
+            #  then file path, then new line character...
+            (fileChecksum, relativePath) = line.strip().split('  ', 1)
             
             # Prefix the file path with the mission data root...
             fullPath = os.path.join(
@@ -242,10 +242,11 @@ class VerificationThread(threading.Thread):
 
     # Update the GUI. This callback is safe to update the GUI because it has
     #  been scheduled to execute safely...
-    def _updateGUI(self, fraction):
+    def _updateGUI(self, currentFile, fraction):
 
         # Update the progress bar...
         self._verificationProgressBar.set_fraction(fraction)
+        self._verificationProgressBar.set_text("{0} ({1:.0f}%)".format(os.path.split(currentFile)[1], fraction * 100))
 
         # Remove function from list of event sources and don't call again until 
         #  needed...
@@ -294,7 +295,7 @@ class VerificationThread(threading.Thread):
                 GObject.idle_add(
                     self._setQuitWithError, 
                     "The following file appears to be corrupt:\n\n{0}\n\n" \
-                    "You should probably replace the disc.".format(currentFile))
+                    "Your disc might be damaged, sorry.".format(currentFile))
 
                 # Quit the thread...
                 return

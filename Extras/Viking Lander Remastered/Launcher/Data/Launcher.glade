@@ -1089,15 +1089,16 @@ You really only ever need to do this once or if you suspect that your disc may b
     <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <child>
-      <object class="GtkLabel" id="label3">
+      <object class="GtkLabel" id="verificationCurrentFileLabel">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">Verifying disc integrity. Please wait...</property>
+        <property name="justify">center</property>
       </object>
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">1</property>
+        <property name="position">0</property>
       </packing>
     </child>
     <child>
