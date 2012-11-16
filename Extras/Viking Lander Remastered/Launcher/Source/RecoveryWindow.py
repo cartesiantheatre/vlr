@@ -199,8 +199,7 @@ class RecoveryWindowProxy():
 
         # Get the exit code...
         exitCode = self._terminal.get_child_exit_status()
-
-        print("onChildProcessExit {0}".format(exitCode))
+        print("VikingExtractor terminated with status {0}...".format(exitCode))
 
         # Any other code than zero denotes an error...
         if exitCode is not 0:

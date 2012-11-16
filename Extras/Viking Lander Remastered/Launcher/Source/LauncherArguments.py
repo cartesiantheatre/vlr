@@ -72,6 +72,27 @@ def _initializeArguments():
     global _arguments
     _arguments = argumentParser.parse_args()
 
+    # Check if the resulting path to the VikingExtractor is valid...
+    extractorPath = getArguments().vikingExtractorBinaryPath
+    if not os.path.isfile(extractorPath):
+
+        # Show debugging info...
+        print("Warning: No executable detected... \"{0}\"".format(extractorPath))
+
+        # Alert user...
+        messageDialog = Gtk.MessageDialog(
+            None, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
+            Gtk.ButtonsType.OK, 
+            "Avaneya: Viking Lander Remastered")
+        messageDialog.format_secondary_text(
+            "Unfortunately your platform is not yet supported. An appropriate " \
+            "executable was not detected:\n\n" \
+            "\tOperating System: {0}\n"
+            "\tMachine Architecture: {1}".
+                format(_getOperatingSystem(), _getMachineArchitecture()))
+        messageDialog.run()
+        messageDialog.destroy()
+
 # Return the arguments object to the caller...
 def getArguments():
     
@@ -85,19 +106,11 @@ def getArguments():
 #  for the user's platform...
 def _getDefaultVikingExtractorPath():
 
-    # Get the operating system name and check for common misnomer...
-    operatingSystem = platform.system()
-    assert(operatingSystem)
-    if operatingSystem == "Linux":
-        operatingSystem = "GNU"
+    # Get the operating system name...
+    operatingSystem = _getOperatingSystem()
 
     # Get the machine architecture and make it sane...
-    machineArchitecture = platform.machine()
-    assert(machineArchitecture)
-    if machineArchitecture == "x86_64":
-        machineArchitecture = "amd64"
-    elif machineArchitecture == "x86":
-        machineArchitecture = "i386"
+    machineArchitecture = _getMachineArchitecture()
 
     # Get the executable name...
     executableName = "viking-extractor"
@@ -106,34 +119,47 @@ def _getDefaultVikingExtractorPath():
 
     # Construct a path to an appropriate executable...
     extractorPath = os.path.abspath(os.path.join(
-        _getSourceDirectory(), "../Executables/", operatingSystem, 
-        machineArchitecture, executableName))
+        _getSourceDirectory(), "../Executables/", _getOperatingSystem(), 
+        _getMachineArchitecture(), executableName))
 
-    # Dead. Probably no executable built for this platform...
+    # Dead. Probably no executable built for this platform. Return nothing 
+    #  because this is an error...
     if not os.path.isfile(extractorPath):
-
-        # Show debugging info...
-        print("Warning: No executable detected... \"{0}\"".format(extractorPath))
-
-        # Alert user...
-        messageDialog = Gtk.MessageDialog(
-            None, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
-            Gtk.ButtonsType.OK, 
-            "Avaneya: Viking Lander Remastered")
-        messageDialog.format_secondary_text(
-            "Unfortunately your platform is not yet supported.\n\n" \
-            "\tOperating System: {0}\n"
-            "\tMachine Architecture: {1}".
-                format(operatingSystem, machineArchitecture))
-        messageDialog.run()
-        messageDialog.destroy()
-
-        # Return nothing because this is an error...
         return None
 
     # Otherwise, return the path to the caller...
     else:
         return extractorPath
+
+# Get the machine architecture...
+def _getMachineArchitecture():
+
+    # Retrieve...
+    machineArchitecture = platform.machine()
+    assert(machineArchitecture)
+    
+    # Adapt to Debian's sane nomenclature...
+    if machineArchitecture == "x86_64":
+        machineArchitecture = "amd64"
+    elif machineArchitecture == "x86":
+        machineArchitecture = "i386"
+
+    # Return the machine architecture to the caller...
+    return machineArchitecture
+
+# Get the operating system name...
+def _getOperatingSystem():
+
+    # Retrieve...
+    operatingSystem = platform.system()
+    assert(operatingSystem)
+    
+    # Correct common misnomer...
+    if operatingSystem == "Linux":
+        operatingSystem = "GNU"
+
+    # Return operating system name to caller...
+    return operatingSystem
 
 # Return the absolute path to the directory containing this source file...
 def _getSourceDirectory():
