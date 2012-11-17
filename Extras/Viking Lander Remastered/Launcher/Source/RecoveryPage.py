@@ -30,8 +30,8 @@ import sys
 # Our support modules...
 import LauncherArguments
 
-# Recovery window proxy class...
-class RecoveryWindowProxy():
+# Recovery page proxy class...
+class RecoveryPageProxy():
 
     # Constructor...
     def __init__(self, launcherApp):
@@ -42,12 +42,18 @@ class RecoveryWindowProxy():
         self._builder           = launcherApp.builder
         self._confirmPageProxy  = launcherApp.confirmPageProxy
 
-        # Find the window and its widgets...
-        self._recoveryWindow            = self._builder.get_object("recoveryWindow")
-        self._recoveryExpander          = self._builder.get_object("recoveryExpander")
-        self._recoveryScrolledWindow    = self._builder.get_object("recoveryScrolledWindow")
-        self._recoveryProgressBar       = self._builder.get_object("recoveryProgressBar")
-        self._cancelRecoveryButton      = self._builder.get_object("cancelRecoveryButton")
+        # Add recovery page to assistant...
+        self._recoveryPageBox = self._builder.get_object("recoveryPageBox")
+        self._recoveryPageBox.set_border_width(5)
+        self._assistant.append_page(self._recoveryPageBox)
+        self._assistant.set_page_title(self._recoveryPageBox, "Recovery")
+        self._assistant.set_page_type(self._recoveryPageBox, Gtk.AssistantPageType.PROGRESS)
+        self._assistant.set_page_complete(self._recoveryPageBox, False)
+
+        # Shortcuts to the page's widgets...
+        self._recoveryPageTable     = self._builder.get_object("recoveryPageTable")
+        self._recoveryProgressBar   = self._builder.get_object("recoveryProgressBar")
+        self._abortRecoveryButton   = self._builder.get_object("abortRecoveryButton")
         
         # Create the terminal widget...
         self._terminal = Vte.Terminal()
@@ -62,23 +68,15 @@ class RecoveryWindowProxy():
         self._terminal.set_scrollback_lines(5000)
         self._terminal.set_encoding("UTF-8")
 
-        # Add the terminal widget to the expander's scrolled window widget...
-        self._recoveryScrolledWindow.add(self._terminal)
+        # Add the terminal widget to the top of the sizer...
+        self._recoveryPageTable.attach(self._terminal, 0, 1, 0, 1)
 
-        # Set the window width to 1000 pixels, unless user's resolution too low
-        #  in which case just use the maximum available...
-        screen = self._recoveryWindow.get_screen()
-        screenWidth = screen.get_width()
-        if screenWidth >= 1000:
-            self._recoveryWindow.resize(1000, 200)
-        else:
-            self._recoveryWindow.resize(screenWidth, 200)
-        
-        # Connect the Gtk+ signals...
-        self._recoveryWindow.connect("delete-event", Gtk.main_quit)
-        self._cancelRecoveryButton.connect("clicked", self.onCancelClicked)
-        self._recoveryExpander.connect("notify::expanded", self.onExpanded)
+        # Connect the signals...
+        self._abortRecoveryButton.connect("clicked", self.onAbortClicked)
         self._terminal.connect("child-exited", self.onChildProcessExit)
+
+    # Start the recovery process...
+    def startRecovery(self):
 
         # Get the path to the VikingExtractor binary...
         self._vikingExtractorBinaryPath = \
@@ -106,15 +104,6 @@ class RecoveryWindowProxy():
             self._fatalLaunchError()
         if launchStatus == False:
             self._fatalLaunchError()
-
-        # Hide the assistant...
-        self._assistant.iconify()
-
-        # Set it to be always on top...
-        self._recoveryWindow.set_keep_above(True)
-
-        # Display the window...
-        self._recoveryWindow.show_all()
 
         # Register our D-Bus signal handler callbacks...
         print("Waiting for VikingExtractor D-Bus service...")
@@ -188,8 +177,8 @@ class RecoveryWindowProxy():
         # Ready to roll...
         return True
 
-    # Cancel recovery button clicked...
-    def onCancelClicked(self, button, *junk):
+    # Abort recovery button clicked...
+    def onAbortClicked(self, button, *junk):
 
         # Stubbed...
         pass
@@ -221,31 +210,8 @@ class RecoveryWindowProxy():
         # Otherwise VikingExtractor completed successfully...
         else:
 
-            # Destroy the recovery window...
-            self._recoveryWindow.destroy()
-            
-            # Make the main window visible now...
-            self._assistant.deiconify()
-
-    # Expander toggled...
-    def onExpanded(self, expander, *junk):
-
-        # Expander is collapsing, but hasn't physically yet...
-        if expander.get_expanded() is False:
-
-            # Get the current width, which we will maintain, and remember the full
-            #  expanded height as well so we can restore later if expanding again...
-            (currentWidth, self._expandedHeight) = self._recoveryWindow.get_size()
-            
-            # Keep the whole window's width, but shrink height to minimal...
-            self._recoveryWindow.resize(currentWidth, 1)
-
-        # Expander is expanding, but hasn't physically yet...
-        else:
-
-            # Keep whole window's width, but expand whole window to previous height...
-            (currentWidth, collapsedHeight) = self._recoveryWindow.get_size()
-            self._recoveryWindow.resize(currentWidth, self._expandedHeight)
+            # Notify assistant...
+            self._assistant.set_page_complete(self._recoveryPageBox, True)
 
     # VikingExtractor is trying to tell us something in a human readable string...
     def onVikingExtractorNotificationDBusSignal(self, notification):

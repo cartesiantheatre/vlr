@@ -34,10 +34,8 @@ from HandbookPage import HandbookPageProxy
 from SelectRecoveryPage import SelectRecoveryPageProxy
 from ConfigurePages import ConfigurePagesProxy
 from ConfirmPage import ConfirmPageProxy
+from RecoveryPage import RecoveryPageProxy
 from FarewellPage import FarewellPageProxy
-
-# Recovery window...
-from RecoveryWindow import RecoveryWindowProxy
 
 # Launcher class...
 class LauncherApp():
@@ -63,6 +61,7 @@ class LauncherApp():
         self.selectRecoveryPageProxy = SelectRecoveryPageProxy(self)
         self.configurePagesProxy = ConfigurePagesProxy(self)
         self.confirmPageProxy = ConfirmPageProxy(self)
+        self.recoveryPageProxy = RecoveryPageProxy(self)
         self.farewellPageProxy = FarewellPageProxy(self)
 
         # Set the forward function which determines next page to show...
@@ -115,8 +114,8 @@ class LauncherApp():
     # Apply button clicked...
     def onApplyEvent(self, *args):
         
-        # Create and run the recovery window...
-        recoveryWindowProxy = RecoveryWindowProxy(self)
+        # Start the recovery process...
+        self.recoveryPageProxy.startRecovery()
 
     # Cancel signal emitted when cancel button clicked or assistant being 
     #  closed...

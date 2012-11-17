@@ -817,55 +817,23 @@ The landers were capable of capturing high resolution photographs and other data
       </row>
     </data>
   </object>
-  <object class="GtkWindow" id="recoveryWindow">
+  <object class="GtkBox" id="recoveryPageBox">
+    <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">VikingExtractor Status</property>
-    <property name="window_position">center</property>
-    <property name="default_width">1000</property>
-    <property name="default_height">200</property>
-    <property name="icon">Icon.png</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">20</property>
     <child>
-      <object class="GtkBox" id="box6">
+      <object class="GtkTable" id="recoveryPageTable">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="border_width">7</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">10</property>
-        <child>
-          <object class="GtkExpander" id="recoveryExpander">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Click the plus sign to see more details on the recovery process.</property>
-            <property name="expanded">True</property>
-            <property name="use_underline">True</property>
-            <child>
-              <object class="GtkScrolledWindow" id="recoveryScrolledWindow">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="shadow_type">in</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="label14">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Recovery details:</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="n_rows">2</property>
         <child>
           <object class="GtkBox" id="box8">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="valign">center</property>
             <property name="spacing">7</property>
             <child>
               <object class="GtkProgressBar" id="recoveryProgressBar">
@@ -881,7 +849,7 @@ The landers were capable of capturing high resolution photographs and other data
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="cancelRecoveryButton">
+              <object class="GtkButton" id="abortRecoveryButton">
                 <property name="label">gtk-cancel</property>
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
@@ -898,12 +866,19 @@ The landers were capable of capturing high resolution photographs and other data
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
           </packing>
         </child>
+        <child>
+          <placeholder/>
+        </child>
       </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
     </child>
   </object>
   <object class="GtkBox" id="selectRecoveryFolderPageBox">

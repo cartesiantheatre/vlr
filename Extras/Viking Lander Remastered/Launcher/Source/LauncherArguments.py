@@ -86,7 +86,7 @@ def _initializeArguments():
             "Avaneya: Viking Lander Remastered")
         messageDialog.format_secondary_text(
             "Unfortunately your platform is not yet supported. An appropriate " \
-            "executable was not detected:\n\n" \
+            "executable was not detected.\n\n" \
             "\tOperating System: {0}\n"
             "\tMachine Architecture: {1}".
                 format(_getOperatingSystem(), _getMachineArchitecture()))
