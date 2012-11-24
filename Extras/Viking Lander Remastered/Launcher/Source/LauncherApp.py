@@ -19,7 +19,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # System imports...
-from gi.repository import Gtk, Gdk, GObject
+from gi.repository import Gtk, Gdk, GObject, Vte
 
 # Arguments...
 import LauncherArguments
@@ -42,6 +42,9 @@ class LauncherApp():
 
     # Constructor...
     def __init__(self):
+
+        # Workaround for <https://bugzilla.gnome.org/show_bug.cgi?id=688767>
+        GObject.type_register(Vte.Terminal)
 
         # Initialize Glade builder...
         self.builder = Gtk.Builder()
@@ -73,7 +76,7 @@ class LauncherApp():
         self.assistant.connect("delete-event", self.onDeleteEvent)
         self.assistant.connect("cancel", self.onCancelEvent)
         self.assistant.connect("prepare", self.onPrepareEvent)
-
+        
     # End of current page. Next page is being constructed but not visible yet...
     def onPrepareEvent(self, assistant, currentPage):
 

@@ -20,7 +20,7 @@
 """LauncherArguments: Contains routines for parsing command line switches to the launcher"""
 
 # Imports...
-from gi.repository import Gtk, Gdk, GObject, GLib, Vte
+from gi.repository import Gtk, Gdk, GObject, GLib
 import argparse
 import os
 import platform
@@ -77,7 +77,8 @@ def _initializeArguments():
     if not os.path.isfile(extractorPath):
 
         # Show debugging info...
-        print("Warning: No executable detected... \"{0}\"".format(extractorPath))
+        print("Warning: No executable detected... \"{0}\"".
+            format(os.path.abspath(extractorPath)))
 
         # Alert user...
         messageDialog = Gtk.MessageDialog(
@@ -85,7 +86,7 @@ def _initializeArguments():
             Gtk.ButtonsType.OK, 
             "Avaneya: Viking Lander Remastered")
         messageDialog.format_secondary_text(
-            "Unfortunately your platform is not yet supported. An appropriate " \
+            "Unfortunately your platform is not yet supported. A required " \
             "executable was not detected.\n\n" \
             "\tOperating System: {0}\n"
             "\tMachine Architecture: {1}".

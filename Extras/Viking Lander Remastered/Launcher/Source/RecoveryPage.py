@@ -51,32 +51,16 @@ class RecoveryPageProxy():
         self._assistant.set_page_complete(self._recoveryPageBox, False)
 
         # Shortcuts to the page's widgets...
-        self._recoveryPageTable     = self._builder.get_object("recoveryPageTable")
+        self._terminal              = self._builder.get_object("recoveryTerminal")
         self._recoveryProgressBar   = self._builder.get_object("recoveryProgressBar")
         self._abortRecoveryButton   = self._builder.get_object("abortRecoveryButton")
-        
-        # Create the terminal widget...
-        self._terminal = Vte.Terminal()
-        self._terminal.set_cursor_blink_mode(Vte.TerminalCursorBlinkMode.ON)
-        #self._terminal.set_background_transparent(True)
-        #self._terminal.set_opacity(0.2)
-        self._terminal.set_cursor_shape(Vte.TerminalCursorShape.BLOCK)
-        self._terminal.set_emulation("xterm")
-        self._terminal.set_scroll_on_output(True)
-        self._terminal.set_scroll_on_keystroke(True)
-        self._terminal.set_color_foreground(Gdk.Color(red=1.0, green=0.0, blue=0.0))
-        self._terminal.set_scrollback_lines(5000)
-        self._terminal.set_encoding("UTF-8")
-
-        # Add the terminal widget to the top of the sizer...
-        self._recoveryPageTable.attach(self._terminal, 0, 1, 0, 1)
 
         # Connect the signals...
         self._abortRecoveryButton.connect("clicked", self.onAbortClicked)
         self._terminal.connect("child-exited", self.onChildProcessExit)
 
     # Start the recovery process...
-    def startRecovery(self):
+    def startRecovery(self, noProcessIDHack=False):
 
         # Get the path to the VikingExtractor binary...
         self._vikingExtractorBinaryPath = \
@@ -86,17 +70,34 @@ class RecoveryPageProxy():
         if not self._vikingExtractorBinaryPath:
             self._fatalLaunchError()
 
-        # Try to start the VikingExtractor process...
+        # Try to start the VikingExtractor process. First way is with child_pid
+        #  but some distros ship buggy version that doesn't provide it. Second
+        #  way is without it...
+        self._processID = 0
         try:
-            launchStatus = self._terminal.fork_command_full(
-                Vte.PtyFlags.DEFAULT,
-                None,
-                [self._vikingExtractorBinaryPath] +
-                    self._confirmPageProxy.getVikingExtractorArguments(),
-                [],
-                GLib.SpawnFlags.DO_NOT_REAP_CHILD, # This method automatically adds this flag anyways. Here for clarity...
-                None,
-                None)
+            if noProcessIDHack is False:
+                launchStatus = self._terminal.fork_command_full(
+                    Vte.PtyFlags.DEFAULT,
+                    None,
+                    [self._vikingExtractorBinaryPath] + self._confirmPageProxy.getVikingExtractorArguments(),
+                    [],
+                    GLib.SpawnFlags.DO_NOT_REAP_CHILD, # This method automatically adds this flag anyways. Here for clarity...
+                    child_pid=self._processID)
+            else:
+                launchStatus = self._terminal.fork_command_full(
+                    Vte.PtyFlags.DEFAULT,
+                    None,
+                    [self._vikingExtractorBinaryPath] + self._confirmPageProxy.getVikingExtractorArguments(),
+                    [],
+                    GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+                    None,
+                    None)
+
+        # Ugly ass hack...
+        #  https://bugzilla.gnome.org/show_bug.cgi?id=649004
+        except TypeError:
+            self.startRecovery(noProcessIDHack=True)
+            return
 
         # Failed to launch. VTE's documentation is not clear on the way to check
         #  for this...
@@ -104,6 +105,8 @@ class RecoveryPageProxy():
             self._fatalLaunchError()
         if launchStatus == False:
             self._fatalLaunchError()
+
+        print("Process ID: {0}...".format(self._processID))
 
         # Register our D-Bus signal handler callbacks...
         print("Waiting for VikingExtractor D-Bus service...")
@@ -180,8 +183,13 @@ class RecoveryPageProxy():
     # Abort recovery button clicked...
     def onAbortClicked(self, button, *junk):
 
-        # Stubbed...
-        pass
+        # If we have the process ID, kill it...
+        if self._processID:
+            os.kill(self._processID, 9)
+
+        # Otherwise, use this ugly non-portable hack...
+        else:
+            os.system("killall -9 viking-extractor")
 
     # VikingExtractor terminated...
     def onChildProcessExit(self, *junk):
@@ -197,9 +205,9 @@ class RecoveryPageProxy():
             messageDialog = Gtk.MessageDialog(
                 self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
                 Gtk.ButtonsType.OK, 
-                "The recovery process was unsuccessful.")
+                "Error")
             messageDialog.format_secondary_text(
-                "The VikingExtractor ran, but reported an error. ({0})"
+                "The recovery process was unsuccessful. ({0})"
                     .format(exitCode))
             messageDialog.run()
             messageDialog.destroy()

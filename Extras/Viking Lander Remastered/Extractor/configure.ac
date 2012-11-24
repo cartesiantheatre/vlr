@@ -263,7 +263,7 @@ AC_OUTPUT
 
 # Show a user summary of the configuration...
 echo \
-"-----------------------------------------
+"-----------------------------------------------------
 
 ${PACKAGE_NAME} ${PACKAGE_VERSION}
 
@@ -278,7 +278,8 @@ Now type 'make @<:@<target>@:>@' where the
 optional <target> is:
     all            ...builds all binaries
     check          ...run all diagnostics
+    dist           ...build a redistributable archive
     install        ...install everything
 
------------------------------------------"
+-----------------------------------------------------"
 
