@@ -166,6 +166,7 @@ int main(int ArgumentCount, char *Arguments[])
         option_long_no_reconstruct,
         option_long_overwrite,
         option_long_recursive,
+        option_long_remote_start,
         option_long_summarize_only,
         option_long_verbose,
         option_long_version
@@ -193,6 +194,7 @@ int main(int ArgumentCount, char *Arguments[])
         {"no-reconstruct",          no_argument,        NULL,   option_long_no_reconstruct},
         {"overwrite",               no_argument,        NULL,   option_long_overwrite},
         {"recursive",               no_argument,        NULL,   option_long_recursive},
+        {"remote-start",            no_argument,        NULL,   option_long_remote_start}, /* No need to document since only relevant to VLR */
         {"summarize-only",          no_argument,        NULL,   option_long_summarize_only},
         {"verbose",                 no_argument,        NULL,   option_long_verbose},
         {"version",                 no_argument,        NULL,   option_long_version},
@@ -319,6 +321,9 @@ int main(int ArgumentCount, char *Arguments[])
             // Recursive scan of subfolders if input is a directory...
             case 'r':
             case option_long_recursive: { Options::GetInstance().SetRecursive(); break; }
+
+            // Remote start. Recovery process pauses until DBus signal received...
+            case option_long_remote_start: { Options::GetInstance().SetRemoteStart(); break; }
 
             // Summarize only...
             case option_long_summarize_only: { Options::GetInstance().SetSummarizeOnly(); break; }

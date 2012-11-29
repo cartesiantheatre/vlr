@@ -62,14 +62,15 @@ class Options : public ExplicitSingleton<Options>
                          GetFilterDiodeBandSet() const { return m_FilterDiodeBandSet; }
         size_t          GetFilterLander() const { return m_FilterLander; }
         size_t          GetFilterSolarDay() const { return m_FilterSolarDay; }
+        bool            GetGenerateMetadata() const { return m_GenerateMetadata; }
         bool            GetIgnoreBadFiles() const { return m_IgnoreBadFiles; }
         bool            GetInterlace() const { return m_Interlace; }
-        size_t          GetJobs() const { return m_Jobs; }
         bool            GetNoReconstruct() const { return m_NoReconstruct; };
         bool            GetOverwrite() const { return m_Overwrite; }
         bool            GetRecursive() const { return m_Recursive; }
-        bool            GetGenerateMetadata() const { return m_GenerateMetadata; }
+        bool            GetRemoteStart() const { return m_GetRemoteStart; }
         bool            GetSummarizeOnly() const { return m_SummarizeOnly; }
+        size_t          GetJobs() const { return m_Jobs; }
 
         // Set options...
         void            SetAutoRotate(const bool AutoRotate = true) { m_AutoRotate = AutoRotate; }
@@ -88,6 +89,7 @@ class Options : public ExplicitSingleton<Options>
         void            SetNoReconstruct(const bool NoReconstruct = true) { m_NoReconstruct = NoReconstruct; }
         void            SetOverwrite(const bool Overwrite = true) { m_Overwrite = Overwrite; }
         void            SetRecursive(const bool Recursive = true) { m_Recursive = Recursive; }
+        void            SetRemoteStart(const bool RemoteStart = true) { m_RemoteStart = RemoteStart; }
         void            SetGenerateMetadata(const bool GenerateMetadata = true) { m_GenerateMetadata = GenerateMetadata; }
         void            SetSummarizeOnly(const bool SummarizeOnly = true) { m_SummarizeOnly = SummarizeOnly; }
 
@@ -155,6 +157,9 @@ class Options : public ExplicitSingleton<Options>
 
         // Recursively scan subdirectories if the input is a directory...
         bool                m_Recursive;
+        
+        // True if recovery process is remote initiated by a DBus signal...
+        bool                m_RemoteStart;
         
         // Generate metadata...
         bool                m_GenerateMetadata;

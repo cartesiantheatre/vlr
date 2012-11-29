@@ -37,10 +37,11 @@ class RecoveryPageProxy():
     def __init__(self, launcherApp):
         
         # Initialize...
-        self._launcherApp       = launcherApp
-        self._assistant         = launcherApp.assistant
-        self._builder           = launcherApp.builder
-        self._confirmPageProxy  = launcherApp.confirmPageProxy
+        self._launcherApp           = launcherApp
+        self._assistant             = launcherApp.assistant
+        self._builder               = launcherApp.builder
+        self._confirmPageProxy      = launcherApp.confirmPageProxy
+        self._recoveryProgressText  = ""
 
         # Add recovery page to assistant...
         self._recoveryPageBox = self._builder.get_object("recoveryPageBox")
@@ -183,6 +184,19 @@ class RecoveryPageProxy():
     # Abort recovery button clicked...
     def onAbortClicked(self, button, *junk):
 
+        # Prompt the user for if they'd really like to quit...
+        messageDialog = Gtk.MessageDialog(
+            self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.QUESTION, 
+            Gtk.ButtonsType.YES_NO, 
+            "Are you sure you'd like to abort the recovery?")
+        messageDialog.set_default_response(Gtk.ResponseType.NO)
+        userResponse = messageDialog.run()
+        messageDialog.destroy()
+        
+        # User requested not to abort, cancel...
+        if userResponse != Gtk.ResponseType.YES:
+            return
+
         # If we have the process ID, kill it...
         if self._processID:
             os.kill(self._processID, 9)
@@ -223,9 +237,24 @@ class RecoveryPageProxy():
 
     # VikingExtractor is trying to tell us something in a human readable string...
     def onVikingExtractorNotificationDBusSignal(self, notification):
-        self._recoveryProgressBar.set_text(notification)
+        
+        # Store the human readable extractor state string...
+        self._recoveryProgressText = notification
+        
+        # Get the current progress...
+        currentProgress = self._recoveryProgressBar.get_fraction()
+        
+        # Format and set the progress bar caption based on the aforementioned...
+        self._recoveryProgressBar.set_text("{0} ({1:.0f}%)".
+            format(notification, currentProgress / 100.0))
 
     # VikingExtractor is telling us it has completed some work...
-    def onVikingExtractorProgressDBusSignal(self, fraction):
-        self._recoveryProgressBar.set_fraction(fraction / 100.0)
+    def onVikingExtractorProgressDBusSignal(self, currentProgress):
+    
+        # Format and set the progress bar caption...
+        self._recoveryProgressBar.set_text("{0} ({1:.0f}%)".
+            format(self._recoveryProgressText, currentProgress))
+        
+        # Move the progress bar's fraction...
+        self._recoveryProgressBar.set_fraction(currentProgress / 100.0)
 

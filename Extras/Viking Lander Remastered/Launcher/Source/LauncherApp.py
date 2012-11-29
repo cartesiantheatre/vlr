@@ -71,11 +71,18 @@ class LauncherApp():
         self.assistant.set_forward_page_func(self.forwardPage, None)
 
         # Connect the assistant's signals...
-        self.assistant.connect("close", self.onCloseEvent)
         self.assistant.connect("apply", self.onApplyEvent)
-        self.assistant.connect("delete-event", self.onDeleteEvent)
         self.assistant.connect("cancel", self.onCancelEvent)
+        self.assistant.connect("close", self.onCloseEvent)
+        self.assistant.connect("delete-event", self.onDeleteEvent)
         self.assistant.connect("prepare", self.onPrepareEvent)
+        
+        # For wider screens, adjust the window size to 2/3rds the width...
+        screen = Gdk.Screen.get_default()
+        (screenWidth, screenHeight) = (screen.get_width(), screen.get_height())
+        (windowWidth, windowHeight) = self.assistant.get_size()
+        if screenWidth > 1024:
+            self.assistant.resize(screenWidth * 2 / 3, screenHeight * 2 / 3)
         
     # End of current page. Next page is being constructed but not visible yet...
     def onPrepareEvent(self, assistant, currentPage):

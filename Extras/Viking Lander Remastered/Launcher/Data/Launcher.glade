@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires vte 0.0 -->
   <!-- interface-requires gtk+ 3.0 -->
+  <!-- interface-requires vte 0.0 -->
   <object class="GtkAssistant" id="assistantWindow">
     <property name="can_focus">False</property>
     <property name="border_width">20</property>
@@ -570,7 +570,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
       <object class="GtkLabel" id="label13">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">The following is a summary of the configuration &lt;b&gt;VikingExtractor&lt;/b&gt; will use for this session. If you would like to change anything, you can click to &lt;i&gt;Go Back&lt;/i&gt;. Otherwise the recovery effort will begin as soon as you hit &lt;i&gt;Apply&lt;/i&gt;.</property>
+        <property name="label" translatable="yes">The following is a summary of the configuration &lt;b&gt;VikingExtractor&lt;/b&gt; will use for this session. If you would like to change anything, you can go back. Otherwise the recovery effort will begin as soon as you hit &lt;i&gt;Apply&lt;/i&gt;.</property>
         <property name="use_markup">True</property>
         <property name="wrap">True</property>
       </object>
@@ -581,28 +581,48 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
       </packing>
     </child>
     <child>
-      <object class="GtkScrolledWindow" id="scrolledwindow2">
+      <object class="GtkFrame" id="frame5">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="hexpand">True</property>
-        <property name="vexpand">True</property>
+        <property name="can_focus">False</property>
+        <property name="label_xalign">0</property>
         <property name="shadow_type">in</property>
         <child>
-          <object class="GtkTextView" id="confirmTextView">
+          <object class="GtkScrolledWindow" id="scrolledwindow2">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="margin_left">5</property>
+            <property name="margin_right">5</property>
+            <property name="margin_top">2</property>
+            <property name="margin_bottom">2</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="editable">False</property>
-            <property name="left_margin">7</property>
-            <property name="right_margin">7</property>
-            <property name="cursor_visible">False</property>
-            <property name="buffer">confirmTextBuffer</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkTextView" id="confirmTextView">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="editable">False</property>
+                <property name="left_margin">7</property>
+                <property name="right_margin">7</property>
+                <property name="cursor_visible">False</property>
+                <property name="buffer">confirmTextBuffer</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLabel" id="label15">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">&lt;b&gt;Selected Configuration:&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
           </object>
         </child>
       </object>
       <packing>
-        <property name="expand">False</property>
+        <property name="expand">True</property>
         <property name="fill">True</property>
         <property name="position">2</property>
       </packing>
@@ -748,46 +768,80 @@ The landers were capable of capturing high resolution photographs and other data
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkImage" id="image2">
+          <object class="GtkFrame" id="frame6">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="pixbuf">CartesianTheatre.png</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="padding">20</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkScrolledWindow" id="scrolledwindow1">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="margin_left">5</property>
-            <property name="margin_right">5</property>
-            <property name="margin_top">5</property>
-            <property name="margin_bottom">5</property>
-            <property name="shadow_type">etched-in</property>
-            <property name="min_content_width">0</property>
-            <property name="min_content_height">0</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">in</property>
             <child>
-              <object class="GtkTextView" id="introductionTextView">
+              <object class="GtkImage" id="image2">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
-                <property name="editable">False</property>
-                <property name="wrap_mode">word</property>
-                <property name="left_margin">7</property>
-                <property name="right_margin">7</property>
-                <property name="cursor_visible">False</property>
-                <property name="buffer">introductionTextBuffer</property>
+                <property name="can_focus">False</property>
+                <property name="xpad">5</property>
+                <property name="ypad">5</property>
+                <property name="pixbuf">CartesianTheatre.png</property>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label16">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_markup">True</property>
               </object>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkScrolledWindow" id="scrolledwindow1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="margin_left">5</property>
+                <property name="margin_right">5</property>
+                <property name="margin_top">5</property>
+                <property name="margin_bottom">5</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="shadow_type">etched-in</property>
+                <property name="min_content_width">0</property>
+                <property name="min_content_height">0</property>
+                <child>
+                  <object class="GtkTextView" id="introductionTextView">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="editable">False</property>
+                    <property name="wrap_mode">word</property>
+                    <property name="left_margin">7</property>
+                    <property name="right_margin">7</property>
+                    <property name="cursor_visible">False</property>
+                    <property name="buffer">introductionTextBuffer</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label14">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">&lt;b&gt;Introduction:&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
@@ -844,22 +898,55 @@ The landers were capable of capturing high resolution photographs and other data
       </packing>
     </child>
     <child>
-      <object class="VteTerminal" id="recoveryTerminal">
+      <object class="GtkFrame" id="frame3">
         <property name="visible">True</property>
-        <property name="app_paintable">True</property>
-        <property name="can_focus">True</property>
-        <property name="hscroll_policy">natural</property>
-        <property name="vscroll_policy">natural</property>
-        <property name="background_image_pixbuf">Background.png</property>
-        <property name="background_saturation">1</property>
-        <property name="background_tint_color">#00000fa0ffff</property>
-        <property name="cursor_blink_mode">on</property>
-        <property name="encoding">UTF-8</property>
-        <property name="scrollback_lines">5000</property>
-        <property name="scroll_on_keystroke">True</property>
+        <property name="can_focus">False</property>
+        <property name="label_xalign">0</property>
+        <property name="shadow_type">in</property>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow3">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="VteTerminal" id="recoveryTerminal">
+                <property name="visible">True</property>
+                <property name="app_paintable">True</property>
+                <property name="can_focus">True</property>
+                <property name="tooltip_text" translatable="yes">This window contains the output from the VikingExtractor process while it works. Don't be alarmed if you see many warnings. This is normal because some of the Viking lander data is not actual data or is too corrupt to be recovered.</property>
+                <property name="margin_left">5</property>
+                <property name="margin_right">5</property>
+                <property name="margin_top">5</property>
+                <property name="margin_bottom">5</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="hscroll_policy">natural</property>
+                <property name="vscroll_policy">natural</property>
+                <property name="background_image_pixbuf">Background.png</property>
+                <property name="background_saturation">1</property>
+                <property name="background_tint_color">#00000fa0ffff</property>
+                <property name="cursor_blink_mode">on</property>
+                <property name="encoding">UTF-8</property>
+                <property name="pointer_autohide">True</property>
+                <property name="scrollback_lines">5000</property>
+                <property name="scroll_on_keystroke">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLabel" id="label3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">&lt;b&gt;Recovery Log:&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+        </child>
       </object>
       <packing>
-        <property name="expand">False</property>
+        <property name="expand">True</property>
         <property name="fill">True</property>
         <property name="position">1</property>
       </packing>

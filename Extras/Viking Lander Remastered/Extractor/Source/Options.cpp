@@ -52,6 +52,7 @@ Options::Options()
         m_NoReconstruct(false),
         m_Overwrite(false),
         m_Recursive(false),
+        m_RemoteStart(false),
         m_GenerateMetadata(false),
         m_SummarizeOnly(false)
 {
