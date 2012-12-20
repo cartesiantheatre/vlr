@@ -52,7 +52,9 @@ Options::Options()
         m_NoReconstruct(false),
         m_Overwrite(false),
         m_Recursive(false),
+#ifdef USE_DBUS_INTERFACE
         m_RemoteStart(false),
+#endif
         m_GenerateMetadata(false),
         m_SummarizeOnly(false)
 {

@@ -166,7 +166,9 @@ int main(int ArgumentCount, char *Arguments[])
         option_long_no_reconstruct,
         option_long_overwrite,
         option_long_recursive,
+#ifdef USE_DBUS_INTERFACE
         option_long_remote_start,
+#endif
         option_long_summarize_only,
         option_long_verbose,
         option_long_version
@@ -194,7 +196,9 @@ int main(int ArgumentCount, char *Arguments[])
         {"no-reconstruct",          no_argument,        NULL,   option_long_no_reconstruct},
         {"overwrite",               no_argument,        NULL,   option_long_overwrite},
         {"recursive",               no_argument,        NULL,   option_long_recursive},
+#ifdef USE_DBUS_INTERFACE
         {"remote-start",            no_argument,        NULL,   option_long_remote_start}, /* No need to document since only relevant to VLR */
+#endif
         {"summarize-only",          no_argument,        NULL,   option_long_summarize_only},
         {"verbose",                 no_argument,        NULL,   option_long_verbose},
         {"version",                 no_argument,        NULL,   option_long_version},
@@ -322,8 +326,10 @@ int main(int ArgumentCount, char *Arguments[])
             case 'r':
             case option_long_recursive: { Options::GetInstance().SetRecursive(); break; }
 
+#ifdef USE_DBUS_INTERFACE
             // Remote start. Recovery process pauses until DBus signal received...
             case option_long_remote_start: { Options::GetInstance().SetRemoteStart(); break; }
+#endif
 
             // Summarize only...
             case option_long_summarize_only: { Options::GetInstance().SetSummarizeOnly(); break; }

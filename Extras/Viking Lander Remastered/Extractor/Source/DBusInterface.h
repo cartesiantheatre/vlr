@@ -43,11 +43,11 @@
     #include <string>
 
 /*
-    Notes: To monitor the session bus for any of the aforementioned signals...
+    To monitor the session bus for any of the aforementioned signals...
+        $ dbus-monitor "type='signal',sender='com.cartesiantheatre.VikingExtractorService',interface='com.cartesiantheatre.VikingExtractorInterface'"
 
-        $ dbus-monitor "type='signal',sender='com.cartesiantheatre.\
-            VikingExtractorService',interface='com.cartesiantheatre.\
-            VikingExtractorInterface'"
+    To send a Ready signal manually...
+        $ dbus-send --print-reply --type=signal --session --dest=com.cartesiantheatre.VikingExtractorService /com/cartesiantheatre/VikingExtractorObject com.cartesiantheatre.VikingExtractorService.Ready
 */
 
 // DBus interface singleton class...
@@ -60,11 +60,16 @@ class DBusInterface : public ExplicitSingleton<DBusInterface>
     // Public methods...
     public:
 
-        // Emit notification signal with string available to be displayed through GUI...
+        // Emit notification signal with string available to be displayed 
+        //  through GUI or throw an error...
         void EmitNotificationSignal(const std::string &Message);
 
-        // Emit progress signal with progress clamped to [0.0, 100.0]...
+        // Emit progress signal with progress clamped to [0.0, 100.0] or throw 
+        //  an error...
         void EmitProgressSignal(const double Progress);
+        
+        // Wait for a D-Bus signal before unblocking or throw an error...
+        void WaitRemoteStart();
 
     // Private methods...
     private:
@@ -74,6 +79,12 @@ class DBusInterface : public ExplicitSingleton<DBusInterface>
 
         // Deconstructor...
        ~DBusInterface();
+
+    // Protected methods...
+    protected:
+
+        // Register on the session bus...
+        void RegisterOnSessionBus();
 
     // Protected constants...
     protected:
@@ -89,12 +100,19 @@ class DBusInterface : public ExplicitSingleton<DBusInterface>
 
         // Signals we emit...
 
-            // Notification signal with string available to be displayed through GUI...
+            // We emit this with string parameter when some new information to 
+            //  be displayed through GUI during long operations
             const std::string   m_NotificationSignal;
 
-            // Some progress to report...
+            // We emit this when we have some progress to report...
             const std::string   m_ProgressSignal;
-            
+
+            // We receive this signal when the assembler is ready to start. This
+            //  provides a mechanism to ensure the GUI doesn't try to wait for 
+            //  GUI extractor signals before the extractor has even registered
+            //  itself on the session bus...
+            const std::string   m_ReadySignal;
+
     // Protected data...
     protected:
 

@@ -57,7 +57,7 @@ class LauncherApp():
         self.splashWindowProxy = SplashWindowProxy(self)
         self.splashWindowProxy.showSplash()
 
-        # Construct pages and register them with the assistant in order...
+        # Construct pages and register them with the assistant in correct order...
         self.introductionPagesProxy = IntroductionPagesProxy(self)
         self.verificationPagesProxy = VerificationPagesProxy(self)
         self.handbookPageProxy = HandbookPageProxy(self)

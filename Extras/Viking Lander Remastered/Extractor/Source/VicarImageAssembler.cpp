@@ -188,6 +188,13 @@ void VicarImageAssembler::Reconstruct()
     // Try to index the file or directory...
     try
     {
+#ifdef USE_DBUS_INTERFACE
+        // If remote start was enabled, block until D-Bus Ready signal received 
+        //  or throws an exception...
+        if(Options::GetInstance().GetRemoteStart())
+            DBusInterface::GetInstance().WaitRemoteStart();
+#endif
+
         // Alert user...
         Message(Console::Summary) << "preparing catalogue, please wait..." << endl;
         

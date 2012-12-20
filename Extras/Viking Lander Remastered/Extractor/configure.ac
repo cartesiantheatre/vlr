@@ -113,12 +113,12 @@ AC_LANG([C++])
     PKG_PROG_PKG_CONFIG([0.25])
 
     # Standard C++ library headers...
-    AC_CHECK_HEADERS([cassert cstdlib algorithm errno.h ostream map set vector iomanip limits sstream], [],
+    AC_CHECK_HEADERS([algorithm cassert cstdlib errno.h iomanip limits map ostream set sstream vector], [],
         [AC_MSG_ERROR([missing some required standard C++ headers...])])
     
     # POSIX headers...
     AC_LANG_PUSH([C])
-    AC_CHECK_HEADERS([sys/stat.h dirent.h fnmatch.h getopt.h unistd.h], [],
+    AC_CHECK_HEADERS([dirent.h fnmatch.h getopt.h sys/stat.h unistd.h], [],
         [AC_MSG_ERROR([missing a required POSIX header...])])
     AC_LANG_POP([C])
 
