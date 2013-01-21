@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # VikingExtractor, to recover images from Viking Lander operations.
-# Copyright (C) 2010, 2011, 2012 Cartesian Theatre <kip@thevertigo.com>.
+# Copyright (C) 2010-2013 Cartesian Theatre <kip@thevertigo.com>.
 #
 # Public discussion on IRC available at #avaneya (irc.freenode.net) or
 # on the mailing list <avaneya@lists.avaneya.com>.
@@ -205,7 +205,7 @@ LowerCase()
 PrintBanner()
 {
     echo -e "${VT100_BOLD}${VT100_COLOUR_BLUE}${Title}, ${Version}${VT100_RESET}\n"
-    echo -e "  Copyright (C) 2010, 2011, 2012 Cartesian Theatre. This is free"
+    echo -e "  Copyright (C) 2010-2013 Cartesian Theatre. This is free"
     echo -e "  software; see Copying for copying conditions. There is NO"
     echo -e "  warranty; not even for MERCHANTABILITY or FITNESS FOR A"
     echo -e "  PARTICULAR PURPOSE.\n"
