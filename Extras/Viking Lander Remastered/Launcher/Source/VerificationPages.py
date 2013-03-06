@@ -215,10 +215,22 @@ class VerificationThread(threading.Thread):
         # Reset the files list...
         self._files = []
 
-        # Open the checksum manifest file...
-        manifestFile = open(
-            os.path.join(LauncherArguments.getArguments().missionDataRoot, 
-            "Checksums"))
+        # Create path to file manifest...
+        manifestPath = os.path.join(LauncherArguments.getArguments().missionDataRoot, "Checksums")
+
+        # Try to open the checksum manifest file...
+        try:
+            manifestFile = open(manifestPath)
+
+        # Or check for failure...
+        except IOError as Error:
+
+            # Alert the user...
+            self._setQuitWithError(
+                "I could not locate the list of files to verify:\n\n{0}\n\n{1}".
+                    format(manifestPath, Error.strerror))
+            # Terminate...
+            self.quit()
 
         # Parse each line...
         for line in manifestFile:

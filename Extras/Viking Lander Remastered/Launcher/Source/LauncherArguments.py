@@ -93,6 +93,9 @@ def _initializeArguments():
                 format(_getOperatingSystem(), _getMachineArchitecture()))
         messageDialog.run()
         messageDialog.destroy()
+        
+        # Terminate...
+        exit(1)
 
 # Return the arguments object to the caller...
 def getArguments():
