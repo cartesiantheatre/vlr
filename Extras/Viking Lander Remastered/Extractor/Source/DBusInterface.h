@@ -37,7 +37,7 @@
     #include "ExplicitSingleton.h"
 
     // D-Bus...
-    #include <dbus/dbus.h>
+    #include <gio/gio.h>
 
     // System headers...
     #include <string>
@@ -46,11 +46,19 @@
     To monitor the session bus for any of the aforementioned signals...
         $ dbus-monitor "type='signal',sender='com.cartesiantheatre.VikingExtractorService',interface='com.cartesiantheatre.VikingExtractorInterface'"
 
-    To send a Ready signal manually...
-        $ dbus-send --print-reply --type=signal --session --dest=com.cartesiantheatre.VikingExtractorService /com/cartesiantheatre/VikingExtractorObject com.cartesiantheatre.VikingExtractorService.Ready
+    To invoke the Start method manually...
+        $ gdbus call --session --dest com.cartesiantheatre.VikingExtractorService --object-path /com/cartesiantheatre/VikingExtractorObject --method com.cartesiantheatre.VikingExtractorInterface.Start
 */
 
-// DBus interface singleton class...
+// D-Bus name, object path, interface, signal, and method constants...
+#define VIKING_EXTRACTOR_DBUS_BUS_NAME               "com.cartesiantheatre.VikingExtractorService"
+#define VIKING_EXTRACTOR_DBUS_OBJECT_PATH            "/com/cartesiantheatre/VikingExtractorObject"
+#define VIKING_EXTRACTOR_DBUS_INTERFACE              "com.cartesiantheatre.VikingExtractorInterface"
+#define VIKING_EXTRACTOR_DBUS_SIGNAL_NOTIFICATION    "Notification"
+#define VIKING_EXTRACTOR_DBUS_SIGNAL_PROGRESS        "Progress"
+#define VIKING_EXTRACTOR_DBUS_METHOD_START           "Start"
+
+// D-Bus interface singleton class...
 class DBusInterface : public ExplicitSingleton<DBusInterface>
 {
     // Because we are a singleton, only ExplicitSingleton can control our 
@@ -85,6 +93,29 @@ class DBusInterface : public ExplicitSingleton<DBusInterface>
 
         // Register on the session bus...
         void RegisterOnSessionBus();
+        
+        // D-Bus interface method callback...
+        static void MethodCallback(
+            GDBusConnection *Connection,
+            const gchar *Sender,
+            const gchar *ObjectPath,
+            const gchar *InterfaceName,
+            const gchar *MethodName,
+            GVariant *Parameters,
+            GDBusMethodInvocation *Invocation,
+            gpointer UserData);
+
+        // Connection to the session message bus has been obtained...
+        static void OnBusAcquired(
+            GDBusConnection *Connection, const gchar *Name, gpointer UserData);
+
+        // Name on the session bus has been obtained...
+        static void OnNameAcquired(
+            GDBusConnection *Connection, const gchar *Name, gpointer UserData);
+
+        // The name on the bus or the connection itself has been lost...
+        static void OnNameLost(
+            GDBusConnection *Connection, const gchar *Name, gpointer UserData);
 
     // Protected constants...
     protected:
@@ -107,20 +138,33 @@ class DBusInterface : public ExplicitSingleton<DBusInterface>
             // We emit this when we have some progress to report...
             const std::string   m_ProgressSignal;
 
-            // We receive this signal when the assembler is ready to start. This
-            //  provides a mechanism to ensure the GUI doesn't try to wait for 
-            //  GUI extractor signals before the extractor has even registered
-            //  itself on the session bus...
-            const std::string   m_ReadySignal;
+        // Introspection XML specification...
+        static const gchar ms_IntrospectionXML[];
+        
+        // Introspection virtual table...
+        static const GDBusInterfaceVTable ms_InterfaceVirtualTable;
 
     // Protected data...
     protected:
 
+        // GLib main event loop needed for gdbus events...
+        GMainLoop          *m_MainLoop;
+
+        // When flag set, remote start successfully initiated...
+        bool                m_RemoteStart;
+
+        // Introspection data...
+        GDBusNodeInfo      *m_IntrospectionData;
+
         // Connection to the bus...
-        DBusConnection *m_Connection;
+        GDBusConnection    *m_Connection;
+        guint               m_BusID;
+        
+        // Registration ID...
+        guint               m_RegistrationID;
         
         // Any D-Bus related error message...
-        DBusError       m_Error;
+        GError             *m_Error;
 };
 
 // Multiple include protection...

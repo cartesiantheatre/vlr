@@ -108,7 +108,7 @@ RecoveryChecksums.md5: Makefile.am
 # Rule to test a sample viking-extractor recovery against one known to have been 
 #  successful...
 RecoveryTest.sh: RecoveryChecksums.md5 Makefile.am
-	@echo './viking-extractor --recursive --no-ansi-colours --overwrite --generate-metadata $(top_srcdir)/Tests/Recovery/ Tests/Recovery/' > $@
+	@echo './viking-extractor --remote-start --recursive --no-ansi-colours --overwrite --generate-metadata $(top_srcdir)/Tests/Recovery/ Tests/Recovery/' > $@
 	@echo '$(MD5SUM) --warn --check $<' >> $@
 	@chmod +x $@
 

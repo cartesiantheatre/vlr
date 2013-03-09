@@ -36,18 +36,48 @@
 // Using the standard namespace...
 using namespace std;
 
+// Initialize static constant members...
+
+    // Introspection XML specification...
+    const gchar DBusInterface::ms_IntrospectionXML[] =
+        "<node name='" VIKING_EXTRACTOR_DBUS_OBJECT_PATH "'>"
+        "    <interface name='" VIKING_EXTRACTOR_DBUS_INTERFACE "'>"
+        "        <method name='" VIKING_EXTRACTOR_DBUS_METHOD_START "'></method>"
+        "        <signal name='" VIKING_EXTRACTOR_DBUS_SIGNAL_PROGRESS "'>"
+        "            <arg name='Fraction' type='d'></arg>"
+        "        </signal>"
+        "        <signal name='" VIKING_EXTRACTOR_DBUS_SIGNAL_NOTIFICATION "'>"
+        "            <arg name='Message' type='s'></arg>"
+        "        </signal>"
+        "    </interface>"
+        "</node>";
+
+    // Introspection virtual table...
+    const GDBusInterfaceVTable DBusInterface::ms_InterfaceVirtualTable =
+    {
+        DBusInterface::MethodCallback,
+        NULL,
+        NULL,
+        {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL}
+    };
+
 // Default constructor...
 DBusInterface::DBusInterface()
-  : m_BusName("com.cartesiantheatre.VikingExtractorService"),
-    m_ObjectPath("/com/cartesiantheatre/VikingExtractorObject"),
-    m_Interface("com.cartesiantheatre.VikingExtractorInterface"),
-    m_NotificationSignal("Notification"),
-    m_ProgressSignal("Progress"),
-    m_ReadySignal("Ready"),
-    m_Connection(NULL)
+  : m_BusName(VIKING_EXTRACTOR_DBUS_BUS_NAME),
+    m_ObjectPath(VIKING_EXTRACTOR_DBUS_OBJECT_PATH),
+    m_Interface(VIKING_EXTRACTOR_DBUS_INTERFACE),
+    m_NotificationSignal(VIKING_EXTRACTOR_DBUS_SIGNAL_NOTIFICATION),
+    m_ProgressSignal(VIKING_EXTRACTOR_DBUS_SIGNAL_PROGRESS),
+    m_MainLoop(NULL),
+    m_RemoteStart(false),
+    m_IntrospectionData(NULL),
+    m_Connection(NULL),
+    m_BusID(0),
+    m_RegistrationID(0),
+    m_Error(NULL)
 {
-    // Clear the bus error variable...
-    dbus_error_init(&m_Error);
+    // Initialize type system...
+    g_type_init();
 
     // Register on the session bus...
     RegisterOnSessionBus();
@@ -58,103 +88,145 @@ DBusInterface::DBusInterface()
 void DBusInterface::EmitNotificationSignal(const string &Notification)
 {
     // Sanity check...
-    assert(dbus_connection_get_is_connected(m_Connection));
+    assert(!g_dbus_connection_is_closed(m_Connection));
 
-    // Allocate signal...
-    DBusMessage *Signal = dbus_message_new_signal(
-        m_ObjectPath.c_str(), m_Interface.c_str(), m_NotificationSignal.c_str());
+    // Prepare signal parameters...
+    GVariant *SignalParameters = g_variant_new("(s)", Notification.c_str());
+
+    // Emit the signal...
+    const bool Result = g_dbus_connection_emit_signal(m_Connection, 
+        m_BusName.c_str(), m_ObjectPath.c_str(), m_Interface.c_str(), 
+        m_NotificationSignal.c_str(), SignalParameters, &m_Error);
 
         // Failed...
-        if(dbus_error_is_set(&m_Error))
+        if(!Result)
         {
             // Alert user and terminate...
             Message(Console::Error) 
-                << "d-bus: could not register service with session bus... ("
-                << m_Error.message << ")" << endl;
+                << "d-bus: could not emit 'Notification' signal... (" 
+                << m_Error->message << ")" << endl;
 
             // Cleanup and terminate...
-            dbus_error_free(&m_Error);
+            g_clear_error(&m_Error);
             exit(EXIT_FAILURE);
         }
-
-    // Prepare arguments...
-    const char *NotificationArgument = Notification.c_str();
-    dbus_message_append_args(Signal, 
-        DBUS_TYPE_STRING, &NotificationArgument,
-        DBUS_TYPE_INVALID);
-
-    // Signal does not require a reply...
-    dbus_message_set_no_reply(Signal, true);
-
-    // Emit the signal and flush the message queue...
-    dbus_connection_send(m_Connection, Signal, NULL);
-    dbus_connection_flush(m_Connection);
-
-        // There was a problem...
-        if(dbus_error_is_set(&m_Error))
-        {
-            // Alert user and terminate...
-            Message(Console::Error)
-                << "d-bus: could not emit message signal... (" 
-                << m_Error.message << ")" << endl;
-
-            // Cleanup...
-            dbus_error_free(&m_Error);
-        }
-
-    // Dereference the signal message so D-Bus can free it...
-    dbus_message_unref(Signal);
 }
 
 // Emit progress signal with progress clamped to [0.0, 100.0] or throw an error...
 void DBusInterface::EmitProgressSignal(const double Progress)
 {
     // Sanity check...
-    assert(dbus_connection_get_is_connected(m_Connection));
+    assert(!g_dbus_connection_is_closed(m_Connection));
 
-    // Allocate signal...
-    DBusMessage *Signal = dbus_message_new_signal(
-        m_ObjectPath.c_str(), m_Interface.c_str(), m_ProgressSignal.c_str());
+    // Prepare signal parameters...
+    GVariant *SignalParameters = g_variant_new("(d)", Progress);
+
+    // Emit the signal...
+    const bool Result = g_dbus_connection_emit_signal(m_Connection, 
+        m_BusName.c_str(), m_ObjectPath.c_str(), m_Interface.c_str(), 
+        m_NotificationSignal.c_str(), SignalParameters, &m_Error);
 
         // Failed...
-        if(dbus_error_is_set(&m_Error))
+        if(!Result)
+        {
+            // Alert user and terminate...
+            Message(Console::Error) 
+                << "d-bus: could not emit 'Progress' signal... (" 
+                << m_Error->message << ")" << endl;
+
+            // Cleanup and terminate...
+            g_clear_error(&m_Error);
+            exit(EXIT_FAILURE);
+        }
+}
+
+// D-Bus interface method callback...
+void DBusInterface::MethodCallback(
+    GDBusConnection *,          /* Connection */
+    const gchar *,              /* Sender */
+    const gchar *,              /* ObjectPath */
+    const gchar *,              /* InterfaceName */
+    const gchar *MethodName,
+    GVariant *,                 /* Parameters */
+    GDBusMethodInvocation *,    /* Invocation */
+    gpointer UserData)
+{
+    // Retrieve this pointer from user data...
+    DBusInterface &Context(*static_cast<DBusInterface *>(UserData));
+    
+    // Start method...
+    if(g_strcmp0(MethodName, VIKING_EXTRACTOR_DBUS_METHOD_START) == 0)
+    {
+        /* TODO: 
+            I'm guessing server probably has to issue some kind of ACK to 
+            client. */
+
+        // Inform WaitRemoteStart() that it can stop blocking now...
+        Context.m_RemoteStart = true;
+        
+        // GLib's main loop no longer needs to continue checking for events...
+        g_main_loop_quit(Context.m_MainLoop);
+    }
+    else
+        assert(false);
+}
+
+// Connection to the session message bus has been obtained...
+void DBusInterface::OnBusAcquired(
+    GDBusConnection *,  /* Connection */
+    const gchar *,      /* Name */
+    gpointer UserData)
+{
+    // Retrieve this pointer from user data...
+    DBusInterface &Context(*static_cast<DBusInterface *>(UserData));
+
+    // Register our interfaces on the session bus...
+    Context.m_RegistrationID = g_dbus_connection_register_object(
+        Context.m_Connection, 
+        Context.m_ObjectPath.c_str(), 
+        Context.m_IntrospectionData->interfaces[0], 
+        &ms_InterfaceVirtualTable,
+        static_cast<gpointer>(&Context),
+        NULL, 
+        &Context.m_Error);
+
+        // Failed...
+        if(!Context.m_RegistrationID)
         {
             // Alert user and terminate...
             Message(Console::Error) 
                 << "d-bus: could not register service with session bus... (" 
-                << m_Error.message << ")" << endl;
+                << Context.m_Error->message << ")" << endl;
 
             // Cleanup and terminate...
-            dbus_error_free(&m_Error);
+            g_object_unref(Context.m_Connection);
+            g_clear_error(&Context.m_Error);
             exit(EXIT_FAILURE);
         }
+}
 
-    // Prepare arguments...
-    dbus_message_append_args(Signal, 
-        DBUS_TYPE_DOUBLE, &Progress,
-        DBUS_TYPE_INVALID);
+// Name on the session bus has been obtained...
+void DBusInterface::OnNameAcquired(
+    GDBusConnection *,  /* Connection */
+    const gchar *,      /* Name */
+    gpointer)           /* UserData */
+{
 
-    // Signal does not require a reply...
-    dbus_message_set_no_reply(Signal, true);
+}
 
-    // Emit the signal and flush the message queue...
-    dbus_connection_send(m_Connection, Signal, NULL);
-    dbus_connection_flush(m_Connection);
+// The name on the bus or the connection itself has been lost...
+void DBusInterface::OnNameLost(
+    GDBusConnection *,  /* Connection */
+    const gchar *,      /* Name */
+    gpointer UserData)
+{
+    // Retrieve this pointer from user data...
+    DBusInterface &Context(*static_cast<DBusInterface *>(UserData));
 
-        // There was a problem...
-        if(dbus_error_is_set(&m_Error))
-        {
-            // Alert user and terminate...
-            Message(Console::Error)
-                << "d-bus: could not emit initialized signal... (" 
-                << m_Error.message << ")" << endl;
-
-            // Cleanup...
-            dbus_error_free(&m_Error);
-        }
-
-    // Dereference the signal message so D-Bus can free it...
-    dbus_message_unref(Signal);
+    // Unregister our interface, if registered...
+    if(Context.m_RegistrationID)
+        g_dbus_connection_unregister_object(
+            Context.m_Connection, Context.m_RegistrationID);
 }
 
 // Register on the session bus...
@@ -163,11 +235,26 @@ void DBusInterface::RegisterOnSessionBus()
     // Alert user...
     Message(Console::Info) << "d-bus: registering on the session bus..." << endl;
 
-    // Clear the bus error variable...
-    dbus_error_init(&m_Error);
+    // Clear the bus error variable, if there is one...
+    g_clear_error(&m_Error);
+
+    // Initialize the introspection data...
+    m_IntrospectionData = g_dbus_node_info_new_for_xml(
+        ms_IntrospectionXML, &m_Error);
+
+        // Failed...
+        if(!m_IntrospectionData)
+        {
+            // Alert user and terminate...
+            Message(Console::Error) 
+                << "d-bus: could not parse introspection XML (" 
+                << m_Error->message << ")" << endl;
+            g_clear_error(&m_Error);
+            exit(EXIT_FAILURE);
+        }
 
     // Open a connection the session bus...
-    m_Connection = dbus_bus_get(DBUS_BUS_SESSION, &m_Error);
+    m_Connection = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &m_Error);
 
         // Failed...        
         if(!m_Connection)
@@ -175,189 +262,66 @@ void DBusInterface::RegisterOnSessionBus()
             // Alert user and terminate...
             Message(Console::Error) 
                 << "d-bus: could not connect with the session bus (" 
-                << m_Error.message << ")" << endl;
+                << m_Error->message << ")" << endl;
+            g_clear_error(&m_Error);
             exit(EXIT_FAILURE);
         }
 
-    // Register ourselves on the session bus...
-    const int Result = dbus_bus_request_name(
-        m_Connection, m_BusName.c_str(), 
-        DBUS_NAME_FLAG_ALLOW_REPLACEMENT | 
-        DBUS_NAME_FLAG_REPLACE_EXISTING |
-        DBUS_NAME_FLAG_DO_NOT_QUEUE, 
-        &m_Error);
-
-        // Failed...
-        if(dbus_error_is_set(&m_Error))
-        {
-            // Alert user and terminate...
-            Message(Console::Error) 
-                << "d-bus: could not register service with session bus... (" 
-                << m_Error.message << ")" << endl;
-
-            // Cleanup and terminate...
-            dbus_error_free(&m_Error);
-            exit(EXIT_FAILURE);
-        }
-
-    // There's probably some other instance already running and it's not 
-    //  ourselves...
-    if(DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER != Result &&
-       DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER != Result)
-    {
-        // Alert user and terminate...
-        Message(Console::Error) 
-            << "d-bus: already running instance detected that could not be replaced..." 
-            << endl;
-
-        // Cleanup and terminate...
-        exit(EXIT_FAILURE);
-    }
-    
-    // Add a rule so we can receive signals of interest...
-    
-        // Format rule...
-        stringstream MatchRule;
-        //MatchRule << "type='signal'," << "interface='" << m_Interface << "'";
-        MatchRule << "type='signal'";
-
-        // Register...
-        dbus_bus_add_match(m_Connection, MatchRule.str().c_str(), &m_Error);
-        dbus_connection_flush(m_Connection);
-
-        // Failed...
-        if(dbus_error_is_set(&m_Error))
-        {
-            // Alert user and terminate...
-            Message(Console::Error) 
-                << "d-bus: match error... (" 
-                << m_Error.message << ")" << endl;
-
-            // Cleanup and terminate...
-            dbus_error_free(&m_Error);
-            exit(EXIT_FAILURE);
-        }
+    // Register our bus name...
+    m_BusID = g_bus_own_name(
+        G_BUS_TYPE_SESSION,
+        m_BusName.c_str(),
+        static_cast<GBusNameOwnerFlags>(
+            G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
+            G_BUS_NAME_OWNER_FLAGS_REPLACE),
+        DBusInterface::OnBusAcquired,
+        DBusInterface::OnNameAcquired,
+        DBusInterface::OnNameLost,
+        static_cast<gpointer>(this),
+        NULL);
 }
 
 // Wait for a D-Bus signal before unblocking or throw an error...
 void DBusInterface::WaitRemoteStart()
 {
-/*
-<node>
-    <interface name="org.freedesktop.DBus.Introspectable">
-        <method name="Introspect">
-            <arg direction="out" name="data" type="s"></arg>
-        </method>
-    </interface>
-    <interface name="com.cartesiantheatre.VikingExtractorInterface">
-        <signal name="Progress">
-            <arg name="Fraction" type="d"></arg>
-        </signal>
-        <signal name="Notification">
-            <arg name="Message" type="s"></arg>
-        </signal>
-    </interface>
-</node>
-*/
+    // Wait for the remote start method to be called by the client...
+    m_MainLoop = g_main_loop_new (NULL, FALSE);
+    g_main_loop_run(m_MainLoop);
 
-    // Flag toggled when we received successfully the Ready signal...
-    bool Ready = false;
+    // Cleanup the main loop...
+    g_main_loop_unref(m_MainLoop);
 
-    // Keep checking the message queue, without hammering the CPU, until the
-    //  Ready signal arrives...
-    while(!Ready)
+    // It wasn't called, but that should have been the only acceptable reason
+    //  why the loop would terminate...
+    if(!m_RemoteStart)
     {
         // Alert user...
         Message(Console::Info) 
-            << "d-bus: awaiting ready signal, please wait..." << endl;
+            << "d-bus: glib main loop quit unexpectedly..." << endl;
 
-        // Block until next message becomes available and check for error...
-        if(!dbus_connection_read_write(m_Connection, -1))
-            throw string("d-bus: connection closed prematurely...");
-
-        // Retrieve the message...
-        DBusMessage *IncomingMessage = dbus_connection_pop_message(m_Connection);
-
-            // Failed...
-            if(!IncomingMessage)
-            {
-                // Alert user, then try again...
-                Message(Console::Error) 
-                    << "d-bus: empty message queue, trying again..." << endl;
-                continue;
-            }
-
-        /* Which message name was it?
-        const char *MessageNameTemp = dbus_message_get_member(IncomingMessage);
-        const string MessageName(MessageNameTemp ? MessageNameTemp : "?");
-
-        // Display info about the message...
-        Message(Console::Info) 
-            << "d-bus: received message " 
-            << MessageName 
-            << ", needs reply (" 
-            << !dbus_message_get_no_reply(IncomingMessage) 
-            << "), is signal ("
-            << (DBUS_MESSAGE_TYPE_SIGNAL == dbus_message_get_type(IncomingMessage))
-            << ")" << endl;*/
-        
-        /*if(!)
-            Message(Console::Error) << "d-bus: MESSAGE EXPECTED A REPLY..." << endl;
-
-        if(DBUS_MESSAGE_TYPE_SIGNAL != dbus_message_get_type(IncomingMessage))
-        {
-            dbus_message_unref(IncomingMessage);
-            continue;
-        }*/
-
-        // Verify this was the Ready signal...
-        Ready = dbus_message_is_signal(
-            IncomingMessage, m_Interface.c_str(), m_ReadySignal.c_str());
-
-            // Not the Ready signal, ignore...
-            if(!Ready)
-            {
-                /* Something else. Alert user...
-                Message(Console::Error) 
-                    << "Unrecognized signal... (" 
-                    << dbus_message_get_member(IncomingMessage) << "), skipping..." 
-                    << endl;
-
-                Message(Console::Error) 
-                    << "d-bus: expected interface \"" 
-                    << m_Interface
-                    << "\", but got \""
-                    << dbus_message_get_interface(IncomingMessage)
-                    << "\""
-                    << endl;
-
-                DBusMessageIter Arguments;
-
-                // read the parameters
-                if(!dbus_message_iter_init(IncomingMessage, &Arguments))
-                    Message(Console::Error) << "message has no arguments!" << endl;
-
-                else if (DBUS_TYPE_STRING != dbus_message_iter_get_arg_type(&Arguments))
-                    Message(Console::Error) << "argument is not string!" << endl;
-
-                else
-                {
-                    char *sigvalue = NULL;
-                    dbus_message_iter_get_basic(&Arguments, &sigvalue);
-                    Message(Console::Error) << "got signal with value " << sigvalue << endl;
-                }*/
-            }
-
-        // Cleanup...
-        dbus_message_unref(IncomingMessage);
+        // Cleanup and terminate...
+        g_object_unref(m_Connection);
+        g_clear_error(&m_Error);
+        exit(EXIT_FAILURE);
     }
 }
 
 // Deconstructor...
 DBusInterface::~DBusInterface()
 {
+    // Cleanup if a connection to the session bus is open...
+    if(m_Connection)
+    {
+        // Now close the connection...
+        g_object_unref(m_Connection);
+        m_Connection = 0;
+    }
+
+    // Cleanup the introspection data, if allocated...
+    if(m_IntrospectionData)
+        g_dbus_node_info_unref(m_IntrospectionData);
+
     // If an error was set, clear it...
-    if(dbus_error_is_set(&m_Error))
-        dbus_error_free(&m_Error);
+    g_clear_error(&m_Error);
 }
 

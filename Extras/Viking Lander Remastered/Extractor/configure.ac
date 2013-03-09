@@ -125,13 +125,13 @@ AC_LANG([C++])
     # D-Bus interface feature requested...
     if test "x${dbus_interface}" = xyes; then
 
-        # Check for the D-Bus library...
-        PKG_CHECK_MODULES([dbus], [dbus-1], [have_dbus=yes], 
+        # Check for the D-Bus bindings via GDBus provided by the GIO library...
+        PKG_CHECK_MODULES([dbus], [gio-2.0], [have_dbus=yes], 
             [have_dbus=no])
 
         # D-Bus interface was requested, but API isn't available...
         if test "x${have_dbus}" = xno; then
-            AC_MSG_ERROR([D-Bus interface was requested, but dbus-1 was not available...])
+            AC_MSG_ERROR([D-Bus interface was requested, but gio-2.0 was not available...])
         fi
 
         # D-Bus interface available...
