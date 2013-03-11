@@ -26,13 +26,14 @@
 // Includes...
 #include <string>
 #include <algorithm>
+#include <unistd.h>
 
 // Create a directory and all of its parents, if necessary...
 bool CreateDirectoryRecursively(const std::string &Path);
 
 // Three way min() / max() function templates...
-template<class T> const T &min3(const T &A, const T &B, const T &C) { return min(A, min(B, C)); }
-template<class T> const T &max3(const T &A, const T &B, const T &C) { return max(A, max(B, C)); }
+template<class T> const T &min3(const T &A, const T &B, const T &C) { return std::min(A, std::min(B, C)); }
+template<class T> const T &max3(const T &A, const T &B, const T &C) { return std::max(A, std::max(B, C)); }
 
 // Convert a given Martian solar day in the range [1 .. n] to Ls angle...
 float SolarDayToLs(const size_t SolarDay);

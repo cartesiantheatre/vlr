@@ -725,8 +725,20 @@ bool VicarImageBand::IsVikingLanderOrigin() const
 
     // Signature to search for in EBCDIC ("VIKING LANDER " in ASCII)
     const char Signature[] = {
-        0xE5, 0xC9, 0xD2, 0xC9, 0xD5, 0xC7, 0x40, 
-        0xD3, 0xC1, 0xD5, 0xC4, 0xC5, 0xD9, 0x40
+        static_cast<char>(0xE5), 
+        static_cast<char>(0xC9), 
+        static_cast<char>(0xD2), 
+        static_cast<char>(0xC9), 
+        static_cast<char>(0xD5), 
+        static_cast<char>(0xC7), 
+        static_cast<char>(0x40), 
+        static_cast<char>(0xD3), 
+        static_cast<char>(0xC1), 
+        static_cast<char>(0xD5), 
+        static_cast<char>(0xC4), 
+        static_cast<char>(0xC5), 
+        static_cast<char>(0xD9), 
+        static_cast<char>(0x40)
     };
 
     // Scan for Viking Lander signature...
