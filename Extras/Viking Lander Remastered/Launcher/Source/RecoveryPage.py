@@ -19,12 +19,13 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # Imports...
-from gi.repository import Gtk, Gdk, GObject, GLib, Vte
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GObject
+from gi.repository import GLib
+from gi.repository import Vte
+from gi.repository import Gio
 import os
-import dbus
-from dbus.exceptions import DBusException
-from dbus.mainloop.glib import DBusGMainLoop
-from dbus.lowlevel import SignalMessage
 from time import sleep
 import sys
 
@@ -69,13 +70,14 @@ class RecoveryPageProxy():
     def _connectToVikingExtractor(self):
 
         # Some constants to help find the VikingExtractor...
-        DBUS_SERVICE_NAME           = "com.cartesiantheatre.VikingExtractorService"
-        DBUS_OBJECT_PATH            = "/com/cartesiantheatre/VikingExtractorObject"
-        DBUS_INTERFACE              = "com.cartesiantheatre.VikingExtractorInterface"
-        DBUS_SIGNAL_NOTIFICATION    = "Notification"
-        DBUS_SIGNAL_PROGRESS        = "Progress"
+        VE_DBUS_SERVICE_NAME        = "com.cartesiantheatre.VikingExtractorService"
+        VE_DBUS_OBJECT_PATH         = "/com/cartesiantheatre/VikingExtractorObject"
+        VE_DBUS_INTERFACE           = "com.cartesiantheatre.VikingExtractorInterface"
+        VE_DBUS_SIGNAL_NOTIFICATION = "Notification"
+        VE_DBUS_SIGNAL_PROGRESS     = "Progress"
+        VE_DBUS_METHOD_START        = "Start"
 
-        # Register our D-Bus signal handler callbacks...
+        # Alert user...
         sys.stdout.write("Waiting for VikingExtractor D-Bus service...")
 
         # Keep trying to connect until successful...

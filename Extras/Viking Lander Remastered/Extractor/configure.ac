@@ -70,6 +70,15 @@ AC_CONFIG_SRCDIR([Source/VikingExtractor.cpp])
     #  substitution variables...
     AC_CONFIG_HEADERS([Source/config.h])
 
+# Check for command-line options...
+
+    # D-Bus interface...
+    AC_ARG_ENABLE([dbus-interface],
+        [AS_HELP_STRING([--disable-dbus-interface],
+            [disable D-Bus interface (VLR GUI needs interface) @<:@default: no@:>@])],
+        [dbus_interface=${enableval}], 
+        [dbus_interface=yes])
+
 # Checks for programs needed to build and test VikingExtractor...
 
     # C++ preprocessor...
@@ -84,20 +93,28 @@ AC_CONFIG_SRCDIR([Source/VikingExtractor.cpp])
     # MD5 checksum tool required to perform test suite...
     AC_PATH_PROG([MD5SUM], [md5sum])
     if test "x$MD5SUM" = "x"; then
-        AC_MSG_ERROR([md5sum tool required to perform test suite...])
+        AC_MSG_ERROR([md5sum tool is required to perform test suite...])
+    fi
+
+    # D-Bus interface feature was requested...
+    if test "x${dbus_interface}" = xyes; then
+        
+        # We need gdbus tool which can be used during the test suite to verify 
+        #  d-bus interface is sane...
+        AC_PATH_PROG([GDBUS], [gdbus])
+        if test "x$GDBUS" = "x"; then
+            AC_MSG_ERROR([gdbus tool is required to perform test suite...])
+        fi
+
+        # We'll also need GNU sem to perform the d-bus test...
+        #AC_PATH_PROG([SEM], [sem])
+        #if test "x$SEM" = "x"; then
+        #    AC_MSG_ERROR([sem tool is required to perform test suite...])
+        #fi
     fi
 
 # Select our native language of C++ to perform tests in...
 AC_LANG([C++])
-
-# Check for command-line options...
-
-    # D-Bus interface...
-    AC_ARG_ENABLE([dbus-interface],
-        [AS_HELP_STRING([--disable-dbus-interface],
-            [disable D-Bus interface (VLR GUI needs interface) @<:@default: no@:>@])],
-        [dbus_interface=${enableval}], 
-        [dbus_interface=yes])
 
 # Substitute autoconfig macros in various non-make related files...
 
@@ -122,7 +139,7 @@ AC_LANG([C++])
         [AC_MSG_ERROR([missing a required POSIX header...])])
     AC_LANG_POP([C])
 
-    # D-Bus interface feature requested...
+    # D-Bus interface feature was requested...
     if test "x${dbus_interface}" = xyes; then
 
         # Check for the D-Bus bindings via GDBus provided by the GIO library...

@@ -19,11 +19,13 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # System imports...
-from gi.repository import Gtk, Gdk, GObject
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GObject
+from gi.repository import Gio
 import urllib.request
 import os
 import platform
-import dbus
 
 # Handbook page proxy class...
 class HandbookPageProxy():
@@ -228,32 +230,45 @@ class HandbookPageProxy():
             self._progressBar.hide()
             self._assistant.set_page_complete(self._handbookPageBox, True)
 
+# Dummy d-bus exception class...
+class DBusException(Exception):
+    pass
+
+# Dummy class for non-existent d-bus service exceptions...
+class UnknownServiceException(DBusException):
+    pass
+
 # Check network connectivity to the internet and alert user if caller requests 
 #  if no connection available...
 def hasInternetConnection(alertUser, parent, unqueriableDefault):
 
-    # D-Bus service name...
-    DBUS_SERVICE = "org.freedesktop.NetworkManager"
-    
-    # D-Bus object on the aforementioned service...
-    DBUS_OBJECT = "/org/freedesktop/NetworkManager"
+    # D-Bus service name, object, and interface to the NetworkManager...
+    NETWORK_MANAGER_DBUS_SERVICE    = "org.freedesktop.NetworkManager"
+    NETWORK_MANAGER_DBUS_OBJECT     = "/org/freedesktop/NetworkManager"
+    NETWORK_MANAGER_DBUS_INTERFACE  = "org.freedesktop.NetworkManager"
 
     # D-Bus NetworkManager state constants...
-    NM_STATE_CONNECTED = 3          # For 0.8 interface
-    NM_STATE_CONNECTED_GLOBAL = 70  # For 0.9 interface
+    NM_STATE_CONNECTED              = 3     # For 0.8 interface
+    NM_STATE_CONNECTED_GLOBAL       = 70    # For 0.9 interface
 
-    # Open the session bus...
-    systemBus = dbus.SystemBus()
-    
     # Try to get the NetworkManager remote proxy object...
     try:
-        networkManagerProxy = systemBus.get_object(DBUS_SERVICE, DBUS_OBJECT)
-    
-    # Something went wrong, but most likely the service isn't available...
-    except dbus.exceptions.DBusException as exception:
-        print("NetworkManager service not found. Silently ignoring...")
+        
+        # Bind to the remote object...
+        networkManagerProxy = Gio.DBusProxy.new_for_bus_sync(
+            Gio.BusType.SYSTEM,
+            Gio.DBusProxyFlags.NONE, None,
+            NETWORK_MANAGER_DBUS_SERVICE,
+            NETWORK_MANAGER_DBUS_OBJECT,
+            NETWORK_MANAGER_DBUS_INTERFACE, None)
 
-        # Alert caller...
+        # Not available...
+        if not self.networkManagerProxy.get_name_owner():
+            raise UnknownServiceException()
+
+    # Something went wrong, but most likely the service isn't available...
+    except:
+        print("NetworkManager service not found. Silently ignoring...")
         return unqueriableDefault
 
     # Get the connection state...

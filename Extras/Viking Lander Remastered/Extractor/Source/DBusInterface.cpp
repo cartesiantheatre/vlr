@@ -142,13 +142,13 @@ void DBusInterface::EmitProgressSignal(const double Progress)
 
 // D-Bus interface method callback...
 void DBusInterface::MethodCallback(
-    GDBusConnection *,          /* Connection */
-    const gchar *,              /* Sender */
-    const gchar *,              /* ObjectPath */
-    const gchar *,              /* InterfaceName */
+    GDBusConnection *,                  /* Connection */
+    const gchar *,                      /* Sender */
+    const gchar *,                      /* ObjectPath */
+    const gchar *InterfaceName,
     const gchar *MethodName,
-    GVariant *,                 /* Parameters */
-    GDBusMethodInvocation *,    /* Invocation */
+    GVariant *,                         /* Parameters */
+    GDBusMethodInvocation *Invocation,
     gpointer UserData)
 {
     // Retrieve this pointer from user data...
@@ -157,18 +157,25 @@ void DBusInterface::MethodCallback(
     // Start method...
     if(g_strcmp0(MethodName, VIKING_EXTRACTOR_DBUS_METHOD_START) == 0)
     {
-        /* TODO: 
-            I'm guessing server probably has to issue some kind of ACK to 
-            client. */
-
         // Inform WaitRemoteStart() that it can stop blocking now...
         Context.m_RemoteStart = true;
         
         // GLib's main loop no longer needs to continue checking for events...
         g_main_loop_quit(Context.m_MainLoop);
+
+        // Acknowledge to client that we are done processing their request...
+        g_dbus_method_invocation_return_value(Invocation, NULL);
     }
+    
+    // Some other method that we specified in the virtual table, but haven't
+    //  implemented yet...
     else
-        assert(false);
+    {
+        // Inform client that the method isn't implemented yet...
+        g_dbus_method_invocation_return_error(
+            Invocation, G_DBUS_ERROR, G_DBUS_ERROR_NOT_SUPPORTED,
+            "Method %s.%s is not implemented.", InterfaceName, MethodName);
+    }
 }
 
 // Connection to the session message bus has been obtained...

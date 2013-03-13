@@ -47,12 +47,24 @@ viking_extractor_SOURCES = \
     Source/ZZipFileDescriptor.cpp \
     Source/ZZipFileDescriptor.h
 
-# If D-Bus interface was enabled through Autoconf, then we also need to compile
-#  these sources too...
+RECOVERY_TEST_ARGUMENTS	= \
+    --recursive \
+    --no-ansi-colours \
+    --overwrite \
+    --generate-metadata 
+
+# If D-Bus interface was enabled through Autoconf...
 if USE_DBUS_INTERFACE
+
+# Compile relavent sources too...
 viking_extractor_SOURCES += \
     Source/DBusInterface.h \
     Source/DBusInterface.cpp
+
+# TODO: We need some way to invoke gdbus from another thread to do this...
+#RECOVERY_TEST_ARGUMENTS += \
+#    --remote-start
+
 endif
 
 # These files must exist before anything is compiled. Can be machine generated...
@@ -107,8 +119,16 @@ RecoveryChecksums.md5: Makefile.am
 
 # Rule to test a sample viking-extractor recovery against one known to have been 
 #  successful...
+#
+#  Something like this might work eventually when GNU sem is more ubiquitous...
+#   sem --id VikingExtractor --bg ./viking-extractor --recursive --no-ansi-colours --overwrite --generate-metadata --remote-start ./Tests/Recovery/ Tests/Recovery/
+#   sleep 3
+#   gdbus call --session --dest com.cartesiantheatre.VikingExtractorService --object-path /com/cartesiantheatre/VikingExtractorObject --method com.cartesiantheatre.VikingExtractorInterface.Start
+#   sem --wait --id VikingExtractor
+#   /usr/bin/md5sum --warn --check RecoveryChecksums.md5
+#
 RecoveryTest.sh: RecoveryChecksums.md5 Makefile.am
-	@echo './viking-extractor --remote-start --recursive --no-ansi-colours --overwrite --generate-metadata $(top_srcdir)/Tests/Recovery/ Tests/Recovery/' > $@
+	@echo './viking-extractor $(RECOVERY_TEST_ARGUMENTS) $(top_srcdir)/Tests/Recovery/ Tests/Recovery/' > $@
 	@echo '$(MD5SUM) --warn --check $<' >> $@
 	@chmod +x $@
 
