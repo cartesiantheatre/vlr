@@ -38,10 +38,6 @@ class RecoveryPageProxy():
     # Constructor...
     def __init__(self, launcherApp):
 
-        # Connect to the session bus...
-        dbus_loop = DBusGMainLoop()
-        self._sessionBus = dbus.SessionBus(mainloop=dbus_loop)
-
         # Initialize...
         self._launcherApp           = launcherApp
         self._assistant             = launcherApp.assistant
@@ -66,7 +62,7 @@ class RecoveryPageProxy():
         self._abortRecoveryButton.connect("clicked", self.onAbortClicked)
         self._terminal.connect("child-exited", self.onChildProcessExit)
 
-    # Register our D-Bus signal handler callbacks...
+    # Connect to the d-bus interface and start the recovery...
     def _connectToVikingExtractor(self):
 
         # Some constants to help find the VikingExtractor...
@@ -90,28 +86,31 @@ class RecoveryPageProxy():
             # Try to connect to the VikingExtractor...
             try:
                 
-                # Connect D-Bus notification signal to callback...
-                self._sessionBus.add_signal_receiver(
-                    handler_function=self.onVikingExtractorNotificationDBusSignal,
-                    signal_name="Notification",
-                    dbus_interface=DBUS_INTERFACE,
-                    bus_name=DBUS_SERVICE_NAME,
-                    path=DBUS_OBJECT_PATH)
+                # Bind to the remote object...
+                vikingExtractorProxy = Gio.DBusProxy.new_for_bus_sync(
+                    Gio.BusType.SESSION,
+                    Gio.DBusProxyFlags.NONE, 
+                    None,
+                    VE_DBUS_SERVICE_NAME,
+                    VE_DBUS_SERVICE_OBJECT_PATH,
+                    VE_DBUS_SERVICE_INTERFACE, 
+                    None)
 
-                # Connect D-Bus progress signal to callback...
-                self._sessionBus.add_signal_receiver(
-                    handler_function=self.onVikingExtractorProgressDBusSignal,
-                    signal_name="Progress",
-                    dbus_interface=DBUS_INTERFACE,
-                    bus_name=DBUS_SERVICE_NAME,
-                    path=DBUS_OBJECT_PATH)
+                # Not available...
+                if not vikingExtractorProxy.get_name_owner():
+                    raise UnknownServiceException()
+
+                # Connect to VikingExtractor's signals...
+                vikingExtractorProxy.connect(
+                    "g-signal", 
+                    self._VikingExtractorSignalDispatcher)
 
                 # We're connected. End alert with new line...
                 print("ok")
                 break
 
             # VikingExtractor probably isn't running...
-            except DBusException as error:
+            except:
 
                 # Pump the Gtk+ event handler before we try again...
                 while Gtk.events_pending():
@@ -121,18 +120,11 @@ class RecoveryPageProxy():
                 sleep(0.1)
                 continue
 
-        # Fire off the ready signal...
-        message = SignalMessage(DBUS_OBJECT_PATH, DBUS_INTERFACE, "Ready")
-        message.set_destination("com.cartesiantheatre.VikingExtractorService")
-        message.set_no_reply(True)
-        message.set_path(DBUS_OBJECT_PATH)
-        message.set_interface(DBUS_INTERFACE)
-        message.set_member("Ready")
-        self._sessionBus.send_message(message)
-        self._sessionBus.flush()
+        # Tell the VikingExtractor to commence the recovery...
+        vikingExtractorProxy.Start()
 
     # Start the recovery process...
-    def startRecovery(self, noProcessIDHack=False):
+    def executeVikingExtractor(self, noProcessIDHack=False):
 
         # Get the path to the VikingExtractor binary...
         self._vikingExtractorBinaryPath = \
@@ -168,7 +160,7 @@ class RecoveryPageProxy():
         # Ugly ass hack...
         #  https://bugzilla.gnome.org/show_bug.cgi?id=649004
         except TypeError:
-            self.startRecovery(noProcessIDHack=True)
+            self.executeVikingExtractor(noProcessIDHack=True)
             return
 
         # Failed to launch. VTE's documentation is not clear on the way to check
@@ -257,8 +249,22 @@ class RecoveryPageProxy():
             # Notify assistant...
             self._assistant.set_page_complete(self._recoveryPageBox, True)
 
+    # Dispatch incoming VikingExtractor signals to appropriate callback...
+    def _VikingExtractorSignalDispatcher(
+        self, proxy, senderName, signalName, Parameters):
+        
+        # Human readable notification message...
+        if signalName == "Notification":
+            notificationMessage = Parameters.unpack()
+            self.onVikingExtractorNotificationSignal(notificationMessage)
+        
+        # Progress...
+        elif signalName == "Progress":
+            currentProgress = Parameters.unpack()
+            self.onVikingExtractorProgressSignal(currentProgress)
+
     # VikingExtractor is trying to tell us something in a human readable string...
-    def onVikingExtractorNotificationDBusSignal(self, notification):
+    def onVikingExtractorNotificationSignal(self, notificationMessage):
         
         # Store the human readable extractor state string...
         self._recoveryProgressText = notification
@@ -271,7 +277,7 @@ class RecoveryPageProxy():
             format(notification, currentProgress / 100.0))
 
     # VikingExtractor is telling us it has completed some work...
-    def onVikingExtractorProgressDBusSignal(self, currentProgress):
+    def onVikingExtractorProgressSignal(self, currentProgress):
     
         # Format and set the progress bar caption...
         self._recoveryProgressBar.set_text("{0} ({1:.0f}%)".

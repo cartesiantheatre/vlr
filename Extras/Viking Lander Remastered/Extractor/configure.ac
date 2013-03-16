@@ -36,7 +36,7 @@ AC_INIT(
     [https://www.avaneya.com])
 
 # Location to find Autoconf plugins...
-AC_CONFIG_MACRO_DIR([Macros])
+AC_CONFIG_MACRO_DIR([M4])
 
 # Preserve all arguments for products that want them into config.h...
 config_flags="$0 $*"

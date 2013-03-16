@@ -20,7 +20,7 @@
 #
 
 # Options for aclocal so it can find our custom M4 macros...
-ACLOCAL_AMFLAGS = -I Macros
+ACLOCAL_AMFLAGS = -I M4
 
 # Product list containing just viking-extractor to be destined for the binary 
 #  prefix...

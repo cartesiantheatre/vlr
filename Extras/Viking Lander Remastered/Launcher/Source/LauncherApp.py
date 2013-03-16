@@ -125,7 +125,7 @@ class LauncherApp():
     def onApplyEvent(self, *args):
         
         # Start the recovery process...
-        self.recoveryPageProxy.startRecovery()
+        self.recoveryPageProxy.executeVikingExtractor()
 
     # Cancel signal emitted when cancel button clicked or assistant being 
     #  closed...

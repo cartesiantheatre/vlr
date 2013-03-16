@@ -230,22 +230,14 @@ class HandbookPageProxy():
             self._progressBar.hide()
             self._assistant.set_page_complete(self._handbookPageBox, True)
 
-# Dummy d-bus exception class...
-class DBusException(Exception):
-    pass
-
-# Dummy class for non-existent d-bus service exceptions...
-class UnknownServiceException(DBusException):
-    pass
-
 # Check network connectivity to the internet and alert user if caller requests 
 #  if no connection available...
 def hasInternetConnection(alertUser, parent, unqueriableDefault):
 
     # D-Bus service name, object, and interface to the NetworkManager...
-    NETWORK_MANAGER_DBUS_SERVICE    = "org.freedesktop.NetworkManager"
-    NETWORK_MANAGER_DBUS_OBJECT     = "/org/freedesktop/NetworkManager"
-    NETWORK_MANAGER_DBUS_INTERFACE  = "org.freedesktop.NetworkManager"
+    NETWORK_MANAGER_DBUS_SERVICE_NAME   = "org.freedesktop.NetworkManager"
+    NETWORK_MANAGER_DBUS_OBJECT_PATH    = "/org/freedesktop/NetworkManager"
+    NETWORK_MANAGER_DBUS_INTERFACE      = "org.freedesktop.NetworkManager"
 
     # D-Bus NetworkManager state constants...
     NM_STATE_CONNECTED              = 3     # For 0.8 interface
@@ -255,26 +247,25 @@ def hasInternetConnection(alertUser, parent, unqueriableDefault):
     try:
         
         # Bind to the remote object...
+        networkManagerProxy = None
         networkManagerProxy = Gio.DBusProxy.new_for_bus_sync(
             Gio.BusType.SYSTEM,
-            Gio.DBusProxyFlags.NONE, None,
-            NETWORK_MANAGER_DBUS_SERVICE,
-            NETWORK_MANAGER_DBUS_OBJECT,
-            NETWORK_MANAGER_DBUS_INTERFACE, None)
+            Gio.DBusProxyFlags.NONE, 
+            None,
+            NETWORK_MANAGER_DBUS_SERVICE_NAME,
+            NETWORK_MANAGER_DBUS_OBJECT_PATH,
+            NETWORK_MANAGER_DBUS_INTERFACE, 
+            None)
 
-        # Not available...
-        if not self.networkManagerProxy.get_name_owner():
-            raise UnknownServiceException()
+        # Get the connection state...
+        connectionState = networkManagerProxy.state()
 
     # Something went wrong, but most likely the service isn't available...
     except:
-        print("NetworkManager service not found. Silently ignoring...")
+        print("Warning: NetworkManager service not found...")
         return unqueriableDefault
 
-    # Get the connection state...
-    connectionState = networkManagerProxy.state()
-
-    # Connected. We're good...
+    # Connected...
     if connectionState == NM_STATE_CONNECTED or \
        connectionState == NM_STATE_CONNECTED_GLOBAL:
 

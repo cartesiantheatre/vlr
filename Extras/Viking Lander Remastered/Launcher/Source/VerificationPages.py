@@ -329,7 +329,7 @@ class VerificationThread(threading.Thread):
         messageDialog = Gtk.MessageDialog(
             self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.INFO, 
             Gtk.ButtonsType.OK, 
-            "Disc verification completed. Your disc seems to be fine.")
+            "The disc verification completed successfully. Your disc is probably fine.")
         messageDialog.run()
         messageDialog.destroy()
 
