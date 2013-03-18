@@ -62,67 +62,6 @@ class RecoveryPageProxy():
         self._abortRecoveryButton.connect("clicked", self.onAbortClicked)
         self._terminal.connect("child-exited", self.onChildProcessExit)
 
-    # Connect to the d-bus interface and start the recovery...
-    def _connectToVikingExtractor(self):
-
-        # Some constants to help find the VikingExtractor...
-        VE_DBUS_SERVICE_NAME        = "com.cartesiantheatre.VikingExtractorService"
-        VE_DBUS_OBJECT_PATH         = "/com/cartesiantheatre/VikingExtractorObject"
-        VE_DBUS_INTERFACE           = "com.cartesiantheatre.VikingExtractorInterface"
-        VE_DBUS_SIGNAL_NOTIFICATION = "Notification"
-        VE_DBUS_SIGNAL_PROGRESS     = "Progress"
-        VE_DBUS_METHOD_START        = "Start"
-
-        # Alert user...
-        sys.stdout.write("Waiting for VikingExtractor D-Bus service...")
-
-        # Keep trying to connect until successful...
-        while True:
-
-            # Alert user with each dot being a new attempt...
-            sys.stdout.write(".")
-            sys.stdout.flush()
-
-            # Try to connect to the VikingExtractor...
-            try:
-                
-                # Bind to the remote object...
-                vikingExtractorProxy = Gio.DBusProxy.new_for_bus_sync(
-                    Gio.BusType.SESSION,
-                    Gio.DBusProxyFlags.NONE, 
-                    None,
-                    VE_DBUS_SERVICE_NAME,
-                    VE_DBUS_SERVICE_OBJECT_PATH,
-                    VE_DBUS_SERVICE_INTERFACE, 
-                    None)
-
-                # Not available...
-                if not vikingExtractorProxy.get_name_owner():
-                    raise UnknownServiceException()
-
-                # Connect to VikingExtractor's signals...
-                vikingExtractorProxy.connect(
-                    "g-signal", 
-                    self._VikingExtractorSignalDispatcher)
-
-                # We're connected. End alert with new line...
-                print("ok")
-                break
-
-            # VikingExtractor probably isn't running...
-            except:
-
-                # Pump the Gtk+ event handler before we try again...
-                while Gtk.events_pending():
-                    Gtk.main_iteration()
-
-                # Pause one second, then try again...
-                sleep(0.1)
-                continue
-
-        # Tell the VikingExtractor to commence the recovery...
-        vikingExtractorProxy.Start()
-
     # Start the recovery process...
     def executeVikingExtractor(self, noProcessIDHack=False):
 
@@ -174,8 +113,79 @@ class RecoveryPageProxy():
         if self._processID:
             print("Spawned process {0}...".format(self._processID))
 
-        # Register our D-Bus signal handler callbacks...
-        self._connectToVikingExtractor()
+        # Some constants to help find the VikingExtractor...
+        VE_DBUS_SERVICE_NAME        = "com.cartesiantheatre.VikingExtractorService"
+        VE_DBUS_OBJECT_PATH         = "/com/cartesiantheatre/VikingExtractorObject"
+        VE_DBUS_INTERFACE           = "com.cartesiantheatre.VikingExtractorInterface"
+        VE_DBUS_SIGNAL_NOTIFICATION = "Notification"
+        VE_DBUS_SIGNAL_PROGRESS     = "Progress"
+        VE_DBUS_METHOD_START        = "Start"
+
+        # Alert user...
+        sys.stdout.write("Waiting for VikingExtractor D-Bus service...")
+
+        # Keep trying to connect until successful...
+        while True:
+
+            # Alert user with each dot being a new attempt...
+            sys.stdout.write(".")
+            sys.stdout.flush()
+
+            # Try to connect to the VikingExtractor...
+            try:
+
+                # Bind to the remote object...
+                vikingExtractorProxy = None
+                vikingExtractorProxy = Gio.DBusProxy.new_for_bus_sync(
+                    Gio.BusType.SESSION,
+                    Gio.DBusProxyFlags.NONE, 
+                    None,
+                    VE_DBUS_SERVICE_NAME,
+                    VE_DBUS_OBJECT_PATH,
+                    VE_DBUS_INTERFACE, 
+                    None)
+
+                # Not available...
+                if vikingExtractorProxy is None:
+                    raise Exception()
+
+                # Connect to VikingExtractor's signals...
+                vikingExtractorProxy.connect(
+                    "g-signal", 
+                    self._VikingExtractorSignalDispatcher)
+
+                # We're connected. End alert with new line...
+                break
+
+            # VikingExtractor probably isn't running...
+            except:
+
+                # Pump the Gtk+ event handler before we try again...
+                while Gtk.events_pending():
+                    Gtk.main_iteration()
+
+                # Pause one second, then try again...
+                sleep(0.1)
+                continue
+
+        # Tell the VikingExtractor to commence the recovery...
+                # Keep trying to connect until successful...
+        while True:
+
+            try:
+
+                sys.stdout.write(".")
+                sys.stdout.flush()
+                vikingExtractorProxy.Start()
+
+            except:
+
+                # Pause one second, then try again...
+                sleep(0.1)
+                continue
+
+            print("ok")
+            break
 
     # VikingExtractor could not be executed...
     def _fatalLaunchError(self):
