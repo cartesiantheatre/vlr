@@ -94,9 +94,14 @@ void DBusInterface::EmitNotificationSignal(const string &Notification)
     GVariant *SignalParameters = g_variant_new("(s)", Notification.c_str());
 
     // Emit the signal...
-    const bool Result = g_dbus_connection_emit_signal(m_Connection, 
-        m_BusName.c_str(), m_ObjectPath.c_str(), m_Interface.c_str(), 
-        m_NotificationSignal.c_str(), SignalParameters, &m_Error);
+    const bool Result = g_dbus_connection_emit_signal(
+        m_Connection, 
+        m_BusName.c_str(), 
+        m_ObjectPath.c_str(), 
+        m_Interface.c_str(), 
+        m_NotificationSignal.c_str(), 
+        SignalParameters, 
+       &m_Error);
 
         // Failed...
         if(!Result)
@@ -110,6 +115,9 @@ void DBusInterface::EmitNotificationSignal(const string &Notification)
             g_clear_error(&m_Error);
             exit(EXIT_FAILURE);
         }
+
+    // Make sure the signal actually was dispatched...
+    g_dbus_connection_flush_sync(m_Connection, NULL, NULL);
 }
 
 // Emit progress signal with progress clamped to [0.0, 100.0] or throw an error...
@@ -122,9 +130,14 @@ void DBusInterface::EmitProgressSignal(const double Progress)
     GVariant *SignalParameters = g_variant_new("(d)", Progress);
 
     // Emit the signal...
-    const bool Result = g_dbus_connection_emit_signal(m_Connection, 
-        m_BusName.c_str(), m_ObjectPath.c_str(), m_Interface.c_str(), 
-        m_NotificationSignal.c_str(), SignalParameters, &m_Error);
+    const bool Result = g_dbus_connection_emit_signal(
+        m_Connection, 
+        m_BusName.c_str(), 
+        m_ObjectPath.c_str(), 
+        m_Interface.c_str(), 
+        m_ProgressSignal.c_str(), 
+        SignalParameters, 
+       &m_Error);
 
         // Failed...
         if(!Result)
@@ -138,6 +151,9 @@ void DBusInterface::EmitProgressSignal(const double Progress)
             g_clear_error(&m_Error);
             exit(EXIT_FAILURE);
         }
+
+    // Make sure the signal actually was dispatched...
+    g_dbus_connection_flush_sync(m_Connection, NULL, NULL);
 }
 
 // D-Bus interface method callback...
