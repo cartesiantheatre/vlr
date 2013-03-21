@@ -224,7 +224,7 @@ PrepareDebianBased()
 
             # Ubuntu precise...
             "precise")
-                PackagesRequired=("python3-gi" "python3-dbus" "libdbus-1-3")
+                PackagesRequired=("python3-gi" "python3-dbus")
             ;;
 
         # Fedora...
@@ -239,7 +239,7 @@ PrepareDebianBased()
             # Debian wheezy. Squeeze doesn't have the latter two needed
             #  packages...
             "wheezy")
-                PackagesRequired=("python3" "python3-gi" "python3-dbus")
+                PackagesRequired=("python3-gi" "python3-dbus")
             ;;
 
         # Unknown distro...

@@ -124,6 +124,15 @@ class RecoveryPageProxy():
         # Alert user...
         sys.stdout.write("Waiting for VikingExtractor D-Bus service...")
 
+        sessionConnection = None
+        sessionConnection = Gio.bus_get_sync(
+            Gio.BusType.SESSION,
+            None)
+
+        if sessionConnection is None:
+            print("Dead session connection handle...")
+            sys.exit(1)
+
         # Keep trying to connect until successful...
         while True:
 
@@ -136,8 +145,8 @@ class RecoveryPageProxy():
 
                 # Bind to the remote object...
                 vikingExtractorProxy = None
-                vikingExtractorProxy = Gio.DBusProxy.new_for_bus_sync(
-                    Gio.BusType.SESSION,
+                vikingExtractorProxy = Gio.DBusProxy.new_sync(
+                    sessionConnection,
                     Gio.DBusProxyFlags.NONE, 
                     None,
                     VE_DBUS_SERVICE_NAME,
@@ -148,11 +157,6 @@ class RecoveryPageProxy():
                 # Not available...
                 if vikingExtractorProxy is None:
                     raise Exception()
-
-                # Connect to VikingExtractor's signals...
-                vikingExtractorProxy.connect(
-                    "g-signal", 
-                    self._VikingExtractorSignalDispatcher)
 
                 # We're connected. End alert with new line...
                 break
@@ -169,13 +173,38 @@ class RecoveryPageProxy():
                 continue
 
         # Tell the VikingExtractor to commence the recovery...
-                # Keep trying to connect until successful...
+        # Keep trying to connect until successful...
         while True:
 
             try:
 
+                # Connect to VikingExtractor's notification signal...
+                sessionConnection.signal_subscribe(
+                    VE_DBUS_SERVICE_NAME,
+                    VE_DBUS_INTERFACE,
+                    VE_DBUS_SIGNAL_NOTIFICATION,
+                    VE_DBUS_OBJECT_PATH,
+                    None,
+                    Gio.DBusConnectionFlags.NONE,
+                    self.onVikingExtractorNotificationSignal,
+                    None)
+
+                # Connect to VikingExtractor's progress signal...
+                sessionConnection.signal_subscribe(
+                    VE_DBUS_SERVICE_NAME,
+                    VE_DBUS_INTERFACE,
+                    VE_DBUS_SIGNAL_PROGRESS,
+                    VE_DBUS_OBJECT_PATH,
+                    None,
+                    Gio.DBusConnectionFlags.NONE,
+                    self.onVikingExtractorProgressSignal,
+                    None)
+
+                # Show some progress on the console...
                 sys.stdout.write(".")
                 sys.stdout.flush()
+                
+                # Begin the recovery...
                 vikingExtractorProxy.Start()
 
             except:
@@ -256,38 +285,38 @@ class RecoveryPageProxy():
         # Otherwise VikingExtractor completed successfully...
         else:
 
-            # Notify assistant...
+            # Notify assistant by marking page as complete...
             self._assistant.set_page_complete(self._recoveryPageBox, True)
 
-    # Dispatch incoming VikingExtractor signals to appropriate callback...
-    def _VikingExtractorSignalDispatcher(
-        self, proxy, senderName, signalName, Parameters):
-        
-        # Human readable notification message...
-        if signalName == "Notification":
-            notificationMessage = Parameters.unpack()
-            self.onVikingExtractorNotificationSignal(notificationMessage)
-        
-        # Progress...
-        elif signalName == "Progress":
-            currentProgress = Parameters.unpack()
-            self.onVikingExtractorProgressSignal(currentProgress)
+            # Advance to the next page...
+            currentPageIndex = self._assistant.get_current_page()
+            self._assistant.set_current_page(currentPageIndex + 1)
 
     # VikingExtractor is trying to tell us something in a human readable string...
-    def onVikingExtractorNotificationSignal(self, notificationMessage):
-        
+    def onVikingExtractorNotificationSignal(
+        self, connection, senderName, objectPath, interfaceName, signalName, 
+        parameters, userData):
+
+        # Unpack the notification message from the signal's arguments...
+        notificationMessage = parameters.unpack()[0]
+
         # Store the human readable extractor state string...
-        self._recoveryProgressText = notification
+        self._recoveryProgressText = notificationMessage
         
         # Get the current progress...
         currentProgress = self._recoveryProgressBar.get_fraction()
         
         # Format and set the progress bar caption based on the aforementioned...
         self._recoveryProgressBar.set_text("{0} ({1:.0f}%)".
-            format(notification, currentProgress / 100.0))
+            format(notificationMessage, currentProgress / 100.0))
 
     # VikingExtractor is telling us it has completed some work...
-    def onVikingExtractorProgressSignal(self, currentProgress):
+    def onVikingExtractorProgressSignal(
+        self, connection, senderName, objectPath, interfaceName, signalName, 
+        parameters, userData):
+
+        # Unpack the current progress from the signal's arguments...
+        currentProgress = parameters.unpack()[0]
     
         # Format and set the progress bar caption...
         self._recoveryProgressBar.set_text("{0} ({1:.0f}%)".
