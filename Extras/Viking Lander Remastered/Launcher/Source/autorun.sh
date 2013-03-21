@@ -224,14 +224,14 @@ PrepareDebianBased()
 
             # Ubuntu precise...
             "precise")
-                PackagesRequired=("python3-gi" "python3-dbus")
+                PackagesRequired=("python3-gi")
             ;;
 
         # Fedora...
             
             # Beefy Miracle...
             "Beefy Miracle")
-                PackagesRequired=("python3-gobject" "dbus-python")
+                PackagesRequired=("python3-gobject")
             ;;
 
         # Debian...
@@ -260,7 +260,7 @@ PrepareDebianBased()
     zenity --progress \
             --title="$Title" \
             --window-icon=$Icon \
-            --text="Checking for required software. Please wait..." \
+            --text="Please wait while checking for required software..." \
             --pulsate \
             --auto-close \
             --no-cancel &

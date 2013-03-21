@@ -69,5 +69,17 @@ class ConfigurePagesProxy():
         self._assistant.append_page(self._configureAdvancedPageBox)
         self._assistant.set_page_title(self._configureAdvancedPageBox, "Configure Advanced")
         self._assistant.set_page_type(self._configureAdvancedPageBox, Gtk.AssistantPageType.CONTENT)
+        self._assistant.set_page_complete(self._configureAdvancedPageBox, False)
+
+    # Assistant has reached the end of its current page and is transitioning to
+    #  this page, though it is not visible yet...
+    def onPrepare(self):
+
+        # Now that the page is about to be visible, mark as complete so the
+        #  final button doesn't appear prematurely in the assistant...
         self._assistant.set_page_complete(self._configureAdvancedPageBox, True)
+
+    # Get the configure advanced page box...
+    def getConfigureAdvancedPageBox(self):
+        return self._configureAdvancedPageBox
 

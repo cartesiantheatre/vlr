@@ -77,6 +77,11 @@ class VerificationPagesProxy():
         # Otherwise begin the verification...
         else:
 
+            # Make sure the page is not marked complete until after the thread
+            #  exits...
+            self._assistant.set_page_complete(
+                self._verificationProgressPageBox, False)
+
             # Change to busy cursor...
             self._launcher.setBusy(True)
 
@@ -332,6 +337,10 @@ class VerificationThread(threading.Thread):
             "The disc verification completed successfully. Your disc is probably fine.")
         messageDialog.run()
         messageDialog.destroy()
+
+        # Page is complete now...
+        self._assistant.set_page_complete(
+            self._verificationProgressPageBox, True)
 
         # Advance to the next page...
         currentPageIndex = self._assistant.get_current_page()
