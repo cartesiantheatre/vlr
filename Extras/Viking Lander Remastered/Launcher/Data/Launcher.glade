@@ -16,12 +16,37 @@
     <property name="orientation">vertical</property>
     <property name="spacing">20</property>
     <child>
-      <object class="GtkImage" id="image17">
+      <object class="GtkBox" id="box20">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="xpad">5</property>
-        <property name="ypad">5</property>
-        <property name="pixbuf">CartesianTheatre.png</property>
+        <child>
+          <object class="GtkImage" id="image8">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">Magic.png</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label12">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">These options configure some advanced VikingExtractor features. If you are unsure of any of them, just leave them set at their defaults.
+
+If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
+            <property name="use_markup">True</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -30,40 +55,14 @@
       </packing>
     </child>
     <child>
-      <object class="GtkImage" id="image8">
+      <object class="GtkTable" id="table2">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="pixbuf">Magic.png</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="label12">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">These options configure some advanced VikingExtractor features. If you are unsure of any of them, just leave them set at their defaults.
-
-If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
-        <property name="use_markup">True</property>
-        <property name="wrap">True</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">2</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkBox" id="box7">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">20</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">10</property>
+        <property name="halign">center</property>
+        <property name="n_rows">2</property>
+        <property name="n_columns">2</property>
+        <property name="column_spacing">20</property>
+        <property name="row_spacing">10</property>
         <child>
           <object class="GtkCheckButton" id="useInterlacingCheckButton">
             <property name="label" translatable="yes">Use image interlacing</property>
@@ -71,16 +70,17 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
-            <property name="tooltip_markup" translatable="yes">The recovered images are encoded in a lossless compressed PNG format for maximum quality and versatility. If you'd like them to use interlacing, select this. Interlacing is a method of allowing images to incrementally load, beginning from a lower resolution to its highest one. The images are typically slightly larger, but they are useful for streaming on slower network connections.</property>
+            <property name="has_tooltip">True</property>
+            <property name="tooltip_markup" translatable="yes">The recovered images are encoded in a lossless compressed PNG format for maximum quality and versatility. If you&amp;apos;d like them to use interlacing, select this. Interlacing is a method of allowing images to incrementally load, beginning from a lower resolution to its highest one. The images are typically slightly larger, but they are useful for streaming on slower network connections.</property>
+            <property name="tooltip_text" translatable="yes">The recovered images are encoded in a lossless compressed PNG format for maximum quality and versatility. If you'd like them to use interlacing, select this. Interlacing is a method of allowing images to incrementally load, beginning from a lower resolution to its highest one. The images are typically slightly larger, but they are useful for streaming on slower network connections.</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="active">True</property>
             <property name="draw_indicator">True</property>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
           </packing>
         </child>
         <child>
@@ -90,16 +90,17 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
+            <property name="has_tooltip">True</property>
             <property name="tooltip_markup" translatable="yes">Whenever a colour image is being recovered, this option will write out a machine generated text file containing a bunch of image metadata, such as the source magnetic tape, recovery heuristics used, and so on, of each of the image bands used to reconstruct the final colour image.</property>
+            <property name="tooltip_text" translatable="yes">Whenever a colour image is being recovered, this option will write out a machine generated text file containing a bunch of image metadata, such as the source magnetic tape, recovery heuristics used, and so on, of each of the image bands used to reconstruct the final colour image.</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="active">True</property>
             <property name="draw_indicator">True</property>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
           </packing>
         </child>
         <child>
@@ -109,16 +110,19 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
+            <property name="has_tooltip">True</property>
             <property name="tooltip_markup" translatable="yes">If this is enabled, the VikingExtractor will display significantly more information as it attempts to recover what it can.</property>
+            <property name="tooltip_text" translatable="yes">If this is enabled, the VikingExtractor will display significantly more information as it attempts to recover what it can.</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="active">True</property>
             <property name="draw_indicator">True</property>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
           </packing>
         </child>
         <child>
@@ -129,22 +133,20 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
+            <property name="has_tooltip">True</property>
             <property name="tooltip_markup" translatable="yes">Take advantage of machines with more than one processor by using several simultaneously. Note that this feature is currently &lt;b&gt;not&lt;/b&gt; supported.</property>
+            <property name="tooltip_text" translatable="yes">Take advantage of machines with more than one processor by using several simultaneously. Note that this feature is currently not supported.</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="draw_indicator">True</property>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">3</property>
-          </packing>
         </child>
       </object>
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">3</property>
+        <property name="padding">10</property>
+        <property name="position">1</property>
       </packing>
     </child>
   </object>
@@ -155,24 +157,38 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
     <property name="orientation">vertical</property>
     <property name="spacing">20</property>
     <child>
-      <object class="GtkImage" id="image16">
+      <object class="GtkBox" id="box19">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="xpad">5</property>
-        <property name="ypad">5</property>
-        <property name="pixbuf">CartesianTheatre.png</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkImage" id="image5">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="pixbuf">Lens.png</property>
+        <child>
+          <object class="GtkImage" id="image5">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="xpad">10</property>
+            <property name="pixbuf">Lens.png</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label9">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">These configuration settings allow you to filter which specific types of data you are interested. If you leave these at their defaults, everything that can be recovered will be.
+
+If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
+            <property name="use_markup">True</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -181,28 +197,11 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label9">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">These configuration settings allow you to filter which specific types of data you are interested. If you leave these at their defaults, everything that can be recovered will be.
-
-If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
-        <property name="use_markup">True</property>
-        <property name="wrap">True</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">2</property>
-      </packing>
-    </child>
-    <child>
       <object class="GtkBox" id="box3">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="halign">start</property>
+        <property name="halign">center</property>
         <property name="border_width">20</property>
-        <property name="orientation">vertical</property>
         <property name="spacing">10</property>
         <child>
           <object class="GtkFrame" id="frame1">
@@ -322,7 +321,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
       </object>
       <packing>
         <property name="expand">False</property>
-        <property name="fill">True</property>
+        <property name="fill">False</property>
         <property name="position">3</property>
       </packing>
     </child>
@@ -334,45 +333,42 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
     <property name="orientation">vertical</property>
     <property name="spacing">20</property>
     <child>
-      <object class="GtkImage" id="image15">
+      <object class="GtkBox" id="box18">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="xpad">5</property>
-        <property name="ypad">5</property>
-        <property name="pixbuf">CartesianTheatre.png</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkImage" id="image3">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="pixbuf">Configure.png</property>
+        <child>
+          <object class="GtkImage" id="image3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">Configure.png</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label6">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">The &lt;b&gt;VikingExtractor&lt;/b&gt; has many different configuration options that control how it recovers images and what it does with them. Over the next few steps we'll configure them.
+
+If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
+            <property name="use_markup">True</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
         <property name="position">1</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="label6">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">The &lt;b&gt;VikingExtractor&lt;/b&gt; has many different configuration options that control how it recovers images and what it does with them. Over the next few steps we'll configure them.
-
-If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
-        <property name="use_markup">True</property>
-        <property name="wrap">True</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">2</property>
       </packing>
     </child>
   </object>
@@ -383,24 +379,38 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
     <property name="orientation">vertical</property>
     <property name="spacing">20</property>
     <child>
-      <object class="GtkImage" id="image14">
+      <object class="GtkBox" id="box17">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="xpad">5</property>
-        <property name="ypad">5</property>
-        <property name="pixbuf">CartesianTheatre.png</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkImage" id="image7">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="pixbuf">Box.png</property>
+        <child>
+          <object class="GtkImage" id="image7">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="valign">center</property>
+            <property name="pixbuf">Mars.png</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label8">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people. Let's start with how you'd like the files &lt;b&gt;organized&lt;/b&gt; in the directory you previously selected. If you select more than one method, they will be automatically nested within subfolders. 
+
+If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
+            <property name="use_markup">True</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -409,28 +419,14 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label8">
+      <object class="GtkTable" id="table1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">
-
-If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.Let's start with how you'd like the files &lt;b&gt;organized&lt;/b&gt; in the directory you previously selected. If you select more than one method, they will be automatically nested within subfolders. If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
-        <property name="use_markup">True</property>
-        <property name="wrap">True</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">2</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkBox" id="box5">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="border_width">20</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">10</property>
+        <property name="halign">center</property>
+        <property name="n_rows">2</property>
+        <property name="n_columns">2</property>
+        <property name="column_spacing">20</property>
+        <property name="row_spacing">10</property>
         <child>
           <object class="GtkCheckButton" id="directorizeBandTypeClassCheckButton">
             <property name="label" translatable="yes">Organize by sensor band type</property>
@@ -447,9 +443,8 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="draw_indicator">True</property>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
           </packing>
         </child>
         <child>
@@ -468,9 +463,10 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="draw_indicator">True</property>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
           </packing>
         </child>
         <child>
@@ -489,9 +485,8 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="draw_indicator">True</property>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
           </packing>
         </child>
         <child>
@@ -509,11 +504,6 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="active">True</property>
             <property name="draw_indicator">True</property>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">3</property>
-          </packing>
         </child>
       </object>
       <packing>
@@ -530,24 +520,37 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
     <property name="orientation">vertical</property>
     <property name="spacing">20</property>
     <child>
-      <object class="GtkImage" id="image13">
+      <object class="GtkBox" id="box16">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="xpad">5</property>
-        <property name="ypad">5</property>
-        <property name="pixbuf">CartesianTheatre.png</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkImage" id="image6">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="pixbuf">Binary.png</property>
+        <child>
+          <object class="GtkImage" id="image6">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">Binary.png</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label7">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">These options control how the VikingExtractor's image recovery process. 
+
+If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
+            <property name="use_markup">True</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -556,26 +559,12 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label7">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">These options control how the VikingExtractor's image recovery process. If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
-        <property name="use_markup">True</property>
-        <property name="wrap">True</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">2</property>
-      </packing>
-    </child>
-    <child>
       <object class="GtkBox" id="box4">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="halign">center</property>
         <property name="border_width">20</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">10</property>
+        <property name="spacing">20</property>
         <child>
           <object class="GtkCheckButton" id="noAutomaticRotationCheckButton">
             <property name="label" translatable="yes">No automatic rotation</property>
@@ -631,36 +620,12 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
     <property name="orientation">vertical</property>
     <property name="spacing">20</property>
     <child>
-      <object class="GtkImage" id="image12">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xpad">5</property>
-        <property name="ypad">5</property>
-        <property name="pixbuf">CartesianTheatre.png</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkImage" id="image9">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="pixbuf">Confirm.png</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
-    </child>
-    <child>
       <object class="GtkLabel" id="label13">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">The following is a summary of the configuration &lt;b&gt;VikingExtractor&lt;/b&gt; will use for this session. If you would like to change anything, you can go back. Otherwise the recovery effort will begin as soon as you hit &lt;i&gt;Apply&lt;/i&gt;.</property>
+        <property name="label" translatable="yes">The following is a summary of the configuration &lt;b&gt;VikingExtractor&lt;/b&gt; will use for this session. If you would like to change anything, you can go back. Otherwise the recovery effort will begin as soon as you hit &lt;i&gt;Apply&lt;/i&gt;.
+
+This next page will contain the output from the &lt;b&gt;VikingExtractor&lt;/b&gt; process while it works. Don't be alarmed if you see many warnings. This is normal because some of the Viking lander data was not actual data or was too corrupted to be recoverable.</property>
         <property name="use_markup">True</property>
         <property name="wrap">True</property>
       </object>
@@ -776,20 +741,6 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
     <property name="orientation">vertical</property>
     <property name="spacing">8</property>
     <child>
-      <object class="GtkImage" id="image11">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xpad">5</property>
-        <property name="ypad">5</property>
-        <property name="pixbuf">CartesianTheatre.png</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
       <object class="GtkBox" id="box6">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
@@ -871,102 +822,47 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
       </packing>
     </child>
   </object>
-  <object class="GtkTextBuffer" id="introductionTextBuffer">
-    <property name="text" translatable="yes">This Avaneya: Viking Lander Remastered disc has an interesting story behind it. If you'd like to skip past this and go straight to the data recovery, select skip introduction below.
-
-The Avaneya project is an attempt at a libre cerebral science fiction libre game for the GNU platform. It takes place in the future on Mars and predominantly in a region of the planet known as Arcadia Planitia. This is approximately mid-latitude in the northern hemisphere.
-
-Getting the game experience right is important to us. That means we need to replicate the visual environmental conditions of the Martian landscape as closely as possible. We can do much better than simply making it red, and users appreciate this because it makes their experience feel more genuine.
-
-As such, our artists need access to large sets of high resolution reference photographs of the area nearest and most similar to Arcadia Planitia for study. Suitable photographs were taken in the late 1970s by NASA's Viking mission.
-
-In 1976 NASA successfully placed two spacecraft into Martian orbit after many years of failed American and Russian attempts. These initial failures became unofficially attributed to the Mars Curse, owing to their high number. The Viking orbiters both carried their own landers which they successfully landed. 
-
-The landers were capable of capturing high resolution photographs and other data from the surface of the planet, buffering temporarily onto internal magnetic tapes, and then relaying this data back to Earth through one the orbiters when it was in position, or sometimes directly through a UHF uplink when possible. They provided us with large amounts of data without any issues for four years before finally succumbing to a battery failure on one and a software update bug which shutdown the communication antenna on the other.</property>
-  </object>
   <object class="GtkBox" id="introductionPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <property name="spacing">8</property>
     <child>
-      <object class="GtkBox" id="box9">
+      <object class="GtkScrolledWindow" id="scrolledwindow1">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">5</property>
+        <property name="can_focus">True</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="hscrollbar_policy">never</property>
+        <property name="shadow_type">in</property>
         <child>
-          <object class="GtkImage" id="image2">
+          <object class="GtkViewport" id="viewport1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="xpad">5</property>
-            <property name="ypad">5</property>
-            <property name="pixbuf">CartesianTheatre.png</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkFrame" id="frame4">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label_xalign">0</property>
-            <property name="shadow_type">in</property>
+            <property name="margin_left">7</property>
+            <property name="margin_right">7</property>
+            <property name="margin_top">7</property>
+            <property name="margin_bottom">7</property>
+            <property name="vexpand">True</property>
             <child>
-              <object class="GtkScrolledWindow" id="scrolledwindow1">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="margin_left">5</property>
-                <property name="margin_right">5</property>
-                <property name="margin_top">5</property>
-                <property name="margin_bottom">5</property>
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
-                <property name="shadow_type">etched-in</property>
-                <property name="min_content_width">0</property>
-                <property name="min_content_height">0</property>
-                <child>
-                  <object class="GtkTextView" id="introductionTextView">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="hexpand">True</property>
-                    <property name="vexpand">True</property>
-                    <property name="editable">False</property>
-                    <property name="wrap_mode">word</property>
-                    <property name="left_margin">7</property>
-                    <property name="right_margin">7</property>
-                    <property name="cursor_visible">False</property>
-                    <property name="buffer">introductionTextBuffer</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="label14">
+              <object class="GtkLabel" id="introductionLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">&lt;b&gt;Introduction:&lt;/b&gt;</property>
+                <property name="vexpand">True</property>
+                <property name="label" translatable="yes">???</property>
                 <property name="use_markup">True</property>
+                <property name="wrap">True</property>
               </object>
             </child>
           </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
         </child>
       </object>
       <packing>
-        <property name="expand">True</property>
+        <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">1</property>
+        <property name="position">0</property>
       </packing>
     </child>
   </object>
@@ -992,6 +888,27 @@ The landers were capable of capturing high resolution photographs and other data
       </row>
     </data>
   </object>
+  <object class="GtkWindow" id="openingVideoWindow">
+    <property name="can_focus">False</property>
+    <property name="window_position">center-always</property>
+    <property name="type_hint">splashscreen</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="decorated">False</property>
+    <property name="deletable">False</property>
+    <child>
+      <object class="GtkEventBox" id="openingVideoEventBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkDrawingArea" id="openingVideoDrawingArea">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkBox" id="recoveryPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1001,18 +918,6 @@ The landers were capable of capturing high resolution photographs and other data
     <property name="margin_bottom">5</property>
     <property name="orientation">vertical</property>
     <property name="spacing">2</property>
-    <child>
-      <object class="GtkImage" id="image10">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="pixbuf">CartesianTheatre.png</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
     <child>
       <object class="GtkFrame" id="frame3">
         <property name="visible">True</property>
@@ -1053,6 +958,7 @@ The landers were capable of capturing high resolution photographs and other data
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">&lt;b&gt;Recovery Output:&lt;/b&gt;</property>
             <property name="use_markup">True</property>
+            <property name="ellipsize">start</property>
           </object>
         </child>
       </object>
@@ -1115,22 +1021,37 @@ The landers were capable of capturing high resolution photographs and other data
     <property name="orientation">vertical</property>
     <property name="spacing">20</property>
     <child>
-      <object class="GtkImage" id="image20">
+      <object class="GtkBox" id="box15">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="pixbuf">CartesianTheatre.png</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkImage" id="image4">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="pixbuf">Save.png</property>
+        <child>
+          <object class="GtkImage" id="image4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">Save.png</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="label" translatable="yes">Please select an &lt;b&gt;empty&lt;/b&gt; folder below. This folder will be used to save all of the recoverable images. If the folder is not empty, its contents could be overwritten if you allow it.</property>
+            <property name="use_markup">True</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -1139,25 +1060,10 @@ The landers were capable of capturing high resolution photographs and other data
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label4">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="halign">center</property>
-        <property name="valign">center</property>
-        <property name="label" translatable="yes">Please select an &lt;b&gt;empty&lt;/b&gt; folder below. This folder will be used to save all of the recoverable images. If the folder is not empty, its contents may be overwritten.</property>
-        <property name="use_markup">True</property>
-        <property name="wrap">True</property>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">2</property>
-      </packing>
-    </child>
-    <child>
       <object class="GtkFileChooserButton" id="recoveryFolderChooser">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="halign">center</property>
         <property name="valign">center</property>
         <property name="orientation">vertical</property>
         <property name="action">select-folder</property>
@@ -1179,6 +1085,7 @@ The landers were capable of capturing high resolution photographs and other data
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
         <property name="tooltip_markup" translatable="yes">This will overwrite any existing output files that have the same name as the data recovered.</property>
+        <property name="halign">center</property>
         <property name="use_action_appearance">False</property>
         <property name="xalign">0</property>
         <property name="active">True</property>
@@ -1224,67 +1131,56 @@ The landers were capable of capturing high resolution photographs and other data
     <property name="orientation">vertical</property>
     <property name="spacing">8</property>
     <child>
-      <object class="GtkBox" id="box10">
+      <object class="GtkBox" id="box14">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">7</property>
         <child>
-          <object class="GtkImage" id="image18">
+          <object class="GtkBox" id="box12">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="pixbuf">CartesianTheatre.png</property>
+            <child>
+              <object class="GtkImage" id="image1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xpad">5</property>
+                <property name="pixbuf">Disc.png</property>
+                <property name="icon-size">3</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">This disc contains a substantial amount of data that the recovery software will try to examine for recoverable images. Would you like to verify that the data contained on your disc is not corrupted?
+
+You really only ever need to do this once or if you suspect that your disc may be damaged. Note that this can take a while, depending on the speed of your hardware.</property>
+                <property name="wrap">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="box14">
+          <object class="GtkBox" id="box5">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkBox" id="box12">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkImage" id="image1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="pixbuf">Disc.png</property>
-                    <property name="icon-size">3</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="label1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">This disc contains a substantial amount of data that the recovery software will try to examine for recoverable images. Would you like to verify that the data contained on your disc is not corrupted?
-
-You really only ever need to do this once or if you suspect that your disc may be damaged. Note that this can take a while, depending on the speed of your hardware.</property>
-                    <property name="wrap">True</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
+            <property name="halign">center</property>
+            <property name="spacing">20</property>
             <child>
               <object class="GtkRadioButton" id="performVerificationCheckRadio">
                 <property name="label" translatable="yes">Perform DVD integrity check</property>
@@ -1302,7 +1198,7 @@ You really only ever need to do this once or if you suspect that your disc may b
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -1322,19 +1218,19 @@ You really only ever need to do this once or if you suspect that your disc may b
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">2</property>
+                <property name="position">1</property>
               </packing>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
       <packing>
-        <property name="expand">True</property>
+        <property name="expand">False</property>
         <property name="fill">True</property>
         <property name="position">0</property>
       </packing>
@@ -1353,22 +1249,10 @@ You really only ever need to do this once or if you suspect that your disc may b
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkImage" id="image19">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="pixbuf">CartesianTheatre.png</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkLabel" id="verificationCurrentFileLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Verifying disc integrity. Please wait...</property>
+            <property name="label" translatable="yes">Please wait while verifying your disc's integrity...</property>
             <property name="justify">center</property>
           </object>
           <packing>

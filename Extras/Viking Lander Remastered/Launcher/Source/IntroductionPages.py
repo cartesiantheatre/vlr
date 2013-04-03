@@ -20,6 +20,10 @@
 
 # System imports...
 from gi.repository import Gtk
+import os
+
+# Arguments...
+import LauncherArguments
 
 # Introduction page proxy class...
 class IntroductionPagesProxy():
@@ -38,4 +42,12 @@ class IntroductionPagesProxy():
         self._assistant.set_page_title(self._introductionPagesBox, "Introduction")
         self._assistant.set_page_type(self._introductionPagesBox, Gtk.AssistantPageType.INTRO)
         self._assistant.set_page_complete(self._introductionPagesBox, True)
+
+        # Find widgets...
+        self._introductionLabel = self._builder.get_object("introductionLabel")
+
+        # Load the introduction text from disk...
+        introductionFile = open(os.path.join(
+            LauncherArguments.getArguments().dataRoot, "Introduction"))
+        self._introductionLabel.set_markup(introductionFile.read())
 

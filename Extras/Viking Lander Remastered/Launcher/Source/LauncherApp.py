@@ -19,13 +19,15 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # System imports...
+import sys
+import os
 from gi.repository import Gtk, Gdk, GObject, Vte
 
 # Arguments...
 import LauncherArguments
 
-# Splash window...
-from SplashWindow import SplashWindowProxy
+# Splash and opening video windows...
+from OpeningVideoWindow import OpeningVideoWindowProxy
 
 # Assistant pages and related logic...
 from IntroductionPages import IntroductionPagesProxy
@@ -48,14 +50,15 @@ class LauncherApp():
 
         # Initialize Glade builder...
         self.builder = Gtk.Builder()
-        self.builder.add_from_file(LauncherArguments.getArguments().gladeXMLPath)
+        self.builder.add_from_file(os.path.join(
+            LauncherArguments.getArguments().dataRoot, "Launcher.glade"))
 
         # Find the assistant...
         self.assistant = self.builder.get_object("assistantWindow")
 
-        # Construct and show the splash window...
-        self.splashWindowProxy = SplashWindowProxy(self)
-        self.splashWindowProxy.showSplash()
+        # Construct and show the opening video window...
+        self.openingVideoWindowProxy = OpeningVideoWindowProxy(self)
+        self.openingVideoWindowProxy.showVideo()
 
         # Construct pages and register them with the assistant in correct order...
         self.introductionPagesProxy = IntroductionPagesProxy(self)

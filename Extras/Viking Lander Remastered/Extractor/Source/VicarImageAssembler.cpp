@@ -244,7 +244,7 @@ void VicarImageAssembler::Reconstruct()
 
 #ifdef USE_DBUS_INTERFACE
         // Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
-        DBusInterface::GetInstance().EmitNotificationSignal("Analyzing catalogue, please wait...");
+        DBusInterface::GetInstance().EmitNotificationSignal("Analyzing mission data, please wait...");
 #endif
 
         // Keep reading entries while there are some...
@@ -272,7 +272,7 @@ void VicarImageAssembler::Reconstruct()
             if(Options::GetInstance().GetSummarizeOnly())
             {
                 Message(Console::Summary) 
-                    << "\rstudying catalogue of " 
+                    << "\rstudying mission data catalogue of " 
                     << ProspectiveFilesExamined << "/" << TotalProspectiveFiles 
                     << " (" << PercentageExamined << " %)";
             }
@@ -423,7 +423,7 @@ void VicarImageAssembler::Reconstruct()
 
 #ifdef USE_DBUS_INTERFACE
         // Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
-        DBusInterface::GetInstance().EmitNotificationSignal("Attempting forensic data recovery...");
+        DBusInterface::GetInstance().EmitNotificationSignal("Attempting forensic mission data recovery...");
 #endif
 
         // Reconstruct each image...

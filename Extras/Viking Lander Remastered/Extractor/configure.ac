@@ -74,10 +74,10 @@ AC_CONFIG_SRCDIR([Source/VikingExtractor.cpp])
 
     # D-Bus interface...
     AC_ARG_ENABLE([dbus-interface],
-        [AS_HELP_STRING([--disable-dbus-interface],
-            [disable D-Bus interface (VLR GUI needs interface) @<:@default: no@:>@])],
+        [AS_HELP_STRING([--enable-dbus-interface],
+            [enable D-Bus interface (needed by VLR GUI) @<:@default: no@:>@])],
         [dbus_interface=${enableval}], 
-        [dbus_interface=yes])
+        [dbus_interface=no])
 
 # Checks for programs needed to build and test VikingExtractor...
 

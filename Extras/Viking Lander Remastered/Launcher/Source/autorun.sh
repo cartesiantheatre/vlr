@@ -26,10 +26,9 @@
 #
 #   * Zenity (zenity)
 #   * Python 3 (python3)
-#   * Python GObject bindings (python-gi >= 3.0), which, correct me if wrong,
-#      includes or should pull the distro's Gtk3+ runtimes on Ubuntu Precise
-#   * Python D-Bus interface
-#   # C D-Bus runtime library
+#   * Python GObject bindings (python-gi >= 3.0), which should pull the distro's
+#     Gtk3+ runtimes on Ubuntu Precise and GDBus bindings...
+#   * GStreamer 1.0 base plugins optional (gir1.2-gst-plugins-base-1.0)
 #
 
 # Useful constants...
@@ -220,6 +219,9 @@ PrepareDebianBased()
     # Calculate which packages we need...
     case "$DistroCodeName" in
 
+        # Note: Do not place commas between packages! Bash treats them as part
+        #       of the array element...
+
         # Ubuntu...
 
             # Ubuntu precise...
@@ -239,7 +241,7 @@ PrepareDebianBased()
             # Debian wheezy. Squeeze doesn't have the latter two needed
             #  packages...
             "wheezy")
-                PackagesRequired=("python3-gi" "python3-dbus")
+                PackagesRequired=("python3-gi")
             ;;
 
         # Unknown distro...
@@ -272,15 +274,42 @@ PrepareDebianBased()
 
     # Some packages still need to be installed...
     if [ ${#PackagesMissing[*]} -gt 0 ]; then
-        
-        # Alert user of missing packages...
+
+        # Print to console missing packages...
         echo "Packages which need to be installed... ${PackagesMissing[*]}"
-        zenity \
-            --info \
-            --title="$Title" \
-            --window-icon=$Icon \
-            --text="Welcome! You need to install the following software from your operating system's package manager before you can use this disc. Once the software is installed, just restart the application.\n\n\t${PackagesMissing[*]}" \
-            --ok-label="Ok"
+
+        # Take appropriate resolution for distro...
+        case "$Distro" in
+        
+            # Ubuntu...
+            [Uu]buntu)
+                
+                # Prompt user for available options...
+                zenity \
+                    --question \
+                    --title="$Title" \
+                    --window-icon=$Icon \
+                    --text="Welcome! This application needs the following additional software. Would you like to install it now?\n\n\t${PackagesMissing[*]}" \
+                    --ok-label="Yes" \
+                    --cancel-label="No"
+
+                # User opted to install the packages...
+                if [ $? == 0 ]; then
+                    software-center ${PackagesMissing[*]}
+                fi
+            ;;
+
+            # Some other distro...
+            *)
+                zenity \
+                    --info \
+                    --title="$Title" \
+                    --window-icon=$Icon \
+                    --text="Welcome! This application needs the following additional software you can install with your operating system's package manager. Once it is installed, just restart the application.\n\n\t${PackagesMissing[*]}" \
+                    --ok-label="Ok"
+            ;;
+            
+        esac
 
         # Eject the disc, first try by CDROM eject method, then by SCSI method...
         echo -n "Eject disc... "

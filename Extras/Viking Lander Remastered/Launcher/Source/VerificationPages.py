@@ -79,8 +79,7 @@ class VerificationPagesProxy():
 
             # Make sure the page is not marked complete until after the thread
             #  exits...
-            self._assistant.set_page_complete(
-                self._verificationProgressPageBox, False)
+            self._assistant.set_page_complete(self.getProgressPageBox(), False)
 
             # Change to busy cursor...
             self._launcher.setBusy(True)
@@ -120,7 +119,7 @@ class VerificationPagesProxy():
         messageDialog.destroy()
 
         # Mark page as complete...
-        self._assistant.set_page_complete(self._verificationProgressPageBox, True)
+        self._assistant.set_page_complete(self.getProgressPageBox(), True)
         
         # Advance to the next page...
         currentPageIndex = self._assistant.get_current_page()
@@ -153,7 +152,7 @@ class VerificationThread(threading.Thread):
 
         # Initialize state...
         self._builder = builder
-        self._assistant = self._builder.get_object("assistantWindow")
+        self._assistant = builder.get_object("assistantWindow")
 
         # Create list of file pairs (path, checksum) to check...
         self._parseChecksumManifest()
@@ -166,7 +165,8 @@ class VerificationThread(threading.Thread):
         self._terminateRequested = False
 
         # Find the user interface elements...
-        self._verificationProgressBar = self._builder.get_object("verificationProgressBar")
+        self._verificationProgressPageBox = builder.get_object("verificationProgressPageBox")
+        self._verificationProgressBar = builder.get_object("verificationProgressBar")
 
     # Calculate a file's MD5 checksum...
     def _calculateChecksum(self, filePath):
@@ -321,8 +321,7 @@ class VerificationThread(threading.Thread):
         self._assistant.get_root_window().set_cursor(None)
 
         # Mark page as complete...
-        self._assistant.set_page_complete(
-            self._builder.get_object("verificationProgressPageBox"), True)
+        self._assistant.set_page_complete(self._verificationProgressPageBox, True)
 
         # Alert user everything went fine from the main thread...
         GObject.idle_add(self._setQuitOk)
@@ -339,8 +338,7 @@ class VerificationThread(threading.Thread):
         messageDialog.destroy()
 
         # Page is complete now...
-        self._assistant.set_page_complete(
-            self._verificationProgressPageBox, True)
+        self._assistant.set_page_complete(self._verificationProgressPageBox, True)
 
         # Advance to the next page...
         currentPageIndex = self._assistant.get_current_page()

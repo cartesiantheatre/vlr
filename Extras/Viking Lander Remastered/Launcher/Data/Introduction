@@ -1,0 +1,26 @@
+Dear User,
+
+The <i>Avaneya: Viking Lander Remastered</i> project has an interesting story behind it. However, if you'd like to skip past it and go straight to the data recovery, please use the navigation button below.
+
+The <a href="https://www.avaneya.com">Avaneya project</a> is a grass roots collaborative initiative to produce a libre, DRM free, cerebral, science fiction game primarily targetting, albeit not exclusively limited to, users of the <a href="https://www.gnu.org/gnu/gnu-users-never-heard-of-gnu.html">GNU operating system</a>. It has been made popular through its various distributions, such as <a href="http://www.ubuntu.com">Ubuntu</a>. Although the game is still in its infancy at the time of writing, it would be naive to conclude that it has not endured several years worth of critical research and design already.
+
+Avaneya takes place in the not too distant future on Mars, predominantly in a specific region known as <i><a href="https://en.wikipedia.org/wiki/Arcadia_planitia">Arcadia Planitia</a></i>. This is approximately mid-latitude in the Red Planet's northern hemisphere.
+
+While designing Avaneya, we realized just how important getting the game experience right was. We needed to replicate the visual environmental conditions of the Martian environment as carefully as possible. We can do much better than simply making it red, and users appreciate the earnest effort at obtaining as much realism as possible because it makes for a significantly more more genuine experience.
+
+As such, our artists needed access to large sets of high resolution reference images for study. The closest relevant photographs available at present were taken in a neighbouring region near <i>Arcadia Planitia</i> called <a href="https://en.wikipedia.org/wiki/Utopia_Planitia">Utopia Planitia</a> during the late 1970s by NASA's Viking mission to Mars. This region is very similar to <i>Arcadia Planitia</i> in appearance.
+
+In 1976 NASA successfully placed two spacecraft into Martian orbit after many years of <a href="http://www.marsnews.com/missions/allmissions.html">failed</a> American and Russian attempts. These initial failures became unofficially attributed to the Mars Curse, owing to their high number. The Viking orbiters both carried their own landers which they successfully landed, one of which in the aforementioned <i>Utopia Planitia</i>.
+
+The landers were capable of capturing high resolution photographs and other data from the surface of the planet, buffering this data temporarily within internal magnetic tapes and then relaying this data back to Earth through one the orbiters when it was in position or sometimes directly through a UHF uplink when possible. The lander provided us with large amounts of data without any issues for four years before finally succumbing to a battery failure on one and a software update bug which shutdown the communication antenna on the other.
+
+An <a href="http://pds-imaging.jpl.nasa.gov/volumes/viking.html">online archive</a> of all of the mission data was released into the public domain. However, due to the way this data was encoded and archived with the technology of the 1970s, it is unfortunately extremely difficult and impractical to examine any photographic data in the archive. 
+
+This is why we felt compelled to author the software you are using now. Although it began naively as an internal project, peripherial to our core Avaneya project, there was an outcry from folks insisting that the community would enjoy it as well. In addition, given that there has also been an outcry of demand for libre commercial gaming titles for the GNU operating system for more than a decade, we realized that our fan base would understand that their supporting in purchasing a copy of this software on DVD from us would be critical in sustaining the project and its need for high quality engineers and artists.
+
+Nearly anything else you might like to know about the Avaneya project, or for more detailed and technical background information on the mission data recovery effort, take a look at the <i>Viking Lander Remastered</i> chapter in the <i>Avaneya Project Crew Handbook</i>, a book which you will momentarily be provided with a free copy of the latest revision.
+
+On behalf of all of us, we would like to extend our gratitude for your having taken the time
+to support this project. Avaneya has an exciting future ahead of it. We hope you will choose to be a part of it.
+
+    <b><i>~ Avaneya Project Crew</i></b>

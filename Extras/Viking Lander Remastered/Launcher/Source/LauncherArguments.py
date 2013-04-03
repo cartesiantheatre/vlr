@@ -44,15 +44,15 @@ def _initializeArguments():
     argumentParser.add_argument("--no-splash", 
         action="store_true", 
         dest="noSplash", 
-        help="Do not show the splash screen.", 
+        help="Do not show the splash and opening video.", 
         default=False)
 
-    # Define behaviour for --glade-xml...
-    argumentParser.add_argument("--glade-xml", 
+    # Define behaviour for --data-root...
+    argumentParser.add_argument("--data-root", 
         action="store", 
-        default=os.path.normpath(os.path.join(_getSourceDirectory(), "../Data/Launcher.glade")),
-        dest="gladeXMLPath", 
-        help="Path to Glade user interface XML file.")
+        default=os.path.normpath(os.path.join(_getSourceDirectory(), "../Data/")),
+        dest="dataRoot", 
+        help="Path to user interface data root.")
 
     # Define behaviour for --mission-data-root...
     argumentParser.add_argument("--mission-data-root", 
