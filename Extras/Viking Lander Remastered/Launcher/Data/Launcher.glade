@@ -904,6 +904,10 @@ This next page will contain the output from the &lt;b&gt;VikingExtractor&lt;/b&g
           <object class="GtkDrawingArea" id="openingVideoDrawingArea">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_left">3</property>
+            <property name="margin_right">3</property>
+            <property name="margin_top">3</property>
+            <property name="margin_bottom">3</property>
           </object>
         </child>
       </object>
@@ -1103,7 +1107,7 @@ This next page will contain the output from the &lt;b&gt;VikingExtractor&lt;/b&g
     <property name="title" translatable="yes">Avaneya</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
-    <property name="window_position">center</property>
+    <property name="window_position">center-always</property>
     <property name="type_hint">splashscreen</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="skip_pager_hint">True</property>
@@ -1244,51 +1248,32 @@ You really only ever need to do this once or if you suspect that your disc may b
     <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <child>
-      <object class="GtkBox" id="box13">
+      <object class="GtkBox" id="box7">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="verificationCurrentFileLabel">
+          <object class="GtkImage" id="verificationImage">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Please wait while verifying your disc's integrity...</property>
-            <property name="justify">center</property>
+            <property name="stock">gtk-missing-image</property>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="hbox">
+          <object class="GtkBox" id="box13">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="border_width">20</property>
-            <property name="spacing">7</property>
+            <property name="orientation">vertical</property>
             <child>
-              <object class="GtkProgressBar" id="verificationProgressBar">
+              <object class="GtkLabel" id="verificationCurrentFileLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
-                <property name="show_text">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="stopVerificationButton">
-                <property name="label">gtk-stop</property>
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
-                <property name="use_stock">True</property>
+                <property name="label" translatable="yes">Please wait while verifying your disc's integrity...</property>
+                <property name="justify">center</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1296,11 +1281,53 @@ You really only ever need to do this once or if you suspect that your disc may b
                 <property name="position">1</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkBox" id="hbox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="border_width">20</property>
+                <property name="spacing">7</property>
+                <child>
+                  <object class="GtkProgressBar" id="verificationProgressBar">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="show_text">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="stopVerificationButton">
+                    <property name="label">gtk-stop</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="use_stock">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>

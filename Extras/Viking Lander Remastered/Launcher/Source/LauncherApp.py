@@ -39,6 +39,9 @@ from ConfirmPage import ConfirmPageProxy
 from RecoveryPage import RecoveryPageProxy
 from FarewellPage import FarewellPageProxy
 
+# Miscellaneous routines...
+from Miscellaneous import *
+
 # Launcher class...
 class LauncherApp():
 
@@ -80,12 +83,10 @@ class LauncherApp():
         self.assistant.connect("delete-event", self.onDeleteEvent)
         self.assistant.connect("prepare", self.onPrepareEvent)
         
-        # For wider screens, adjust the window size to 2/3rds the width...
-        screen = Gdk.Screen.get_default()
-        (screenWidth, screenHeight) = (screen.get_width(), screen.get_height())
-        (windowWidth, windowHeight) = self.assistant.get_size()
-        if screenWidth > 1024:
-            self.assistant.resize(screenWidth * 2 / 3, screenHeight * 2 / 3)
+        # For wider screens, adjust the window size to 3/4 the width...
+        (monitorWidth, monitorHeight) = getMonitorWithCursorSize()
+        if monitorWidth > 1024:
+            self.assistant.resize_to_geometry(monitorWidth * 3 / 4, 1)
         
     # End of current page. Next page is being constructed but not visible yet.
     #  Give it a chance to prepare...

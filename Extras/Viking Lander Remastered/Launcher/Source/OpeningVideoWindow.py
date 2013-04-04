@@ -45,6 +45,7 @@ except ImportError:
 # Our support modules...
 import LauncherArguments
 from SplashWindow import SplashWindowProxy
+from Miscellaneous import *
 
 # System modules...
 import sys
@@ -69,9 +70,6 @@ class OpeningVideoWindowProxy():
         self._videoWindow.connect("key-press-event", self.onVideoPressed)
         self._videoEventBox.connect("button-press-event", self.onVideoPressed)
         self._videoDrawingArea.connect('realize', self.onDrawingAreaRealized)
-
-        # Set the size of the video drawing area...
-        self._videoDrawingArea.set_size_request(1920 / 2, 1200 / 2)
 
         # Initialize GStreamer, if GStreamer is available...
         if haveGStreamer:
@@ -112,6 +110,13 @@ class OpeningVideoWindowProxy():
             os.path.join(
                 LauncherArguments.getArguments().dataRoot, 
                 "Opening.ogv"))
+
+        # Resize drawing area so video is 3/4 screen width...
+        (monitorWidth, monitorHeight) = getMonitorWithCursorSize()
+        aspectRatio = 1920 / 1200
+        drawingAreaWidth = (3 / 4) * monitorWidth
+        self._videoDrawingArea.set_size_request(
+            drawingAreaWidth, drawingAreaWidth / aspectRatio)
 
         # Start playing now...
         self._playBin.set_state(Gst.State.PLAYING)
@@ -154,11 +159,12 @@ class OpeningVideoWindowProxy():
         if messageName == "prepare-xwindow-id" or \
            messageName == "prepare-window-handle":
 
+            # Get the video sink...
             videoSink = message.src
             assert(videoSink)
-            #videoSink = self._videoSink
-            #assert(self._videoSink is videoSink)
 
+            # Make sure we got the window handle during the widget 
+            #  realization...
             assert(self._drawingAreaWindowHandle)
 
             # Set the drawing area widget as the image sink...
@@ -191,6 +197,10 @@ class OpeningVideoWindowProxy():
 
     # Show the video window...
     def showVideo(self):
+
+        # If GStreamer isn't available, skip the video...
+        if not haveGStreamer:
+            return
 
         # Set it to be always on top...
         self._videoWindow.set_keep_above(True)

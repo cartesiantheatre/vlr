@@ -18,7 +18,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # System imports...
-from gi.repository import Gtk, Gdk, GObject
+from gi.repository import Gtk, Gdk, GObject, GdkPixbuf
 import hashlib
 import os
 import threading
@@ -40,8 +40,12 @@ class VerificationPagesProxy():
         self._builder   = launcherApp.builder
         self._thread    = None
 
-        # Add the verification info page to the assistant...
+        # Find the window widgets...
+        self._verificationImage = self._builder.get_object("verificationImage")
         self._verificationInfoPageBox = self._builder.get_object("verificationInfoPageBox")
+        self._verificationProgressPageBox = self._builder.get_object("verificationProgressPageBox")
+
+        # Add the verification info page to the assistant...
         self._verificationInfoPageBox.set_border_width(5)
         self._assistant.append_page(self._verificationInfoPageBox)
         self._assistant.set_page_title(self._verificationInfoPageBox, "Verification Prompt")
@@ -49,7 +53,6 @@ class VerificationPagesProxy():
         self._assistant.set_page_complete(self._verificationInfoPageBox, True)
 
         # Add the verification progress page to the assistant...
-        self._verificationProgressPageBox = self._builder.get_object("verificationProgressPageBox")
         self._verificationProgressPageBox.set_border_width(5)
         self._assistant.append_page(self._verificationProgressPageBox)
         self._assistant.set_page_title(
@@ -83,6 +86,13 @@ class VerificationPagesProxy():
 
             # Change to busy cursor...
             self._launcher.setBusy(True)
+
+            # Load the verification animation...
+            animation = GdkPixbuf.PixbufAnimation.new_from_file(
+                os.path.join(
+                    LauncherArguments.getArguments().dataRoot, "verification.gif"))
+            self._verificationImage.set_from_animation(animation)
+            self._verificationImage.show()
 
             # Launch the thread...
             self.startDiscVerification()
@@ -140,6 +150,9 @@ class VerificationPagesProxy():
             
             # Wait for it to quit...
             self._thread.join()
+            
+            # Stop the verification animation...
+            self._verificationImage.set_from_animation(None)
 
 # This thread is responsible for verifying data verification of the disc...
 class VerificationThread(threading.Thread):
