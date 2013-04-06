@@ -18,17 +18,35 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
+#
+#
+# Maintainer Notes
+# ================
+#
 # This script is automatically run when the volume is mounted, if enabled, as 
-# per XDG's Desktop Application Autostart Specification. The goal is to ensure 
-# that the user has a sane execution environment that has the necessary 
-# preinstalled packages. What they don't have, they need to be informed of in a 
-# way that makes their life simple. These are the runtimes that are needed:
+# per XDG's Desktop Application Autostart Specification. The goal is to try to
+# bootstrap the actual target application by ensuring the user has a sane 
+# execution environment with all of the necessary hard dependencies (packages)
+# preinstalled. What they don't have, they need to be informed of in a way that 
+# is meaningful on their specific distro to make their life simple (e.g. Ubuntu
+# Software Centre). These are the runtimes that are needed:
+#
+# Hard Dependencies
+# =================
 #
 #   * Zenity (zenity)
+#
 #   * Python 3 (python3)
+#
 #   * Python GObject bindings (python-gi >= 3.0), which should pull the distro's
 #     Gtk3+ runtimes on Ubuntu Precise and GDBus bindings...
-#   * GStreamer 1.0 base plugins optional (gir1.2-gst-plugins-base-1.0)
+#
+#  Soft Dependenices
+#  =================
+#
+#    * GStreamer 1.0 base plugins as a soft dependency since at time of 
+#      authoring gir1.2-gst-plugins-base-1.0 did not ship pre-installed on 
+#      Ubuntu, up to and including Precise (12.04)
 #
 
 # Useful constants...
@@ -50,21 +68,35 @@
     DistroPackageManager=""
 
     # VT100 terminal constants...
-    VT100_RESET=$'\033[0m'
-    VT100_BOLD=$'\033[1m'
-    VT100_COLOUR_RED=$'\033[31m'
-    VT100_COLOUR_GREEN=$'\033[32m'
-    VT100_COLOUR_BLUE=$'\033[34m'
+    VT100Reset=$'\033[0m'
+    VT100Bold=$'\033[1m'
+    VT100ColourRed=$'\033[31m'
+    VT100ColourGreen=$'\033[32m'
+    VT100ColourBlue=$'\033[34m'
     
     # Status symbol constants...
-    SYMBOL_STATUS_OK="${VT100_BOLD}${VT100_COLOUR_GREEN}✓${VT100_RESET}"
-    SYMBOL_STATUS_FAIL="${VT100_BOLD}${VT100_COLOUR_RED}✗${VT100_RESET}"
-    
-    # Complete path to launcher entry point......
-    PYTHON_LAUNCHER_MAIN=""
+    SymbolStatusOk="${VT100Bold}${VT100ColourGreen}✓${VT100Reset}"
+    SymbolStatusFail="${VT100Bold}${VT100ColourRed}✗${VT100Reset}"
 
-#Zenity process ID...
-ZenityPID=0
+    # The lock file containing the process ID... (FHS 5.9.1)
+    ProcessIDFile="/var/lock/vlr-lock"
+
+    # Complete path to the directory containing this script...
+    #AutostartScriptDirectory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    AutostartScriptDirectory="$(dirname -- "$(readlink -f -- "$0")")"
+
+    # Complete path to launcher entry point......
+    PythonLauncherMain=""
+    
+    # True if we were the only instance of this script and managed to set a 
+    #  lock...
+    OwnLock=false
+    
+    # Set to true if EXIT trap should attempt to eject removable media...
+    EjectRequested=false
+
+    # Zenity process ID...
+    ZenityProcessID=0
 
 # Array of packages the user is missing that we need...
 declare -a PackagesMissing
@@ -75,22 +107,19 @@ FindLauncherMain()
     # Alert user...
     echo -n "Looking for launcher... "
 
-    # Get the complete path to the directory containing this script...
-    AUTORUN_SCRIPT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
     # Check for Source/Main.py first...
-    if [ -f "$AUTORUN_SCRIPT_DIRECTORY/Source/Main.py" ] ; then
-        echo "Source/Main.py " $SYMBOL_STATUS_OK
-        PYTHON_LAUNCHER_MAIN=$AUTORUN_SCRIPT_DIRECTORY/Source/Main.py
+    if [ -f "$AutostartScriptDirectory/Source/Main.py" ] ; then
+        echo "Source/Main.py " $SymbolStatusOk
+        PythonLauncherMain=$AutostartScriptDirectory/Source/Main.py
     
     # Nope. Check in the same directory...
-    elif [ -f "$AUTORUN_SCRIPT_DIRECTORY/Main.py" ] ; then
-        echo "Main.py " $SYMBOL_STATUS_OK
-        PYTHON_LAUNCHER_MAIN=$AUTORUN_SCRIPT_DIRECTORY/Main.py
+    elif [ -f "$AutostartScriptDirectory/Main.py" ] ; then
+        echo "Main.py " $SymbolStatusOk
+        PythonLauncherMain=$AutostartScriptDirectory/Main.py
 
     # Couldn't find it anywhere...
     else
-	    echo $SYMBOL_STATUS_FAIL
+	    echo $SymbolStatusFail
         zenity --error \
             --title="Error" \
             --window-icon=$Icon \
@@ -99,25 +128,37 @@ FindLauncherMain()
     fi
 }
 
-# Trap an interrupt... (e.g. ctrl-c)
-TrapInterrupt()
+# Signal trap to always run on exit... (e.g. ctrl-c)
+OnExit()
 {
-    # Alert user...
-    echo "Trap detected. Cleaning up..."
-    
+    # Remove process ID file so no stale lock remains if we were the ones that
+    #  locked it...
+    if $OwnLock ; then
+        rm -f "$ProcessIDFile"
+    fi
+
     # Kill any instance of Zenity that might be still executing...
     KillZenity
+    
+    # If anything requested we eject the removable media on exit, do so now...
+    if $EjectRequested ; then
+        EjectRemovableMedia
+    fi
 }
 
 # Kill Zenity...
 KillZenity()
 {
     # Kill any Zenity GUI if still open...
-    if [ ZenityPID != 0 ]; then
-        kill $ZenityPID
-        wait $ZenityPID 2> /dev/null
+    if [ $ZenityProcessID != 0 ]; then
+        
+        # Send the terminate signal...
+        kill $ZenityProcessID
+        
+        # Wait gracefully for it to exit...
+        wait $ZenityProcessID 2> /dev/null
     fi
-    ZenityPID=0
+    ZenityProcessID=0
 }
 
 # Identify distro name and release code... $Distro and $DistroCodeName
@@ -131,8 +172,8 @@ IdentifyDistro()
 	
 	# Not running GNU...
 	if [ "${OS}" != "Linux" ] ; then
-	    echo $SYMBOL_STATUS_FAIL
-		echo "This autorun script is only supported on GNU/Linux..."
+	    echo $SymbolStatusFail
+		echo "This autostart script is only supported on GNU/Linux..."
 		exit 1
 	fi
 
@@ -145,7 +186,7 @@ IdentifyDistro()
     # Otherwise fallback to tedious method of checking for distro specific signatures in /etc...
 	else
 
-	    echo $SYMBOL_STATUS_FAIL
+	    echo $SymbolStatusFail
 		echo -n "Falling back to checking for distro specific signature in /etc... "
 
         # RedHat... (e.g. Fedora / CentOS)
@@ -174,7 +215,7 @@ IdentifyDistro()
 		
         # Unknown...
 		else
-		    echo $SYMBOL_STATUS_FAIL
+		    echo $SymbolStatusFail
             zenity --error \
                 --title="Error" \
                 --window-icon=$Icon \
@@ -189,9 +230,57 @@ IdentifyDistro()
  	readonly DistroPackageManager
 
     # Alert user of what we found...
-    echo $SYMBOL_STATUS_OK
+    echo $SymbolStatusOk
     echo "User is running ${Distro} / ${DistroCodeName}..."
     echo "System's packages are managed by ${DistroPackageManager}..."
+}
+
+# Lock the script to ensure no other instances are running, otherwise silently
+#  exit...
+LockScript()
+{
+    # Alert user...
+    echo -n "Checking for unique instance... "
+
+    # The noclobber option ensures the redirect will fail if the file the stream
+    #  is being redirected to already exists. This is safe because it is atomic.
+    #  If successful, write our process ID out into our newly created lock...
+    if ( set -o noclobber; echo "$$" > "$ProcessIDFile") 2> /dev/null; then
+	    echo $SymbolStatusOk
+	    OwnLock=true
+
+    # Lock already exists. Check if still alive...
+    else
+        
+        # Get the existing process ID...
+        OtherProcessID="$(cat "${ProcessIDFile}")"
+
+        # Cat couldn't read the process ID file so other process may be just
+        #  about to remove it...
+        if [ $? != 0 ]; then
+    	    echo $SymbolStatusFail
+            exit 1
+        fi        
+
+        # Check if the other process is still alive by seeing if it could
+        #  receive signals without actually sending any...
+        if ! kill -0 $OtherProcessID &>/dev/null; then
+
+            # Process is gone so assume lock is stale...
+            rm -rf "${ProcessIDFile}"
+    	    echo $SymbolStatusFail
+            echo "Removed stale lock..."
+
+            # Try setting the lock again...
+            LockScript
+
+        # The lock is valid because the other process is active...
+        else
+    	    echo $SymbolStatusFail
+    	    echo "Process" $OtherProcessID "is existing instance..."
+            exit 1
+        fi
+    fi
 }
 
 # Convert sole argument to all lowercase...
@@ -203,7 +292,7 @@ LowerCase()
 # Print banner...
 PrintBanner()
 {
-    echo -e "${VT100_BOLD}${VT100_COLOUR_BLUE}${Title}, ${Version}${VT100_RESET}\n"
+    echo -e "${VT100Bold}${VT100ColourBlue}${Title}, ${Version}${VT100Reset}\n"
     echo -e "  Copyright (C) 2010-2013 Cartesian Theatre. This is free"
     echo -e "  software; see Copying for copying conditions. There is NO"
     echo -e "  warranty; not even for MERCHANTABILITY or FITNESS FOR A"
@@ -254,19 +343,10 @@ PrepareDebianBased()
             ;;
     esac
 
-
     # Number of packages that are always needed...
     local PackagesRequiredCount=${#PackagesRequired[*]}
 
     # Check that each required package is installed...
-    zenity --progress \
-            --title="$Title" \
-            --window-icon=$Icon \
-            --text="Please wait while checking for required software..." \
-            --pulsate \
-            --auto-close \
-            --no-cancel &
-    ZenityPID=$!
     for (( Index=0; Index<$PackagesRequiredCount; Index++)); do
         CheckPackageInstalled ${PackagesRequired[${Index}]}
     done
@@ -311,15 +391,9 @@ PrepareDebianBased()
             
         esac
 
-        # Eject the disc, first try by CDROM eject method, then by SCSI method...
-        echo -n "Eject disc... "
-        eject -r -s 2> /dev/null
-        if [ $? == 0 ]; then
-            echo -e $SYMBOL_STATUS_OK
-        else
-            echo -e $SYMBOL_STATUS_FAIL
-        fi
-        
+        # Eject the media only if we are running off of removable media...
+        EjectRequested=1
+
         # Exit with error...
         exit 1
 
@@ -367,18 +441,18 @@ CheckDebInstalled()
 
     # Check if the package is installed...
     echo -n "Checking if $Package is installed... "
-    test_installed=( `apt-cache policy $Package | grep "Installed:" ` )
+    TestInstalled=( `apt-cache policy $Package | grep "Installed:" ` )
 
     # Installed...
-    if [[ (-n "${test_installed}") && ("${test_installed[1]}" != "(none)")]]
+    if [[ (-n "${TestInstalled}") && ("${TestInstalled[1]}" != "(none)")]]
     then
-        echo -e $SYMBOL_STATUS_OK
+        echo -e $SymbolStatusOk
         return 1
 
     # Found in the package database, but not installed, or not even found in 
     #  the package data, and therefore not installed...
     else
-        echo -e $SYMBOL_STATUS_FAIL
+        echo -e $SymbolStatusFail
         PackagesMissing=("${PackagesMissing[*]}" $Package)
         return 0
     fi
@@ -399,14 +473,49 @@ CheckRPMInstalled()
     # Installed...
     if [ $? == 0 ]
     then
-        echo -e $SYMBOL_STATUS_OK
+        echo -e $SymbolStatusOk
         return 1
 
     # Not installed...
     else
-        echo -e $SYMBOL_FAIL
+        echo -e $SymbolStatusFail
         PackagesMissing=("${PackagesMissing[*]}" $Package)
         return 0
+    fi
+}
+
+# Eject the media only if we are running off of removable media...
+EjectRemovableMedia()
+{
+    # Find the mount point it is located on...
+    MountPoint=`df "$AutostartScriptDirectory" | awk 'NR==2{print $NF}'`
+
+    # Alert user of our intentions...
+    echo -n "Checking if" $MountPoint "is removable media..."
+
+    # Eject if it is removable media. That is, under /media/* according to sect
+    #  3.11.1 of the FHS...
+    if [[ $MountPoint == /media/* ]]; then
+
+        # Attempt to eject the media...
+        echo -e $SymbolStatusOk
+        echo "Attempting eject..."
+        exec eject $MountPoint 2> /dev/null
+
+        # Old approach: eject the disc by first trying CDROM eject method, then
+        #  by SCSI method...
+        # eject -r -s 2> /dev/null
+
+        ## Report whether it was successful or not...
+        #if [ $? == 0 ]; then
+        #    echo -e $SymbolStatusOk
+        #else
+        #    echo -e $SymbolStatusFail
+        #fi
+
+    # Not running off of removable media, so don't try to eject...
+    else
+        echo -e $SymbolStatusFail
     fi
 }
 
@@ -416,22 +525,34 @@ Main()
     # Print banner...
     PrintBanner
 
-    # Setup traps...
-    trap TrapInterrupt SIGINT
+    # Lock the script to ensure no other instances are running...
+    LockScript
 
     # Zenity has come on most GNU distros...
     echo -n "Checking for zenity... "
     if [ ! -x "`which zenity`" ]; then
-	    echo $SYMBOL_STATUS_FAIL
+	    echo $SymbolStatusFail
 	    exit 1
 	else
-	    echo $SYMBOL_STATUS_OK
+	    echo $SymbolStatusOk
         echo "Using zenity `zenity --version`... "
     fi
 
-    # Check for lsb_release...
+    # Give user visual feedback as soon as possible that something is 
+    #  happening...
+    zenity --progress \
+            --title="$Title" \
+            --window-icon=$Icon \
+            --text="Please wait a moment while the software loads..." \
+            --pulsate \
+            --auto-close \
+            --no-cancel &
+    ZenityProcessID=$!
+
+    # Identify the user's distro...
     IdentifyDistro
 
+    # Prepare the runtime environment as specific to user's distro...
     case "$Distro" in
 
         # Ubuntu, Debian, or some derivative...
@@ -441,9 +562,9 @@ Main()
         ;;
 
         # Fedora...
-        [Ff]edora)
-            PrepareDebianBased
-        ;;
+        # [Ff]edora)
+        #    PrepareDebianBased
+        #;;
         
         # Unknown distro...
         *)
@@ -463,21 +584,21 @@ Main()
 
         # First try with Python 3...
         if [ -x "`which python3`" ]; then
-            echo "python3 $SYMBOL_STATUS_OK"
-            /usr/bin/env python3 "${PYTHON_LAUNCHER_MAIN}" "${Arguments[@]}"
+            echo "python3 $SymbolStatusOk"
+            /usr/bin/env python3 "${PythonLauncherMain}" "${Arguments[@]}"
         
         # ...if that doesn't work, try what's probably an alias for Python 2...
         elif [ -x "`which python`" ]; then
-            echo "python $SYMBOL_STATUS_OK"
-            /usr/bin/env python "${PYTHON_LAUNCHER_MAIN}" "${Arguments[@]}"
+            echo "python $SymbolStatusOk"
+            /usr/bin/env python "${PythonLauncherMain}" "${Arguments[@]}"
         
         # ...and if that still doesn't work, then we're out of luck...
         else
-            echo $SYMBOL_STATUS_FAIL
+            echo $SymbolStatusFail
             zenity --error \
                 --title="Error" \
                 --window-icon=$Icon \
-                --text="I'm sorry, but I couldn't detect your Python runtime."
+                --text="I'm sorry, but I couldn't find your Python runtime."
             exit 1
         fi
 
@@ -485,7 +606,9 @@ Main()
     exit 0
 }
 
+# Setup traps...
+trap OnExit EXIT SIGINT SIGQUIT SIGSTOP
+
 # Begin execution in Main...
 Main;
-
 

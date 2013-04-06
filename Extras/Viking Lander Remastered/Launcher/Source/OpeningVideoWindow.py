@@ -111,6 +111,9 @@ class OpeningVideoWindowProxy():
                 LauncherArguments.getArguments().dataRoot, 
                 "Opening.ogv"))
 
+        # Start prerolling the video and TODO: check its dimensions...
+        self._playBin.set_state(Gst.State.PAUSED)
+
         # Resize drawing area so video is 3/4 screen width...
         (monitorWidth, monitorHeight) = getMonitorWithCursorSize()
         aspectRatio = 1920 / 1200

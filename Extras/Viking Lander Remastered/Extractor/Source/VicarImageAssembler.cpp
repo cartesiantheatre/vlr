@@ -44,16 +44,6 @@
     #include <errno.h>
     #include <fnmatch.h>
 
-/*
-    $ make && ./viking-extractor --overwrite --directorize-band-class --directorize-location --directorize-month --directorize-sol --filter-diode=any --filter-lander=0 --interlace --generate-metadata --recursive --ignore-bad-files Tests/ /home/kip/Desktop/output
-
-    preparing catalogue, please wait...
-    info: Checking Tests/Recovery
-    no prospective files found
-
-*/
-#include <cstdlib>
-
 // Using the standard namespace...
 using namespace std;
 
@@ -196,11 +186,11 @@ void VicarImageAssembler::Reconstruct()
 #endif
 
         // Alert user...
-        Message(Console::Summary) << "preparing catalogue, please wait..." << endl;
+        Message(Console::Summary) << "indexing mission data, please wait..." << endl;
         
 #ifdef USE_DBUS_INTERFACE
         // Provide a notification to the Viking Lander Launcher...
-        DBusInterface::GetInstance().EmitNotificationSignal("Preparing catalogue, please wait...");
+        DBusInterface::GetInstance().EmitNotificationSignal("Indexing mission data, please wait...");
 #endif
 
         // If summarize only mode is enabled, mute current file name, warnings, info, and errors...
@@ -272,7 +262,7 @@ void VicarImageAssembler::Reconstruct()
             if(Options::GetInstance().GetSummarizeOnly())
             {
                 Message(Console::Summary) 
-                    << "\rstudying mission data catalogue of " 
+                    << "\rstudying mission data index of " 
                     << ProspectiveFilesExamined << "/" << TotalProspectiveFiles 
                     << " (" << PercentageExamined << " %)";
             }
