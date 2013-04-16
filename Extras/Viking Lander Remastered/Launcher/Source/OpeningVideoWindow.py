@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # VikingExtractor, to recover images from Viking Lander operations.
-# Copyright (C) 2010-2013 Cartesian Theatre <kip@thevertigo.com>.
+# Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>.
 #
 # Public discussion on IRC available at #avaneya (irc.freenode.net) or
 # on the mailing list <avaneya@lists.avaneya.com>.
@@ -111,12 +111,23 @@ class OpeningVideoWindowProxy():
                 LauncherArguments.getArguments().dataRoot, 
                 "Opening.ogv"))
 
-        # Start prerolling the video and TODO: check its dimensions...
+        # Force our realize callback to be invoked so we can capture the 
+        #  drawing area's window handle which we need before playing back the
+        #  video...
+        self._videoDrawingArea.realize()
+
+        # Extract the video's dimensions...
         self._playBin.set_state(Gst.State.PAUSED)
+        self._playBin.get_state(5000000000)
+        videoPad=self._playBin.emit("get-video-pad", 0)
+        videoPadCapabilities=videoPad.get_current_caps()
+        (success, videoWidth) = videoPadCapabilities.get_structure(0).get_int("width")
+        (success, videoHeight) = videoPadCapabilities.get_structure(0).get_int("height")
+        assert(success)
 
         # Resize drawing area so video is 3/4 screen width...
         (monitorWidth, monitorHeight) = getMonitorWithCursorSize()
-        aspectRatio = 1920 / 1200
+        aspectRatio = videoWidth / videoHeight
         drawingAreaWidth = (3 / 4) * monitorWidth
         self._videoDrawingArea.set_size_request(
             drawingAreaWidth, drawingAreaWidth / aspectRatio)
@@ -176,7 +187,7 @@ class OpeningVideoWindowProxy():
             videoSink.set_window_handle(self._drawingAreaWindowHandle)
             Gdk.threads_leave()
 
-    # Drawing area is created and visible. Bind the pipeline sink to it...
+    # Drawing area is created and visible. Capture the window handle...
     def onDrawingAreaRealized(self, sender):
 
         # If we're running a legacy w32 system, use its platform's native

@@ -1,5 +1,5 @@
 # VikingExtractor, to recover images from Viking Lander operations.
-# Copyright (C) 2010-2013 Cartesian Theatre <kip@thevertigo.com>.
+# Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>.
 #
 # Public discussion on IRC available at #avaneya (irc.freenode.net) or
 # on the mailing list <avaneya@lists.avaneya.com>.
@@ -28,8 +28,7 @@ import sys
 from Miscellaneous import *
 
 # Privates...
-_arguments    = None
-_arguments  = None
+_arguments = None
 
 # Parse command line...
 def _initializeArguments():
@@ -68,6 +67,12 @@ def _initializeArguments():
         default=_getDefaultVikingExtractorPath(),
         dest="vikingExtractorBinaryPath", 
         help="Path to VikingExtractor executable.")
+
+    # Define behaviour for --version...
+    argumentParser.add_argument("--version", 
+        action="version", 
+        version=print(getLongVersionString()),
+        help="Display application version.")
 
     # Parse the command line...
     global _arguments

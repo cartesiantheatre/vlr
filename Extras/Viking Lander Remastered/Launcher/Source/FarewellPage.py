@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # VikingExtractor, to recover images from Viking Lander operations.
-# Copyright (C) 2010-2013 Cartesian Theatre <kip@thevertigo.com>.
+# Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>.
 #
 # Public discussion on IRC available at #avaneya (irc.freenode.net) or
 # on the mailing list <avaneya@lists.avaneya.com>.
@@ -21,6 +21,9 @@
 # System imports...
 from gi.repository import Gtk
 
+# Our modules...
+from Miscellaneous import *
+
 # Farewell page proxy class...
 class FarewellPageProxy():
 
@@ -28,14 +31,45 @@ class FarewellPageProxy():
     def __init__(self, launcherApp):
 
         # Initialize...
-        self._assistant     = launcherApp.assistant
-        self._builder       = launcherApp.builder
+        self._assistant = launcherApp.assistant
+        self._builder   = launcherApp.builder
+
+        # Find window and widgets...
+        self._farewellPageBox = self._builder.get_object("farewellPageBox")
+        exploreDataButton = self._builder.get_object("exploreDataButton")
+        exploreSourceCodeButton = self._builder.get_object("exploreSourceCodeButton")
 
         # Add the farewell page to the assistant...
-        self._farewellPageBox = self._builder.get_object("farewellPageBox")
         self._farewellPageBox.set_border_width(5)
         self._assistant.append_page(self._farewellPageBox)
         self._assistant.set_page_title(self._farewellPageBox, "Farewell")
         self._assistant.set_page_type(self._farewellPageBox, Gtk.AssistantPageType.SUMMARY)
         self._assistant.set_page_complete(self._farewellPageBox, False)
+
+        # Set the explore recovered data button's icon...
+        exploreDataButtonImage = Gtk.Image()
+        exploreDataButtonImage.set_from_stock(Gtk.STOCK_OPEN, Gtk.IconSize.BUTTON)
+        exploreDataButton.set_image(exploreDataButtonImage)
+        
+        # Set the explore source code button's icon...
+        exploreSourceCodeButtonImage = Gtk.Image()
+        exploreSourceCodeButtonImage.set_from_stock(Gtk.STOCK_FIND, Gtk.IconSize.BUTTON)
+        exploreSourceCodeButton.set_image(exploreSourceCodeButtonImage)
+
+        # Connect the signals...
+        exploreDataButton.connect("clicked", self.onExploreDataButtonPressed)
+        exploreSourceCodeButton.connect("clicked", self.onExploreSourceCodeButton)
+
+    # Explore recovered data button pressed...
+    def onExploreDataButtonPressed(self, button):
+        
+        # Find the recovery folder from the widget back on the recovery page...
+        recoveryFolder = self._builder.get_object("recoveryFolderChooser").get_filename()
+        
+        # Explore the folder through the platform's native shell...
+        exploreDirectory(recoveryFolder)
+
+    # Explore source code button pressed. Open browser...
+    def onExploreSourceCodeButton(self, button):
+        launchResource("https://bazaar.launchpad.net/~avaneya/avaneya/trunk/files/head:/Extras/Viking%20Lander%20Remastered/Extractor/")
 

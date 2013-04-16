@@ -1,5 +1,5 @@
 # VikingExtractor, to recover images from Viking Lander operations.
-# Copyright (C) 2010-2013 Cartesian Theatre <kip@thevertigo.com>.
+# Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>.
 #
 # Public discussion on IRC available at #avaneya (irc.freenode.net) or
 # on the mailing list <avaneya@lists.avaneya.com>.
@@ -63,7 +63,7 @@ class VerificationPagesProxy():
 
         # Connect the signals...
         stopVerificationButton = self._builder.get_object("stopVerificationButton")
-        stopVerificationButton.connect("pressed", self.onStopVerificationPressed)
+        stopVerificationButton.connect("clicked", self.onStopVerificationPressed)
 
     # Get the verification progress page box...
     def getProgressPageBox(self):
@@ -90,18 +90,30 @@ class VerificationPagesProxy():
             # Load the verification animation...
             animation = GdkPixbuf.PixbufAnimation.new_from_file(
                 os.path.join(
-                    LauncherArguments.getArguments().dataRoot, "verification.gif"))
+                    LauncherArguments.getArguments().dataRoot, "Animations", 
+                    "Verification", "earth.gif"))
             self._verificationImage.set_from_animation(animation)
             self._verificationImage.show()
 
             # Launch the thread...
             self.startDiscVerification()
 
+    # Check if the verification thread is already running...
+    def isVerifying(self):
+
+        # Running now...
+        if self._thread and self._thread.isAlive():
+            return True
+        
+        # Not running...
+        else:
+            return False
+
     # Start the disc verification...
     def startDiscVerification(self):
 
         # Already running...
-        if self._thread and self._thread.isAlive():
+        if self.isVerifying():
             print("Verification thread already running, not relaunching...")
             return
 
@@ -140,7 +152,7 @@ class VerificationPagesProxy():
     def waitThreadQuit(self):
 
         # Check if the thread exists, and if so, if it still running...
-        if self._thread and self._thread.isAlive():
+        if self.isVerifying():
 
             # Alert...
             print("Stopping disc verification thread...")

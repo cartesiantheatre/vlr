@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # VikingExtractor, to recover images from Viking Lander operations.
-# Copyright (C) 2010-2013 Cartesian Theatre <kip@thevertigo.com>.
+# Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>.
 #
 # Public discussion on IRC available at #avaneya (irc.freenode.net) or
 # on the mailing list <avaneya@lists.avaneya.com>.
@@ -26,6 +26,7 @@ from gi.repository import GLib
 from gi.repository import Vte
 from gi.repository import Gio
 import os
+import signal
 from time import sleep
 import sys
 
@@ -44,6 +45,7 @@ class RecoveryPageProxy():
         self._builder               = launcherApp.builder
         self._confirmPageProxy      = launcherApp.confirmPageProxy
         self._recoveryProgressText  = ""
+        self.processID              = 0
 
         # Add recovery page to assistant...
         self._recoveryPageBox = self._builder.get_object("recoveryPageBox")
@@ -63,7 +65,7 @@ class RecoveryPageProxy():
         self._terminal.connect("child-exited", self.onChildProcessExit)
 
     # Start the recovery process...
-    def executeVikingExtractor(self, noProcessIDHack=False):
+    def executeVikingExtractor(self):
 
         # Get the path to the VikingExtractor binary...
         self._vikingExtractorBinaryPath = \
@@ -76,42 +78,25 @@ class RecoveryPageProxy():
         # Try to start the VikingExtractor process. First way is with child_pid
         #  provided, but some distros ship buggy version that don't provide it. 
         #  Second way is without it, works, but doesn't provide child_pid...
-        self._processID = 0
         try:
-            if noProcessIDHack is False:
-                launchStatus = self._terminal.fork_command_full(
-                    Vte.PtyFlags.DEFAULT,
-                    None,
-                    [self._vikingExtractorBinaryPath] + self._confirmPageProxy.getVikingExtractorArguments(),
-                    [],
-                    GLib.SpawnFlags.DO_NOT_REAP_CHILD, # This method automatically adds this flag anyways. Here for clarity...
-                    child_pid=self._processID)
-            else:
-                launchStatus = self._terminal.fork_command_full(
-                    Vte.PtyFlags.DEFAULT,
-                    None,
-                    [self._vikingExtractorBinaryPath] + self._confirmPageProxy.getVikingExtractorArguments(),
-                    [],
-                    GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-                    None,
-                    None)
-
-        # Ugly ass hack...
-        #  https://bugzilla.gnome.org/show_bug.cgi?id=649004
-        except TypeError:
-            self.executeVikingExtractor(noProcessIDHack=True)
-            return
+            (self.launchStatus, self.processID) = self._terminal.fork_command_full(
+                Vte.PtyFlags.DEFAULT,
+                None,
+                [self._vikingExtractorBinaryPath] + self._confirmPageProxy.getVikingExtractorArguments(),
+                [],
+                GLib.SpawnFlags.DO_NOT_REAP_CHILD, # This method automatically adds this flag anyways. Added for clarity...
+                None,
+                None)
 
         # Failed to launch. VTE's documentation is not clear on the way to check
         #  for this...
         except GLib.GError:
             self._fatalLaunchError()
-        if launchStatus == False:
+        if self.launchStatus == False or self.processID == 0:
             self._fatalLaunchError()
 
         # We got the process ID, show it...
-        if self._processID:
-            print("Spawned process {0}...".format(self._processID))
+        print("Spawned process {0}...".format(self.processID))
 
         # Some constants to help find the VikingExtractor...
         VE_DBUS_SERVICE_NAME        = "com.cartesiantheatre.VikingExtractorService"
@@ -124,11 +109,13 @@ class RecoveryPageProxy():
         # Alert user...
         sys.stdout.write("Waiting for VikingExtractor D-Bus service...")
 
+        # Connect to the session bus...
         sessionConnection = None
         sessionConnection = Gio.bus_get_sync(
             Gio.BusType.SESSION,
             None)
 
+        # Failed...
         if sessionConnection is None:
             print("Dead session connection handle...")
             sys.exit(1)
@@ -219,20 +206,23 @@ class RecoveryPageProxy():
     # VikingExtractor could not be executed...
     def _fatalLaunchError(self):
 
-            # Alert user...
-            messageDialog = Gtk.MessageDialog(
-                self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
-                Gtk.ButtonsType.OK, 
-                "Error")
-            messageDialog.format_secondary_text(
-                "The VikingExtractor could not be launched. " \
-                "The following location was attempted:\n\n{0}".
-                    format(self._vikingExtractorBinaryPath))
-            messageDialog.run()
-            messageDialog.destroy()
-            
-            # Terminate...
-            sys.exit(1)
+        # Mark process as for sure not running...
+        self.processID = 0
+
+        # Alert user...
+        messageDialog = Gtk.MessageDialog(
+            self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
+            Gtk.ButtonsType.OK, 
+            "Error")
+        messageDialog.format_secondary_text(
+            "The VikingExtractor could not be launched. " \
+            "The following location was attempted:\n\n{0}".
+                format(self._vikingExtractorBinaryPath))
+        messageDialog.run()
+        messageDialog.destroy()
+        
+        # Terminate...
+        sys.exit(1)
 
     # Abort recovery button clicked...
     def onAbortClicked(self, button, *junk):
@@ -250,16 +240,15 @@ class RecoveryPageProxy():
         if userResponse != Gtk.ResponseType.YES:
             return
 
-        # If we have the process ID, kill it...
-        if self._processID:
-            os.kill(self._processID, 9)
-
-        # Otherwise, use this ugly non-portable hack...
-        else:
-            os.system("killall -9 viking-extractor")
+        # Kill it...
+        os.kill(self.processID, signal.SIGKILL)
+        self.processID = 0
 
     # VikingExtractor terminated...
     def onChildProcessExit(self, *junk):
+
+        # Mark process as no longer running...
+        processID = 0
 
         # Get the exit code...
         exitCode = self._terminal.get_child_exit_status()

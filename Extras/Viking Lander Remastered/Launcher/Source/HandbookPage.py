@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # VikingExtractor, to recover images from Viking Lander operations.
-# Copyright (C) 2010-2013 Cartesian Theatre <kip@thevertigo.com>.
+# Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>.
 #
 # Public discussion on IRC available at #avaneya (irc.freenode.net) or
 # on the mailing list <avaneya@lists.avaneya.com>.
@@ -22,10 +22,11 @@
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GObject
-from gi.repository import Gio
 import urllib.request
 import os
 import platform
+
+from Miscellaneous import *
 
 # Handbook page proxy class...
 class HandbookPageProxy():
@@ -43,7 +44,7 @@ class HandbookPageProxy():
         self._handbookPageBox.set_border_width(5)
         self._assistant.append_page(self._handbookPageBox)
         self._assistant.set_page_title(self._handbookPageBox, "Download Handbook")
-        self._assistant.set_page_type(self._handbookPageBox, Gtk.AssistantPageType.CONTENT)
+        self._assistant.set_page_type(self._handbookPageBox, Gtk.AssistantPageType.PROGRESS)
         self._assistant.set_page_complete(self._handbookPageBox, True)
 
         # Shortcuts to our widgets...
@@ -179,10 +180,10 @@ class HandbookPageProxy():
                 messageDialog.set_default_response(Gtk.ResponseType.YES)
                 userResponse = messageDialog.run()
                 messageDialog.destroy()
-                
+
                 # User requested to open the book...
                 if userResponse == Gtk.ResponseType.YES:
-                    launchFile(fileName)
+                    launchResource(fileName)
 
             # Problem finding the URL, e.g. 404...
             except urllib.error.URLError as exception:
@@ -229,77 +230,4 @@ class HandbookPageProxy():
             toggleButton.set_sensitive(True)
             self._progressBar.hide()
             self._assistant.set_page_complete(self._handbookPageBox, True)
-
-# Check network connectivity to the internet and alert user if caller requests 
-#  if no connection available...
-def hasInternetConnection(alertUser, parent, unqueriableDefault):
-
-    # D-Bus service name, object, and interface to the NetworkManager...
-    NETWORK_MANAGER_DBUS_SERVICE_NAME   = "org.freedesktop.NetworkManager"
-    NETWORK_MANAGER_DBUS_OBJECT_PATH    = "/org/freedesktop/NetworkManager"
-    NETWORK_MANAGER_DBUS_INTERFACE      = "org.freedesktop.NetworkManager"
-
-    # D-Bus NetworkManager state constants...
-    NM_STATE_CONNECTED              = 3     # For 0.8 interface
-    NM_STATE_CONNECTED_GLOBAL       = 70    # For 0.9 interface
-
-    # Try to get the NetworkManager remote proxy object...
-    try:
-        
-        # Bind to the remote object...
-        networkManagerProxy = None
-        networkManagerProxy = Gio.DBusProxy.new_for_bus_sync(
-            Gio.BusType.SYSTEM,
-            Gio.DBusProxyFlags.NONE, 
-            None,
-            NETWORK_MANAGER_DBUS_SERVICE_NAME,
-            NETWORK_MANAGER_DBUS_OBJECT_PATH,
-            NETWORK_MANAGER_DBUS_INTERFACE, 
-            None)
-
-        # Get the connection state...
-        connectionState = networkManagerProxy.state()
-
-    # Something went wrong, but most likely the service isn't available...
-    except:
-        print("Warning: NetworkManager service not found...")
-        return unqueriableDefault
-
-    # Connected...
-    if connectionState == NM_STATE_CONNECTED or \
-       connectionState == NM_STATE_CONNECTED_GLOBAL:
-
-        # Inform caller...
-        return True
-    
-    # Not connected...
-    else:
-
-        # Alert user, if caller requested...
-        if alertUser:
-            messageDialog = Gtk.MessageDialog(
-                parent, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
-                Gtk.ButtonsType.OK, 
-                "You need a working internet connection in order to do this. " \
-                "You don't appear to have one right now.")
-            messageDialog.run()
-            messageDialog.destroy()
-
-        # Inform caller...
-        return False
-
-# Open a file as though the user had launched it themselves using their 
-#  preferred application...
-def launchFile(fileName):
-
-    # GNU. Try via freedesktop method...
-    if platform.system() == "Linux":
-        os.system("xdg-open \"{0}\"".format(fileName))
-    
-    # Winblows system...
-    elif platform.system() == "Windows":
-        os.startfile(fileName)
-
-    else:
-        print("Cannot launch {0}. Platform unknown...".format(fileName))
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # VikingExtractor, to recover images from Viking Lander operations.
-# Copyright (C) 2010-2013 Cartesian Theatre <kip@thevertigo.com>.
+# Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>.
 #
 # Public discussion on IRC available at #avaneya (irc.freenode.net) or
 # on the mailing list <avaneya@lists.avaneya.com>.
@@ -48,6 +48,9 @@ class LauncherApp():
     # Constructor...
     def __init__(self):
 
+        # Set the application name...
+        GObject.set_application_name(getApplicationName())
+
         # Workaround for <https://bugzilla.gnome.org/show_bug.cgi?id=688767>
         GObject.type_register(Vte.Terminal)
 
@@ -58,10 +61,6 @@ class LauncherApp():
 
         # Find the assistant...
         self.assistant = self.builder.get_object("assistantWindow")
-
-        # Construct and show the opening video window...
-        self.openingVideoWindowProxy = OpeningVideoWindowProxy(self)
-        self.openingVideoWindowProxy.showVideo()
 
         # Construct pages and register them with the assistant in correct order...
         self.introductionPagesProxy = IntroductionPagesProxy(self)
@@ -76,7 +75,12 @@ class LauncherApp():
         # Set the forward function which determines next page to show...
         self.assistant.set_forward_page_func(self.forwardPage, None)
 
-        # Connect the assistant's signals...
+        # Add the about button to the assitant's action area...
+        aboutButton = Gtk.Button(stock=Gtk.STOCK_ABOUT)
+        self.assistant.add_action_widget(aboutButton)
+
+        # Connect the signals...
+        aboutButton.connect("clicked", self.onAboutButtonPressed)
         self.assistant.connect("apply", self.onApplyEvent)
         self.assistant.connect("cancel", self.onCancelEvent)
         self.assistant.connect("close", self.onCloseEvent)
@@ -87,7 +91,52 @@ class LauncherApp():
         (monitorWidth, monitorHeight) = getMonitorWithCursorSize()
         if monitorWidth > 1024:
             self.assistant.resize_to_geometry(monitorWidth * 3 / 4, 1)
+
+        # Construct and show the opening video window, unless user disabled...
+        if not LauncherArguments.getArguments().noSplash:
+            self.openingVideoWindowProxy = OpeningVideoWindowProxy(self)
+            self.openingVideoWindowProxy.showVideo()
+        else:
+            self.assistant.show_all()
+
+    # About button pressed. Invoke dialog box...
+    def onAboutButtonPressed(self, button):
+
+        # Find the about dialog...
+        aboutDialog = self.builder.get_object("aboutDialog")
+
+        # Set the version...
+        aboutDialog.set_version(getShortVersionString())
+
+# Note: Introspection broken on my distro for this method...
+#        aboutDialog.add_credit_section("Custom Section", ["test1", "test2"])
         
+        # Set the authors...
+        aboutDialog.set_authors([
+            "<a href=\"mailto:kip@thevertigo.com\">Kip Warner</a>"])
+        
+        # Set the documenters...
+        aboutDialog.set_documenters([
+            "<a href=\"mailto:jtantogo-1@yahoo.com\">Johann Tang</a>",
+            "<a href=\"mailto:kip@thevertigo.com\">Kip Warner</a>"])
+        
+        # Set artists...
+        aboutDialog.set_artists([
+            "<a href=\"mailto:jacob_vejvoda@hotmail.com\">Jacob Vejvoda</a>",
+            "<a href=\"http://www.openclipart.org\">Open Clipart Library</a>",
+            "<a href=\"http://www.paul-laberge.com\">Paul Laberge</a>\n\n",
+            
+            # Note: This should have been set via add_credit_section(), but the
+            #       gir binding is wrong for this method for Gtk < 3.6...
+            "These people contributed directly to this software. For a\n"
+            "complete list of everyone who worked on the Avaneya project,\n"
+            "including on this software, please see our master\n"
+            "<a href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits\">Credits</a> file."])
+
+        # Show dialog as modal and hide after close...
+        aboutDialog.run()
+        aboutDialog.hide()
+
     # End of current page. Next page is being constructed but not visible yet.
     #  Give it a chance to prepare...
     def onPrepareEvent(self, assistant, currentPage):
@@ -132,11 +181,11 @@ class LauncherApp():
         self.recoveryPageProxy.executeVikingExtractor()
 
     # Cancel signal emitted when cancel button clicked or assistant being 
-    #  closed...
+    #  closed and cancel button is interactive...
     def onCancelEvent(self, assistant, *args):
         
         # For debugging purposes...
-        #print("onCancelEvent...")
+        print("onCancelEvent...")
 
         # Prompt the user for if they'd really like to quit...
         messageDialog = Gtk.MessageDialog(
@@ -161,10 +210,22 @@ class LauncherApp():
     # User requested that assistant be closed. The default signal handler would 
     #  just destroys the window. Cancel signal is sent automatically after this
     #  signal is handled...
-    def onDeleteEvent(self, *args):
+    def onDeleteEvent(self, assistant, event, *junk):
 
         # For debugging purposes...
-        print("onDeleteEvent...")
+        #print("onDeleteEvent...")
+        
+        # If the verification thread is currently running, then trigger its
+        #  abort logic...
+        if self.verificationPagesProxy.isVerifying():
+            stopVerificationButton = self.builder.get_object("stopVerificationButton")
+            stopVerificationButton.emit("clicked")
+        
+        # If the recovery thread is currently running, then trigger its abort
+        #  logic...
+        if self.recoveryPageProxy.processID != 0:
+            abortRecoveryButton = self.builder.get_object("abortRecoveryButton")
+            abortRecoveryButton.emit("clicked")
         
         # Let cancel handler determine whether to exit or not...
 

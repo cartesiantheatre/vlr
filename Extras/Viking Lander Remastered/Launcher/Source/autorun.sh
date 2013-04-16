@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # VikingExtractor, to recover images from Viking Lander operations.
-# Copyright (C) 2010-2013 Cartesian Theatre <kip@thevertigo.com>.
+# Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>.
 #
 # Public discussion on IRC available at #avaneya (irc.freenode.net) or
 # on the mailing list <avaneya@lists.avaneya.com>.
@@ -20,40 +20,40 @@
 #
 #
 #
-# Maintainer Notes
-# ================
+#    Maintainer Notes
+#    ================
 #
-# This script is automatically run when the volume is mounted, if enabled, as 
-# per XDG's Desktop Application Autostart Specification. The goal is to try to
-# bootstrap the actual target application by ensuring the user has a sane 
-# execution environment with all of the necessary hard dependencies (packages)
-# preinstalled. What they don't have, they need to be informed of in a way that 
-# is meaningful on their specific distro to make their life simple (e.g. Ubuntu
-# Software Centre). These are the runtimes that are needed:
+#    This script is automatically run when the volume is mounted, if enabled, as
+#    per XDG's Desktop Application Autostart Specification. The goal is to try
+#    to bootstrap the actual target application by ensuring the user has a sane
+#    execution environment with all of the necessary hard dependencies
+#    (packages) preinstalled. What they don't have, they need to be informed of
+#    in a way that is meaningful on their specific distro to make their life
+#    simple (e.g. Ubuntu Software Centre). These are the runtimes that are
+#    needed:
 #
-# Hard Dependencies
-# =================
+#        Hard Dependencies
+#        =================
 #
-#   * Zenity (zenity)
+#        * Zenity (zenity)
 #
-#   * Python 3 (python3)
+#        * Python 3 (python3)
 #
-#   * Python GObject bindings (python-gi >= 3.0), which should pull the distro's
-#     Gtk3+ runtimes on Ubuntu Precise and GDBus bindings...
+#        * Python GObject bindings (python-gi >= 3.0), which should pull the 
+#          distro's Gtk3+ runtimes on Ubuntu Precise and GDBus bindings...
 #
-#  Soft Dependenices
-#  =================
+#        Soft Dependenices
+#        =================
 #
-#    * GStreamer 1.0 base plugins as a soft dependency since at time of 
-#      authoring gir1.2-gst-plugins-base-1.0 did not ship pre-installed on 
-#      Ubuntu, up to and including Precise (12.04)
+#        * GStreamer 1.0 base plugins as a soft dependency since at time of 
+#          authoring gir1.2-gst-plugins-base-1.0 did not ship pre-installed on 
+#          Ubuntu, up to and including Precise (12.04)
 #
 
 # Useful constants...
 
     # Disc name and version...
-    Title="Avaneya: Viking Lander Remastered DVD"
-    Version="0.1"
+    Title="Avaneya: Viking Lander Remastered"
     
     # Preserve command line arguments because $@ is clobbered after calling any
     #  functions...
@@ -292,7 +292,7 @@ LowerCase()
 # Print banner...
 PrintBanner()
 {
-    echo -e "${VT100Bold}${VT100ColourBlue}${Title}, ${Version}${VT100Reset}\n"
+    echo ""
     echo -e "  Copyright (C) 2010-2013 Cartesian Theatre. This is free"
     echo -e "  software; see Copying for copying conditions. There is NO"
     echo -e "  warranty; not even for MERCHANTABILITY or FITNESS FOR A"

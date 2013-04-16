@@ -2,10 +2,41 @@
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
   <!-- interface-requires vte 0.0 -->
+  <object class="GtkAboutDialog" id="aboutDialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="type_hint">dialog</property>
+    <property name="copyright" translatable="yes">Copyright (C) 2010-2013 Cartesian Theatre &lt;info@cartesiantheatre.com&gt;.</property>
+    <property name="website">http://www.avaneya.com</property>
+    <property name="website_label" translatable="yes">Avaneya Website</property>
+    <property name="authors"></property>
+    <property name="documenters"></property>
+    <property name="artists"></property>
+    <property name="logo">About.png</property>
+    <property name="license_type">gpl-3-0</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="aboutDialogPageBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="aboutdialog-action_area1">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkAssistant" id="assistantWindow">
     <property name="can_focus">False</property>
     <property name="border_width">20</property>
-    <property name="title" translatable="yes">Avaneya: Viking Lander Remastered DVD</property>
     <property name="window_position">center-always</property>
     <property name="icon">Icon.png</property>
   </object>
@@ -387,7 +418,8 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">center</property>
-            <property name="pixbuf">Mars.png</property>
+            <property name="pixbuf">Box.png</property>
+            <property name="icon-size">3</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -716,20 +748,95 @@ This next page will contain the output from the &lt;b&gt;VikingExtractor&lt;/b&g
   <object class="GtkBox" id="farewellPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="halign">center</property>
     <property name="valign">center</property>
+    <property name="hexpand">True</property>
+    <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <property name="spacing">20</property>
     <child>
-      <object class="GtkLabel" id="label5">
+      <object class="GtkBox" id="box9">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Last page</property>
+        <child>
+          <object class="GtkImage" id="image2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">Mars.png</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label14">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="label" translatable="yes">Congratulations! The mission data forensic recovery has completed. To examine everything that you managed to recover, use the button below.
+
+We also recommend that, at your leisure, you take a look through our &lt;i&gt;Avaneya Project Crew Handbook&lt;/i&gt; if you chose to download a free copy. This is a great place to learn more about the Avaneya project.
+
+On behalf of the Avaneya project crew, we hope that you enjoyed using this software. If you purchased a copy it, we would like to express our gratitude. Your support is critical to maintaining active and professional development of the Avaneya project.</property>
+            <property name="use_markup">True</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">0</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButtonBox" id="buttonbox1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="spacing">7</property>
+        <property name="layout_style">center</property>
+        <child>
+          <object class="GtkButton" id="exploreDataButton">
+            <property name="label" translatable="yes">Explore Recovered Mission Data</property>
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_action_appearance">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="exploreSourceCodeButton">
+            <property name="label" translatable="yes">Explore Source Code</property>
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_action_appearance">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">False</property>
+        <property name="position">1</property>
       </packing>
     </child>
   </object>
