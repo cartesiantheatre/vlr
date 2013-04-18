@@ -5,6 +5,7 @@
   <object class="GtkAboutDialog" id="aboutDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
+    <property name="modal">True</property>
     <property name="type_hint">dialog</property>
     <property name="copyright" translatable="yes">Copyright (C) 2010-2013 Cartesian Theatre &lt;info@cartesiantheatre.com&gt;.</property>
     <property name="website">http://www.avaneya.com</property>
@@ -180,6 +181,36 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
         <property name="position">1</property>
       </packing>
     </child>
+  </object>
+  <object class="GtkListStore" id="diodeFilterListStore">
+    <columns>
+      <!-- column-name DiodeBandTypeClass -->
+      <column type="gchararray"/>
+      <!-- column-name CommandLineParameter -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">All diode band types</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">any</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Colour</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">colour</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Infrared</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">infrared</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Sun</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">sun</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Survey</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">survey</col>
+      </row>
+    </data>
   </object>
   <object class="GtkBox" id="configureFiltersPageBox">
     <property name="visible">True</property>
@@ -714,36 +745,6 @@ This next page will contain the output from the &lt;b&gt;VikingExtractor&lt;/b&g
         <property name="position">3</property>
       </packing>
     </child>
-  </object>
-  <object class="GtkListStore" id="diodeFilterListStore">
-    <columns>
-      <!-- column-name DiodeBandTypeClass -->
-      <column type="gchararray"/>
-      <!-- column-name CommandLineParameter -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">All diode band types</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">any</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Colour</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">colour</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Infrared</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">infrared</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Sun</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">sun</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Survey</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">survey</col>
-      </row>
-    </data>
   </object>
   <object class="GtkBox" id="farewellPageBox">
     <property name="visible">True</property>

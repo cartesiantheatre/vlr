@@ -20,6 +20,7 @@
 
 # System imports...
 import gi
+import signal
 from gi.repository import GObject
 
 # Launcher...
@@ -28,9 +29,12 @@ from LauncherApp import LauncherApp
 # Entry point...
 if __name__ == '__main__':
 
+    # Kill on keyboard interrupt...
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+
     # Initialize threading environment...
     GObject.threads_init()
-    
+
     # Start the launcher GUI...
     launcher = LauncherApp()
     launcher.run()

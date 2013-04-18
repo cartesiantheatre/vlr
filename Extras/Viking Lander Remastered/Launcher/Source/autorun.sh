@@ -27,7 +27,7 @@
 #    per XDG's Desktop Application Autostart Specification. The goal is to try
 #    to bootstrap the actual target application by ensuring the user has a sane
 #    execution environment with all of the necessary hard dependencies
-#    (packages) preinstalled. What they don't have, they need to be informed of
+#    (packages) pre-installed. What they don't have, they need to be informed of
 #    in a way that is meaningful on their specific distro to make their life
 #    simple (e.g. Ubuntu Software Centre). These are the runtimes that are
 #    needed:
@@ -42,7 +42,7 @@
 #        * Python GObject bindings (python-gi >= 3.0), which should pull the 
 #          distro's Gtk3+ runtimes on Ubuntu Precise and GDBus bindings...
 #
-#        Soft Dependenices
+#        Soft Dependencies
 #        =================
 #
 #        * GStreamer 1.0 base plugins as a soft dependency since at time of 
@@ -53,7 +53,7 @@
 # Useful constants...
 
     # Disc name and version...
-    Title="Avaneya: Viking Lander Remastered"
+    Title="Avaneya: Viking Lander Remastered DVD"
     
     # Preserve command line arguments because $@ is clobbered after calling any
     #  functions...
@@ -183,7 +183,8 @@ IdentifyDistro()
         DistroCodeName=`lsb_release --short --codename`
 	    DistroPackageManager="apt"
 
-    # Otherwise fallback to tedious method of checking for distro specific signatures in /etc...
+    # Otherwise fallback to tedious method of checking for distro specific 
+    #  signatures in /etc...
 	else
 
 	    echo $SymbolStatusFail
@@ -431,7 +432,7 @@ CheckPackageInstalled()
     esac
 }
 
-# Takes a debian package name as a single parameter and returns true if it is
+# Takes a Debian package name as a single parameter and returns true if it is
 #  installed. Also adds the name of the package if missing to PackagesMissing
 #  global array...
 CheckDebInstalled()
