@@ -104,13 +104,11 @@ class LauncherApp():
 
         # Find the about dialog...
         aboutDialog = self.builder.get_object("aboutDialog")
+        assert(aboutDialog)
 
         # Set the version...
         aboutDialog.set_version(getShortVersionString())
-
-# Note: Introspection broken on my distro for this method...
-#        aboutDialog.add_credit_section("Custom Section", ["test1", "test2"])
-        
+       
         # Set the authors...
         aboutDialog.set_authors([
             "<a href=\"mailto:kip@thevertigo.com\">Kip Warner</a>"])
@@ -124,14 +122,75 @@ class LauncherApp():
         aboutDialog.set_artists([
             "<a href=\"mailto:jacob_vejvoda@hotmail.com\">Jacob Vejvoda</a>",
             "<a href=\"http://www.openclipart.org\">Open Clipart Library</a>",
-            "<a href=\"http://www.paul-laberge.com\">Paul Laberge</a>\n\n",
+            "<a href=\"http://www.paul-laberge.com\">Paul Laberge</a>\n\n"])
+
+        # Add custom sections if introspection for add_credit_section() isn't
+        #  busted to shit on this machine...
+        try:
+
+            # Beta testers...
+            aboutDialog.add_credit_section("Beta Testers", [
+                "<a href=\"mailto:adam@avaneya.com\">Adam Gornowicz</a>",
+                "<a href=\"mailto:me@jesseknudsen.com\">Jesse Knudsen</a>",
+                "<a href=\"mailto:kip@thevertigo.com\">Kip Warner</a>"])
+
+            # Musicians...
+            aboutDialog.add_credit_section("Musicians", [
+                "<a href=\"http://www.josephliau.com\">Joseph Liau</a>"])
+
+            # Shouts and thanks...
+            aboutDialog.add_credit_section("Shouts / Thanks", [
+                "<a href=\"mailto:adam@avaneya.com\">Adam Gornowicz</a>",
+                "<a href=\"mailto:charles.amadeus@gmail.com\">Chuck Siegal</a>",
+                "<a href=\"http://www.freedesktop.org\">freedesktop.org</a>",
+                "<a href=\"http://freedomincluded.com/\">Freedom Included</a>",
+                "<a href=\"mailto:matt@thevertigo.com\">Matthew MacLennan</a>",
+                "<a href=\"http://pds.nasa.gov/\">NASA Planetary Data System</a>",
+                "Project Bossanova",
+                "<a href=\"mailto:randall@executiv.es\">Randall Ross</a>",
+                "<a href=\"mailto:rms@gnu.org\">Richard Stallman</a>",
+                "<a href=\"http://www.system76.com\">System76</a>",
+                "<a href=\"http://www.meetup.com/ubuntuvancouver/\">Ubuntu Vancouver</a>",
+                "<a href=\"mailto:vr@oracology.net\">Varun Ramraj</a>"])
+
+            # Studio software...
+            aboutDialog.add_credit_section("Studio Software", [
+                "Bazaar",
+                "Blender",
+                "D-Feet",
+                "GEdit",
+                "GHex",
+                "GNU Image Manipulation Toolkit",
+                "Glade",
+                "GNU Autotools",
+                "GNU C++ compilers",
+                "GNU OCRAD",
+                "GNU Operating System",
+                "GStreamer",
+                "Gtk+",
+                "Nemiver",
+                "Python",
+                "Theora",
+                "Ubuntu",
+                "Vorbis",
+                "Xfce"])
+
+            # Dedications...
+            aboutDialog.add_credit_section("Dedications", [
+                "<a href=\"https://en.wikipedia.org/wiki/Ahmad_Shah_Masoud\">Ahmad Shah Massoud</a> (1953–2001)",
+                "<a href=\"https://en.wikipedia.org/wiki/David_Kelly_%28weapons_expert%29\">David Kelly</a> (1944–2003)",
+                "<a href=\"http://splittingthesky.blogspot.ca/\">Splitting the Sky</a> (1952–2013)"])
+
+        # Otherwise fallback if it is...
+        except TypeError:
             
-            # Note: This should have been set via add_credit_section(), but the
-            #       gir binding is wrong for this method for Gtk < 3.6...
-            "These people contributed directly to this software. For a\n"
-            "complete list of everyone who worked on the Avaneya project,\n"
-            "including on this software, please see our master\n"
-            "<a href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits\">Credits</a> file."])
+            # Append a note where people can find the complete credits...
+            artistsList = aboutDialog.get_artists()
+            artistsList.append(
+                "All of the aforementioned contributed directly to this software. For a\n"
+                "complete list of everyone who worked on the Avaneya project, including\n"
+                "on this software, please see our master <a href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits\">Credits</a> file.")
+            aboutDialog.set_artists(artistsList)
 
         # Show dialog as modal and hide after close...
         aboutDialog.run()
@@ -185,7 +244,7 @@ class LauncherApp():
     def onCancelEvent(self, assistant, *args):
         
         # For debugging purposes...
-        print("onCancelEvent...")
+        #print("onCancelEvent...")
 
         # Prompt the user for if they'd really like to quit...
         messageDialog = Gtk.MessageDialog(
@@ -234,7 +293,7 @@ class LauncherApp():
     def onCloseEvent(self, assistant, *args):
         
         # For debugging purposes...
-        print("onCloseEvent")
+        #print("onCloseEvent")
         
         # No threads should be running by this point because at the end of the 
         #  assistant's page flow, so safe to terminate...
@@ -243,18 +302,13 @@ class LauncherApp():
     # Run the GUI...
     def run(self):
 
-        # Start processing events...    
+        # Start processing events...
         try:
             Gtk.main()
         
-        # TODO: This doesn't work. The exception is never raised on a ctrl-c...
-        except KeyboardInterrupt:
-            print("KeyboardInterrupt")
-            raise
-
+        # On unhandled exceptions, just quit...
         except:
-            print("SomeOtherException")
-            Gtk.main_quit()
+            self.quit()
 
     # Toggle a busy state...
     def setBusy(self, Busy = True):

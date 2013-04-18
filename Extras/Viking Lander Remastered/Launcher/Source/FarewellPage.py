@@ -44,7 +44,7 @@ class FarewellPageProxy():
         self._assistant.append_page(self._farewellPageBox)
         self._assistant.set_page_title(self._farewellPageBox, "Farewell")
         self._assistant.set_page_type(self._farewellPageBox, Gtk.AssistantPageType.SUMMARY)
-        self._assistant.set_page_complete(self._farewellPageBox, False)
+        self._assistant.set_page_complete(self._farewellPageBox, True)
 
         # Set the explore recovered data button's icon...
         exploreDataButtonImage = Gtk.Image()

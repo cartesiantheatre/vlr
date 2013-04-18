@@ -1,4 +1,5 @@
 autorun.sh=../Launcher/Source/autorun.sh
+.autoopen=autoopen
 autorun.inf=autorun.inf
 Copying=../../../Copying
 Extractor/=../Extractor/viking-extractor

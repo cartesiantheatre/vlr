@@ -241,8 +241,9 @@ class RecoveryPageProxy():
             return
 
         # Kill it...
-        os.kill(self.processID, signal.SIGKILL)
-        self.processID = 0
+        if self.processID != 0:
+            os.kill(self.processID, signal.SIGKILL)
+            self.processID = 0
 
     # VikingExtractor terminated...
     def onChildProcessExit(self, *junk):

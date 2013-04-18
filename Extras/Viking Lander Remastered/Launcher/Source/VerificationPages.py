@@ -91,7 +91,7 @@ class VerificationPagesProxy():
             animation = GdkPixbuf.PixbufAnimation.new_from_file(
                 os.path.join(
                     LauncherArguments.getArguments().dataRoot, "Animations", 
-                    "Verification", "earth.gif"))
+                    "Verification", "ball.apng"))
             self._verificationImage.set_from_animation(animation)
             self._verificationImage.show()
 
