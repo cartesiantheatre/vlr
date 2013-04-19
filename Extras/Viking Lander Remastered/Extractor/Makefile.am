@@ -61,10 +61,8 @@ viking_extractor_SOURCES += \
     Source/DBusInterface.h \
     Source/DBusInterface.cpp
 
-# TODO: We need some way to invoke gdbus from another thread to do this...
-#RECOVERY_TEST_ARGUMENTS += \
-#    --remote-start
-
+RECOVERY_TEST_ARGUMENTS += \
+    --remote-start
 endif
 
 # These files must exist before anything is compiled. Can be machine generated...
@@ -117,20 +115,42 @@ RecoveryChecksums.md5: Makefile.am
 	@echo '5e37828fe338c8a12ef387ca2bbb2b85  Tests/Recovery/22D180.png' > $@
 	@echo 'b4c641d7b0c30079e73298e05522cae6  Tests/Recovery/22D180.txt' >> $@
 
-# Rule to test a sample viking-extractor recovery against one known to have been 
-#  successful...
-#
-#  Something like this might work eventually when GNU sem is more ubiquitous...
-#   sem --id VikingExtractor --bg ./viking-extractor --recursive --no-ansi-colours --overwrite --generate-metadata --remote-start ./Tests/Recovery/ Tests/Recovery/
-#   sleep 3
-#   gdbus call --session --dest com.cartesiantheatre.VikingExtractorService --object-path /com/cartesiantheatre/VikingExtractorObject --method com.cartesiantheatre.VikingExtractorInterface.Start
-#   sem --wait --id VikingExtractor
-#   /usr/bin/md5sum --warn --check RecoveryChecksums.md5
-#
+# If D-Bus interface was enabled through Autoconf, then include testing of d-bus 
+#  functionality when verifying checksums of recovered sample mission data...
+if USE_DBUS_INTERFACE
+RecoveryTest.sh: RecoveryChecksums.md5 Makefile.am
+	## Launch the viking extractor and capture it's process ID...
+	@echo './viking-extractor $(RECOVERY_TEST_ARGUMENTS) $(top_srcdir)/Tests/Recovery/ Tests/Recovery/ &' > $@
+	@echo 'VE_PID=$$!' >> $@
+	## Keep trying to initiate the extraction remotely over d-bus until it 
+	##  becomes available on the session bus...
+	@echo 'while [ ! $$(kill -s 0 $$VE_PID &> /dev/null) ]' >> $@
+	@echo 'do' >> $@
+	## Try to execute the Start() method...
+	@echo '    $(GDBUS) call --session --dest com.cartesiantheatre.VikingExtractorService --object-path /com/cartesiantheatre/VikingExtractorObject --method com.cartesiantheatre.VikingExtractorInterface.Start &> /dev/null' >> $@
+	## Succeeded. Don't try again...
+	@echo '    if [ $$? == 0 ] ; then' >> $@
+	@echo '        break' >> $@
+	@echo '    fi' >> $@
+	@echo '    sleep 1s' >> $@
+	@echo 'done' >> $@
+	## Wait for the extractor to exit...
+	@echo 'wait $$VE_PID' >> $@
+	## Verify checksums of extracted photographs...
+	@echo '$(MD5SUM) --warn --check $<' >> $@
+	@echo '' >> $@
+	## Make sure the script is executable...
+	@chmod +x $@
+
+# Otherwise verifying checksums of recovered sample mission data without using
+#  d-bus invocation...
+else
 RecoveryTest.sh: RecoveryChecksums.md5 Makefile.am
 	@echo './viking-extractor $(RECOVERY_TEST_ARGUMENTS) $(top_srcdir)/Tests/Recovery/ Tests/Recovery/' > $@
 	@echo '$(MD5SUM) --warn --check $<' >> $@
 	@chmod +x $@
+
+endif
 
 # Actually clean all derived and maintainer files...
 MAINTAINERCLEANFILES =              \

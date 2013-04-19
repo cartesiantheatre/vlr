@@ -213,14 +213,14 @@ class VerificationThread(threading.Thread):
 
         # Calculate checksum...
         while True:
-            
+
             # Read at most an 8K chunk...
             fileBuffer = fileDescriptor.read(8192)
-            
+
             # I/O error or reached the end of the file...
             if not fileBuffer:
                 break
-            
+
             # Update the hash...
             md5Hash.update(fileBuffer)
 
@@ -228,10 +228,10 @@ class VerificationThread(threading.Thread):
             #  the progress...
             self._totalVerifiedSize += len(fileBuffer)
             fraction = self._totalVerifiedSize / self._totalFileSize
-            
+
             # Schedule to update the GUI...
             GObject.idle_add(self._updateGUI, filePath, fraction, priority=GObject.PRIORITY_LOW)
-            
+
             # Something requested the thread quit...
             if self._terminateRequested:
                 return 0
