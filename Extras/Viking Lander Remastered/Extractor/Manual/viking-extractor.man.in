@@ -1,4 +1,4 @@
-.TH @PACKAGE@ 1 "September 2012" "Version @PACKAGE_VERSION@"
+.TH @PACKAGE@ 1 "April 2013" "Version @PACKAGE_VERSION@"
 .SH NAME
 viking-extractor - Recovers images from Viking Lander operations
 
@@ -15,66 +15,91 @@ For some background information on why this tool was written, see the chapter \f
 .TP
 \fB\--directorize-band-class\fR
 Put reconstructed images into subdirectories named after band type class (e.g. Colour).
+
 .TP
 \fB\--directorize-location\fR
 Put reconstructed images into subdirectories named after location taken from.
+
 .TP 
 \fB\--directorize-month\fR
 Put reconstructed images into subdirectories named after Martian month taken on.
+
 .TP
 \fB\--directorize-sol\fR
 Put reconstructed images into subdirectories numbered by camera event solar day.
+
 .TP
 \fB\--dry-run\fR
 Don't write anything.
+
 .TP 
 \fB\--help\fR
 Show this help.
+
 .TP 
 \fB--ignore-bad-files\fR
 Don't stop on corrupt or problematic input file, but continue extraction of other files.
+
 .TP 
 \fB--interlace\fR 
 Encode output with Adam7 interlacing.
+
 .TP 
 \fB\-j\fR, \fB\--jobs[=threads]\fR
 Number of threads to run parallelized. Only one if -j is not provided, or auto if threads argument is not specified. At present, this feature is not implemented.
+
 .TP 
 \fB\--filter-camera-event[=id]\fR
 Look only for the specified matching camera event ID, such as 22A158.
+
 .TP 
 \fB\--filter-diode[=type]\fR
 Extract from matching supported diode filter classes which are any (default), colour, infrared, sun, or survey.
+
 .TP 
 \fB\--filter-lander=#\fR
 Extract from specific lander only which are either (0, the default), 1, or 2. Viking Lander 2 touched down in Utopia Planitia, while 1 touched down in Chryse Planitia.
+
 .TP 
 \fB\--filter-solar-day[=#]\fR
 Look only for camera events taken on the specified solar day.
+
 .TP 
 \fB\--generate-metadata\fR
 Whenever a colour image is recovered, machine generate a text file containing various metadata.
+
 .TP 
-\fB\--no-ansi-colours\fR       
+\fB\--no-ansi-colours\fR
 Disable VT/100 ANSI coloured terminal output.
+
 .TP 
 \fB\--no-auto-rotate\fR
 Don't automatically rotate image as needed.
+
 .TP 
 \fB\--no-reconstruct\fR
 Don't attempt to reconstruct camera events, just dump all available band data as separate images.
+
 .TP 
 \fB\--overwrite\fR
 Overwrite any existing output files.
+
 .TP 
 \fB\-r\fR, \fB--recursive\fR
 Scan subfolders as well if input is a directory.
+
 .TP 
 \fB\--summarize-only\fR
-No warnings or errors displayed, summarize only.
+Show summary of progress and final results only.
+
+.TP 
+\fB\--suppress\fR
+Disable warnings and errors.
+
 .TP 
 \fB\-V\fR, \fB\--verbose\fR
-Be verbose.    
+Be verbose.
+
 .TP 
 \fB\-v\fR \fB\--version\fR
 Show version information.
@@ -86,7 +111,7 @@ Joe Tang <jtantogo-1@yahoo.com> and Kip Warner <kip@thevertigo.com> were the aut
 Report @PACKAGE_STRING@ bugs to \fI@PACKAGE_BUGREPORT@\fR
 
 .SH COPYRIGHT
-Copyright (C) 2010, 2011, 2012 Cartesian Theatre. This is free software; see Copying for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>. This is free software; see Copying for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 .SH SEE ALSO
 \fIhttps://www.avaneya.com/\fR

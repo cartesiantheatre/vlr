@@ -18,7 +18,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # System imports...
-from gi.repository import Gtk, Gdk, GObject, GdkPixbuf
+from gi.repository import GLib, Gtk, Gdk, GObject, GdkPixbuf
 import hashlib
 import os
 import threading
@@ -91,7 +91,7 @@ class VerificationPagesProxy():
             animation = GdkPixbuf.PixbufAnimation.new_from_file(
                 os.path.join(
                     LauncherArguments.getArguments().dataRoot, "Animations", 
-                    "Verification", "ball.apng"))
+                    "Verification", "Verification.gif"))
             self._verificationImage.set_from_animation(animation)
             self._verificationImage.show()
 
@@ -202,7 +202,8 @@ class VerificationThread(threading.Thread):
 
         # Or check for failure...
         except OSError as Error:
-            GObject.idle_add(
+        
+            Gdk.threads_add_idle(GLib.PRIORITY_DEFAULT,
                 self._setQuitWithError, 
                 "I was not able to check a file I require. {0}:\n\n{1}".
                     format(Error.strerror, currentFile))
@@ -230,7 +231,9 @@ class VerificationThread(threading.Thread):
             fraction = self._totalVerifiedSize / self._totalFileSize
 
             # Schedule to update the GUI...
-            GObject.idle_add(self._updateGUI, filePath, fraction, priority=GObject.PRIORITY_LOW)
+            Gdk.threads_add_idle(
+                GLib.PRIORITY_LOW,
+                self._updateGUI, (filePath, fraction))
 
             # Something requested the thread quit...
             if self._terminateRequested:
@@ -284,7 +287,10 @@ class VerificationThread(threading.Thread):
 
     # Update the GUI. This callback is safe to update the GUI because it has
     #  been scheduled to execute safely...
-    def _updateGUI(self, currentFile, fraction):
+    def _updateGUI(self, arguments):
+
+        # Unpack arguments...
+        currentFile, fraction = arguments
 
         # Update the progress bar...
         self._verificationProgressBar.set_fraction(fraction)
@@ -308,7 +314,8 @@ class VerificationThread(threading.Thread):
             except OSError as Error:
 
                 # Alert user from main thread...
-                GObject.idle_add(
+                Gdk.threads_add_idle(
+                    GLib.PRIORITY_DEFAULT,
                     self._setQuitWithError, 
                     "I was not able to check a file I require. {0}:\n\n{1}".
                         format(Error.strerror, currentFile))
@@ -334,7 +341,8 @@ class VerificationThread(threading.Thread):
             if currentHexDigest != correctHexDigest:
                 
                 # Alert user from main thread...
-                GObject.idle_add(
+                Gdk.threads_add_idle(
+                    GLib.PRIORITY_DEFAULT,
                     self._setQuitWithError, 
                     "The following file appears to be corrupt:\n\n{0}\n\n" \
                     "Your disc might be damaged, sorry.".format(currentFile))
@@ -342,17 +350,11 @@ class VerificationThread(threading.Thread):
                 # Quit the thread...
                 return
 
-        # Reset the cursor to normal in case something changed it...
-        self._assistant.get_root_window().set_cursor(None)
-
-        # Mark page as complete...
-        self._assistant.set_page_complete(self._verificationProgressPageBox, True)
-
         # Alert user everything went fine from the main thread...
-        GObject.idle_add(self._setQuitOk)
+        Gdk.threads_add_idle(GLib.PRIORITY_DEFAULT, self._setQuitOk, None)
 
     # Quit the thread and show user everything went fine...
-    def _setQuitOk(self):
+    def _setQuitOk(self, arguments):
 
         # Alert user...
         messageDialog = Gtk.MessageDialog(
@@ -361,6 +363,9 @@ class VerificationThread(threading.Thread):
             "The disc verification completed successfully. Your disc is probably fine.")
         messageDialog.run()
         messageDialog.destroy()
+
+        # Reset the cursor to normal in case something changed it...
+        self._assistant.get_root_window().set_cursor(None)
 
         # Page is complete now...
         self._assistant.set_page_complete(self._verificationProgressPageBox, True)

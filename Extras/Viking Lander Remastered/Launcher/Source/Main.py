@@ -21,7 +21,7 @@
 # System imports...
 import gi
 import signal
-from gi.repository import GObject
+from gi.repository import GObject, Gdk
 
 # Launcher...
 from LauncherApp import LauncherApp
@@ -34,6 +34,7 @@ if __name__ == '__main__':
 
     # Initialize threading environment...
     GObject.threads_init()
+    Gdk.threads_init()
 
     # Start the launcher GUI...
     launcher = LauncherApp()

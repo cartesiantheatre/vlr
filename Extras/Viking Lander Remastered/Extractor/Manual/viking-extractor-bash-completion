@@ -6,7 +6,7 @@ _viking-extractor()
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="--directorize-band-class --directorize-location --directorize-month --directorize-sol --dry-run --help --ignore-bad-files --interlace --jobs[=threads] --filter-camera-event --filter-diode[=type] --filter-lander=# --filter-solar-day[=#] --generate-metadata --no-ansi-colours --no-auto-rotate --no-reconstruct --overwrite --recursive --summarize-only --verbose --version "
+    opts="--directorize-band-class --directorize-location --directorize-month --directorize-sol --dry-run --help --ignore-bad-files --interlace --jobs[=threads] --filter-camera-event --filter-diode[=type] --filter-lander=# --filter-solar-day[=#] --generate-metadata --no-ansi-colours --no-auto-rotate --no-reconstruct --overwrite --recursive --remote-start --summarize-only --suppress --verbose --version "
 
     if [[ ${cur} == -* ]] ; then
         COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
@@ -14,3 +14,4 @@ _viking-extractor()
     fi
 }
 complete -F _viking-extractor viking-extractor
+

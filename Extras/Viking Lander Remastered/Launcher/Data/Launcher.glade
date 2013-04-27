@@ -104,7 +104,6 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="receives_default">False</property>
             <property name="has_tooltip">True</property>
             <property name="tooltip_markup" translatable="yes">The recovered images are encoded in a lossless compressed PNG format for maximum quality and versatility. If you&amp;apos;d like them to use interlacing, select this. Interlacing is a method of allowing images to incrementally load, beginning from a lower resolution to its highest one. The images are typically slightly larger, but they are useful for streaming on slower network connections.</property>
-            <property name="tooltip_text" translatable="yes">The recovered images are encoded in a lossless compressed PNG format for maximum quality and versatility. If you'd like them to use interlacing, select this. Interlacing is a method of allowing images to incrementally load, beginning from a lower resolution to its highest one. The images are typically slightly larger, but they are useful for streaming on slower network connections.</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="active">True</property>
@@ -124,7 +123,6 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="receives_default">False</property>
             <property name="has_tooltip">True</property>
             <property name="tooltip_markup" translatable="yes">Whenever a colour image is being recovered, this option will write out a machine generated text file containing a bunch of image metadata, such as the source magnetic tape, recovery heuristics used, and so on, of each of the image bands used to reconstruct the final colour image.</property>
-            <property name="tooltip_text" translatable="yes">Whenever a colour image is being recovered, this option will write out a machine generated text file containing a bunch of image metadata, such as the source magnetic tape, recovery heuristics used, and so on, of each of the image bands used to reconstruct the final colour image.</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="active">True</property>
@@ -144,7 +142,6 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="receives_default">False</property>
             <property name="has_tooltip">True</property>
             <property name="tooltip_markup" translatable="yes">If this is enabled, the VikingExtractor will display significantly more information as it attempts to recover what it can.</property>
-            <property name="tooltip_text" translatable="yes">If this is enabled, the VikingExtractor will display significantly more information as it attempts to recover what it can.</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="active">True</property>
@@ -167,7 +164,6 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="receives_default">False</property>
             <property name="has_tooltip">True</property>
             <property name="tooltip_markup" translatable="yes">Take advantage of machines with more than one processor by using several simultaneously. Note that this feature is currently &lt;b&gt;not&lt;/b&gt; supported.</property>
-            <property name="tooltip_text" translatable="yes">Take advantage of machines with more than one processor by using several simultaneously. Note that this feature is currently not supported.</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="draw_indicator">True</property>
@@ -695,54 +691,36 @@ This next page will contain the output from the &lt;b&gt;VikingExtractor&lt;/b&g
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">2</property>
+        <property name="position">0</property>
       </packing>
     </child>
     <child>
-      <object class="GtkFrame" id="frame5">
+      <object class="GtkScrolledWindow" id="scrolledwindow2">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label_xalign">0</property>
+        <property name="can_focus">True</property>
+        <property name="margin_left">9</property>
+        <property name="margin_right">9</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
         <property name="shadow_type">in</property>
         <child>
-          <object class="GtkScrolledWindow" id="scrolledwindow2">
+          <object class="GtkTextView" id="confirmTextView">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="margin_left">5</property>
-            <property name="margin_right">5</property>
-            <property name="margin_top">2</property>
-            <property name="margin_bottom">2</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="shadow_type">in</property>
-            <child>
-              <object class="GtkTextView" id="confirmTextView">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
-                <property name="editable">False</property>
-                <property name="left_margin">7</property>
-                <property name="right_margin">7</property>
-                <property name="cursor_visible">False</property>
-                <property name="buffer">confirmTextBuffer</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child type="label">
-          <object class="GtkLabel" id="label15">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">&lt;b&gt;Selected Configuration:&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
+            <property name="editable">False</property>
+            <property name="left_margin">7</property>
+            <property name="right_margin">7</property>
+            <property name="cursor_visible">False</property>
+            <property name="buffer">confirmTextBuffer</property>
           </object>
         </child>
       </object>
       <packing>
-        <property name="expand">True</property>
+        <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">3</property>
+        <property name="position">1</property>
       </packing>
     </child>
   </object>
@@ -1031,54 +1009,36 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
     <property name="orientation">vertical</property>
     <property name="spacing">2</property>
     <child>
-      <object class="GtkFrame" id="frame3">
+      <object class="GtkScrolledWindow" id="recoveryScrolledWindow">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label_xalign">0</property>
-        <property name="shadow_type">none</property>
+        <property name="can_focus">True</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="shadow_type">in</property>
         <child>
-          <object class="GtkScrolledWindow" id="scrolledwindow3">
+          <object class="VteTerminal" id="recoveryTerminal">
             <property name="visible">True</property>
+            <property name="app_paintable">True</property>
             <property name="can_focus">True</property>
+            <property name="tooltip_text" translatable="yes">This window contains the output from the VikingExtractor process while it works. Don't be alarmed if you see many warnings. This is normal because some of the Viking lander data is not actual data or is too corrupt to be recovered.</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="shadow_type">in</property>
-            <child>
-              <object class="VteTerminal" id="recoveryTerminal">
-                <property name="visible">True</property>
-                <property name="app_paintable">True</property>
-                <property name="can_focus">True</property>
-                <property name="tooltip_text" translatable="yes">This window contains the output from the VikingExtractor process while it works. Don't be alarmed if you see many warnings. This is normal because some of the Viking lander data is not actual data or is too corrupt to be recovered.</property>
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
-                <property name="hscroll_policy">natural</property>
-                <property name="vscroll_policy">natural</property>
-                <property name="background_saturation">1</property>
-                <property name="background_tint_color">#00000fa0ffff</property>
-                <property name="cursor_blink_mode">on</property>
-                <property name="encoding">UTF-8</property>
-                <property name="pointer_autohide">True</property>
-                <property name="scrollback_lines">5000</property>
-                <property name="scroll_on_keystroke">True</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child type="label">
-          <object class="GtkLabel" id="label3">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">&lt;b&gt;Recovery Output:&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
-            <property name="ellipsize">start</property>
+            <property name="hscroll_policy">natural</property>
+            <property name="vscroll_policy">natural</property>
+            <property name="background_saturation">1</property>
+            <property name="background_tint_color">#00000fa0ffff</property>
+            <property name="cursor_blink_mode">on</property>
+            <property name="encoding">UTF-8</property>
+            <property name="pointer_autohide">True</property>
+            <property name="scrollback_lines">5000</property>
+            <property name="scroll_on_keystroke">True</property>
           </object>
         </child>
       </object>
       <packing>
         <property name="expand">True</property>
         <property name="fill">True</property>
-        <property name="padding">10</property>
-        <property name="position">1</property>
+        <property name="position">0</property>
       </packing>
     </child>
     <child>
@@ -1256,7 +1216,7 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="xpad">5</property>
-                <property name="pixbuf">Disc.png</property>
+                <property name="pixbuf">Animations/Verification/4.png</property>
                 <property name="icon-size">3</property>
               </object>
               <packing>
@@ -1356,14 +1316,15 @@ You really only ever need to do this once or if you suspect that your disc may b
     <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <child>
-      <object class="GtkBox" id="box7">
+      <object class="GtkBox" id="box21">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="valign">center</property>
         <child>
           <object class="GtkImage" id="verificationImage">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="stock">gtk-missing-image</property>
+            <property name="stock">gtk-cdrom</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -1372,65 +1333,11 @@ You really only ever need to do this once or if you suspect that your disc may b
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="box13">
+          <object class="GtkLabel" id="label5">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkLabel" id="verificationCurrentFileLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Please wait while verifying your disc's integrity...</property>
-                <property name="justify">center</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox" id="hbox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="border_width">20</property>
-                <property name="spacing">7</property>
-                <child>
-                  <object class="GtkProgressBar" id="verificationProgressBar">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="show_text">True</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="stopVerificationButton">
-                    <property name="label">gtk-stop</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="use_stock">True</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
+            <property name="label" translatable="yes">Please wait while your disc's integrity is verified. This may take a long time, depending on the speed of your computer. You can stop this process at any time.</property>
+            <property name="wrap">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -1443,6 +1350,60 @@ You really only ever need to do this once or if you suspect that your disc may b
         <property name="expand">False</property>
         <property name="fill">True</property>
         <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox" id="box7">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkBox" id="hbox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="border_width">20</property>
+            <property name="spacing">7</property>
+            <child>
+              <object class="GtkProgressBar" id="verificationProgressBar">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="show_text">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="stopVerificationButton">
+                <property name="label">gtk-stop</property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
       </packing>
     </child>
   </object>

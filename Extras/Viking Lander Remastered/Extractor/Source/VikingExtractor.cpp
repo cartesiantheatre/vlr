@@ -88,7 +88,8 @@ void ShowHelp()
          << "                              dump all available band data as separate images."    << endl
          << "      --overwrite             Overwrite any existing output files."                << endl
          << "  -r, --recursive             Scan subfolders as well if input is a directory."    << endl
-         << "      --summarize-only        No warnings or errors displayed, summarize only."    << endl
+         << "      --summarize-only        Show summary of progress and final results only."    << endl
+         << "      --suppress              Suppress all warnings and errors."                   << endl
          << "  -V, --verbose               Be verbose"                                          << endl
          << "  -v, --version               Show version information"                            << endl << endl
 
@@ -170,6 +171,7 @@ int main(int ArgumentCount, char *Arguments[])
         option_long_remote_start,
 #endif
         option_long_summarize_only,
+        option_long_suppress,
         option_long_verbose,
         option_long_version
     };
@@ -197,9 +199,11 @@ int main(int ArgumentCount, char *Arguments[])
         {"overwrite",               no_argument,        NULL,   option_long_overwrite},
         {"recursive",               no_argument,        NULL,   option_long_recursive},
 #ifdef USE_DBUS_INTERFACE
-        {"remote-start",            no_argument,        NULL,   option_long_remote_start}, /* No need to document since only relevant to VLR */
+        /* No need to document since only relevant to VLR */
+        {"remote-start",            no_argument,        NULL,   option_long_remote_start},
 #endif
         {"summarize-only",          no_argument,        NULL,   option_long_summarize_only},
+        {"suppress",                no_argument,        NULL,   option_long_suppress},
         {"verbose",                 no_argument,        NULL,   option_long_verbose},
         {"version",                 no_argument,        NULL,   option_long_version},
         
@@ -331,8 +335,11 @@ int main(int ArgumentCount, char *Arguments[])
             case option_long_remote_start: { Options::GetInstance().SetRemoteStart(); break; }
 #endif
 
-            // Summarize only...
+            // Show summary of progress and final results only...
             case option_long_summarize_only: { Options::GetInstance().SetSummarizeOnly(); break; }
+
+            // Suppress all warnings and errors...
+            case option_long_suppress: { Options::GetInstance().SetSuppress(); break; }
 
             // Verbose...
             case 'V':
@@ -369,6 +376,15 @@ int main(int ArgumentCount, char *Arguments[])
 
     // Toggle verbose console...
     Console::GetInstance().SetChannelEnabled(Console::Verbose, VerboseConsole);
+
+    // Summarize only and verbose mode are mutually exclusive...
+    if(VerboseConsole && Options::GetInstance().GetSummarizeOnly())
+    {
+        // Alert, abort...
+        Message(Console::Error) 
+            << "summarize only and verbose modes cannot both be used" << endl;
+        exit(EXIT_FAILURE);
+    }
 
     // Check OCRAD...
 

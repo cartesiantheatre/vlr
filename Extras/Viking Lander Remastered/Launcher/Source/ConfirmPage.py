@@ -188,6 +188,7 @@ class ConfirmPageProxy():
         self._commandLineInterface.append("--recursive")
         self._commandLineInterface.append("--ignore-bad-files")
         self._commandLineInterface.append("--remote-start")
+        self._commandLineInterface.append("--suppress")
 
         # Location of input...
         self._commandLineInterface.append(

@@ -1996,11 +1996,13 @@ void VicarImageBand::SetCameraEventLabel(const string &CameraEventLabel)
         m_SolarDay = atoi(SolarDay.c_str());
 
     // Check for matching solar day, if user filtered...
-    if(Options::GetInstance().GetFilterSolarDay() != numeric_limits<size_t>::max() && Options::GetInstance().GetFilterSolarDay() != m_SolarDay)
+    if(Options::GetInstance().GetFilterSolarDay() != numeric_limits<size_t>::max() && 
+       Options::GetInstance().GetFilterSolarDay() != m_SolarDay)
         SetErrorAndReturn("filtering non-matching solar day")
 
     // Check for matching camera event, if user filtered...
-    if(!Options::GetInstance().GetFilterCameraEvent().empty() && Options::GetInstance().GetFilterCameraEvent() != m_CameraEventLabelNoSol)
+    if(!Options::GetInstance().GetFilterCameraEvent().empty() && 
+       Options::GetInstance().GetFilterCameraEvent() != m_CameraEventLabelNoSol)
         SetErrorAndReturn("filtering non-matching camera event")
 }
 

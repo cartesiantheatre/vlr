@@ -193,12 +193,20 @@ void VicarImageAssembler::Reconstruct()
         DBusInterface::GetInstance().EmitNotificationSignal("Indexing mission data, please wait...");
 #endif
 
-        // If summarize only mode is enabled, mute current file name, warnings, info, and errors...
+        // If summarize only mode is enabled, mute current file name, and all 
+        //  channels, except summarize...
         if(Options::GetInstance().GetSummarizeOnly())
         {
             Console::GetInstance().SetUseCurrentFileName(false);
             Console::GetInstance().SetChannelEnabled(Console::Error, false);
             Console::GetInstance().SetChannelEnabled(Console::Info, false);
+            Console::GetInstance().SetChannelEnabled(Console::Warning, false);
+        }
+        
+        // If suppress mode is enabled, disable warnings and errors...
+        if(Options::GetInstance().GetSuppress())
+        {
+            Console::GetInstance().SetChannelEnabled(Console::Error, false);
             Console::GetInstance().SetChannelEnabled(Console::Warning, false);
         }
 

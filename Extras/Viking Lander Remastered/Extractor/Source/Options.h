@@ -68,6 +68,7 @@ class Options : public ExplicitSingleton<Options>
         bool            GetGenerateMetadata() const { return m_GenerateMetadata; }
         bool            GetIgnoreBadFiles() const { return m_IgnoreBadFiles; }
         bool            GetInterlace() const { return m_Interlace; }
+        size_t          GetJobs() const { return m_Jobs; }
         bool            GetNoReconstruct() const { return m_NoReconstruct; };
         bool            GetOverwrite() const { return m_Overwrite; }
         bool            GetRecursive() const { return m_Recursive; }
@@ -75,7 +76,7 @@ class Options : public ExplicitSingleton<Options>
         bool            GetRemoteStart() const { return m_RemoteStart; }
 #endif
         bool            GetSummarizeOnly() const { return m_SummarizeOnly; }
-        size_t          GetJobs() const { return m_Jobs; }
+        bool            GetSuppress() const { return m_Suppress; }
 
         // Set options...
         void            SetAutoRotate(const bool AutoRotate = true) { m_AutoRotate = AutoRotate; }
@@ -99,6 +100,7 @@ class Options : public ExplicitSingleton<Options>
 #endif
         void            SetGenerateMetadata(const bool GenerateMetadata = true) { m_GenerateMetadata = GenerateMetadata; }
         void            SetSummarizeOnly(const bool SummarizeOnly = true) { m_SummarizeOnly = SummarizeOnly; }
+        void            SetSuppress(const bool Suppress = true) { m_Suppress = Suppress; }
 
     // Private methods...
     private:
@@ -173,8 +175,11 @@ class Options : public ExplicitSingleton<Options>
         // Generate metadata...
         bool                m_GenerateMetadata;
         
-        // Mute all console output channels, except the summary channel...
+        // Show a summary of progress and final results only...
         bool                m_SummarizeOnly;
+        
+        // Disable warnings and errors...
+        bool                m_Suppress;
 };
 
 // Multiple include protection...

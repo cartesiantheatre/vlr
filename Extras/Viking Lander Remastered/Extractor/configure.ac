@@ -24,7 +24,7 @@
 AC_PREREQ([2.67])
 
 # Copyright notice...
-AC_COPYRIGHT([Copyright (C) 2010-2013 Cartesian Theatre.])
+AC_COPYRIGHT([Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>.])
 
 # Initialize Autoconf...
 AC_INIT(

@@ -119,27 +119,32 @@ RecoveryChecksums.md5: Makefile.am
 #  functionality when verifying checksums of recovered sample mission data...
 if USE_DBUS_INTERFACE
 RecoveryTest.sh: RecoveryChecksums.md5 Makefile.am
-	## Launch the viking extractor and capture it's process ID...
-	@echo './viking-extractor $(RECOVERY_TEST_ARGUMENTS) $(top_srcdir)/Tests/Recovery/ Tests/Recovery/ &' > $@
+	@echo '' > $@
+	@echo '# Launch the viking extractor and capture process ID...' >> $@
+	@echo './viking-extractor $(RECOVERY_TEST_ARGUMENTS) $(top_srcdir)/Tests/Recovery/ Tests/Recovery/ &' >> $@
 	@echo 'VE_PID=$$!' >> $@
-	## Keep trying to initiate the extraction remotely over d-bus until it 
-	##  becomes available on the session bus...
+	@echo '' >> $@
+	@echo '# Keep trying to initiate the extraction remotely over d-bus until it' >> $@
+	@echo '#  becomes available on the session bus...' >> $@
 	@echo 'while [ ! $$(kill -s 0 $$VE_PID &> /dev/null) ]' >> $@
 	@echo 'do' >> $@
-	## Try to execute the Start() method...
+	@echo '' >> $@
+	@echo '    # Try to execute the Start() method...' >> $@
 	@echo '    $(GDBUS) call --session --dest com.cartesiantheatre.VikingExtractorService --object-path /com/cartesiantheatre/VikingExtractorObject --method com.cartesiantheatre.VikingExtractorInterface.Start &> /dev/null' >> $@
-	## Succeeded. Don't try again...
+	@echo '' >> $@
+	@echo '    # Succeeded. Do not try again...' >> $@
 	@echo '    if [ $$? == 0 ] ; then' >> $@
 	@echo '        break' >> $@
 	@echo '    fi' >> $@
 	@echo '    sleep 1s' >> $@
 	@echo 'done' >> $@
-	## Wait for the extractor to exit...
+	@echo '' >> $@
+	@echo '# Wait for the extractor to exit...' >> $@
 	@echo 'wait $$VE_PID' >> $@
-	## Verify checksums of extracted photographs...
+	@echo '' >> $@
+	@echo '# Verify checksums of extracted photographs...' >> $@
 	@echo '$(MD5SUM) --warn --check $<' >> $@
 	@echo '' >> $@
-	## Make sure the script is executable...
 	@chmod +x $@
 
 # Otherwise verifying checksums of recovered sample mission data without using
@@ -147,7 +152,7 @@ RecoveryTest.sh: RecoveryChecksums.md5 Makefile.am
 else
 RecoveryTest.sh: RecoveryChecksums.md5 Makefile.am
 	@echo './viking-extractor $(RECOVERY_TEST_ARGUMENTS) $(top_srcdir)/Tests/Recovery/ Tests/Recovery/' > $@
-	@echo '$(MD5SUM) --warn --check $<' >> $@
+	@echo '$(MD5SUM) --warn --check $<" >> $@
 	@chmod +x $@
 
 endif
