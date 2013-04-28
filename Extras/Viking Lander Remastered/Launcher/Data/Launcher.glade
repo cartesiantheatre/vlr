@@ -178,36 +178,6 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
       </packing>
     </child>
   </object>
-  <object class="GtkListStore" id="diodeFilterListStore">
-    <columns>
-      <!-- column-name DiodeBandTypeClass -->
-      <column type="gchararray"/>
-      <!-- column-name CommandLineParameter -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">All diode band types</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">any</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Colour</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">colour</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Infrared</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">infrared</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Sun</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">sun</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Survey</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">survey</col>
-      </row>
-    </data>
-  </object>
   <object class="GtkBox" id="configureFiltersPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -598,9 +568,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
           <object class="GtkLabel" id="label7">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">These options control how the VikingExtractor's image recovery process. 
-
-If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
+            <property name="label" translatable="yes">These options control how the VikingExtractor's image recovery process. If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
             <property name="use_markup">True</property>
             <property name="wrap">True</property>
           </object>
@@ -632,7 +600,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="has_tooltip">True</property>
-            <property name="tooltip_markup" translatable="yes">A given fully rendered image in the Viking Lander image archive might be scattered in different parts across many different files. Sometimes the parts are not all oriented the same way (rotated differently). The VikingExtractor's artificial intelligence will attempt to orient them all right side up before reassembling unless this option is selected.</property>
+            <property name="tooltip_markup" translatable="yes">A given fully rendered image in the Viking Lander image archive might be scattered in different parts across many different files. Sometimes the parts are not all oriented the same way (rotated differently). The VikingExtractor's artificial intelligence will attempt to orient them all right side up before reassembling unless this option is selected. If you don't know what this is, you should probably leave it set to the default.</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="draw_indicator">True</property>
@@ -651,7 +619,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="has_tooltip">True</property>
-            <property name="tooltip_markup" translatable="yes">A given fully rendered image in the Viking Lander image archive might be scattered in different parts across many different files. If this option is selected, the VikingExtractor won't attempt to reassemble the images, but instead it will just extract and dump all constituent components (band data) as separate image files.</property>
+            <property name="tooltip_markup" translatable="yes">A given fully rendered image in the Viking Lander image archive might be scattered in different parts across many different files. If this option is selected, the VikingExtractor won't attempt to reassemble the images, but instead it will just extract and dump all constituent components (band data) as separate image files. If you don't know what this is, you should probably leave it set to the default.</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="draw_indicator">True</property>
@@ -723,6 +691,36 @@ This next page will contain the output from the &lt;b&gt;VikingExtractor&lt;/b&g
         <property name="position">1</property>
       </packing>
     </child>
+  </object>
+  <object class="GtkListStore" id="diodeFilterListStore">
+    <columns>
+      <!-- column-name DiodeBandTypeClass -->
+      <column type="gchararray"/>
+      <!-- column-name CommandLineParameter -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">All diode band types</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">any</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Colour</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">colour</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Infrared</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">infrared</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Sun</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">sun</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Survey</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">survey</col>
+      </row>
+    </data>
   </object>
   <object class="GtkBox" id="farewellPageBox">
     <property name="visible">True</property>
@@ -1229,9 +1227,9 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">This disc contains a substantial amount of data that the recovery software will try to examine for recoverable images. Would you like to verify that the data contained on your disc is not corrupted?
+                <property name="label" translatable="yes">This disc contains a substantial amount of data that the recovery software will try to examine for recoverable images. Although we have optimized the data, it is still very large and may take a long time depending on the speed of your computer.
 
-You really only ever need to do this once or if you suspect that your disc may be damaged. Note that this can take a while, depending on the speed of your hardware.</property>
+Would you like to verify that the data contained on your disc is not corrupted? We recommend that you do this at least once, or if you suspect that your disc may be damaged.</property>
                 <property name="wrap">True</property>
               </object>
               <packing>
@@ -1336,7 +1334,7 @@ You really only ever need to do this once or if you suspect that your disc may b
           <object class="GtkLabel" id="label5">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Please wait while your disc's integrity is verified. This may take a long time, depending on the speed of your computer. You can stop this process at any time.</property>
+            <property name="label" translatable="yes">Please wait while your mission data's integrity is verified. You can safely stop this process at any time, if you wish.</property>
             <property name="wrap">True</property>
           </object>
           <packing>
