@@ -21,23 +21,26 @@
 # System imports...
 from gi.repository import Gtk
 
-# Assistant proxy page base class...
-from PageProxyBase import *
-
-# Select recovery page proxy class...
-class SelectRecoveryPageProxy(PageProxyBase):
+# Page pages proxy class. Common code for all assistant pages...
+class PageProxyBase(object):
 
     # Constructor...
     def __init__(self, launcherApp):
 
         # Initialize...
-        super(SelectRecoveryPageProxy, self).__init__(launcherApp)
+        self._launcher  = launcherApp
+        self._assistant = launcherApp.assistant
+        self._builder   = launcherApp.builder
 
-        # Add the select recovery page to the assistant...
-        self._selectRecoveryFolderPageBox = self._builder.get_object("selectRecoveryFolderPageBox")
-        self._selectRecoveryFolderPageBox.set_border_width(5)
-        self._assistant.append_page(self._selectRecoveryFolderPageBox)
-        self._assistant.set_page_title(self._selectRecoveryFolderPageBox, "Select Recovery Folder")
-        self._assistant.set_page_type(self._selectRecoveryFolderPageBox, Gtk.AssistantPageType.CONTENT)
-        self._assistant.set_page_complete(self._selectRecoveryFolderPageBox, True)
+    def decoratePage(self, sizer):
+        
+        #sizer.pack_start(Gtk.Button(stock=Gtk.STOCK_OPEN), True, True, 0)
+        pass
+        
+        # Add the header image...
+        #animation = GdkPixbuf.PixbufAnimation.new_from_file(
+        #    os.path.join(
+        #        LauncherArguments.getArguments().dataRoot, "Animations", 
+        #        "Verification", "Verification.gif"))
+        #self._verificationImage.set_from_animation(animation)
 

@@ -232,7 +232,7 @@ IdentifyDistro()
 
     # Alert user of what we found...
     echo $SymbolStatusOk
-    echo "User is running ${Distro} / ${DistroCodeName}..."
+    echo "User is running ${Distro} ${DistroCodeName}..."
     echo "System's packages are managed by ${DistroPackageManager}..."
 }
 
@@ -314,8 +314,18 @@ PrepareDebianBased()
 
         # Ubuntu...
 
-            # Ubuntu precise...
+            # Precise...
             "precise")
+                PackagesRequired=("python3-gi")
+            ;;
+            
+            # Quantal...
+            "quantal")
+                PackagesRequired=("python3-gi")
+            ;;
+            
+            # Raring...
+            "raring")
                 PackagesRequired=("python3-gi")
             ;;
 
@@ -328,7 +338,7 @@ PrepareDebianBased()
 
         # Debian...
         
-            # Debian wheezy. Squeeze doesn't have the latter two needed
+            # Debian Wheezy. Squeeze doesn't have the latter two needed
             #  packages...
             "wheezy")
                 PackagesRequired=("python3-gi")
@@ -337,9 +347,9 @@ PrepareDebianBased()
         # Unknown distro...
         *)
             zenity --error \
-                --title="Error" \
+                --title="Avaneya: Viking Lander Remastered" \
                 --window-icon=$Icon \
-                --text="I'm sorry, but your distribution is not supported:"
+                --text="I'm sorry, but your distribution is not supported."
             exit 1
             ;;
     esac

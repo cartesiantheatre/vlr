@@ -43,7 +43,7 @@ from FarewellPage import FarewellPageProxy
 from Miscellaneous import *
 
 # Launcher class...
-class LauncherApp():
+class LauncherApp(object):
 
     # Constructor...
     def __init__(self):
@@ -132,7 +132,8 @@ class LauncherApp():
             aboutDialog.add_credit_section("Beta Testers", [
                 "<a href=\"mailto:adam@avaneya.com\">Adam Gornowicz</a>",
                 "<a href=\"mailto:me@jesseknudsen.com\">Jesse Knudsen</a>",
-                "<a href=\"mailto:kip@thevertigo.com\">Kip Warner</a>"])
+                "<a href=\"mailto:kip@thevertigo.com\">Kip Warner</a>",
+                "<a href=\"mailto:matt@thevertigo.com\">Matthew MacLennan</a>"])
 
             # Musicians...
             aboutDialog.add_credit_section("Musicians", [
@@ -198,21 +199,21 @@ class LauncherApp():
 
     # End of current page. Next page is being constructed but not visible yet.
     #  Give it a chance to prepare...
-    def onPrepareEvent(self, assistant, currentPage):
+    def onPrepareEvent(self, assistant, currentPageIndex):
 
         # Reset the cursor to normal in case something changed it...
         self.setBusy(False)
 
         # Transitioning to verification progress page...
-        if currentPage is self.verificationPagesProxy.getProgressPageBox():
+        if currentPageIndex is self.verificationPagesProxy.getProgressPageBox():
             self.verificationPagesProxy.onPrepare()
 
         # Transitioning to final configuration page...
-        elif currentPage is self.configurePagesProxy.getConfigureAdvancedPageBox():
+        elif currentPageIndex is self.configurePagesProxy.getConfigureAdvancedPageBox():
             self.configurePagesProxy.onPrepare()
 
         # Transitioning to confirm page...
-        elif currentPage is self.confirmPageProxy.getPageBox():
+        elif currentPageIndex is self.confirmPageProxy.getPageBox():
             self.confirmPageProxy.onPrepare()
 
     # End of current page. Calculate index of next page...
@@ -280,12 +281,19 @@ class LauncherApp():
             stopVerificationButton = self.builder.get_object("stopVerificationButton")
             stopVerificationButton.emit("clicked")
         
+        # If the handbook page is the current page, trigger a stop download in
+        #  case it is currently downloading...
+        currentPage = assistant.get_nth_page(assistant.get_current_page())
+        if currentPage is self.handbookPageProxy.getHandbookPageBox():
+            stopHandbookDownloadButton = self.builder.get_object("stopHandbookDownloadButton")
+            stopHandbookDownloadButton.emit("clicked")
+
         # If the recovery thread is currently running, then trigger its abort
         #  logic...
         if self.recoveryPageProxy.processID != 0:
             abortRecoveryButton = self.builder.get_object("abortRecoveryButton")
             abortRecoveryButton.emit("clicked")
-        
+
         # Let cancel handler determine whether to exit or not...
 
     # Either close button of summary page clicked or apply button in last page

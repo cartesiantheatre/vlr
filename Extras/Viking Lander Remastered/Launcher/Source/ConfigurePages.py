@@ -20,16 +20,19 @@
 
 # System imports...
 from gi.repository import Gtk
+import os
+
+# Assistant proxy page base class...
+from PageProxyBase import *
 
 # Configure pages proxy class...
-class ConfigurePagesProxy():
+class ConfigurePagesProxy(PageProxyBase):
 
     # Constructor...
     def __init__(self, launcherApp):
 
         # Initialize...
-        self._assistant     = launcherApp.assistant
-        self._builder       = launcherApp.builder
+        super(ConfigurePagesProxy, self).__init__(launcherApp)
 
         # Add the configure intro page to the assistant...
         self._configureIntroPageBox = self._builder.get_object("configureIntroPageBox")
@@ -38,7 +41,7 @@ class ConfigurePagesProxy():
         self._assistant.set_page_title(self._configureIntroPageBox, "Configure Introduction")
         self._assistant.set_page_type(self._configureIntroPageBox, Gtk.AssistantPageType.CONTENT)
         self._assistant.set_page_complete(self._configureIntroPageBox, True)
-        
+
         # Add the configure output layout page to the assistant...
         self._configureOutputLayoutPageBox = self._builder.get_object("configureOutputLayoutPageBox")
         self._configureOutputLayoutPageBox.set_border_width(5)
@@ -70,6 +73,22 @@ class ConfigurePagesProxy():
         self._assistant.set_page_title(self._configureAdvancedPageBox, "Configure Advanced")
         self._assistant.set_page_type(self._configureAdvancedPageBox, Gtk.AssistantPageType.CONTENT)
         self._assistant.set_page_complete(self._configureAdvancedPageBox, False)
+        
+        # Find widgets...
+        self.directorizeBandTypeClassCheckButton = self._builder.get_object("directorizeBandTypeClassCheckButton")
+        self.directorizeLocationCheckButton = self._builder.get_object("directorizeLocationCheckButton")
+        self.directorizeMonthCheckButton = self._builder.get_object("directorizeMonthCheckButton")
+        self.directorizeSolCheckButton = self._builder.get_object("directorizeSolCheckButton")
+        self.examplePathLabel = self._builder.get_object("examplePathLabel")
+
+        # Connect the signals...
+        self.directorizeBandTypeClassCheckButton.connect("toggled", self.onDirectorizeToggle)
+        self.directorizeLocationCheckButton.connect("toggled", self.onDirectorizeToggle)
+        self.directorizeMonthCheckButton.connect("toggled", self.onDirectorizeToggle)
+        self.directorizeSolCheckButton.connect("toggled", self.onDirectorizeToggle)
+
+        # Update the example path...
+        self._updateExamplePath()
 
     # Assistant has reached the end of its current page and is transitioning to
     #  this page, though it is not visible yet...
@@ -79,7 +98,36 @@ class ConfigurePagesProxy():
         #  final button doesn't appear prematurely in the assistant...
         self._assistant.set_page_complete(self._configureAdvancedPageBox, True)
 
+    # Any of the directorize buttons were toggled. Update the example path...
+    def onDirectorizeToggle(self, toggleButton):
+        self._updateExamplePath()
+
     # Get the configure advanced page box...
     def getConfigureAdvancedPageBox(self):
         return self._configureAdvancedPageBox
+
+    # Update the example path...
+    def _updateExamplePath(self):
+
+        # Get the toggle states of the different directorize flags...
+        directorizeBandType = self._builder.get_object("directorizeBandTypeClassCheckButton").get_active()
+        directorizeLocation = self._builder.get_object("directorizeLocationCheckButton").get_active()
+        directorizeMonth = self._builder.get_object("directorizeMonthCheckButton").get_active()
+        directorizeSol = self._builder.get_object("directorizeSolCheckButton").get_active()
+
+        # Format the example path...
+        #Output/Utopia Planitia/Scorpius/Colour/778/
+        examplePath = "e.g. "
+        if directorizeLocation:
+            examplePath += "Utopia Planitia/"
+        if directorizeMonth:
+            examplePath += "Scorpius/"
+        if directorizeBandType:
+            examplePath += "Colour/"
+        if directorizeSol:
+            examplePath += "778/"
+        examplePath += "22D180.png"
+
+        # Show it...
+        self.examplePathLabel.set_text(examplePath)
 

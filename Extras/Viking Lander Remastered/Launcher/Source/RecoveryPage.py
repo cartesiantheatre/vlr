@@ -33,15 +33,17 @@ import sys
 # Our support modules...
 import LauncherArguments
 
+# Assistant proxy page base class...
+from PageProxyBase import *
+
 # Recovery page proxy class...
-class RecoveryPageProxy():
+class RecoveryPageProxy(PageProxyBase):
 
     # Constructor...
     def __init__(self, launcherApp):
 
         # Initialize...
-        self._launcherApp           = launcherApp
-        self._assistant             = launcherApp.assistant
+        super(RecoveryPageProxy, self).__init__(launcherApp)
         self._builder               = launcherApp.builder
         self._confirmPageProxy      = launcherApp.confirmPageProxy
         self._recoveryProgressText  = ""
@@ -160,9 +162,9 @@ class RecoveryPageProxy():
                 continue
 
         # Tell the VikingExtractor to commence the recovery...
-        # Keep trying to connect until successful...
         while True:
 
+            # Keep trying to connect until successful...
             try:
 
                 # Connect to VikingExtractor's notification signal...
@@ -172,7 +174,7 @@ class RecoveryPageProxy():
                     VE_DBUS_SIGNAL_NOTIFICATION,
                     VE_DBUS_OBJECT_PATH,
                     None,
-                    Gio.DBusConnectionFlags.NONE,
+                    Gio.DBusSignalFlags.NONE,
                     self.onVikingExtractorNotificationSignal,
                     None)
 
@@ -183,7 +185,7 @@ class RecoveryPageProxy():
                     VE_DBUS_SIGNAL_PROGRESS,
                     VE_DBUS_OBJECT_PATH,
                     None,
-                    Gio.DBusConnectionFlags.NONE,
+                    Gio.DBusSignalFlags.NONE,
                     self.onVikingExtractorProgressSignal,
                     None)
 
@@ -194,12 +196,14 @@ class RecoveryPageProxy():
                 # Begin the recovery...
                 vikingExtractorProxy.Start()
 
+            # Attempt failed...
             except:
 
                 # Pause one second, then try again...
                 sleep(0.1)
                 continue
 
+            # Done...
             print("ok")
             break
 

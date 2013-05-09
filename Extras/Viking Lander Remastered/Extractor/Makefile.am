@@ -101,6 +101,10 @@ check_SCRIPTS = GrepTest.sh RecoveryTest.sh
 AM_CPPFLAGS=
 AM_CPPFLAGS+=-I$(top_srcdir)/Source
 
+# Options to pass on to ./configure when running distcheck...
+#AM_DISTCHECK_CONFIGURE_FLAGS= \
+#    --enable-dbus-interface
+
 # Targets to execute for check target...
 TESTS = $(check_SCRIPTS)
 

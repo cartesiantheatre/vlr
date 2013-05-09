@@ -28,17 +28,18 @@ from sys import exit
 # Our support modules...
 import LauncherArguments
 
+# Assistant proxy page base class...
+from PageProxyBase import *
+
 # Class containing behaviour for the two disc verification pages...
-class VerificationPagesProxy():
+class VerificationPagesProxy(PageProxyBase):
 
     # Constructor...
     def __init__(self, launcherApp):
 
         # Initialize...
-        self._launcher  = launcherApp
-        self._assistant = launcherApp.assistant
-        self._builder   = launcherApp.builder
-        self._thread    = None
+        super(VerificationPagesProxy, self).__init__(launcherApp)
+        self._thread = None
 
         # Find the window widgets...
         self._verificationImage = self._builder.get_object("verificationImage")

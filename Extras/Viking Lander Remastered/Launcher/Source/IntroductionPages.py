@@ -25,15 +25,17 @@ import os
 # Arguments...
 import LauncherArguments
 
+# Assistant proxy page base class...
+from PageProxyBase import *
+
 # Introduction page proxy class...
-class IntroductionPagesProxy():
+class IntroductionPagesProxy(PageProxyBase):
 
     # Constructor...
     def __init__(self, launcherApp):
 
         # Initialize...
-        self._assistant     = launcherApp.assistant
-        self._builder       = launcherApp.builder
+        super(IntroductionPagesProxy, self).__init__(launcherApp)
 
         # Add the introduction page to the assistant...
         self._introductionPagesBox = self._builder.get_object("introductionPageBox")
@@ -42,6 +44,7 @@ class IntroductionPagesProxy():
         self._assistant.set_page_title(self._introductionPagesBox, "Introduction")
         self._assistant.set_page_type(self._introductionPagesBox, Gtk.AssistantPageType.INTRO)
         self._assistant.set_page_complete(self._introductionPagesBox, True)
+        self.decoratePage(self._introductionPagesBox)
 
         # Find widgets...
         self._introductionLabel = self._builder.get_object("introductionLabel")

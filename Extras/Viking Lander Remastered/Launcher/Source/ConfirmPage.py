@@ -25,15 +25,17 @@ import re
 # Our support modules...
 import LauncherArguments
 
+# Assistant proxy page base class...
+from PageProxyBase import *
+
 # Confirm page proxy class...
-class ConfirmPageProxy():
+class ConfirmPageProxy(PageProxyBase):
 
     # Constructor...
     def __init__(self, launcherApp):
     
         # Initialize...
-        self._assistant     = launcherApp.assistant
-        self._builder       = launcherApp.builder
+        super(ConfirmPageProxy, self).__init__(launcherApp)
 
         # Add the confirm page to the assistant...
         self._confirmPageBox = self._builder.get_object("confirmPageBox")
@@ -208,6 +210,7 @@ def _boolToYesNo(value):
     # Type check...
     assert(type(value) is bool)
 
+    # Convert to string...
     if value is True:
         return "Yes"
     else:

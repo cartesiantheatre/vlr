@@ -24,15 +24,17 @@ from gi.repository import Gtk
 # Our modules...
 from Miscellaneous import *
 
+# Assistant proxy page base class...
+from PageProxyBase import *
+
 # Farewell page proxy class...
-class FarewellPageProxy():
+class FarewellPageProxy(PageProxyBase):
 
     # Constructor...
     def __init__(self, launcherApp):
 
         # Initialize...
-        self._assistant = launcherApp.assistant
-        self._builder   = launcherApp.builder
+        super(FarewellPageProxy, self).__init__(launcherApp)
 
         # Find window and widgets...
         self._farewellPageBox = self._builder.get_object("farewellPageBox")
@@ -65,7 +67,7 @@ class FarewellPageProxy():
         
         # Find the recovery folder from the widget back on the recovery page...
         recoveryFolder = self._builder.get_object("recoveryFolderChooser").get_filename()
-        
+
         # Explore the folder through the platform's native shell...
         exploreDirectory(recoveryFolder)
 

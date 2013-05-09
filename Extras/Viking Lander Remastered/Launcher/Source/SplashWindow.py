@@ -25,7 +25,7 @@ from gi.repository import Gtk, GObject
 import LauncherArguments
 
 # Splash window proxy class...
-class SplashWindowProxy():
+class SplashWindowProxy(object):
 
     # Constructor...
     def __init__(self, launcherApp):

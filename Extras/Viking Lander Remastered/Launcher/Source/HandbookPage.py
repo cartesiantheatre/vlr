@@ -24,20 +24,24 @@ from gi.repository import Gdk
 from gi.repository import GObject
 import urllib.request
 import os
+import errno
 import platform
 
 from Miscellaneous import *
 
+# Assistant proxy page base class...
+from PageProxyBase import *
+
 # Handbook page proxy class...
-class HandbookPageProxy():
+class HandbookPageProxy(PageProxyBase):
 
     # Constructor...
     def __init__(self, launcherApp):
 
         # Initialize...
-        self._assistant     = launcherApp.assistant
-        self._builder       = launcherApp.builder
+        super(HandbookPageProxy, self).__init__(launcherApp)
         self._handbookUrl   = "https://www.avaneya.com/downloads/Avaneya_Project_Crew_Handbook.pdf"
+        self._stopDownload  = False
 
         # Add handbook page to assistant...
         self._handbookPageBox = self._builder.get_object("handbookPageBox")
@@ -50,12 +54,21 @@ class HandbookPageProxy():
         # Shortcuts to our widgets...
         self._downloadHandbookToggle = self._builder.get_object("downloadHandbookToggle")
         self._progressBar = self._builder.get_object("handbookDownloadProgress")
+        self._stopHandbookDownloadButton = self._builder.get_object("stopHandbookDownloadButton")
 
         # Connect the signals...
         self._downloadHandbookToggle.connect("toggled", self.onDownloadHandbookToggled)
+        self._stopHandbookDownloadButton.connect("clicked", self.onStopHandbookDownload)
+
+    # Get the handbook page box...
+    def getHandbookPageBox(self):
+        return self._handbookPageBox
 
     # Download handbook button toggled...
     def onDownloadHandbookToggled(self, toggleButton):
+
+        # Reset stop download flag in case user sets it later...
+        self._stopDownload = False
 
         # User requested to download the latest handbook...
         if toggleButton.get_active():
@@ -70,6 +83,7 @@ class HandbookPageProxy():
 
                 # Update GUI...
                 self._progressBar.hide()
+                self._stopHandbookDownloadButton.hide()
                 toggleButton.set_sensitive(True)
                 self._assistant.set_page_complete(self._handbookPageBox, True)
                 
@@ -82,7 +96,7 @@ class HandbookPageProxy():
             # Just the filename from the download URL...
             fileName = self._handbookUrl.split('/')[-1]
 
-            # Prepare a save as file chooser dialog to save the handbook...
+            # Prepare a Save As file chooser dialog to save the handbook...
             dialog = Gtk.FileChooserDialog(
                 "Please choose a download location...", 
                 self._assistant,
@@ -101,6 +115,7 @@ class HandbookPageProxy():
 
                 # Update GUI...
                 self._progressBar.hide()
+                self._stopHandbookDownloadButton.hide()
                 toggleButton.set_sensitive(True)
                 self._assistant.set_page_complete(self._handbookPageBox, True)
 
@@ -121,6 +136,7 @@ class HandbookPageProxy():
 
             # Show the download progress bar...
             self._progressBar.show()
+            self._stopHandbookDownloadButton.show()
             self._progressBar.set_text("Contacting server, please wait...")
 
             # Try to download...
@@ -148,7 +164,12 @@ class HandbookPageProxy():
 
                 # Receive loop...
                 while True:
-                
+
+                    # User clicked the stop button...
+                    if self._stopDownload:
+                        raise IOError(errno.ENOMSG, 
+                            "The download of the handbook was stopped.")
+
                     # Fill the buffer...
                     fileBuffer = urlStream.read(blockSize)
 
@@ -168,8 +189,10 @@ class HandbookPageProxy():
                     while Gtk.events_pending():
                         Gtk.main_iteration()
 
-                # Done. Close the stream and note that the page is ready to advance...
+                # Done. Close the stream...
                 fileHandle.close()
+
+                # Note that the page is ready to advance...
                 self._assistant.set_page_complete(self._handbookPageBox, True)
 
                 # Alert user that the download is done...
@@ -185,10 +208,14 @@ class HandbookPageProxy():
                 if userResponse == Gtk.ResponseType.YES:
                     launchResource(fileName)
 
+                # Actually advance to the next page...
+                currentPageIndex = self._assistant.get_current_page()
+                self._assistant.set_current_page(currentPageIndex + 1)
+
             # Problem finding the URL, e.g. 404...
             except urllib.error.URLError as exception:
 
-                # Deactivate the download button...
+                # Untoggle the download button...
                 toggleButton.set_active(False)
 
                 # Alert user...
@@ -203,24 +230,25 @@ class HandbookPageProxy():
             # Couldn't write to disk...
             except IOError as exception:
 
-                # Deactivate the download button...
+                # Untoggle download button...
                 toggleButton.set_active(False)
 
                 # Alert user...
                 messageDialog = Gtk.MessageDialog(
                     self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
                     Gtk.ButtonsType.OK, 
-                    "Unable to save the handbook to the requested location:\n\n{0}".
-                        format(exception.strerror))
+                    exception.strerror)
                 messageDialog.run()
                 messageDialog.destroy()
 
             # Regardless of whether there was an exception or not...
             finally:
-                
+
                 # Update the GUI...
                 toggleButton.set_sensitive(True)
                 self._progressBar.hide()
+                self._progressBar.set_fraction(0.0)
+                self._stopHandbookDownloadButton.hide()
                 self._assistant.set_page_complete(self._handbookPageBox, True)
 
         # User did not want to download the handbook...
@@ -229,5 +257,10 @@ class HandbookPageProxy():
             # Update the GUI...
             toggleButton.set_sensitive(True)
             self._progressBar.hide()
+            self._stopHandbookDownloadButton.hide()
             self._assistant.set_page_complete(self._handbookPageBox, True)
+
+    # Stop handbook download button pressed...
+    def onStopHandbookDownload(self, stopButton):
+        self._stopDownload = True
 

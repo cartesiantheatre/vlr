@@ -51,7 +51,7 @@ from Miscellaneous import *
 import sys
 
 # Opening video window proxy class...
-class OpeningVideoWindowProxy():
+class OpeningVideoWindowProxy(object):
 
     # Constructor...
     def __init__(self, launcherApp):

@@ -76,8 +76,10 @@ DBusInterface::DBusInterface()
     m_RegistrationID(0),
     m_Error(NULL)
 {
-    // Initialize type system...
-    g_type_init();
+    // Initialize type system, but call is deprecated since GLib 2.36...
+    #if (GLIB_MAJOR_VERSION == 2) && (GLIB_MINOR_VERSION < 36)
+        g_type_init();
+    #endif
 
     // Register on the session bus...
     RegisterOnSessionBus();
