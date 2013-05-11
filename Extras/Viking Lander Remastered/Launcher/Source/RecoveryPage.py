@@ -113,9 +113,7 @@ class RecoveryPageProxy(PageProxyBase):
 
         # Connect to the session bus...
         sessionConnection = None
-        sessionConnection = Gio.bus_get_sync(
-            Gio.BusType.SESSION,
-            None)
+        sessionConnection = Gio.bus_get_sync(Gio.BusType.SESSION, None)
 
         # Failed...
         if sessionConnection is None:
@@ -313,7 +311,7 @@ class RecoveryPageProxy(PageProxyBase):
         currentProgress = parameters.unpack()[0]
     
         # Format and set the progress bar caption...
-        self._recoveryProgressBar.set_text("{0} ({1:.0f}%)".
+        self._recoveryProgressBar.set_text("{0} ({1:.1f}%)".
             format(self._recoveryProgressText, currentProgress))
         
         # Move the progress bar's fraction...

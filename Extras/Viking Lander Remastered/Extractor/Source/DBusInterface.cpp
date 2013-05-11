@@ -98,7 +98,7 @@ void DBusInterface::EmitNotificationSignal(const string &Notification)
     // Emit the signal...
     const bool Result = g_dbus_connection_emit_signal(
         m_Connection, 
-        m_BusName.c_str(), 
+        NULL, 
         m_ObjectPath.c_str(), 
         m_Interface.c_str(), 
         m_NotificationSignal.c_str(), 
@@ -134,7 +134,7 @@ void DBusInterface::EmitProgressSignal(const double Progress)
     // Emit the signal...
     const bool Result = g_dbus_connection_emit_signal(
         m_Connection, 
-        m_BusName.c_str(), 
+        NULL, 
         m_ObjectPath.c_str(), 
         m_Interface.c_str(), 
         m_ProgressSignal.c_str(), 

@@ -782,6 +782,7 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
             <property name="label" translatable="yes">Explore Recovered Mission Data</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="is_focus">True</property>
             <property name="receives_default">True</property>
           </object>
           <packing>
@@ -1151,6 +1152,7 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
       <object class="GtkFileChooserButton" id="recoveryFolderChooser">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="is_focus">True</property>
         <property name="halign">center</property>
         <property name="valign">center</property>
         <property name="orientation">vertical</property>
