@@ -93,7 +93,7 @@ class HandbookPageProxy(PageProxyBase):
                 # Don't do anything further...
                 return
             
-            # Just the filename from the download URL...
+            # Get just the filename from the download URL...
             fileName = self._handbookUrl.split('/')[-1]
 
             # Prepare a Save As file chooser dialog to save the handbook...
@@ -106,6 +106,11 @@ class HandbookPageProxy(PageProxyBase):
             dialog.set_do_overwrite_confirmation(True)
             dialog.set_current_name(fileName)
             dialog.set_default_response(Gtk.ResponseType.OK)
+
+            # Default to user's desktop, if we can find it...
+            desktop = os.path.join(os.path.expanduser('~'), 'Desktop')
+            if os.path.isdir(desktop):
+                dialog.set_current_folder(desktop)
 
             # Run the dialog and capture the response...
             userResponse = dialog.run()
@@ -127,7 +132,7 @@ class HandbookPageProxy(PageProxyBase):
 
                 # Don't do anything further...
                 return
-            
+
             # Get the selected file name...
             fileName = dialog.get_filename()
 
@@ -182,8 +187,13 @@ class HandbookPageProxy(PageProxyBase):
 
                     # Calculate progress and update progress bar...
                     fileSizeCompleted += len(fileBuffer)
-                    self._progressBar.set_text(None)
-                    self._progressBar.set_fraction(fileSizeCompleted / fileSize)
+                    progress = fileSizeCompleted / fileSize
+                    self._progressBar.set_text("{0:.1f} MB of {1:.1f} MB ({2:.0f}%)".
+                        format(
+                            fileSizeCompleted / (1024**2), 
+                            fileSize / (1024**2), 
+                            progress * 100))
+                    self._progressBar.set_fraction(progress)
 
                     # Flush the event queue so we don't block...
                     while Gtk.events_pending():
@@ -259,6 +269,10 @@ class HandbookPageProxy(PageProxyBase):
             self._progressBar.hide()
             self._stopHandbookDownloadButton.hide()
             self._assistant.set_page_complete(self._handbookPageBox, True)
+
+    # Our page in the assistent is being constructed, but not visible yet...
+    def onPrepare(self):
+        pass
 
     # Stop handbook download button pressed...
     def onStopHandbookDownload(self, stopButton):

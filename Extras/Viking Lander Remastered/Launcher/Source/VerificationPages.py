@@ -66,6 +66,9 @@ class VerificationPagesProxy(PageProxyBase):
         stopVerificationButton = self._builder.get_object("stopVerificationButton")
         stopVerificationButton.connect("clicked", self.onStopVerificationPressed)
 
+        # Decorate the page with the common features to all assistant pages...
+        self.decoratePage(self._verificationInfoPageBox)
+
     # Get the verification progress page box...
     def getProgressPageBox(self):
         return self._verificationProgressPageBox
@@ -91,8 +94,7 @@ class VerificationPagesProxy(PageProxyBase):
             # Load the verification animation...
             animation = GdkPixbuf.PixbufAnimation.new_from_file(
                 os.path.join(
-                    LauncherArguments.getArguments().dataRoot, "Animations", 
-                    "Verification", "Verification.gif"))
+                    LauncherArguments.getArguments().dataRoot, "Verification.gif"))
             self._verificationImage.set_from_animation(animation)
             self._verificationImage.show()
 

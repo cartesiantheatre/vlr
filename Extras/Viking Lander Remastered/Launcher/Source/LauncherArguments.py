@@ -40,6 +40,20 @@ def _initializeArguments():
     argumentParser = argparse.ArgumentParser(
         description="Graphical user interface for the Avaneya: Viking Lander Remastered...")
     
+    # Define behaviour for --data-root...
+    argumentParser.add_argument("--data-root", 
+        action="store", 
+        default=os.path.normpath(os.path.join(_getSourceDirectory(), "../Data/")),
+        dest="dataRoot", 
+        help="Override path to user interface data root.")
+
+    # Define behaviour for --mission-data-root...
+    argumentParser.add_argument("--mission-data-root", 
+        action="store", 
+        default=os.path.normpath(os.path.join(_getSourceDirectory(), "../Mission Data/")),
+        dest="missionDataRoot", 
+        help="Override path to Viking lander mission data root.")
+
     # Define behaviour for --no-splash...
     argumentParser.add_argument("--no-splash", 
         action="store_true", 
@@ -47,32 +61,25 @@ def _initializeArguments():
         help="Do not show the splash and opening video.", 
         default=False)
 
-    # Define behaviour for --data-root...
-    argumentParser.add_argument("--data-root", 
-        action="store", 
-        default=os.path.normpath(os.path.join(_getSourceDirectory(), "../Data/")),
-        dest="dataRoot", 
-        help="Path to user interface data root.")
-
-    # Define behaviour for --mission-data-root...
-    argumentParser.add_argument("--mission-data-root", 
-        action="store", 
-        default=os.path.normpath(os.path.join(_getSourceDirectory(), "../Mission Data/")),
-        dest="missionDataRoot", 
-        help="Path to Viking lander mission data root.")
-
-    # Define behaviour for --viking-extractor-bin...
-    argumentParser.add_argument("--viking-extractor-bin", 
-        action="store", 
-        default=_getDefaultVikingExtractorPath(),
-        dest="vikingExtractorBinaryPath", 
-        help="Path to VikingExtractor executable.")
+    # Define behaviour for --no-music...
+    argumentParser.add_argument("--no-background-music", 
+        action="store_true", 
+        dest="noBackgroundMusic", 
+        help="Do not play background music.", 
+        default=False)
 
     # Define behaviour for --version...
     argumentParser.add_argument("--version", 
         action="version", 
         version=print(getLongVersionString()),
         help="Display application version.")
+
+    # Define behaviour for --viking-extractor-bin...
+    argumentParser.add_argument("--viking-extractor-bin", 
+        action="store", 
+        default=_getDefaultVikingExtractorPath(),
+        dest="vikingExtractorBinaryPath", 
+        help="Override path to VikingExtractor executable.")
 
     # Parse the command line...
     global _arguments

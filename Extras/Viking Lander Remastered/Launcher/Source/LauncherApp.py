@@ -23,6 +23,17 @@ import sys
 import os
 from gi.repository import Gtk, Gdk, GObject, Vte
 
+# GStreamer...
+haveGStreamer = True
+try:
+    import gi
+    gi.require_version("GstVideo", "1.0")
+    from gi.repository import GstVideo, Gst
+    haveGStreamer = True
+except ValueError:
+    print("GStreamer >= 1.0 not found. Will not use for music...")
+    haveGStreamer = False
+
 # Arguments...
 import LauncherArguments
 
@@ -30,7 +41,7 @@ import LauncherArguments
 from OpeningVideoWindow import OpeningVideoWindowProxy
 
 # Assistant pages and related logic...
-from IntroductionPages import IntroductionPagesProxy
+from IntroductionPage import IntroductionPageProxy
 from VerificationPages import VerificationPagesProxy
 from HandbookPage import HandbookPageProxy
 from SelectRecoveryPage import SelectRecoveryPageProxy
@@ -63,7 +74,7 @@ class LauncherApp(object):
         self.assistant = self.builder.get_object("assistantWindow")
 
         # Construct pages and register them with the assistant in correct order...
-        self.introductionPagesProxy = IntroductionPagesProxy(self)
+        self.introductionPageProxy = IntroductionPageProxy(self)
         self.verificationPagesProxy = VerificationPagesProxy(self)
         self.handbookPageProxy = HandbookPageProxy(self)
         self.selectRecoveryPageProxy = SelectRecoveryPageProxy(self)
@@ -79,18 +90,55 @@ class LauncherApp(object):
         aboutButton = Gtk.Button(stock=Gtk.STOCK_ABOUT)
         self.assistant.add_action_widget(aboutButton)
 
-        # Connect the signals...
+        # Connect all other signals...
         aboutButton.connect("clicked", self.onAboutButtonPressed)
         self.assistant.connect("apply", self.onApplyEvent)
         self.assistant.connect("cancel", self.onCancelEvent)
         self.assistant.connect("close", self.onCloseEvent)
         self.assistant.connect("delete-event", self.onDeleteEvent)
         self.assistant.connect("prepare", self.onPrepareEvent)
+        self.assistant.connect("show", self.onShow)
         
         # For wider screens, adjust the window size to 3/4 the width...
         (monitorWidth, monitorHeight) = getMonitorWithCursorSize()
         if monitorWidth > 1024:
             self.assistant.resize_to_geometry(monitorWidth * 3 / 4, 1)
+
+        # If the user requested no background music, then disable GStreamer...
+        if LauncherArguments.getArguments().noBackgroundMusic:
+            global haveGStreamer
+            haveGStreamer = False
+
+        # Prepare background music if GStreamer available...
+        if haveGStreamer:
+
+            # Create volume button...
+            self.volumeButton = Gtk.VolumeButton(size=Gtk.IconSize.BUTTON)
+            self.volumeButton.set_orientation(Gtk.Orientation.HORIZONTAL)
+            self.assistant.add_action_widget(self.volumeButton)
+
+            # Connect its signal...
+            self.volumeButton.connect("value-changed", self.onVolumeChanged)
+
+            # Initialize GStreamer, if not already...
+            Gst.init_check(None)
+
+            # Create the bin containing needed elements...
+            self._playBin = None
+            self._playBin = Gst.ElementFactory.make("playbin", "player")
+            assert(self._playBin)
+
+            # Get the bus for the pipeline and prepare signal handlers and for
+            #  asynchronous messages...
+            bus = self._playBin.get_bus()
+            bus.add_signal_watch()
+            bus.connect("message", self.onBusMessage)
+
+            # Create the dummy sink for video...
+            fakeSink = None
+            fakeSink = Gst.ElementFactory.make("fakesink", "fakesink")
+            assert(fakeSink)
+            self._playBin.set_property("video-sink", fakeSink)
 
         # Construct and show the opening video window, unless user disabled...
         if not LauncherArguments.getArguments().noSplash:
@@ -98,6 +146,24 @@ class LauncherApp(object):
             self.openingVideoWindowProxy.showVideo()
         else:
             self.assistant.show_all()
+
+    # End of current page. Calculate index of next page...
+    def forwardPage(self, currentPageIndex, userData):
+
+        # Get what would be the next page...
+        nextPage = self.assistant.get_nth_page(currentPageIndex)
+
+        # Transitioning into verification progress page...
+        if nextPage is self.verificationPagesProxy.getProgressPageBox() and \
+           self.builder.get_object("skipVerificationCheckRadio").get_active():
+
+                # Skip the disc verification check...
+                self.assistant.set_current_page(currentPageIndex + 1)
+                return currentPageIndex + 2
+
+        # Any other page just transition to the next one...
+        else:
+            return currentPageIndex + 1
 
     # About button pressed. Invoke dialog box...
     def onAboutButtonPressed(self, button):
@@ -197,42 +263,19 @@ class LauncherApp(object):
         aboutDialog.run()
         aboutDialog.hide()
 
-    # End of current page. Next page is being constructed but not visible yet.
-    #  Give it a chance to prepare...
-    def onPrepareEvent(self, assistant, currentPageIndex):
+    # GStreamer is trying to tell us something asynchronously...
+    def onBusMessage(self, bus, message):
 
-        # Reset the cursor to normal in case something changed it...
-        self.setBusy(False)
+        # Stream has finished...
+        if message.type == Gst.MessageType.EOS:
+            pass # TODO: Loop? 
 
-        # Transitioning to verification progress page...
-        if currentPageIndex is self.verificationPagesProxy.getProgressPageBox():
-            self.verificationPagesProxy.onPrepare()
-
-        # Transitioning to final configuration page...
-        elif currentPageIndex is self.configurePagesProxy.getConfigureAdvancedPageBox():
-            self.configurePagesProxy.onPrepare()
-
-        # Transitioning to confirm page...
-        elif currentPageIndex is self.confirmPageProxy.getPageBox():
-            self.confirmPageProxy.onPrepare()
-
-    # End of current page. Calculate index of next page...
-    def forwardPage(self, currentPageIndex, userData):
-
-        # Get what would be the next page...
-        nextPage = self.assistant.get_nth_page(currentPageIndex)
-
-        # Transitioning into verification progress page...
-        if nextPage is self.verificationPagesProxy.getProgressPageBox() and \
-           self.builder.get_object("skipVerificationCheckRadio").get_active():
-
-                # Skip the disc verification check...
-                self.assistant.set_current_page(currentPageIndex + 1)
-                return currentPageIndex + 2
-
-        # Any other page just transition to the next one...
-        else:
-            return currentPageIndex + 1
+        # Some kind of error occured...
+        elif message.type == Gst.MessageType.ERROR:
+        
+            # Retrieve the error and dump on the console...
+            (errorMessage, debugMessage) = message.parse_error()
+            print("Error:", errorMessage, debugMessage)
 
     # Apply button clicked...
     def onApplyEvent(self, *args):
@@ -267,6 +310,17 @@ class LauncherApp(object):
         # Terminate...
         self.quit()
 
+    # Either close button of summary page clicked or apply button in last page
+    #  in flow of type CONFIRM clicked...
+    def onCloseEvent(self, assistant, *args):
+        
+        # For debugging purposes...
+        #print("onCloseEvent")
+        
+        # No threads should be running by this point because at the end of the 
+        #  assistant's page flow, so safe to terminate...
+        self.quit()
+
     # User requested that assistant be closed. The default signal handler would 
     #  just destroys the window. Cancel signal is sent automatically after this
     #  signal is handled...
@@ -296,17 +350,60 @@ class LauncherApp(object):
 
         # Let cancel handler determine whether to exit or not...
 
-    # Either close button of summary page clicked or apply button in last page
-    #  in flow of type CONFIRM clicked...
-    def onCloseEvent(self, assistant, *args):
-        
-        # For debugging purposes...
-        #print("onCloseEvent")
-        
-        # No threads should be running by this point because at the end of the 
-        #  assistant's page flow, so safe to terminate...
-        self.quit()
+    # End of current page. Next page is being constructed but not visible yet.
+    #  Give it a chance to prepare...
+    def onPrepareEvent(self, assistant, currentPageIndex):
 
+        # Reset the cursor to normal in case something changed it...
+        self.setBusy(False)
+
+        # Transitioning to verification progress page...
+        if currentPageIndex is self.verificationPagesProxy.getProgressPageBox():
+            self.verificationPagesProxy.onPrepare()
+
+        # Transitioning to handbook page...
+        if currentPageIndex is self.handbookPageProxy.getHandbookPageBox():
+            self.handbookPageProxy.onPrepare()
+
+        # Transitioning to final configuration page...
+        elif currentPageIndex is self.configurePagesProxy.getConfigureAdvancedPageBox():
+            self.configurePagesProxy.onPrepare()
+
+        # Transitioning to confirm page...
+        elif currentPageIndex is self.confirmPageProxy.getPageBox():
+            self.confirmPageProxy.onPrepare()
+
+    # Assistant visible...
+    def onShow(self, assistant, *dummy):
+
+        # GStreamer available...
+        if haveGStreamer:
+
+            # Start playing...
+            musicPath = "file://" + os.path.join(
+                LauncherArguments.getArguments().dataRoot, "Music.ogg")
+            self._playBin.set_property("uri", musicPath)
+            self._playBin.set_state(Gst.State.PLAYING)
+
+            # Set the music volume to full...
+            self.volumeButton.set_value(1.0)
+
+        # GStreamer not available...
+        else:
+            pass
+
+    # Set the music playback state...
+    def onVolumeChanged(self, volumeButton, value):
+
+        # Volume button should only be visible of GStreamer was available...
+        assert(haveGStreamer)
+
+        # Make sure volume is normalized to [0.0, 1.0] range...
+        volume = max(min(value, 1.0), 0.0)
+        
+        # Set the volume...
+        self._playBin.set_property("volume", volume)
+        
     # Run the GUI...
     def run(self):
 

@@ -29,22 +29,21 @@ import LauncherArguments
 from PageProxyBase import *
 
 # Introduction page proxy class...
-class IntroductionPagesProxy(PageProxyBase):
+class IntroductionPageProxy(PageProxyBase):
 
     # Constructor...
     def __init__(self, launcherApp):
 
         # Initialize...
-        super(IntroductionPagesProxy, self).__init__(launcherApp)
+        super(IntroductionPageProxy, self).__init__(launcherApp)
 
         # Add the introduction page to the assistant...
-        self._introductionPagesBox = self._builder.get_object("introductionPageBox")
-        self._introductionPagesBox.set_border_width(5)
-        self._assistant.append_page(self._introductionPagesBox)
-        self._assistant.set_page_title(self._introductionPagesBox, "Introduction")
-        self._assistant.set_page_type(self._introductionPagesBox, Gtk.AssistantPageType.INTRO)
-        self._assistant.set_page_complete(self._introductionPagesBox, True)
-        self.decoratePage(self._introductionPagesBox)
+        self._introductionPageBox = self._builder.get_object("introductionPageBox")
+        self._introductionPageBox.set_border_width(5)
+        self._assistant.append_page(self._introductionPageBox)
+        self._assistant.set_page_title(self._introductionPageBox, "Introduction")
+        self._assistant.set_page_type(self._introductionPageBox, Gtk.AssistantPageType.INTRO)
+        self._assistant.set_page_complete(self._introductionPageBox, True)
 
         # Find widgets...
         self._introductionLabel = self._builder.get_object("introductionLabel")
@@ -53,4 +52,7 @@ class IntroductionPagesProxy(PageProxyBase):
         introductionFile = open(os.path.join(
             LauncherArguments.getArguments().dataRoot, "Introduction.txt"))
         self._introductionLabel.set_markup(introductionFile.read())
+
+        # Decorate the page with the common features to all assistant pages...
+        self.decoratePage(self._introductionPageBox)
 

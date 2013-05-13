@@ -65,6 +65,7 @@ class RecoveryPageProxy(PageProxyBase):
         # Connect the signals...
         self._abortRecoveryButton.connect("clicked", self.onAbortClicked)
         self._terminal.connect("child-exited", self.onChildProcessExit)
+        #self._recoveryPageBox.connect("expose-event", self.onExposeEvent)
 
     # Start the recovery process...
     def executeVikingExtractor(self):
@@ -283,6 +284,10 @@ class RecoveryPageProxy(PageProxyBase):
             # Advance to the next page...
             currentPageIndex = self._assistant.get_current_page()
             self._assistant.set_current_page(currentPageIndex + 1)
+
+    # Page needs to be repainted...
+    #def onExposeEvent(self, event, *dummy):
+    #    print("onExposeEvent")
 
     # VikingExtractor is trying to tell us something in a human readable string...
     def onVikingExtractorNotificationSignal(

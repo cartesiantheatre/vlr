@@ -30,7 +30,7 @@ try:
     from gi.repository import GstVideo, Gst
     haveGStreamer = True
 except ValueError:
-    print("GStreamer >= 1.0 not found. Will not use...")
+    print("GStreamer >= 1.0 not found. Will not use for opening video...")
     haveGStreamer = False
 
 # Gtk...
@@ -109,7 +109,7 @@ class OpeningVideoWindowProxy(object):
             "file://" + 
             os.path.join(
                 LauncherArguments.getArguments().dataRoot, 
-                "Opening.ogv"))
+                "Opening.mkv"))
 
         # Force our realize callback to be invoked so we can capture the 
         #  drawing area's window handle which we need before playing back the

@@ -20,6 +20,10 @@
 
 # System imports...
 from gi.repository import Gtk
+import os
+
+# Arguments...
+import LauncherArguments
 
 # Page pages proxy class. Common code for all assistant pages...
 class PageProxyBase(object):
@@ -32,15 +36,15 @@ class PageProxyBase(object):
         self._assistant = launcherApp.assistant
         self._builder   = launcherApp.builder
 
+    # Decorate the page with the common features to all assistant pages...
     def decoratePage(self, sizer):
         
-        #sizer.pack_start(Gtk.Button(stock=Gtk.STOCK_OPEN), True, True, 0)
-        pass
-        
-        # Add the header image...
-        #animation = GdkPixbuf.PixbufAnimation.new_from_file(
-        #    os.path.join(
-        #        LauncherArguments.getArguments().dataRoot, "Animations", 
-        #        "Verification", "Verification.gif"))
-        #self._verificationImage.set_from_animation(animation)
+        # Insert banner at top...
+        banner = Gtk.Image()
+        banner.set_from_file(
+            os.path.join(
+                LauncherArguments.
+                    getArguments().dataRoot, "CartesianTheatre.png"))
+        sizer.pack_start(banner, False, False, 0)
+        sizer.reorder_child(banner, 0)
 
