@@ -35,45 +35,40 @@ class ConfigurePagesProxy(PageProxyBase):
         super(ConfigurePagesProxy, self).__init__(launcherApp)
 
         # Add the configure intro page to the assistant...
-        self._configureIntroPageBox = self._builder.get_object("configureIntroPageBox")
-        self._configureIntroPageBox.set_border_width(5)
-        self._assistant.append_page(self._configureIntroPageBox)
-        self._assistant.set_page_title(self._configureIntroPageBox, "Configure Introduction")
-        self._assistant.set_page_type(self._configureIntroPageBox, Gtk.AssistantPageType.CONTENT)
-        self._assistant.set_page_complete(self._configureIntroPageBox, True)
+        self.registerPage(
+            "configureIntroPageBox", 
+            "Configure Introduction", 
+            Gtk.AssistantPageType.CONTENT, 
+            True)
 
         # Add the configure output layout page to the assistant...
-        self._configureOutputLayoutPageBox = self._builder.get_object("configureOutputLayoutPageBox")
-        self._configureOutputLayoutPageBox.set_border_width(5)
-        self._assistant.append_page(self._configureOutputLayoutPageBox)
-        self._assistant.set_page_title(self._configureOutputLayoutPageBox, "Configure Layout")
-        self._assistant.set_page_type(self._configureOutputLayoutPageBox, Gtk.AssistantPageType.CONTENT)
-        self._assistant.set_page_complete(self._configureOutputLayoutPageBox, True)
+        self.registerPage(
+            "configureOutputLayoutPageBox", 
+            "Configure Layout", 
+            Gtk.AssistantPageType.CONTENT, 
+            True)
 
         # Add the configure recovery page to the assistant...
-        self._configureRecoveryPageBox = self._builder.get_object("configureRecoveryPageBox")
-        self._configureRecoveryPageBox.set_border_width(5)
-        self._assistant.append_page(self._configureRecoveryPageBox)
-        self._assistant.set_page_title(self._configureRecoveryPageBox, "Configure Recovery")
-        self._assistant.set_page_type(self._configureRecoveryPageBox, Gtk.AssistantPageType.CONTENT)
-        self._assistant.set_page_complete(self._configureRecoveryPageBox, True)
+        self.registerPage(
+            "configureRecoveryPageBox", 
+            "Configure Recovery", 
+            Gtk.AssistantPageType.CONTENT, 
+            True)
 
         # Add the configure filters page to the assistant...
-        self._configureFiltersPageBox = self._builder.get_object("configureFiltersPageBox")
-        self._configureFiltersPageBox.set_border_width(5)
-        self._assistant.append_page(self._configureFiltersPageBox)
-        self._assistant.set_page_title(self._configureFiltersPageBox, "Configure Filters")
-        self._assistant.set_page_type(self._configureFiltersPageBox, Gtk.AssistantPageType.CONTENT)
-        self._assistant.set_page_complete(self._configureFiltersPageBox, True)
+        self.registerPage(
+            "configureFiltersPageBox", 
+            "Configure Filters", 
+            Gtk.AssistantPageType.CONTENT, 
+            True)
 
         # Add the configure advanced page to the assistant...
-        self._configureAdvancedPageBox = self._builder.get_object("configureAdvancedPageBox")
-        self._configureAdvancedPageBox.set_border_width(5)
-        self._assistant.append_page(self._configureAdvancedPageBox)
-        self._assistant.set_page_title(self._configureAdvancedPageBox, "Configure Advanced")
-        self._assistant.set_page_type(self._configureAdvancedPageBox, Gtk.AssistantPageType.CONTENT)
-        self._assistant.set_page_complete(self._configureAdvancedPageBox, False)
-        
+        self.registerPage(
+            "configureAdvancedPageBox", 
+            "Configure Advanced", 
+            Gtk.AssistantPageType.CONTENT, 
+            False)
+
         # Find widgets...
         self.directorizeBandTypeClassCheckButton = self._builder.get_object("directorizeBandTypeClassCheckButton")
         self.directorizeLocationCheckButton = self._builder.get_object("directorizeLocationCheckButton")
@@ -96,15 +91,11 @@ class ConfigurePagesProxy(PageProxyBase):
 
         # Now that the page is about to be visible, mark as complete so the
         #  final button doesn't appear prematurely in the assistant...
-        self._assistant.set_page_complete(self._configureAdvancedPageBox, True)
+        self._assistant.set_page_complete(self.getPageInGroup(4), True)
 
     # Any of the directorize buttons were toggled. Update the example path...
     def onDirectorizeToggle(self, toggleButton):
         self._updateExamplePath()
-
-    # Get the configure advanced page box...
-    def getConfigureAdvancedPageBox(self):
-        return self._configureAdvancedPageBox
 
     # Update the example path...
     def _updateExamplePath(self):

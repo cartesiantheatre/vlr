@@ -38,12 +38,11 @@ class IntroductionPageProxy(PageProxyBase):
         super(IntroductionPageProxy, self).__init__(launcherApp)
 
         # Add the introduction page to the assistant...
-        self._introductionPageBox = self._builder.get_object("introductionPageBox")
-        self._introductionPageBox.set_border_width(5)
-        self._assistant.append_page(self._introductionPageBox)
-        self._assistant.set_page_title(self._introductionPageBox, "Introduction")
-        self._assistant.set_page_type(self._introductionPageBox, Gtk.AssistantPageType.INTRO)
-        self._assistant.set_page_complete(self._introductionPageBox, True)
+        self.registerPage(
+            "introductionPageBox",
+            "Introduction",
+            Gtk.AssistantPageType.INTRO,
+            True)
 
         # Find widgets...
         self._introductionLabel = self._builder.get_object("introductionLabel")
@@ -52,7 +51,4 @@ class IntroductionPageProxy(PageProxyBase):
         introductionFile = open(os.path.join(
             LauncherArguments.getArguments().dataRoot, "Introduction.txt"))
         self._introductionLabel.set_markup(introductionFile.read())
-
-        # Decorate the page with the common features to all assistant pages...
-        self.decoratePage(self._introductionPageBox)
 

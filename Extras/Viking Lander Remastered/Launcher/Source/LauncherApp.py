@@ -42,7 +42,9 @@ from OpeningVideoWindow import OpeningVideoWindowProxy
 
 # Assistant pages and related logic...
 from IntroductionPage import IntroductionPageProxy
-from VerificationPages import VerificationPagesProxy
+from SubscribePage import SubscribePageProxy
+from VerificationPromptPage import VerificationPromptPageProxy
+from VerificationProgressPage import VerificationProgressPageProxy
 from HandbookPage import HandbookPageProxy
 from SelectRecoveryPage import SelectRecoveryPageProxy
 from ConfigurePages import ConfigurePagesProxy
@@ -75,16 +77,15 @@ class LauncherApp(object):
 
         # Construct pages and register them with the assistant in correct order...
         self.introductionPageProxy = IntroductionPageProxy(self)
-        self.verificationPagesProxy = VerificationPagesProxy(self)
+        self.subscribePageProxy = SubscribePageProxy(self)
+        self.verificationPromptPageProxy = VerificationPromptPageProxy(self)
+        self.verificationProgressPageProxy = VerificationProgressPageProxy(self)
         self.handbookPageProxy = HandbookPageProxy(self)
         self.selectRecoveryPageProxy = SelectRecoveryPageProxy(self)
         self.configurePagesProxy = ConfigurePagesProxy(self)
         self.confirmPageProxy = ConfirmPageProxy(self)
         self.recoveryPageProxy = RecoveryPageProxy(self)
         self.farewellPageProxy = FarewellPageProxy(self)
-
-        # Set the forward function which determines next page to show...
-        self.assistant.set_forward_page_func(self.forwardPage, None)
 
         # Add the about button to the assitant's action area...
         aboutButton = Gtk.Button(stock=Gtk.STOCK_ABOUT)
@@ -147,24 +148,6 @@ class LauncherApp(object):
         else:
             self.assistant.show_all()
 
-    # End of current page. Calculate index of next page...
-    def forwardPage(self, currentPageIndex, userData):
-
-        # Get what would be the next page...
-        nextPage = self.assistant.get_nth_page(currentPageIndex)
-
-        # Transitioning into verification progress page...
-        if nextPage is self.verificationPagesProxy.getProgressPageBox() and \
-           self.builder.get_object("skipVerificationCheckRadio").get_active():
-
-                # Skip the disc verification check...
-                self.assistant.set_current_page(currentPageIndex + 1)
-                return currentPageIndex + 2
-
-        # Any other page just transition to the next one...
-        else:
-            return currentPageIndex + 1
-
     # About button pressed. Invoke dialog box...
     def onAboutButtonPressed(self, button):
 
@@ -188,7 +171,8 @@ class LauncherApp(object):
         aboutDialog.set_artists([
             "<a href=\"mailto:jacob_vejvoda@hotmail.com\">Jacob Vejvoda</a>",
             "<a href=\"http://www.openclipart.org\">Open Clipart Library</a>",
-            "<a href=\"http://www.paul-laberge.com\">Paul Laberge</a>\n\n"])
+            "<a href=\"http://www.paul-laberge.com\">Paul Laberge</a>",
+            "<a href=\"http://simonj-design.blogspot.it/\">Simon Lazzari</a>"])
 
         # Add custom sections if introspection for add_credit_section() isn't
         #  busted to shit on this machine...
@@ -203,7 +187,8 @@ class LauncherApp(object):
 
             # Musicians...
             aboutDialog.add_credit_section("Musicians", [
-                "<a href=\"http://www.josephliau.com\">Joseph Liau</a>"])
+                "<a href=\"http://www.josephliau.com\">Joseph Liau</a> (studio intro)",
+                "<a href=\"https://soundcloud.com/monokle\">Monokle (Vlad Kudryavtsev)</a> (background)"])
 
             # Shouts and thanks...
             aboutDialog.add_credit_section("Shouts / Thanks", [
@@ -254,6 +239,7 @@ class LauncherApp(object):
             # Append a note where people can find the complete credits...
             artistsList = aboutDialog.get_artists()
             artistsList.append(
+                "\n\n"
                 "All of the aforementioned contributed directly to this software. For a\n"
                 "complete list of everyone who worked on the Avaneya project, including\n"
                 "on this software, please see our master <a href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits\">Credits</a> file.")
@@ -268,7 +254,7 @@ class LauncherApp(object):
 
         # Stream has finished...
         if message.type == Gst.MessageType.EOS:
-            pass # TODO: Loop? 
+            pass # We could loop?
 
         # Some kind of error occured...
         elif message.type == Gst.MessageType.ERROR:
@@ -279,9 +265,18 @@ class LauncherApp(object):
 
     # Apply button clicked...
     def onApplyEvent(self, *args):
-        
-        # Start the recovery process...
-        self.recoveryPageProxy.executeVikingExtractor()
+
+        # Get the current page we are applying from...
+        currentPageIndex = self.assistant.get_current_page()
+        currentPage = self.assistant.get_nth_page(currentPageIndex)
+        assert(currentPage)
+
+        # Fetch the reference to the current page's proxy object...
+        pageProxyBase = currentPage.pageProxyBase
+        assert(pageProxyBase)
+
+        # Invoke its apply callback...
+        pageProxyBase.onApply()
 
     # Cancel signal emitted when cancel button clicked or assistant being 
     #  closed and cancel button is interactive...
@@ -305,7 +300,7 @@ class LauncherApp(object):
 
         # Check if the verification thread is still running, and if so, signal
         #  it to quit and block until it does...
-        self.verificationPagesProxy.waitThreadQuit()
+        self.verificationProgressPageProxy.waitThreadQuit()
 
         # Terminate...
         self.quit()
@@ -331,14 +326,14 @@ class LauncherApp(object):
         
         # If the verification thread is currently running, then trigger its
         #  abort logic...
-        if self.verificationPagesProxy.isVerifying():
+        if self.verificationProgressPageProxy.isVerifying():
             stopVerificationButton = self.builder.get_object("stopVerificationButton")
             stopVerificationButton.emit("clicked")
         
         # If the handbook page is the current page, trigger a stop download in
         #  case it is currently downloading...
         currentPage = assistant.get_nth_page(assistant.get_current_page())
-        if currentPage is self.handbookPageProxy.getHandbookPageBox():
+        if currentPage is self.handbookPageProxy.getPageInGroup(0):
             stopHandbookDownloadButton = self.builder.get_object("stopHandbookDownloadButton")
             stopHandbookDownloadButton.emit("clicked")
 
@@ -352,26 +347,17 @@ class LauncherApp(object):
 
     # End of current page. Next page is being constructed but not visible yet.
     #  Give it a chance to prepare...
-    def onPrepareEvent(self, assistant, currentPageIndex):
+    def onPrepareEvent(self, assistant, currentPage):
 
         # Reset the cursor to normal in case something changed it...
         self.setBusy(False)
 
-        # Transitioning to verification progress page...
-        if currentPageIndex is self.verificationPagesProxy.getProgressPageBox():
-            self.verificationPagesProxy.onPrepare()
+        # Fetch the reference to the proxy object...
+        pageProxyBase = currentPage.pageProxyBase
+        assert(pageProxyBase)
 
-        # Transitioning to handbook page...
-        if currentPageIndex is self.handbookPageProxy.getHandbookPageBox():
-            self.handbookPageProxy.onPrepare()
-
-        # Transitioning to final configuration page...
-        elif currentPageIndex is self.configurePagesProxy.getConfigureAdvancedPageBox():
-            self.configurePagesProxy.onPrepare()
-
-        # Transitioning to confirm page...
-        elif currentPageIndex is self.confirmPageProxy.getPageBox():
-            self.confirmPageProxy.onPrepare()
+        # Invoke its prepare callback...
+        pageProxyBase.onPrepare()
 
     # Assistant visible...
     def onShow(self, assistant, *dummy):

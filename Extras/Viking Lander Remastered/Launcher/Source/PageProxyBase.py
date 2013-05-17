@@ -35,16 +35,55 @@ class PageProxyBase(object):
         self._launcher  = launcherApp
         self._assistant = launcherApp.assistant
         self._builder   = launcherApp.builder
+        self._pages     = []
 
     # Decorate the page with the common features to all assistant pages...
-    def decoratePage(self, sizer):
+    def decoratePage(self, page):
         
         # Insert banner at top...
-        banner = Gtk.Image()
-        banner.set_from_file(
-            os.path.join(
-                LauncherArguments.
-                    getArguments().dataRoot, "CartesianTheatre.png"))
-        sizer.pack_start(banner, False, False, 0)
-        sizer.reorder_child(banner, 0)
+        #banner = Gtk.Image()
+        #banner.set_from_file(
+        #    os.path.join(
+        #        LauncherArguments.
+        #            getArguments().dataRoot, "CartesianTheatre.png"))
+        #sizer.pack_start(banner, False, False, 0)
+        #sizer.reorder_child(banner, 0)
+        pass
+
+    # Get a page by index for this specific group of pages...
+    def getPageInGroup(self, index):
+        return self._pages[index]
+
+    # Apply button was hit. Needs to be overridden in CONFIRM type assistant
+    #  pages...
+    def onApply(self):
+        raise NotImplementedError()
+
+    # End of current page. Next page is being constructed but not visible yet.
+    #  Give it a chance to prepare if overridden...
+    def onPrepare(self):
+        pass
+
+    # Register the page with the assistant...
+    def registerPage(self, objectName, title, pageType, complete):
+        
+        # Find the page...
+        page = self._builder.get_object(objectName)
+        assert(page)
+        
+        # Add a reference to this proxy handler in the Gtk sizer object...
+        page.pageProxyBase = self
+        
+        # Decorate the page...
+        self.decoratePage(page)
+        
+        # Add it to internal list...
+        self._pages.append(page)
+
+        # Add subscribe page to assistant...
+        #page.set_border_width(5)
+        self._assistant.append_page(page)
+        self._assistant.set_page_title(page, title)
+        self._assistant.set_page_type(page, pageType)
+        self._assistant.set_page_complete(page, complete)
 

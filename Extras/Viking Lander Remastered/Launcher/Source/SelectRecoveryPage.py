@@ -34,10 +34,9 @@ class SelectRecoveryPageProxy(PageProxyBase):
         super(SelectRecoveryPageProxy, self).__init__(launcherApp)
 
         # Add the select recovery page to the assistant...
-        self._selectRecoveryFolderPageBox = self._builder.get_object("selectRecoveryFolderPageBox")
-        self._selectRecoveryFolderPageBox.set_border_width(5)
-        self._assistant.append_page(self._selectRecoveryFolderPageBox)
-        self._assistant.set_page_title(self._selectRecoveryFolderPageBox, "Select Recovery Folder")
-        self._assistant.set_page_type(self._selectRecoveryFolderPageBox, Gtk.AssistantPageType.CONTENT)
-        self._assistant.set_page_complete(self._selectRecoveryFolderPageBox, True)
+        self.registerPage(
+            "selectRecoveryFolderPageBox",
+            "Select Recovery Folder",
+            Gtk.AssistantPageType.CONTENT,
+            True)
 

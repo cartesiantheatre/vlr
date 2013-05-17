@@ -50,12 +50,11 @@ class RecoveryPageProxy(PageProxyBase):
         self.processID              = 0
 
         # Add recovery page to assistant...
-        self._recoveryPageBox = self._builder.get_object("recoveryPageBox")
-        self._recoveryPageBox.set_border_width(5)
-        self._assistant.append_page(self._recoveryPageBox)
-        self._assistant.set_page_title(self._recoveryPageBox, "Recovery")
-        self._assistant.set_page_type(self._recoveryPageBox, Gtk.AssistantPageType.PROGRESS)
-        self._assistant.set_page_complete(self._recoveryPageBox, False)
+        self.registerPage(
+            "recoveryPageBox",
+            "Recovery",
+            Gtk.AssistantPageType.PROGRESS,
+            False)
 
         # Shortcuts to the page's widgets...
         self._terminal              = self._builder.get_object("recoveryTerminal")
@@ -68,7 +67,7 @@ class RecoveryPageProxy(PageProxyBase):
         #self._recoveryPageBox.connect("expose-event", self.onExposeEvent)
 
     # Start the recovery process...
-    def executeVikingExtractor(self):
+    def startRecovery(self):
 
         # Get the path to the VikingExtractor binary...
         self._vikingExtractorBinaryPath = \
@@ -282,8 +281,7 @@ class RecoveryPageProxy(PageProxyBase):
             self._assistant.set_page_complete(self._recoveryPageBox, True)
 
             # Advance to the next page...
-            currentPageIndex = self._assistant.get_current_page()
-            self._assistant.set_current_page(currentPageIndex + 1)
+            self._assistant.next_page()
 
     # Page needs to be repainted...
     #def onExposeEvent(self, event, *dummy):

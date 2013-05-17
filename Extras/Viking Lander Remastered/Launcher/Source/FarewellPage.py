@@ -37,26 +37,15 @@ class FarewellPageProxy(PageProxyBase):
         super(FarewellPageProxy, self).__init__(launcherApp)
 
         # Find window and widgets...
-        self._farewellPageBox = self._builder.get_object("farewellPageBox")
         exploreDataButton = self._builder.get_object("exploreDataButton")
         exploreSourceCodeButton = self._builder.get_object("exploreSourceCodeButton")
 
         # Add the farewell page to the assistant...
-        self._farewellPageBox.set_border_width(5)
-        self._assistant.append_page(self._farewellPageBox)
-        self._assistant.set_page_title(self._farewellPageBox, "Farewell")
-        self._assistant.set_page_type(self._farewellPageBox, Gtk.AssistantPageType.SUMMARY)
-        self._assistant.set_page_complete(self._farewellPageBox, True)
-
-        # Set the explore recovered data button's icon...
-        exploreDataButtonImage = Gtk.Image()
-        exploreDataButtonImage.set_from_stock(Gtk.STOCK_OPEN, Gtk.IconSize.BUTTON)
-        exploreDataButton.set_image(exploreDataButtonImage)
-        
-        # Set the explore source code button's icon...
-        exploreSourceCodeButtonImage = Gtk.Image()
-        exploreSourceCodeButtonImage.set_from_stock(Gtk.STOCK_FIND, Gtk.IconSize.BUTTON)
-        exploreSourceCodeButton.set_image(exploreSourceCodeButtonImage)
+        self.registerPage(
+            "farewellPageBox", 
+            "Farewell", 
+            Gtk.AssistantPageType.SUMMARY, 
+            True)
 
         # Connect the signals...
         exploreDataButton.connect("clicked", self.onExploreDataButtonPressed)

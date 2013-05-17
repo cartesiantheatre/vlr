@@ -32,74 +32,54 @@ import LauncherArguments
 from PageProxyBase import *
 
 # Class containing behaviour for the two disc verification pages...
-class VerificationPagesProxy(PageProxyBase):
+class VerificationProgressPageProxy(PageProxyBase):
 
     # Constructor...
     def __init__(self, launcherApp):
 
         # Initialize...
-        super(VerificationPagesProxy, self).__init__(launcherApp)
+        super(VerificationProgressPageProxy, self).__init__(launcherApp)
         self._thread = None
 
         # Find the window widgets...
         self._verificationImage = self._builder.get_object("verificationImage")
-        self._verificationInfoPageBox = self._builder.get_object("verificationInfoPageBox")
-        self._verificationProgressPageBox = self._builder.get_object("verificationProgressPageBox")
-
-        # Add the verification info page to the assistant...
-        self._verificationInfoPageBox.set_border_width(5)
-        self._assistant.append_page(self._verificationInfoPageBox)
-        self._assistant.set_page_title(self._verificationInfoPageBox, "Verification Prompt")
-        self._assistant.set_page_type(self._verificationInfoPageBox, Gtk.AssistantPageType.CONTENT)
-        self._assistant.set_page_complete(self._verificationInfoPageBox, True)
 
         # Add the verification progress page to the assistant...
-        self._verificationProgressPageBox.set_border_width(5)
-        self._assistant.append_page(self._verificationProgressPageBox)
-        self._assistant.set_page_title(
-            self._verificationProgressPageBox, "Verification Progress")
-        self._assistant.set_page_type(
-            self._verificationProgressPageBox, Gtk.AssistantPageType.PROGRESS)
-        self._assistant.set_page_complete(self._verificationProgressPageBox, False)
+        self.registerPage(
+            "verificationProgressPageBox",
+            "Verification Progress",
+            Gtk.AssistantPageType.PROGRESS,
+            False)
 
         # Connect the signals...
         stopVerificationButton = self._builder.get_object("stopVerificationButton")
         stopVerificationButton.connect("clicked", self.onStopVerificationPressed)
 
-        # Decorate the page with the common features to all assistant pages...
-        self.decoratePage(self._verificationInfoPageBox)
-
-    # Get the verification progress page box...
-    def getProgressPageBox(self):
-        return self._verificationProgressPageBox
-
     # Our page in the assistent is being constructed, but not visible yet...
     def onPrepare(self):
 
-        # Don't start the disc verification thread if user requested to 
-        #  skip it...
-        if self._builder.get_object("skipVerificationCheckRadio").get_active():
+        # If the verification toggle wasn't selected, skip the page...
+        self._yesToggle = self._builder.get_object("performVerificationCheckRadio")
+        if self._yesToggle.get_active() == False:
+            self._assistant.next_page()
             return
 
-        # Otherwise begin the verification...
-        else:
+        # Make sure the page is not marked complete until after the thread
+        #  exits...
+        self._assistant.set_page_complete(self.getPageInGroup(0), False)
 
-            # Make sure the page is not marked complete until after the thread
-            #  exits...
-            self._assistant.set_page_complete(self.getProgressPageBox(), False)
+        # Change to busy cursor...
+        self._launcher.setBusy(True)
 
-            # Change to busy cursor...
-            self._launcher.setBusy(True)
+        # Load the verification animation...
+        animation = GdkPixbuf.PixbufAnimation.new_from_file(
+            os.path.join(
+                LauncherArguments.getArguments().dataRoot, "Verification.gif"))
+        self._verificationImage.set_from_animation(animation)
+        self._verificationImage.show()
 
-            # Load the verification animation...
-            animation = GdkPixbuf.PixbufAnimation.new_from_file(
-                os.path.join(
-                    LauncherArguments.getArguments().dataRoot, "Verification.gif"))
-            self._verificationImage.set_from_animation(animation)
-            self._verificationImage.show()
-
-            # Launch the thread...
-            self.startDiscVerification()
+        # Launch the thread...
+        self.startDiscVerification()
 
     # Check if the verification thread is already running...
     def isVerifying(self):
@@ -129,13 +109,13 @@ class VerificationPagesProxy(PageProxyBase):
 
         # Signal the thread to quit...
         self._thread.setQuit()
-        
+
         # Wait for it to quit...
         self._thread.join()
-        
+
         # Mark as dead...
         self._thread = None
-        
+
         # Alert user...
         messageDialog = Gtk.MessageDialog(
             self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.WARNING, 
@@ -144,8 +124,8 @@ class VerificationPagesProxy(PageProxyBase):
         messageDialog.destroy()
 
         # Mark page as complete...
-        self._assistant.set_page_complete(self.getProgressPageBox(), True)
-        
+        self._assistant.set_page_complete(self.getPageInGroup(0), True)
+
         # Advance to the next page...
         currentPageIndex = self._assistant.get_current_page()
         self._assistant.set_current_page(currentPageIndex + 1)
@@ -305,6 +285,8 @@ class VerificationThread(threading.Thread):
 
     # Thread entry point...
     def run(self):
+        
+        print("Launching verification thread...")
         
         # Calculate the total file size of all files...
         for (correctHexDigest, currentFile) in self._files:

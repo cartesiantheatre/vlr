@@ -111,6 +111,9 @@ class OpeningVideoWindowProxy(object):
                 LauncherArguments.getArguments().dataRoot, 
                 "Opening.mkv"))
 
+        # Set the volume...
+        self._playBin.set_property("volume", 1.0)
+
         # Force our realize callback to be invoked so we can capture the 
         #  drawing area's window handle which we need before playing back the
         #  video...

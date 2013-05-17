@@ -23,6 +23,7 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GObject
 import urllib.request
+import urllib.error
 import os
 import errno
 import platform
@@ -44,12 +45,11 @@ class HandbookPageProxy(PageProxyBase):
         self._stopDownload  = False
 
         # Add handbook page to assistant...
-        self._handbookPageBox = self._builder.get_object("handbookPageBox")
-        self._handbookPageBox.set_border_width(5)
-        self._assistant.append_page(self._handbookPageBox)
-        self._assistant.set_page_title(self._handbookPageBox, "Download Handbook")
-        self._assistant.set_page_type(self._handbookPageBox, Gtk.AssistantPageType.PROGRESS)
-        self._assistant.set_page_complete(self._handbookPageBox, True)
+        self.registerPage(
+            "handbookPageBox",
+            "Download Handbook",
+            Gtk.AssistantPageType.PROGRESS,
+            True)
 
         # Shortcuts to our widgets...
         self._downloadHandbookToggle = self._builder.get_object("downloadHandbookToggle")
@@ -59,10 +59,6 @@ class HandbookPageProxy(PageProxyBase):
         # Connect the signals...
         self._downloadHandbookToggle.connect("toggled", self.onDownloadHandbookToggled)
         self._stopHandbookDownloadButton.connect("clicked", self.onStopHandbookDownload)
-
-    # Get the handbook page box...
-    def getHandbookPageBox(self):
-        return self._handbookPageBox
 
     # Download handbook button toggled...
     def onDownloadHandbookToggled(self, toggleButton):
@@ -75,17 +71,17 @@ class HandbookPageProxy(PageProxyBase):
 
             # Update the GUI...
             toggleButton.set_sensitive(False)
-            self._assistant.set_page_complete(self._handbookPageBox, False)
+            self._assistant.set_page_complete(self.getPageInGroup(0), False)
 
-            # Check network connectivity to the internet and alert user if 
-            #  caller requests if no connection available...
+            # Check network connectivity to the internet and alert user if no
+            #  connection available...
             if not hasInternetConnection(True, self._assistant, True):
 
                 # Update GUI...
                 self._progressBar.hide()
                 self._stopHandbookDownloadButton.hide()
                 toggleButton.set_sensitive(True)
-                self._assistant.set_page_complete(self._handbookPageBox, True)
+                self._assistant.set_page_complete(self.getPageInGroup(0), True)
                 
                 # Deactivate the download button...
                 toggleButton.set_active(False)
@@ -122,7 +118,7 @@ class HandbookPageProxy(PageProxyBase):
                 self._progressBar.hide()
                 self._stopHandbookDownloadButton.hide()
                 toggleButton.set_sensitive(True)
-                self._assistant.set_page_complete(self._handbookPageBox, True)
+                self._assistant.set_page_complete(self.getPageInGroup(0), True)
 
                 # Deactivate the download button...
                 toggleButton.set_active(False)
@@ -203,7 +199,7 @@ class HandbookPageProxy(PageProxyBase):
                 fileHandle.close()
 
                 # Note that the page is ready to advance...
-                self._assistant.set_page_complete(self._handbookPageBox, True)
+                self._assistant.set_page_complete(self.getPageInGroup(0), True)
 
                 # Alert user that the download is done...
                 messageDialog = Gtk.MessageDialog(
@@ -232,13 +228,14 @@ class HandbookPageProxy(PageProxyBase):
                 messageDialog = Gtk.MessageDialog(
                     self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
                     Gtk.ButtonsType.OK, 
-                    "There was a problem communicating with the remote server. Please try again later.\n\n{0}".
+                    "There was a problem communicating with the remote server. "
+                    "Please try again later.\n\n\t{0}".
                         format(exception.reason))
                 messageDialog.run()
                 messageDialog.destroy()
 
             # Couldn't write to disk...
-            except IOError as exception:
+            except (OSError, IOError) as exception:
 
                 # Untoggle download button...
                 toggleButton.set_active(False)
@@ -259,7 +256,7 @@ class HandbookPageProxy(PageProxyBase):
                 self._progressBar.hide()
                 self._progressBar.set_fraction(0.0)
                 self._stopHandbookDownloadButton.hide()
-                self._assistant.set_page_complete(self._handbookPageBox, True)
+                self._assistant.set_page_complete(self.getPageInGroup(0), True)
 
         # User did not want to download the handbook...
         else:
@@ -268,7 +265,7 @@ class HandbookPageProxy(PageProxyBase):
             toggleButton.set_sensitive(True)
             self._progressBar.hide()
             self._stopHandbookDownloadButton.hide()
-            self._assistant.set_page_complete(self._handbookPageBox, True)
+            self._assistant.set_page_complete(self.getPageInGroup(0), True)
 
     # Our page in the assistent is being constructed, but not visible yet...
     def onPrepare(self):

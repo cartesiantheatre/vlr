@@ -38,12 +38,11 @@ class ConfirmPageProxy(PageProxyBase):
         super(ConfirmPageProxy, self).__init__(launcherApp)
 
         # Add the confirm page to the assistant...
-        self._confirmPageBox = self._builder.get_object("confirmPageBox")
-        self._confirmPageBox.set_border_width(5)
-        self._assistant.append_page(self._confirmPageBox)
-        self._assistant.set_page_title(self._confirmPageBox, "Confirmation")
-        self._assistant.set_page_type(self._confirmPageBox, Gtk.AssistantPageType.CONFIRM)
-        self._assistant.set_page_complete(self._confirmPageBox, True)
+        self.registerPage(
+            "confirmPageBox",
+            "Confirmation",
+            Gtk.AssistantPageType.CONFIRM,
+            True)
 
         # List that will contain all VikingExtractor command line options...
         self._commandLineInterface = []
@@ -55,6 +54,12 @@ class ConfirmPageProxy(PageProxyBase):
     # Get the page box...
     def getPageBox(self):
         return self._confirmPageBox
+
+    # Apply button hit...
+    def onApply(self):
+        
+        # Start the recovery...
+        self._launcher.recoveryPageProxy.startRecovery()
 
     # Assistant has reached the end of its current page and is transitioning to
     #  this page, though it is not visible yet. Prepare the VikingExtractor 
