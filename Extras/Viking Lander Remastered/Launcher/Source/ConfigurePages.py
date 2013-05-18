@@ -86,12 +86,16 @@ class ConfigurePagesProxy(PageProxyBase):
         self._updateExamplePath()
 
     # Assistant has reached the end of its current page and is transitioning to
-    #  this page, though it is not visible yet...
+    #  these pages, though current one not visible yet...
     def onPrepare(self):
 
-        # Now that the page is about to be visible, mark as complete so the
-        #  final button doesn't appear prematurely in the assistant...
-        self._assistant.set_page_complete(self.getPageInGroup(4), True)
+        # Get the current page's absolute index...
+        currentPageIndex = self._assistant.get_current_page()
+       
+        # If it's the last configuration page, mark it as complete so final
+        #  button isn't visible prematurely in the assistant...
+        if currentPageIndex == self.getAbsoluteIndex(4):
+            self._assistant.set_page_complete(self.getPageInGroup(4), True)
 
     # Any of the directorize buttons were toggled. Update the example path...
     def onDirectorizeToggle(self, toggleButton):
@@ -108,17 +112,18 @@ class ConfigurePagesProxy(PageProxyBase):
 
         # Format the example path...
         #Output/Utopia Planitia/Scorpius/Colour/778/
-        examplePath = "e.g. "
+        annotatedPath = ""
         if directorizeLocation:
-            examplePath += "Utopia Planitia/"
+            annotatedPath += "Location/"
         if directorizeMonth:
-            examplePath += "Scorpius/"
+            annotatedPath += "Martian Month/"
         if directorizeBandType:
-            examplePath += "Colour/"
+            annotatedPath += "Sensor Band Type/"
         if directorizeSol:
-            examplePath += "778/"
-        examplePath += "22D180.png"
+            annotatedPath += "Mission Solar Day/"
+        annotatedPath += "Photograph.png"
 
         # Show it...
-        self.examplePathLabel.set_text(examplePath)
+        self.examplePathLabel.set_markup(
+            "e.g. <tt>{0}</tt>".format(annotatedPath))
 

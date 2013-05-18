@@ -121,12 +121,13 @@ class SubscribePageProxy(PageProxyBase):
     # Apply button was hit...
     def onApply(self):
 
-        # Get the current page index...
-        currentPageIndex = self._assistant.get_current_page()
-
         # If the subscription request was not successful, stay on current page...
         if not self.performSubscribe():
-            self._assistant.previous_page()
+        
+            # TODO: This makes the previous button transition to ghost pages
+            #  however many times this code path is executed...
+            subscribePageIndex = self.getAbsoluteIndex(0)
+            self._assistant.set_current_page(subscribePageIndex - 1)
 
     # Our page in the assistent is being constructed, but not visible yet...
     def onPrepare(self):

@@ -25,6 +25,7 @@ from gi.repository import GObject
 from gi.repository import GLib
 from gi.repository import Vte
 from gi.repository import Gio
+from gi.repository import GdkPixbuf
 import os
 import signal
 from time import sleep

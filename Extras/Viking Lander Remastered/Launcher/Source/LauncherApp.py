@@ -77,10 +77,10 @@ class LauncherApp(object):
 
         # Construct pages and register them with the assistant in correct order...
         self.introductionPageProxy = IntroductionPageProxy(self)
-        self.subscribePageProxy = SubscribePageProxy(self)
         self.verificationPromptPageProxy = VerificationPromptPageProxy(self)
         self.verificationProgressPageProxy = VerificationProgressPageProxy(self)
         self.handbookPageProxy = HandbookPageProxy(self)
+        self.subscribePageProxy = SubscribePageProxy(self)
         self.selectRecoveryPageProxy = SelectRecoveryPageProxy(self)
         self.configurePagesProxy = ConfigurePagesProxy(self)
         self.confirmPageProxy = ConfirmPageProxy(self)
@@ -90,9 +90,9 @@ class LauncherApp(object):
         # Add the about button to the assitant's action area...
         aboutButton = Gtk.Button(stock=Gtk.STOCK_ABOUT)
         self.assistant.add_action_widget(aboutButton)
+        aboutButton.connect("clicked", self.onAboutButtonPressed)
 
         # Connect all other signals...
-        aboutButton.connect("clicked", self.onAboutButtonPressed)
         self.assistant.connect("apply", self.onApplyEvent)
         self.assistant.connect("cancel", self.onCancelEvent)
         self.assistant.connect("close", self.onCloseEvent)
@@ -245,7 +245,7 @@ class LauncherApp(object):
                 "on this software, please see our master <a href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits\">Credits</a> file.")
             aboutDialog.set_artists(artistsList)
 
-        # Show dialog as modal and hide after close...
+        # Show dialog as modeless to not block...
         aboutDialog.run()
         aboutDialog.hide()
 

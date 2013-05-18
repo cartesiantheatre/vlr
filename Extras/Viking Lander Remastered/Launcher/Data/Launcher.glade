@@ -5,7 +5,6 @@
   <object class="GtkAboutDialog" id="aboutDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
-    <property name="modal">True</property>
     <property name="type_hint">dialog</property>
     <property name="copyright" translatable="yes">Copyright (C) 2010-2013 Cartesian Theatre &lt;info@cartesiantheatre.com&gt;.</property>
     <property name="website">http://www.avaneya.com</property>
@@ -74,7 +73,7 @@
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">These options configure some advanced VikingExtractor features. If you are unsure of any of them, just leave them set at their defaults.
 
-If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
+If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is recommended.</property>
             <property name="use_markup">True</property>
             <property name="wrap">True</property>
           </object>
@@ -204,7 +203,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">These configuration settings allow you to filter which specific types of data you are interested. If you leave these at their defaults, everything that can be recovered will be.
 
-If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
+If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is recommended.</property>
             <property name="use_markup">True</property>
             <property name="wrap">True</property>
           </object>
@@ -379,7 +378,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">The &lt;b&gt;VikingExtractor&lt;/b&gt; has many different configuration options that control how it recovers images and what it does with them. Over the next few steps we'll configure them.
 
-If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
+If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is recommended.</property>
             <property name="use_markup">True</property>
             <property name="wrap">True</property>
           </object>
@@ -425,9 +424,9 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
           <object class="GtkLabel" id="label8">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people. Let's start with how you'd like the files &lt;b&gt;organized&lt;/b&gt; in the directory you previously selected. If you select more than one method, they will be automatically nested within subfolders. 
+            <property name="label" translatable="yes">Let's start with how you'd like the recovered files &lt;b&gt;organized&lt;/b&gt; in the directory you previously selected. If you select more than one method, they will be automatically nested within subfolders. 
 
-If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
+If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is recommended.</property>
             <property name="use_markup">True</property>
             <property name="wrap">True</property>
           </object>
@@ -535,6 +534,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">?</property>
+        <property name="use_markup">True</property>
         <property name="justify">center</property>
       </object>
       <packing>
@@ -570,7 +570,9 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
           <object class="GtkLabel" id="label7">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">These options control how the VikingExtractor's image recovery process. If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is probably fine for most people.</property>
+            <property name="label" translatable="yes">These options control how the VikingExtractor's image recovery works.
+
+If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is recommended.</property>
             <property name="use_markup">True</property>
             <property name="wrap">True</property>
           </object>
@@ -864,7 +866,8 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">The Avaneya Project Crew Handbook was written to address the needs of project contributors in our community. Would you like to download the latest revision? This requires a working internet connection.</property>
+                <property name="label" translatable="yes">The &lt;i&gt;Avaneya Project Crew Handbook&lt;/i&gt; was written to address the needs of project contributors in our community. Would you like to download the latest revision? This requires a working internet connection.</property>
+                <property name="use_markup">True</property>
                 <property name="wrap">True</property>
               </object>
               <packing>
@@ -874,37 +877,47 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
               </packing>
             </child>
             <child>
-              <object class="GtkCheckButton" id="downloadHandbookToggle">
-                <property name="label" translatable="yes">Yes, download the latest copy.</property>
+              <object class="GtkBox" id="box10">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="margin_left">15</property>
-                <property name="xalign">0</property>
-                <property name="draw_indicator">True</property>
+                <property name="can_focus">False</property>
+                <property name="spacing">20</property>
+                <child>
+                  <object class="GtkCheckButton" id="downloadHandbookToggle">
+                    <property name="label" translatable="yes">Yes, download the latest copy.</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="margin_left">15</property>
+                    <property name="xalign">0</property>
+                    <property name="draw_indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLinkButton" id="handbookLicenseButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="has_tooltip">True</property>
+                    <property name="image">handbookLicenseImage</property>
+                    <property name="relief">none</property>
+                    <property name="uri">https://creativecommons.org/licenses/by-nc-sa/3.0/</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLinkButton" id="handbookLicenseLinkButton">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="receives_default">True</property>
-                <property name="has_tooltip">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="image">handbookLicenseImage</property>
-                <property name="relief">none</property>
-                <property name="uri">https://creativecommons.org/licenses/by-nc-sa/3.0/</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">2</property>
               </packing>
             </child>
           </object>
@@ -1490,7 +1503,7 @@ Would you like to verify that the data contained on your disc is not corrupted? 
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">We have a low volume announcement mailing list that we use to make press releases and other public announcements. We would love to keep you in the loop. &lt;i&gt;We will never deliberately pass your information on to a third party.&lt;/i&gt;</property>
+                <property name="label" translatable="yes">We have a &lt;b&gt;low volume&lt;/b&gt; announcement mailing list that we use to make press releases and other public announcements. We would love to keep you in the loop. &lt;i&gt;We will never deliberately pass your information on to a third party.&lt;/i&gt;</property>
                 <property name="use_markup">True</property>
                 <property name="wrap">True</property>
               </object>

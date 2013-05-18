@@ -18,7 +18,11 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # System imports...
-from gi.repository import GLib, Gtk, Gdk, GObject, GdkPixbuf
+from gi.repository import GLib
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GObject
+from gi.repository import GdkPixbuf
 import hashlib
 import os
 import threading
@@ -329,8 +333,9 @@ class VerificationThread(threading.Thread):
                 Gdk.threads_add_idle(
                     GLib.PRIORITY_DEFAULT,
                     self._setQuitWithError, 
-                    "The following file appears to be corrupt:\n\n{0}\n\n" \
-                    "Your disc might be damaged, sorry.".format(currentFile))
+                    "Your disc might be damaged. It is recommended that you "
+                    "replace it before continuing. The following file appeared "
+                    "to be corrupt:\n\n<tt>{0}</tt>\n\n".format(currentFile))
 
                 # Quit the thread...
                 return
@@ -374,7 +379,7 @@ class VerificationThread(threading.Thread):
             self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
             Gtk.ButtonsType.OK, 
             "Disc verification failed.")
-        messageDialog.format_secondary_text(message)
+        messageDialog.format_secondary_markup(message)
         messageDialog.set_default_response(Gtk.ResponseType.NO)
         messageDialog.run()
         messageDialog.destroy()

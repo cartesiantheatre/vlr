@@ -50,9 +50,15 @@ class PageProxyBase(object):
         #sizer.reorder_child(banner, 0)
         pass
 
+    # Get the page's absolute index in the assistant...
+    def getAbsoluteIndex(self, groupIndex):
+        page, absoluteIndex = self._pages[groupIndex]
+        return absoluteIndex
+
     # Get a page by index for this specific group of pages...
-    def getPageInGroup(self, index):
-        return self._pages[index]
+    def getPageInGroup(self, groupIndex):
+        page, absoluteIndex = self._pages[groupIndex]
+        return page
 
     # Apply button was hit. Needs to be overridden in CONFIRM type assistant
     #  pages...
@@ -76,13 +82,16 @@ class PageProxyBase(object):
         
         # Decorate the page...
         self.decoratePage(page)
-        
-        # Add it to internal list...
-        self._pages.append(page)
 
         # Add subscribe page to assistant...
+        absoluteIndex = self._assistant.append_page(page)
+        
+        # Add it to internal list...
+        entry = (page, absoluteIndex)
+        self._pages.append(entry)
+
+        # Customize the page...
         #page.set_border_width(5)
-        self._assistant.append_page(page)
         self._assistant.set_page_title(page, title)
         self._assistant.set_page_type(page, pageType)
         self._assistant.set_page_complete(page, complete)

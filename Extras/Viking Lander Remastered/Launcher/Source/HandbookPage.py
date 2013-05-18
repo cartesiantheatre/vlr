@@ -43,6 +43,7 @@ class HandbookPageProxy(PageProxyBase):
         super(HandbookPageProxy, self).__init__(launcherApp)
         self._handbookUrl   = "https://www.avaneya.com/downloads/Avaneya_Project_Crew_Handbook.pdf"
         self._stopDownload  = False
+        self._handbookDownloaded = False;
 
         # Add handbook page to assistant...
         self.registerPage(
@@ -197,10 +198,13 @@ class HandbookPageProxy(PageProxyBase):
 
                 # Done. Close the stream...
                 fileHandle.close()
+                
+                # Remember that download was successful...
+                self._handbookDownloaded = True
 
                 # Note that the page is ready to advance...
                 self._assistant.set_page_complete(self.getPageInGroup(0), True)
-
+                
                 # Alert user that the download is done...
                 messageDialog = Gtk.MessageDialog(
                     self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.QUESTION, 
@@ -252,7 +256,7 @@ class HandbookPageProxy(PageProxyBase):
             finally:
 
                 # Update the GUI...
-                toggleButton.set_sensitive(True)
+                toggleButton.set_sensitive(not self._handbookDownloaded)
                 self._progressBar.hide()
                 self._progressBar.set_fraction(0.0)
                 self._stopHandbookDownloadButton.hide()
