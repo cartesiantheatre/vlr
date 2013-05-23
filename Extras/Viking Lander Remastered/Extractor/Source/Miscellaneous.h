@@ -24,9 +24,19 @@
 #define _MISCELLANEOUS_H_
 
 // Includes...
-#include <string>
-#include <algorithm>
-#include <unistd.h>
+
+    // System headers...
+    #include <string>
+    #include <algorithm>
+    #include <clocale>
+    
+    // POSIX headers...
+    #include <unistd.h>
+    
+    // i18n...
+    #include "gettext.h"
+    #define _(str) gettext (str)
+    #define N_(str) gettext_noop (str)
 
 // Create a directory and all of its parents, if necessary...
 bool CreateDirectoryRecursively(const std::string &Path);

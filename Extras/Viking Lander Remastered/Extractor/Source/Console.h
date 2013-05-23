@@ -31,6 +31,12 @@
     // System headers...
     #include <ostream>
     #include <map>
+    #include <clocale>
+
+    // i18n...
+    #include "gettext.h"
+    #define _(str) gettext (str)
+    #define N_(str) gettext_noop (str)
 
 // Console explicit singleton class...
 class Console : public ExplicitSingleton<Console>

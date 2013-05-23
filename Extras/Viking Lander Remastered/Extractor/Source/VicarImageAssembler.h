@@ -36,6 +36,12 @@
     #include <set>
     #include <map>
     #include <string>
+    #include <clocale>
+
+    // i18n...
+    #include "gettext.h"
+    #define _(str) gettext (str)
+    #define N_(str) gettext_noop (str)
 
 // Assemble 1970s era VICAR colour images from individual VICAR images...
 class VicarImageAssembler

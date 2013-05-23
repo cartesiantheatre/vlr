@@ -31,6 +31,12 @@
     // System headers...
     #include <cassert>
     #include <string>
+    #include <clocale>
+
+    // i18n...
+    #include "gettext.h"
+    #define _(str) gettext (str)
+    #define N_(str) gettext_noop (str)
 
 // ZZip file descriptor with safe RIAA...
 class ZZipFileDescriptor

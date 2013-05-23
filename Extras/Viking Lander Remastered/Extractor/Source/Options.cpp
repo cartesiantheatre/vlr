@@ -120,7 +120,7 @@ void Options::SetFilterDiodeClass(const string &DiodeClass)
     
     // Unsupported...
     else
-       throw string("unsupported diode filter class: ") + DiodeClass;
+       throw string(_("unsupported diode filter class: ")) + DiodeClass;
 }
 
 // Set the lander filter or throw an error...
@@ -128,7 +128,7 @@ void Options::SetFilterLander(const size_t Lander)
 {
     // Bounds check...
     if(Lander > 2)
-        throw string("invalid lander filter");
+        throw string(_("invalid lander filter"));
     
     // Remember lander number, 0 being any...
     m_FilterLander = Lander;

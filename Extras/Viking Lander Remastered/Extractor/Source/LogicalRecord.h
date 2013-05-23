@@ -31,6 +31,12 @@
     // System headers...
     #include <string>
     #include <stdint.h>
+    #include <clocale>
+
+    // i18n...
+    #include "gettext.h"
+    #define _(str) gettext (str)
+    #define N_(str) gettext_noop (str)
 
 // Logical buffer size...
 #define LOGICAL_RECORD_SIZE 72

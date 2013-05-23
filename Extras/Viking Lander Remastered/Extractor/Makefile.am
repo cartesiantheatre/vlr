@@ -1,5 +1,5 @@
 #
-#    AresEngine, a 3D game engine.
+#    VikingExtractor, to recover images from Viking Lander operations.
 #    Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>.
 #    
 #    Public discussion on IRC available at #avaneya (irc.freenode.net) 
@@ -20,17 +20,21 @@
 #
 
 # Options for aclocal so it can find our custom M4 macros...
-ACLOCAL_AMFLAGS = -I M4
+ACLOCAL_AMFLAGS = -I Macros
 
 # Product list containing just viking-extractor to be destined for the binary 
 #  prefix...
 bin_PROGRAMS = viking-extractor
+
+# Additional libraries to link against...
+viking_extractor_LDADD = $(LIBINTL)
 
 # viking-extractor product option variables containing list of sources...
 viking_extractor_SOURCES = \
     Source/Console.cpp \
     Source/Console.h \
     Source/ExplicitSingleton.h \
+    Source/gettext.h \
     Source/LogicalRecord.cpp \
     Source/LogicalRecord.h \
     Source/Miscellaneous.cpp \
@@ -85,13 +89,13 @@ dist_pkgdata_DATA = \
 man1_MANS = $(top_builddir)/Manual/viking-extractor.man
 
 # Manually add these things to distribution package when dist target is run...
-EXTRA_DIST = \
-	Authors \
-	Copying \
-	Install \
-	News    \
-	ReadMe  \
-    Tests   \
+EXTRA_DIST =        \
+    Tests           \
+	Authors         \
+	Copying         \
+	Install         \
+	News            \
+	ReadMe          \
 	ToDo
 
 # Product list of scripts to generate during check target...
@@ -101,12 +105,37 @@ check_SCRIPTS = GrepTest.sh RecoveryTest.sh
 AM_CPPFLAGS=
 AM_CPPFLAGS+=-I$(top_srcdir)/Source
 
+# Locale directory...
+localedir = $(datadir)/locale
+
+# Preprocessor definitions to pass down to the compiler...
+DEFS=
+DEFS+= -DLOCALEDIR="\"$(localedir)\"" @DEFS@
+
 # Options to pass on to ./configure when running distcheck...
 #AM_DISTCHECK_CONFIGURE_FLAGS= \
 #    --enable-dbus-interface
 
 # Targets to execute for check target...
 TESTS = $(check_SCRIPTS)
+
+# Make sure gettext is present...
+check-gettext:
+	@if test x$(USE_NLS) != "xyes" ; then echo "Missing gettext. Rerun configure and check for" \
+	"'checking whether to use NLS... yes'!" ; exit 1 ; fi
+
+# Force an update to the machine dependent message catalogs...
+force-update-gmo: check-gettext
+	find Translations/ -type f -name "*.po" -execdir touch {} \;
+	cd Translations && $(MAKE) $(AM_MAKEFLAGS) update-gmo
+
+# Force a rebuild of the machine dependent message catalog for a specific 
+#  language...
+force-update-gmo-%: check-gettext
+	@language=`echo $@ | sed s/force-update-gmo-//` ; \
+	if test ! -f Translations/$$language.po ; then echo "file po/$$language.po does not exist" ; exit 1 ; fi ; \
+	touch Translations/$$language.po ; \
+	cd Translations && $(MAKE) $(AM_MAKEFLAGS) update-gmo
 
 # Rule to create the viking-extractor test script. Just tests to make sure it 
 #  compiled and linked correctly...
@@ -156,21 +185,47 @@ RecoveryTest.sh: RecoveryChecksums.md5 Makefile.am
 else
 RecoveryTest.sh: RecoveryChecksums.md5 Makefile.am
 	@echo './viking-extractor $(RECOVERY_TEST_ARGUMENTS) $(top_srcdir)/Tests/Recovery/ Tests/Recovery/' > $@
-	@echo '$(MD5SUM) --warn --check $<" >> $@
+	@echo '$(MD5SUM) --warn --check $<' >> $@
 	@chmod +x $@
 
 endif
 
+# Update the machine dependent message catalogs...
+update-gmo: check-gettext
+	cd Translations && $(MAKE) $(AM_MAKEFLAGS) update-gmo
+
+# Create the .pot file..
+update-po: check-gettext
+	@find $(srcdir) -iname "*.cpp" -print | sort > $(srcdir)/Translations/POTFILES.in.2 ; \
+	@find $(srcdir) -iname "*.cpp.in" -print | sort >> $(srcdir)/Translations/POTFILES.in.2 ; \
+	@find $(srcdir) -iname "*.h" -print | sort >> $(srcdir)/Translations/POTFILES.in.2 ; \
+	@find $(srcdir) -iname "*.h.in" -print | sort >> $(srcdir)/Translations/POTFILES.in.2 ; \
+	if diff $(srcdir)/Translations/POTFILES.in $(srcdir)/Translations/POTFILES.in.2 >/dev/null 2>&1 ; then \
+		rm -f $(srcdir)/Translations/POTFILES.in.2 ; \
+	else \
+		mv $(srcdir)/Translations/POTFILES.in.2 $(srcdir)/Translations/POTFILES.in ; \
+	fi
+	cd Translations && $(MAKE) $(AM_MAKEFLAGS) update-po
+
 # Actually clean all derived and maintainer files...
-MAINTAINERCLEANFILES =              \
-	$(srcdir)/Source/config.h.in    \
-	$(srcdir)/aclocal.m4            \
-	$(srcdir)/config.guess          \
-	$(srcdir)/config.sub            \
-	$(srcdir)/configure             \
-	$(srcdir)/depcomp               \
-	$(srcdir)/install-sh            \
-	$(srcdir)/Makefile.in           \
+MAINTAINERCLEANFILES =                  \
+	$(srcdir)/build-aux/config.h.in     \
+	$(srcdir)/build-aux/config.guess    \
+	$(srcdir)/build-aux/config.rpath    \
+	$(srcdir)/build-aux/config.sub      \
+	$(srcdir)/build-aux/depcomp         \
+	$(srcdir)/build-aux/install-sh      \
+	$(srcdir)/build-aux/missing         \
+	$(srcdir)/build-aux                 \
+	$(srcdir)/ABOUT-NLS                 \
+	$(srcdir)/Source/config.h.in        \
+	$(srcdir)/aclocal.m4                \
+	$(srcdir)/config.guess              \
+	$(srcdir)/config.sub                \
+	$(srcdir)/configure                 \
+	$(srcdir)/depcomp                   \
+	$(srcdir)/install-sh                \
+	$(srcdir)/Makefile.in               \
 	$(srcdir)/missing
 
 # Additional files left behind during dist target that need to be cleaned...
@@ -186,4 +241,10 @@ CLEANFILES =                    \
     GrepTest.sh                 \
     RecoveryChecksums.md5       \
     RecoveryTest.sh
+
+# Other directories containing Makefiles, such as translations...
+SUBDIRS = Translations
+
+# Targets which aren't actually files...
+.PHONY: check-gettext update-po update-gmo force-update-gmo
 

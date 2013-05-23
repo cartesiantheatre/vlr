@@ -144,7 +144,7 @@ void ReconstructableImage::AddImageBand(const VicarImageBand &ImageBand)
 
         // Unknown... (shouldn't ever happen, but here for completeness)
         default:
-            SetErrorAndReturn("cannot reconstruct image from unsupported diode band type");
+            SetErrorAndReturn(_("cannot reconstruct image from unsupported diode band type"));
     }
 }
 
@@ -164,7 +164,7 @@ string ReconstructableImage::CreateOutputFileName(
 
     // If this isn't part of a reconstructable image, prefix...
     if(Unreconstructable)
-        FullDirectory << "Unreconstructable/";
+        FullDirectory << _("Unreconstructable/");
 
     // Images are reconstructed in subfolder of location taken in if enabled...
     if(Options::GetInstance().GetDirectorizeLocation())
@@ -184,7 +184,7 @@ string ReconstructableImage::CreateOutputFileName(
 
             // Unknown...
             default:
-                FullDirectory << "Location Unknown/"; 
+                FullDirectory << _("Unknown Location/"); 
                 break; 
         }
     }
@@ -213,7 +213,7 @@ string ReconstructableImage::CreateOutputFileName(
        !CreateDirectoryRecursively(FullDirectory.str()))
     {
         // Set the error message and abort...
-        SetErrorMessage("could not create output directory for file");
+        SetErrorMessage(_("could not create output directory for file"));
         return string();
     }
 
@@ -342,7 +342,7 @@ void ReconstructableImage::GenerateMetadata(
     if(!Options::GetInstance().GetOverwrite() && 
        (access(OutputFileName.c_str(), F_OK) == 0))
     {
-        Message(Console::Warning) << "output metadata already exists, not overwriting (use --overwrite to override)";
+        Message(Console::Warning) << _("output metadata already exists, not overwriting (use --overwrite to override)");
         return;
     }
 
@@ -353,14 +353,14 @@ void ReconstructableImage::GenerateMetadata(
         if(!OutputFileStream.is_open())
         {
             // Just give a warning and abort...
-            Message(Console::Warning) << "couldn't save metadata" << endl;
+            Message(Console::Warning) << _("couldn't save metadata") << endl;
             return;
         }
 
     // Give user some basic information about the metadata...
     OutputFileStream
-        << "The following is a machine generated collection of metadata of each of" << endl
-        << "the image bands used to reconstruct a colour image." << endl
+        << _("The following is a machine generated collection of metadata of each of\n")
+        << _("the image bands used to reconstruct a colour image.\n")
         << endl;
 
     // Dump each section...
@@ -373,23 +373,23 @@ void ReconstructableImage::GenerateMetadata(
 
         // Dump metadata...
         OutputFileStream 
-            << "basic heuristic method: " << ImageBand.GetBasicMetadataParserHeuristic() << endl
-            << "camera azimuth / elevation: " << ImageBand.GetAzimuthElevation() << endl
-            << "camera event: " << ImageBand.GetCameraEventLabelNoSol() << endl
-            << "camera event solar day: " << ImageBand.GetSolarDay() << endl
-            << "diode band type: " << ImageBand.GetDiodeBandTypeFriendlyString() << endl
-            << "file size: " << ImageBand.GetFileSize() << endl
-            << "input file: " << ImageBand.GetInputFileNameOnly() << endl
-            << "magnetic tape: " << ImageBand.GetMagneticTapeNumber() << endl
-            << "magnetic tape file ordinal: " << ImageBand.GetFileOrdinalOnMagneticTape() << endl
-            << "mean pixel value: " << ImageBand.GetMeanPixelValue() << endl
-            << "month: " << ImageBand.GetMonth() << endl
-            << "overlay axis present: " << ImageBand.IsAxisPresent() << endl
-            << "overlay full histogram present: " << ImageBand.IsFullHistogramPresent() << endl
-            << "physical record size: " << ImageBand.GetPhysicalRecordSize() << endl
-            << "physical record padding: " << ImageBand.GetPhysicalRecordPadding() << endl
-            << "phase offset required: " << ImageBand.GetPhaseOffsetRequired() << endl
-            << "raw image offset: " << ImageBand.GetRawImageOffset() << endl
+            << _("basic heuristic method: ") << ImageBand.GetBasicMetadataParserHeuristic() << endl
+            << _("camera azimuth / elevation: ") << ImageBand.GetAzimuthElevation() << endl
+            << _("camera event: ") << ImageBand.GetCameraEventLabelNoSol() << endl
+            << _("camera event solar day: ") << ImageBand.GetSolarDay() << endl
+            << _("diode band type: ") << ImageBand.GetDiodeBandTypeFriendlyString() << endl
+            << _("file size: ") << ImageBand.GetFileSize() << endl
+            << _("input file: ") << ImageBand.GetInputFileNameOnly() << endl
+            << _("magnetic tape: ") << ImageBand.GetMagneticTapeNumber() << endl
+            << _("magnetic tape file ordinal: ") << ImageBand.GetFileOrdinalOnMagneticTape() << endl
+            << _("mean pixel value: ") << ImageBand.GetMeanPixelValue() << endl
+            << _("month: ") << ImageBand.GetMonth() << endl
+            << _("overlay axis present: ") << ImageBand.IsAxisPresent() << endl
+            << _("overlay full histogram present: ") << ImageBand.IsFullHistogramPresent() << endl
+            << _("physical record size: ") << ImageBand.GetPhysicalRecordSize() << endl
+            << _("physical record padding: ") << ImageBand.GetPhysicalRecordPadding() << endl
+            << _("phase offset required: ") << ImageBand.GetPhaseOffsetRequired() << endl
+            << _("raw image offset: ") << ImageBand.GetRawImageOffset() << endl
             << endl 
             << endl;
     }
@@ -484,7 +484,7 @@ bool ReconstructableImage::Reconstruct()
 
         // This doesn't count as a successful reconstruction since it wasn't reassembled...
         if(!Options::GetInstance().GetNoReconstruct())
-            SetErrorAndReturnFalse("cannot reconstruct, dumped all bands");
+            SetErrorAndReturnFalse(_("cannot reconstruct, dumped all bands"));
         return false;
     }
 }
@@ -507,7 +507,7 @@ bool ReconstructableImage::ReconstructColourImage(
     // Overwrite not enabled and file already existed, don't overwrite...
     if(!Options::GetInstance().GetOverwrite() && 
        (access(OutputFileName.c_str(), F_OK) == 0))
-        SetErrorAndReturnFalse("output already exists, not overwriting (use --overwrite to override)");
+        SetErrorAndReturnFalse(_("output already exists, not overwriting (use --overwrite to override)"));
 
     // Form the best image set from each band list...
 
@@ -541,7 +541,7 @@ bool ReconstructableImage::ReconstructColourImage(
         if(BestRedIterator == RedImageBandList.rend() || 
            BestGreenIterator == GreenImageBandList.rend() ||
            BestBlueIterator == BlueImageBandList.rend())
-            SetErrorAndReturnFalse("images for each band present, but no matching set of full histogram variants available");
+            SetErrorAndReturnFalse(_("images for each band present, but no matching set of full histogram variants available"));
 
         // If the best image of each band list has some with a full
         //  histogram present and some without...
@@ -561,7 +561,7 @@ bool ReconstructableImage::ReconstructColourImage(
         if(BestRedIterator == RedImageBandList.rend() || 
            BestGreenIterator == GreenImageBandList.rend() ||
            BestBlueIterator == BlueImageBandList.rend())
-            SetErrorAndReturnFalse("images for each band present, but no matching set of non-overlayed variants available");
+            SetErrorAndReturnFalse(_("images for each band present, but no matching set of non-overlayed variants available"));
 
     // Get the raw band data of each colour band...
 
@@ -612,7 +612,7 @@ bool ReconstructableImage::ReconstructColourImage(
     // If the widths don't match or the heights don't match, we have a problem...
     if((min3(RedWidth, GreenWidth, BlueWidth) != max3(RedWidth, GreenWidth, BlueWidth)) ||
        (min3(RedHeight, GreenHeight, BlueHeight) != max3(RedHeight, GreenHeight, BlueHeight)))
-        SetErrorAndReturnFalse("image bands not all the same size, may be missing scanlines");
+        SetErrorAndReturnFalse(_("image bands not all the same size, may be missing scanlines"));
 
     // Get the final image width and height...
     const size_t Width  = RedWidth;
@@ -673,7 +673,7 @@ bool ReconstructableImage::ReconstructGrayscaleImage(
     // Overwrite not enabled and file already existed, don't overwrite...
     if(!Options::GetInstance().GetOverwrite() && 
        (access(OutputFileName.c_str(), F_OK) == 0))
-        SetErrorAndReturnFalse("output already exists, not overwriting (use --overwrite to override)");
+        SetErrorAndReturnFalse(_("output already exists, not overwriting (use --overwrite to override)"));
 
     // Extraction raw band data...
     VicarImageBand::RawBandDataType RawBandData;

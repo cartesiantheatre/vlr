@@ -51,64 +51,111 @@ using namespace std;
 // Show help...
 void ShowHelp()
 {
-    cout << "Usage: viking-extractor [options] input [output]"                                  << endl
-         << "Options:"                                                                          << endl
-         << "      --directorize-band-class"                                                    << endl
-         << "                              Put reconstructed images into subdirectories"        << endl
-         << "                              named after band type class (e.g. Colour)."          << endl
-         << "      --directorize-location  Put reconstructed images into subdirectories"        << endl
-         << "                              named after location taken from."                    << endl
-         << "      --directorize-month     Put reconstructed images into subdirectories"        << endl
-         << "                              named after Martian month taken on."                 << endl
-         << "      --directorize-sol       Put reconstructed images into subdirectories"        << endl
-         << "                              numbered by camera event solar day."                 << endl
-         << "      --dry-run               Don't write anything"                                << endl
-         << "      --help                  Show this help"                                      << endl
-         << "      --ignore-bad-files      Don't stop on corrupt or problematic input file,"    << endl
-         << "                              but continue extraction of other files."             << endl
-         << "      --interlace             Encode output with Adam7 interlacing"                << endl
-         << "  -j, --jobs[=threads]        Number of threads to run parallelized. Only one"     << endl
-         << "                              if -j is not provided, or auto if threads"           << endl
-         << "                              argument not specified."                             << endl
-         << "      --filter-camera-event[=id]"                                                  << endl
-         << "                              Look only for the specified matching camera event"   << endl
-         << "                              ID, such as 22A158."                                 << endl
-         << "      --filter-diode[=type]   Extract from matching supported diode filter"        << endl
-         << "                              classes which are any (default), colour, infrared,"  << endl
-         << "                              sun, or survey."                                     << endl
-         << "      --filter-lander=#       Extract from specific lander only which are"         << endl
-         << "                              either (0, the default), 1, or 2."                   << endl
-         << "      --filter-solar-day[=#]  Look only for camera events taken on the specified"  << endl
-         << "                              solar day."                                          << endl
-         << "      --generate-metadata     Whenever a colour image is recovered, machine"       << endl
-         << "                              generate a text file containing various metadata."   << endl
-         << "      --no-ansi-colours       Disable VT/100 ANSI coloured terminal output."       << endl
-         << "      --no-auto-rotate        Don't automatically rotate image as needed."         << endl
-         << "      --no-reconstruct        Don't attempt to reconstruct camera events, just"    << endl
-         << "                              dump all available band data as separate images."    << endl
-         << "      --overwrite             Overwrite any existing output files."                << endl
-         << "  -r, --recursive             Scan subfolders as well if input is a directory."    << endl
-         << "      --summarize-only        Show summary of progress and final results only."    << endl
-         << "      --suppress              Suppress all warnings and errors."                   << endl
-         << "  -V, --verbose               Be verbose"                                          << endl
-         << "  -v, --version               Show version information"                            << endl << endl
+    cout <<   "Usage: viking-extractor [options] input [output]\n"
+         << _("Options:\n")
+         <<   "      --directorize-band-class\n"
+         << _("\
+                              Put reconstructed images into subdirectories\n\
+                              named after band type class (e.g. Colour).\n")
 
-         << "Converts 1970s Viking Lander era VICAR colour images to PNGs. The value of"        << endl
-         << "'input' can be either a single VICAR file or a directory containing VICAR files"   << endl
-         << "to attempt reconstruction into the provided output directory."                     << endl << endl
+         <<   "      --directorize-location\n"
+         << _("\
+                              Put reconstructed images into subdirectories\n\
+                              named after location taken from.\n")
+         <<   "      --directorize-month\n"
+         << _("\
+                              Put reconstructed images into subdirectories\n\
+                              named after Martian month taken on.\n")
+         <<   "      --directorize-sol\n"
+         << _("\
+                              Put reconstructed images into subdirectories\n\
+                              numbered by camera event solar day.\n")
+         <<   "      --dry-run\n"
+         << _("\
+                              Don't write anything.\n")
+         <<   "      --help\n"
+         << _("\
+                              Show this help.\n")
+         <<   "      --ignore-bad-files\n"
+         << _("\
+                              Don't stop on corrupt or problematic input file,\n\
+                              but continue extraction of other files.\n")
+         <<   "      --interlace\n"
+         << _("\
+                              Encode output with Adam7 interlacing\n")
+         <<   "  -j, --jobs[=threads]\n"
+         << _("\
+                              Number of threads to run parallelized. Only one\n\
+                              if -j is not provided, or auto if threads\n\
+                              argument not specified.\n")
+         <<   "      --filter-camera-event[=id]\n"
+         << _("\
+                              Look only for the specified matching camera event\n\
+                              ID, such as 22A158.\n")
+         <<   "      --filter-diode[=type]\n"
+         << _("\
+                              Extract from matching supported diode filter\n\
+                              classes which are any (default), colour, infrared,\n\
+                              sun, or survey.\n")
+         <<   "      --filter-lander=#\n"
+         << _("\
+                              Extract from specific lander only which are\n\
+                              either (0, the default), 1, or 2.\n")
+         <<   "      --filter-solar-day[=#]\n"
+         << _("\
+                              Look only for camera events taken on the specified\n\
+                              solar day.\n")
+         <<   "      --generate-metadata\n"
+         << _("\
+                              Whenever a colour image is recovered, machine\n\
+                              generate a text file containing various metadata.\n")
+         <<   "      --no-ansi-colours\n"
+         << _("\
+                              Disable VT/100 ANSI coloured terminal output.\n")
+         <<   "      --no-auto-rotate\n"
+         << _("\
+                              Don't automatically rotate image as needed.\n")
+         <<   "      --no-reconstruct\n"
+         << _("\
+                              Don't attempt to reconstruct camera events, just\n\
+                              dump all available band data as separate images.\n")
+         <<   "      --overwrite\n"
+         << _("\
+                              Overwrite any existing output files.\n")
+         <<   "  -r, --recursive\n"
+         << _("\
+                              Scan subfolders as well if input is a directory.\n")
+         <<   "      --summarize-only\n"
+         << _("\
+                              Show summary of progress and final results only.\n")
+         <<   "      --suppress\n"
+         << _("\
+                              Suppress all warnings and errors.\n")
+         <<   "  -V, --verbose\n"
+         << _("\
+                              Be verbose\n")
+         <<   "  -v, --version\n"
+         << _("\
+                              Show version information\n\n")
 
-         << "Report bugs to " VIKING_EXTRACTOR_BUGREPORT << endl;
+         << _("\
+Converts 1970s Viking Lander era VICAR colour images to PNGs. The value of\n\
+'input' can be either a single VICAR file or a directory containing VICAR files\n\
+to attempt reconstruction into the provided output directory.\n\n")
+
+         << _("Report bugs to ") << VIKING_EXTRACTOR_BUGREPORT << endl;
 }
 
 // Show version information...
 void ShowVersion()
 {
     cout << "VikingExtractor " VIKING_EXTRACTOR_VERSION << " (GNU Ocrad " << OCRAD_version() << ")" << endl
-         << "Copyright (C) 2010-2013 Cartesian Theatre." << endl
-         << "This is free software; see Copying for copying conditions. There is NO" << endl
-         << "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE." << endl << endl;
+         << _("\
+Copyright (C) 2010-2013 Cartesian Theatre.\n\
+This is free software; see Copying for copying conditions. There is NO\n\
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n");
 
-    cout << "Configured with: " CONFIGURATION_FLAGS << endl;
+    cout << _("Configured with: ") << CONFIGURATION_FLAGS << endl;
 }
 
 // Some cleanup code to run on termination...
@@ -134,6 +181,22 @@ int main(int ArgumentCount, char *Arguments[])
 
     // Some user options...
     bool        VerboseConsole          = false;
+
+    // Initialize i18n...
+
+        // Select user's preferred locale according to environment variable...
+        setlocale(LC_ALL, "");
+
+    #if ENABLE_NLS
+
+        // Retrieve the current message domain...
+        textdomain(PACKAGE);
+
+        // Set the base directory for all translations...
+        if(!bindtextdomain(PACKAGE, LOCALEDIR))
+            exit(EXIT_FAILURE);
+
+    #endif
 
     // Explicit instantiation of several subsystem singletons. Order matters...
     Console::CreateSingleton();
@@ -225,10 +288,10 @@ int main(int ArgumentCount, char *Arguments[])
                 if(CommandLineLongOptions[OptionIndex].flag != false)
                     break;
 
-                cout << "option " << CommandLineLongOptions[OptionIndex].name;
+                /*cout << "option " << CommandLineLongOptions[OptionIndex].name;
                 
                 if(optarg)
-                    cout << " with arg " << optarg;
+                    cout << " with arg " << optarg;*/
 
                 // Done...
                 cout << endl;
@@ -291,7 +354,7 @@ int main(int ArgumentCount, char *Arguments[])
             {
                 // Issue a non-implemented warning...
                 Message(Console::Warning) 
-                    << "parallelization is not implemented yet, using single thread" 
+                    << _("parallelization is not implemented yet, using single thread")
                     << endl;
                 
                 size_t Jobs = 0;
@@ -382,7 +445,7 @@ int main(int ArgumentCount, char *Arguments[])
     {
         // Alert, abort...
         Message(Console::Error) 
-            << "summarize only and verbose modes cannot both be used" << endl;
+            << _("summarize only and verbose modes cannot both be used") << endl;
         exit(EXIT_FAILURE);
     }
 
@@ -392,8 +455,9 @@ int main(int ArgumentCount, char *Arguments[])
         if(OCRAD_version()[0] != OCRAD_version_string[0])
         {
             // Alert, abort...
-            Message(Console::Error) 
-                << "GNU Ocrad " << OCRAD_version_string << " linked against incompatible GNU Ocrad version " 
+            Message(Console::Error)
+                << "GNU Ocrad " << OCRAD_version_string 
+                << _(" linked against incompatible GNU Ocrad version ")
                 << OCRAD_version() 
                 << endl;
             exit(EXIT_FAILURE);
@@ -404,7 +468,7 @@ int main(int ArgumentCount, char *Arguments[])
         {
             // Alert, abort...
             Message(Console::Error) 
-                << "GNU Ocrad needs to be at least 0.21, but got " 
+                << _("GNU Ocrad needs to be at least 0.21, but got ")
                 << OCRAD_version() 
                 << endl;
             exit(EXIT_FAILURE);        
@@ -420,7 +484,7 @@ int main(int ArgumentCount, char *Arguments[])
         else
         {
             // Alert, abort...
-            Message(Console::Error) << "need input file or directory, see --help" << endl;
+            Message(Console::Error) << _("need input file or directory, see --help") << endl;
             exit(EXIT_FAILURE);
         }
 
@@ -433,10 +497,10 @@ int main(int ArgumentCount, char *Arguments[])
     {
         // Alert, abort...
         Message(Console::Error) 
-            << "unknown parameter " 
+            << _("unknown parameter ") 
             << optind + 1 << "/" << ArgumentCount 
             << " ("
-            << Arguments[optind] << "), see --help" << endl;
+            << Arguments[optind] << _("), see --help") << endl;
         exit(EXIT_FAILURE);
     }
 

@@ -1,0 +1,10 @@
+./Source/Console.cpp
+./Source/DBusInterface.cpp
+./Source/LogicalRecord.cpp
+./Source/Miscellaneous.cpp
+./Source/Options.cpp
+./Source/ReconstructableImage.cpp
+./Source/VicarImageAssembler.cpp
+./Source/VicarImageBand.cpp
+./Source/VikingExtractor.cpp
+./Source/ZZipFileDescriptor.cpp

@@ -110,8 +110,8 @@ void DBusInterface::EmitNotificationSignal(const string &Notification)
         {
             // Alert user and terminate...
             Message(Console::Error) 
-                << "d-bus: could not emit 'Notification' signal... (" 
-                << m_Error->message << ")" << endl;
+                << "d-bus: " << _("could not emit 'Notification' signal...") 
+                << " (" << m_Error->message << ")" << endl;
 
             // Cleanup and terminate...
             g_clear_error(&m_Error);
@@ -146,8 +146,8 @@ void DBusInterface::EmitProgressSignal(const double Progress)
         {
             // Alert user and terminate...
             Message(Console::Error) 
-                << "d-bus: could not emit 'Progress' signal... (" 
-                << m_Error->message << ")" << endl;
+                << "d-bus: " << _("could not emit 'Progress' signal...") 
+                << " (" << m_Error->message << ")" << endl;
 
             // Cleanup and terminate...
             g_clear_error(&m_Error);
@@ -192,7 +192,7 @@ void DBusInterface::MethodCallback(
         // Inform client that the method isn't implemented yet...
         g_dbus_method_invocation_return_error(
             Invocation, G_DBUS_ERROR, G_DBUS_ERROR_NOT_SUPPORTED,
-            "Method %s.%s is not implemented.", InterfaceName, MethodName);
+            _("Method %s.%s is not implemented."), InterfaceName, MethodName);
     }
 }
 
@@ -220,8 +220,8 @@ void DBusInterface::OnBusAcquired(
         {
             // Alert user and terminate...
             Message(Console::Error) 
-                << "d-bus: could not register service with session bus... (" 
-                << Context.m_Error->message << ")" << endl;
+                << "d-bus: " << _("could not register service with session bus...")
+                << " (" << Context.m_Error->message << ")" << endl;
 
             // Cleanup and terminate...
             g_object_unref(Context.m_Connection);
@@ -258,7 +258,7 @@ void DBusInterface::OnNameLost(
 void DBusInterface::RegisterOnSessionBus()
 {
     // Alert user...
-    Message(Console::Info) << "d-bus: registering on the session bus..." << endl;
+    Message(Console::Info) << "d-bus: " << _("registering on the session bus...") << endl;
 
     // Clear the bus error variable, if there is one...
     g_clear_error(&m_Error);
@@ -272,8 +272,8 @@ void DBusInterface::RegisterOnSessionBus()
         {
             // Alert user and terminate...
             Message(Console::Error) 
-                << "d-bus: could not parse introspection XML (" 
-                << m_Error->message << ")" << endl;
+                << "d-bus: " << _("could not parse introspection XML") 
+                << " (" << m_Error->message << ")" << endl;
             g_clear_error(&m_Error);
             exit(EXIT_FAILURE);
         }
@@ -286,8 +286,8 @@ void DBusInterface::RegisterOnSessionBus()
         {
             // Alert user and terminate...
             Message(Console::Error) 
-                << "d-bus: could not connect with the session bus (" 
-                << m_Error->message << ")" << endl;
+                << "d-bus: " << _("could not connect with the session bus") 
+                << " (" << m_Error->message << ")" << endl;
             g_clear_error(&m_Error);
             exit(EXIT_FAILURE);
         }
@@ -322,7 +322,7 @@ void DBusInterface::WaitRemoteStart()
     {
         // Alert user...
         Message(Console::Info) 
-            << "d-bus: glib main loop quit unexpectedly..." << endl;
+            << "d-bus: " << _("glib main loop quit unexpectedly...") << endl;
 
         // Cleanup and terminate...
         g_object_unref(m_Connection);

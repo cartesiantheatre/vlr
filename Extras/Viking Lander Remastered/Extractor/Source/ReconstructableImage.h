@@ -34,6 +34,12 @@
     #include <vector>
     #include <string>
     #include <fstream>
+    #include <clocale>
+
+    // i18n...
+    #include "gettext.h"
+    #define _(str) gettext (str)
+    #define N_(str) gettext_noop (str)
 
 // Reconstructable image...
 class ReconstructableImage

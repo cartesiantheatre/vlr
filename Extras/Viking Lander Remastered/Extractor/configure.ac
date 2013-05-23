@@ -1,5 +1,5 @@
-# VikingExtractor, to recover images from Viking Lander operations. Copyright 
-# (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>.
+# VikingExtractor, to recover images from Viking Lander operations. 
+# Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>.
 #    
 # Public discussion on IRC available at #avaneya (irc.freenode.net) or on the 
 # mailing list <avaneya@lists.avaneya.com>.
@@ -30,12 +30,15 @@ AC_COPYRIGHT([Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.c
 AC_INIT(
     [VikingExtractor],
     [0.5],
-    [https://bugs.launchpad.net/avaneya],  
+    [https://bugs.launchpad.net/avaneya],
     [viking-extractor],
     [https://www.avaneya.com])
 
+# Location to find auxiliary automake scripts...
+AC_CONFIG_AUX_DIR([build-aux])
+
 # Location to find Autoconf plugins...
-AC_CONFIG_MACRO_DIR([M4])
+AC_CONFIG_MACRO_DIR([Macros])
 
 # Preserve all arguments for products that want them into config.h...
 config_flags="$0 $*"
@@ -78,6 +81,10 @@ AC_CONFIG_SRCDIR([Source/VikingExtractor.cpp])
         [dbus_interface=${enableval}], 
         [dbus_interface=no])
 
+# Initialize i18n from GNU gettext...
+AM_GNU_GETTEXT_VERSION([0.18.1])
+AM_GNU_GETTEXT([external], [need-ngettext])
+
 # Checks for programs needed to build and test VikingExtractor...
 
     # C++ preprocessor...
@@ -105,11 +112,6 @@ AC_CONFIG_SRCDIR([Source/VikingExtractor.cpp])
             AC_MSG_ERROR([gdbus tool is required to perform test suite...])
         fi
 
-        # We'll also need GNU sem to perform the d-bus test...
-        #AC_PATH_PROG([SEM], [sem])
-        #if test "x$SEM" = "x"; then
-        #    AC_MSG_ERROR([sem tool is required to perform test suite...])
-        #fi
     fi
 
 # Select our native language of C++ to perform tests in...
@@ -272,7 +274,7 @@ AC_LANG([C++])
     CXXFLAGS="$CXXFLAGS -Wall -Werror -Wshadow -Wextra"
 
 # Generate makefiles from templates containing Autoconf substitution variables...
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile Translations/Makefile.in])
                    
 # Generates config.status which generates all files from templates...
 AC_OUTPUT
@@ -288,7 +290,8 @@ C++ Compiler......: $CXX $CFLAGS $CXXFLAGS $CPPFLAGS
 Linker............: $LD $LDFLAGS $LIBS
 
 Optional package features:
-    D-Bus interface...: $dbus_interface
+    D-Bus interface...........: $dbus_interface
+    Native language support...: $USE_NLS
 
 Now type 'make @<:@<target>@:>@' where the 
 optional <target> is:

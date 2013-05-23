@@ -40,10 +40,10 @@ Console::Console()
       m_UseCurrentFileName(true)
 {
     // Initialize the channel map...
-    m_ChannelMap[Error]     = new Channel(Red,     "error: ");
-    m_ChannelMap[Info]      = new Channel(Blue,    "info: ");
+    m_ChannelMap[Error]     = new Channel(Red,     _("error: "));
+    m_ChannelMap[Info]      = new Channel(Blue,    _("info: "));
     m_ChannelMap[Summary]   = new Channel(Blue,    "");
-    m_ChannelMap[Warning]   = new Channel(Yellow,  "warning: ");
+    m_ChannelMap[Warning]   = new Channel(Yellow,  _("warning: "));
     m_ChannelMap[Verbose]   = new Channel(Default, "");
 
     // Set default floating point settings...

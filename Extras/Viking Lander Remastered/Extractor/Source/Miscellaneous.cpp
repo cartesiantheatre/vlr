@@ -109,6 +109,7 @@ float SolarDayToLs(const size_t SolarDay)
     }
     while(EccentricAnomalyDelta > 1.0e-6f);
     
+    // Sign correction...
     if(SignedMeanAnomaly < 0.0f)
         EccentricAnomaly = -EccentricAnomaly;
 

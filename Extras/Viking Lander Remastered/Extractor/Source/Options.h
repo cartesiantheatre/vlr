@@ -35,6 +35,12 @@
     // System headers...
     #include <string>
     #include <set>
+    #include <clocale>
+
+    // i18n...
+    #include "gettext.h"
+    #define _(str) gettext (str)
+    #define N_(str) gettext_noop (str)
 
 // Options explicit singleton class...
 class Options : public ExplicitSingleton<Options>

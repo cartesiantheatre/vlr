@@ -38,6 +38,12 @@
     #include <stdint.h>
     #include <string>
     #include <vector>
+    #include <clocale>
+
+    // i18n...
+    #include "gettext.h"
+    #define _(str) gettext (str)
+    #define N_(str) gettext_noop (str)
 
 // Forward declarations...
 class ZZipFileDescriptor;

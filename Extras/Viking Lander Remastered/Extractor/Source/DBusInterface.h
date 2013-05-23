@@ -41,6 +41,12 @@
 
     // System headers...
     #include <string>
+    #include <clocale>
+
+    // i18n...
+    #include "gettext.h"
+    #define _(str) gettext (str)
+    #define N_(str) gettext_noop (str)
 
 /*
     To monitor the session bus for any of the aforementioned signals...

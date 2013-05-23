@@ -166,7 +166,7 @@ bool LogicalRecord::IsLastLabel() const
 
         // Not a valid label...
         default:
-            throw std::string("invalid logical record label");
+            throw std::string(_("invalid logical record label"));
     }
 }
 
@@ -201,7 +201,7 @@ void LogicalRecord::operator<<(ZZipFileDescriptor &FileDescriptor)
 {
     // Fill the whole buffer and check for error...
     if(LOGICAL_RECORD_SIZE != zzip_read(FileDescriptor, m_Buffer, LOGICAL_RECORD_SIZE))
-        throw std::string("failed to read from input stream");
+        throw std::string(_("failed to read from input stream"));
 
     // Decode...
     for(size_t Index = 0; Index < LOGICAL_RECORD_SIZE; ++Index)

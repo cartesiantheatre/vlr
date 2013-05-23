@@ -279,7 +279,7 @@ bool VicarImageBand::ExamineImageVisually()
         // Image needs to be rotated 90 degrees counterclockwise...
         if(CheckForLargeHistogramAndExtractText(RawBandData, None, m_OCRBuffer))
         {
-            Message(Console::Verbose) << "image should be rotated 90 counterclockwise" << endl;
+            Message(Console::Verbose) << _("image should be rotated 90 counterclockwise") << endl;
             m_Rotation = Rotate90;
             m_FullHistogramPresent = true;
             m_AxisPresent = true;
@@ -288,7 +288,7 @@ bool VicarImageBand::ExamineImageVisually()
         // Image needs to be rotated 180 degrees counterclockwise...
         else if(CheckForLargeHistogramAndExtractText(RawBandData, Rotate90, m_OCRBuffer))
         {
-            Message(Console::Verbose) << "image should be rotated 180 counterclockwise" << endl;
+            Message(Console::Verbose) << _("image should be rotated 180 counterclockwise") << endl;
             m_Rotation = Rotate180;
             m_FullHistogramPresent = true;
             m_AxisPresent = true;
@@ -297,7 +297,7 @@ bool VicarImageBand::ExamineImageVisually()
         // Image needs to be rotated 270 degrees counterclockwise...
         else if(CheckForLargeHistogramAndExtractText(RawBandData, Rotate180, m_OCRBuffer))
         {
-            Message(Console::Verbose) << "image should be rotated 270 counterclockwise" << endl;
+            Message(Console::Verbose) << _("image should be rotated 270 counterclockwise") << endl;
             m_Rotation = Rotate270;
             m_FullHistogramPresent = true;
             m_AxisPresent = true;
@@ -306,7 +306,7 @@ bool VicarImageBand::ExamineImageVisually()
         // Image does not need be rotated...
         else if(CheckForLargeHistogramAndExtractText(RawBandData, Rotate270, m_OCRBuffer))
         {
-            Message(Console::Verbose) << "image does not need to be rotated" << endl;
+            Message(Console::Verbose) << _("image does not need to be rotated") << endl;
             m_Rotation = None;
             m_FullHistogramPresent = true;
             m_AxisPresent = true;
@@ -319,7 +319,7 @@ bool VicarImageBand::ExamineImageVisually()
             // Image does not need be rotated...
             if(CheckForHorizontalAxisAndExtractText(RawBandData, None, m_OCRBuffer))
             {
-                Message(Console::Verbose) << "image does not need to be rotated" << endl;
+                Message(Console::Verbose) << _("image does not need to be rotated") << endl;
                 m_Rotation = None;
                 m_AxisPresent = true;
             }
@@ -327,7 +327,7 @@ bool VicarImageBand::ExamineImageVisually()
             // Image needs to be rotated 90 degrees counterclockwise...
             else if(CheckForHorizontalAxisAndExtractText(RawBandData, Rotate90, m_OCRBuffer))
             {
-                Message(Console::Verbose) << "image should be rotated 90 counterclockwise" << endl;
+                Message(Console::Verbose) << _("image should be rotated 90 counterclockwise") << endl;
                 m_Rotation = Rotate90;
                 m_AxisPresent = true;
             }
@@ -335,7 +335,7 @@ bool VicarImageBand::ExamineImageVisually()
             // Image needs to be rotated 180 degrees counterclockwise...
             else if(CheckForHorizontalAxisAndExtractText(RawBandData, Rotate180, m_OCRBuffer))
             {
-                Message(Console::Verbose) << "image should be rotated 180 counterclockwise" << endl;
+                Message(Console::Verbose) << _("image should be rotated 180 counterclockwise") << endl;
                 m_Rotation = Rotate180;
                 m_AxisPresent = true;
             }
@@ -343,7 +343,7 @@ bool VicarImageBand::ExamineImageVisually()
             // Image needs to be rotated 270 degrees counterclockwise...
             else if(CheckForHorizontalAxisAndExtractText(RawBandData, Rotate270, m_OCRBuffer))
             {
-                Message(Console::Verbose) << "image should be rotated 270 counterclockwise" << endl;
+                Message(Console::Verbose) << _("image should be rotated 270 counterclockwise") << endl;
                 m_Rotation = Rotate270;
                 m_AxisPresent = true;
             }
@@ -351,7 +351,7 @@ bool VicarImageBand::ExamineImageVisually()
             // No legible text hints found. Probably image without any axis or histogram overlay...
             else
             {
-                Message(Console::Verbose) << "could not guess image rotation" << endl;
+                Message(Console::Verbose) << _("could not guess image rotation") << endl;
                 m_Rotation = None;
                 m_OCRBuffer.clear();
             }
@@ -384,7 +384,7 @@ bool VicarImageBand::ExtractOCR(
     
         // Fucked...
         if(OCRAD_get_errno(LibraryDescriptor) != OCRAD_ok)
-            SetErrorAndReturnFalse("ocrad failed to initialize");
+            SetErrorAndReturnFalse(_("GNU Ocrad failed to initialize"));
 
     // Load the raw image band data...
 
@@ -420,7 +420,7 @@ bool VicarImageBand::ExtractOCR(
         OCRAD_close(LibraryDescriptor);
 
         // Set error message...
-        SetErrorAndReturnFalse("could not set ocr image");
+        SetErrorAndReturnFalse(_("could not set OCR image"));
     }
 
     // Algorithm seems to recognize VICAR text overlay better when 
@@ -437,7 +437,7 @@ bool VicarImageBand::ExtractOCR(
         OCRAD_close(LibraryDescriptor);
 
         // Set error message...
-        SetErrorAndReturnFalse("ocr pass failed");
+        SetErrorAndReturnFalse(_("OCR pass failed"));
     }
 
     // Grab the text from each text block...
@@ -522,18 +522,18 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
 
     // Check if file was loaded ok...
     if(!IsOk())
-        SetErrorAndReturnFalse("input was not loaded")
+        SetErrorAndReturnFalse(_("input was not loaded"))
 
     // Open the input file...
     ZZipFileDescriptor FileDescriptor(Open());
 
         // Failed...
         if(!FileDescriptor.IsGood())
-            SetErrorAndReturnFalse("could not open input for reading");
+            SetErrorAndReturnFalse(_("could not open input for reading"));
 
     // Seek to raw image offset and make sure it was successful...
     if(zzip_seek(FileDescriptor, m_RawImageOffset, SEEK_SET) == -1)
-        SetErrorAndReturnFalse("file ended prematurely before raw image");
+        SetErrorAndReturnFalse(_("file ended prematurely before raw image"));
 
     // Clear the mean pixel value...
     m_MeanPixelValue = 0.0f;
@@ -562,7 +562,7 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
 
             // Check for error...
             if(!FileDescriptor.IsGood())
-                SetErrorAndReturnFalse("band data extraction i/o error");
+                SetErrorAndReturnFalse(_("band data extraction i/o error"));
 
             // Check if within the pixel sample region...
             if(X >= SampleRegion_Left  && 
@@ -588,7 +588,7 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
     m_MeanPixelValue /= SampleRegionSize;
 
     // Alert user if verbose mode enabled...
-    Message(Console::Verbose) << "mean pixel value: " << m_MeanPixelValue << endl;
+    Message(Console::Verbose) << _("mean pixel value: ") << m_MeanPixelValue << endl;
 
     // Auto rotate was requested and requires a rotation...
     if(Options::GetInstance().GetAutoRotate() && m_Rotation != None)
@@ -764,36 +764,36 @@ void VicarImageBand::Load()
     Console::GetInstance().SetCurrentFileName(GetInputFileNameOnly());
 
     // Be verbose...
-    Message(Console::Verbose) << "loading" << endl;
+    Message(Console::Verbose) << _("loading") << endl;
 
     // Open the file...
     ZZipFileDescriptor FileDescriptor(Open());
 
         // Failed...
         if(!FileDescriptor.IsGood())
-            SetErrorAndReturn("could not open input for reading")
+            SetErrorAndReturn(_("could not open input for reading"))
 
     // Check size...
     const int FileSize = GetFileSize();
 
         // Empty...
         if(FileSize == 0)
-            SetErrorAndReturn("empty file, probably blank magnetic tape or not received back on Earth")
+            SetErrorAndReturn(_("empty file, probably blank magnetic tape or not received back on Earth"))
 
         // Check to make sure it is at least four kilobytes...
         else if(FileSize < (4 * 1024))
-            SetErrorAndReturn("too small to be interesting (< 4 KB)")
+            SetErrorAndReturn(_("too small to be interesting (< 4 KB)"))
 
     // Check if the header is at least readable, and if so, retrieve
     //  phase offset required to decode the file...
     if(!IsHeaderIntact(m_PhaseOffsetRequired))
-        SetErrorAndReturn("header is not intact, or not a VICAR file")
+        SetErrorAndReturn(_("header is not intact, or not a VICAR file"))
     else if(m_PhaseOffsetRequired > 0)
-        Message(Console::Verbose) << "header intact, but requires " << m_PhaseOffsetRequired << " byte phase offset" << endl;
+        Message(Console::Verbose) << _("header intact, but requires ") << m_PhaseOffsetRequired << _(" byte phase offset") << endl;
 
     // Verify it's from one of the Viking Landers...
     if(!IsVikingLanderOrigin())
-        SetErrorAndReturn("did not originate from a Viking Lander")
+        SetErrorAndReturn(_("did not originate from a Viking Lander"))
 
     // Extract the basic image metadata...
     ParseBasicMetadata(FileDescriptor);
@@ -815,9 +815,9 @@ void VicarImageBand::Load()
     {
         // Verbosity...
         Message(Console::Verbose)
-            << "entering physical record " 
+            << _("entering physical record ")
             << PhysicalRecordIndex + 1 
-            << " starting at " 
+            << _(" starting at ")
             << static_cast<int>(zzip_tell(FileDescriptor)) 
             << endl;
 
@@ -834,9 +834,9 @@ void VicarImageBand::Load()
         {
             // Verbosity...
             Message(Console::Verbose) 
-                << "extracting logical record " 
+                << _("extracting logical record ") 
                 << LocalLogicalRecordIndex + 1 
-                << "/5 starting at " 
+                << _("/5 starting at ")
                 << static_cast<int>(zzip_tell(FileDescriptor)) 
                 << endl;
 
@@ -848,17 +848,17 @@ void VicarImageBand::Load()
             {
                 // Verbosity...
                 Message(Console::Error) 
-                    << "bad logical record terminator " 
+                    << _("bad logical record terminator ")
                     << LocalLogicalRecordIndex + 1 
-                    << "/5 starting at " 
+                    << _("/5 starting at ")
                     << static_cast<int>(zzip_tell(FileDescriptor)) 
                     << endl;
                 
                 // Give a hint if this was suppose to be a physical record boundary...
                 if(LocalLogicalRecordIndex == 0)
-                    SetErrorAndReturn("invalid logical record label possibly from out of phase physical boundary")
+                    SetErrorAndReturn(_("invalid logical record label possibly from out of phase physical boundary"))
                 else
-                    SetErrorAndReturn("invalid logical record label")
+                    SetErrorAndReturn(_("invalid logical record label"))
             }
 
             // Parse the extended metadata, if any...
@@ -909,7 +909,7 @@ void VicarImageBand::Load()
             {
                 // It was, so rewind and carry on since there is no 
                 //  physical record padding...
-                Message(Console::Verbose) << "tangential physical record boundary detected, ignoring padding" << endl;
+                Message(Console::Verbose) << _("tangential physical record boundary detected, ignoring padding") << endl;
                 zzip_seek(FileDescriptor, CurrentPosition, SEEK_SET);
             }
             
@@ -918,7 +918,7 @@ void VicarImageBand::Load()
             else
             {
                 // Alert and seek...
-                Message(Console::Verbose) << "seeking passed " << m_PhysicalRecordPadding << " physical record padding" << endl;
+                Message(Console::Verbose) << _("seeking passed ") << m_PhysicalRecordPadding << _(" physical record padding") << endl;
                 zzip_seek(FileDescriptor, CurrentPosition, SEEK_SET);
                 zzip_seek(FileDescriptor, m_PhysicalRecordPadding, SEEK_CUR);
             }
@@ -926,13 +926,13 @@ void VicarImageBand::Load()
 
     // Got to the end of the file and did not find the last label record...
     if(!FileDescriptor.IsGood())
-        SetErrorAndReturn("unable to locate last logical record label")
+        SetErrorAndReturn(_("unable to locate last logical record label"))
 
     // Store raw image offset...
     m_RawImageOffset = zzip_tell(FileDescriptor);
 
     // Show user, if requested...
-    Message(Console::Verbose) << "raw image offset: " << m_RawImageOffset << hex << showbase << " (" << m_RawImageOffset<< ")" << dec << endl;
+    Message(Console::Verbose) << _("raw image offset: ") << m_RawImageOffset << hex << showbase << " (" << m_RawImageOffset<< ")" << dec << endl;
 
     // Now we know an absolute lower bound for file size, check...
     const int RequiredMinimumSize = 
@@ -943,7 +943,7 @@ void VicarImageBand::Load()
         // Compose error message...
         stringstream ErrorStream;
         ErrorStream 
-            << "file too small to contain claimed payload "
+            << _("file too small to contain claimed payload ")
             << FileSize
             << " < "
             << RequiredMinimumSize;
@@ -1048,13 +1048,13 @@ void VicarImageBand::ParseBasicMetadata(ZZipFileDescriptor &FileDescriptor)
             //  calibration shot and not meant to be interesting...
             if(DiodeBandTypeHint.find("CAL") != string::npos)
                 SetErrorAndReturn(
-                    string("internal radio/geometric calibration (") + 
+                    string(_("internal radio/geometric calibration (")) + 
                     DiodeBandTypeHint + 
                     string(")"))
 
             // Some other...
             else
-                SetErrorAndReturn(string("unsupported photosensor diode band type (") + 
+                SetErrorAndReturn(string(_("unsupported photosensor diode band type (")) + 
                     DiodeBandTypeHint + 
                     string(")"))
         }
@@ -1278,43 +1278,43 @@ void VicarImageBand::ParseBasicMetadata(ZZipFileDescriptor &FileDescriptor)
 
         // Unknown format...
         else
-            SetErrorAndReturn("exhausted basic metadata parser heuristics")
+            SetErrorAndReturn(_("exhausted basic metadata parser heuristics"))
 
     // Perform sanity check on basic metadata...
 
         // Check bands...
         if(m_Bands != 1)
-            SetErrorAndReturn("unsupported number of image bands")
+            SetErrorAndReturn(_("unsupported number of image bands"))
 
         // Check height...
         if(m_OriginalHeight <= 0)
-            SetErrorAndReturn("expected positive image height")
+            SetErrorAndReturn(_("expected positive image height"))
 
         // Check width...
         if(m_OriginalWidth <= 0)
-            SetErrorAndReturn("expected positive image width")
+            SetErrorAndReturn(_("expected positive image width"))
 
         // Check pixel format is integral...
         if(m_PixelFormat != 'I' && /* Definitely integral */
            m_PixelFormat != 'L')   /* Guessing integral */
-            SetErrorAndReturn("unsupported pixel format")
+            SetErrorAndReturn(_("unsupported pixel format"))
 
         // Check bytes per colour...
         if(m_BytesPerColour != 1)
-            SetErrorAndReturn("unsupported colour bit depth")
+            SetErrorAndReturn(_("unsupported colour bit depth"))
 
     // If verbosity is set, display basic metadata...
-    Message(Console::Verbose) << "basic metadata parser heuristic: " << m_BasicMetadataParserHeuristic << endl;
-    Message(Console::Verbose) << "bands: " << m_Bands << endl;
-    Message(Console::Verbose) << "height: " << m_OriginalHeight << endl;
-    Message(Console::Verbose) << "width: " << m_OriginalWidth << endl;
-    Message(Console::Verbose) << "raw band data size: " << m_OriginalWidth * m_OriginalHeight * m_BytesPerColour << " bytes" << endl;
-    Message(Console::Verbose) << "file size: " << GetFileSize() << " bytes" << endl;
-    Message(Console::Verbose) << "format: " << "integral" << endl;
-    Message(Console::Verbose) << "bytes per colour: " << m_BytesPerColour << endl;
-    Message(Console::Verbose) << "photosensor diode band type: " << GetDiodeBandTypeFriendlyString() << endl;
-    Message(Console::Verbose) << "physical record size: " << m_PhysicalRecordSize << hex << showbase << " (" << m_PhysicalRecordSize<< ")" << endl;
-    Message(Console::Verbose) << "possible physical record padding: "  << dec << m_PhysicalRecordPadding << hex << showbase << " (" << m_PhysicalRecordPadding<< ")" << dec << endl;
+    Message(Console::Verbose) << _("basic metadata parser heuristic: ") << m_BasicMetadataParserHeuristic << endl;
+    Message(Console::Verbose) << _("bands: ") << m_Bands << endl;
+    Message(Console::Verbose) << _("height: ") << m_OriginalHeight << endl;
+    Message(Console::Verbose) << _("width: ") << m_OriginalWidth << endl;
+    Message(Console::Verbose) << _("raw band data size: ") << m_OriginalWidth * m_OriginalHeight * m_BytesPerColour << _(" bytes") << endl;
+    Message(Console::Verbose) << _("file size: ") << GetFileSize() << _(" bytes") << endl;
+    Message(Console::Verbose) << _("format: integral") << endl;
+    Message(Console::Verbose) << _("bytes per colour: ") << m_BytesPerColour << endl;
+    Message(Console::Verbose) << _("photosensor diode band type: ") << GetDiodeBandTypeFriendlyString() << endl;
+    Message(Console::Verbose) << _("physical record size: ") << m_PhysicalRecordSize << hex << showbase << " (" << m_PhysicalRecordSize<< ")" << endl;
+    Message(Console::Verbose) << _("possible physical record padding: ")  << dec << m_PhysicalRecordPadding << hex << showbase << " (" << m_PhysicalRecordPadding<< ")" << dec << endl;
 
     // Basic metadata in theory should be enough to extract the band data...
     m_Ok = true;
@@ -1341,7 +1341,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format1(
     char    DummyCharacter  = 0;
 
     // Alert user if verbose enabled...
-    Message(Console::Verbose) << "heuristics selected format 1 basic metadata parser" << endl;
+    Message(Console::Verbose) << _("heuristics selected format 1 basic metadata parser") << endl;
 
     // Initialize a tokenizer, seeking passed two byte binary marker...
     stringstream Tokenizer(HeaderRecord.GetString(true, 2));
@@ -1412,7 +1412,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format2(
     char    DummyCharacter  = 0;
 
     // Alert user if verbose enabled...
-    Message(Console::Verbose) << "heuristics selected format 2 basic metadata parser" << endl;
+    Message(Console::Verbose) << _("heuristics selected format 2 basic metadata parser") << endl;
 
     // Initialize a tokenizer, seeking passed two byte binary marker...
     stringstream Tokenizer(HeaderRecord.GetString(true, 2));
@@ -1496,7 +1496,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format3(
     string  Token;
 
     // Alert user if verbose enabled...
-    Message(Console::Verbose) << "heuristics selected format 3 basic metadata parser" << endl;
+    Message(Console::Verbose) << _("heuristics selected format 3 basic metadata parser") << endl;
 
     // Initialize a tokenizer, seeking passed two byte binary marker...
     stringstream Tokenizer(HeaderRecord.GetString(true, 2));
@@ -1564,7 +1564,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format4(
     string  Token;
 
     // Alert user if verbose enabled...
-    Message(Console::Verbose) << "heuristics selected format 4 basic metadata parser" << endl;
+    Message(Console::Verbose) << _("heuristics selected format 4 basic metadata parser") << endl;
 
     // Initialize a tokenizer, seeking passed two byte binary marker...
     stringstream Tokenizer(HeaderRecord.GetString(true, 2));
@@ -1633,7 +1633,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format5(
     string  Token;
 
     // Alert user if verbose enabled...
-    Message(Console::Verbose) << "heuristics selected format 5 basic metadata parser" << endl;
+    Message(Console::Verbose) << _("heuristics selected format 5 basic metadata parser") << endl;
 
     // Initialize a tokenizer, seeking passed two byte binary marker...
     stringstream Tokenizer(HeaderRecord.GetString(true, 2));
@@ -1702,7 +1702,7 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format6(
     char    Buffer[1024] = {0};
 
     // Alert user if verbose enabled...
-    Message(Console::Verbose) << "heuristics selected format 6 basic metadata parser" << endl;
+    Message(Console::Verbose) << _("heuristics selected format 6 basic metadata parser") << endl;
 
     // Initialize a tokenizer, seeking passed two byte binary marker...
     stringstream Tokenizer(HeaderRecord.GetString(true, 2));
@@ -1765,7 +1765,7 @@ void VicarImageBand::ParseExtendedMetadata(
     
     // Is it valid?
     if(!Record.IsValidLabel())
-        SetErrorAndReturn("invalid logical record label while parsing extended metadata")
+        SetErrorAndReturn(_("invalid logical record label while parsing extended metadata"))
 
     // Get the record as a string...
     const string RecordString = Record;
@@ -1786,7 +1786,7 @@ void VicarImageBand::ParseExtendedMetadata(
             m_AzimuthElevation = Record.GetString(true);
 
             // Alert user if verbose mode enabled...
-            Message(Console::Verbose) << "psa directional vector: " << m_AzimuthElevation << endl;
+            Message(Console::Verbose) << _("psa directional vector: ") << m_AzimuthElevation << endl;
         }
         
         // Possibly camera event label...
@@ -1801,7 +1801,7 @@ void VicarImageBand::ParseExtendedMetadata(
                 // Store the label...
                 Tokenizer >> Token;
                 SetCameraEventLabel(Token);
-                Message(Console::Verbose) << "camera event label: " << m_CameraEventLabel << endl;
+                Message(Console::Verbose) << _("camera event label: ") << m_CameraEventLabel << endl;
             }
 
             // Not a camera event, restore the token...
@@ -1824,15 +1824,15 @@ void VicarImageBand::ParseExtendedMetadata(
 
                 // Check validity...
                 if(m_LanderNumber > 2)
-                    Message(Console::Warning) << "bad lander number" << endl;
+                    Message(Console::Warning) << _("bad lander number") << endl;
 
                 // Be verbose if requested...
-                Message(Console::Verbose) << "lander number: " << m_CameraEventLabel << endl;
+                Message(Console::Verbose) << _("lander number: ") << m_CameraEventLabel << endl;
 
                 // Check for matching lander number, if user filtered...
                 if(Options::GetInstance().GetFilterLander() != 0 &&
                    Options::GetInstance().GetFilterLander() != m_LanderNumber)
-                    SetErrorAndReturn("filtering non-matching lander")
+                    SetErrorAndReturn(_("filtering non-matching lander"))
             }
 
             // Not a camera event, restore the token...
@@ -1888,7 +1888,7 @@ VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &DiodeBandTyp
             if(CurrentToken == "MONOCOLOR")
             {
                 // Set caller hint and return unsupported...
-                DiodeBandTypeHint = "monocolour unsupported";
+                DiodeBandTypeHint = _("monocolour unsupported");
                 return Unknown;            
             }
 
@@ -1896,7 +1896,7 @@ VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &DiodeBandTyp
             if(CurrentToken == "BROADBAND")
             {
                 // Set caller hint and return unsupported...
-                DiodeBandTypeHint = "unidentifiable broadband";
+                DiodeBandTypeHint = _("unidentifiable broadband");
                 return Unknown;
             }
 
@@ -1948,7 +1948,7 @@ VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &DiodeBandTyp
     }
 
     // Set hint and return unknown...
-    DiodeBandTypeHint = "none detected";
+    DiodeBandTypeHint = _("none detected");
     return Unknown;
 }
 
@@ -1997,12 +1997,12 @@ void VicarImageBand::SetCameraEventLabel(const string &CameraEventLabel)
     // Check for matching solar day, if user filtered...
     if(Options::GetInstance().GetFilterSolarDay() != numeric_limits<size_t>::max() && 
        Options::GetInstance().GetFilterSolarDay() != m_SolarDay)
-        SetErrorAndReturn("filtering non-matching solar day")
+        SetErrorAndReturn(_("filtering non-matching solar day"))
 
     // Check for matching camera event, if user filtered...
     if(!Options::GetInstance().GetFilterCameraEvent().empty() && 
        Options::GetInstance().GetFilterCameraEvent() != m_CameraEventLabelNoSol)
-        SetErrorAndReturn("filtering non-matching camera event")
+        SetErrorAndReturn(_("filtering non-matching camera event"))
 }
 
 // Mirror the band data from left to right...

@@ -86,7 +86,7 @@ void VicarImageAssembler::IndexArchive(const string &InputArchiveFile)
 
     // Open directory and check for error...
     if(!(Directory = zzip_opendir(InputArchiveFile.c_str())))
-        throw string("unable to open input directory for indexing ") + InputArchiveFile;
+        throw string(_("unable to open input directory for indexing ")) + InputArchiveFile;
 
     // Add all VICAR files found...
     while((DirectoryEntry = zzip_readdir(Directory)))
@@ -125,7 +125,7 @@ void VicarImageAssembler::IndexDirectory(const string &InputDirectory)
 
     // Open directory and check for error...
     if(!(Directory = opendir(NewInputDirectory.c_str())))
-        throw string("unable to open input directory for indexing ") + NewInputDirectory;
+        throw string(_("unable to open input directory for indexing ")) + NewInputDirectory;
 
     // Add prospective files found and recurse through subdirectories...
     while((DirectoryEntry = readdir(Directory)))
@@ -141,7 +141,7 @@ void VicarImageAssembler::IndexDirectory(const string &InputDirectory)
         // Fetch entry attributes...
         struct stat FileAttributes;
         if(stat(CurrentEntry.c_str(), &FileAttributes) != 0)
-            throw string("could not stat ") + CurrentEntry;
+            throw string(_("could not stat ")) + CurrentEntry;
 
         // It's a file, index it...
         if(S_ISREG(FileAttributes.st_mode))
@@ -186,11 +186,11 @@ void VicarImageAssembler::Reconstruct()
 #endif
 
         // Alert user...
-        Message(Console::Summary) << "indexing mission data, please wait..." << endl;
+        Message(Console::Summary) << _("indexing mission data, please wait...") << endl;
         
 #ifdef USE_DBUS_INTERFACE
         // Provide a notification to the Viking Lander Launcher...
-        DBusInterface::GetInstance().EmitNotificationSignal("Indexing mission data, please wait...");
+        DBusInterface::GetInstance().EmitNotificationSignal(_("Indexing mission data, please wait..."));
 #endif
 
         // If summarize only mode is enabled, mute current file name, and all 
@@ -218,7 +218,7 @@ void VicarImageAssembler::Reconstruct()
             // Fetch attributes...
             struct stat FileAttributes;
             if(stat(m_InputFileOrRootDirectory.c_str(), &FileAttributes) != 0)
-                throw string("could not stat ") + m_InputFileOrRootDirectory;
+                throw string(_("could not stat ")) + m_InputFileOrRootDirectory;
 
             // Yes, just index a file...
             if(S_ISREG(FileAttributes.st_mode))
@@ -233,7 +233,7 @@ void VicarImageAssembler::Reconstruct()
         {
             // Alert...
             Message(Console::Summary) 
-                << "no prospective files found"
+                << _("no prospective files found")
                 << endl;
 
             // Done...
@@ -242,7 +242,7 @@ void VicarImageAssembler::Reconstruct()
 
 #ifdef USE_DBUS_INTERFACE
         // Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
-        DBusInterface::GetInstance().EmitNotificationSignal("Analyzing mission data, please wait...");
+        DBusInterface::GetInstance().EmitNotificationSignal(_("Analyzing mission data, please wait..."));
 #endif
 
         // Keep reading entries while there are some...
@@ -270,7 +270,7 @@ void VicarImageAssembler::Reconstruct()
             if(Options::GetInstance().GetSummarizeOnly())
             {
                 Message(Console::Summary) 
-                    << "\rstudying mission data index of " 
+                    << _("\rstudying mission data index of ")
                     << ProspectiveFilesExamined << "/" << TotalProspectiveFiles 
                     << " (" << PercentageExamined << " %)";
             }
@@ -292,7 +292,7 @@ void VicarImageAssembler::Reconstruct()
                         // Alert and skip...
                         Message(Console::Warning)
                             << ImageBand.GetErrorMessage() 
-                            << ", skipping"
+                            << _(", skipping")
                             << endl;
                         continue;
                     }
@@ -303,7 +303,7 @@ void VicarImageAssembler::Reconstruct()
                         // Alert and abort...
                         ErrorMessage = 
                             ImageBand.GetErrorMessage() +
-                            string(" (-b to skip)");
+                            string(_(" (--ignore-bad-files to skip)"));
                         throw ErrorMessage;
                     }
                 }
@@ -319,9 +319,9 @@ void VicarImageAssembler::Reconstruct()
             {
                 // Alert, skip...
                 Message(Console::Info) 
-                    << "filtering " 
+                    << _("filtering ")
                     << ImageBand.GetDiodeBandTypeFriendlyString()
-                    << " type diode bands (-f to change)"
+                    << _(" type diode bands (--filter-diode[=type] to change)")
                     << endl;
                 continue;
             }
@@ -331,7 +331,7 @@ void VicarImageAssembler::Reconstruct()
             {
                 // Alert user, skip...
                 Message(Console::Error)
-                    << "camera event doesn't identify itself, cannot index" 
+                    << _("camera event doesn't identify itself, cannot index")
                     << endl;
                 continue;
             }
@@ -352,7 +352,7 @@ void VicarImageAssembler::Reconstruct()
                     // Alert user...
                     Message(Console::Info)
                         << CameraEventLabel
-                        << " is a new camera event, indexing" 
+                        << _(" is a new camera event, indexing")
                         << endl;
 
                     // Construct a new reconstructable image...
@@ -373,7 +373,7 @@ void VicarImageAssembler::Reconstruct()
                     // Alert user...
                     Message(Console::Info)
                         << CameraEventLabel
-                        << " is a known camera event, indexing"
+                        << _(" is a known camera event, indexing")
                         << endl;
 
                     // Get the reconstructable image object...
@@ -393,7 +393,7 @@ void VicarImageAssembler::Reconstruct()
                     // Alert and skip...
                     Message(Console::Warning)
                         << Reconstructable->GetErrorMessage() 
-                        << ", skipping"
+                        << _(", skipping")
                         << endl;
                     continue;
                 }
@@ -404,7 +404,7 @@ void VicarImageAssembler::Reconstruct()
                     // Alert and abort...
                     ErrorMessage = 
                         Reconstructable->GetErrorMessage() +
-                        string(" (-b to skip)");
+                        string(_(" (--ignore-bad-files to skip)"));
                     throw ErrorMessage;
                 }
             }
@@ -421,7 +421,7 @@ void VicarImageAssembler::Reconstruct()
 
 #ifdef USE_DBUS_INTERFACE
         // Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
-        DBusInterface::GetInstance().EmitNotificationSignal("Attempting forensic mission data recovery...");
+        DBusInterface::GetInstance().EmitNotificationSignal(_("Attempting forensic mission data recovery..."));
 #endif
 
         // Reconstruct each image...
@@ -448,14 +448,14 @@ void VicarImageAssembler::Reconstruct()
                 // Trying to reconstruct...
                 if(!Options::GetInstance().GetNoReconstruct())
                     Message(Console::Summary) 
-                        << "\rattempting reconstruction " 
+                        << _("\rattempting reconstruction ")
                         << AttemptedReconstruction << "/" << m_CameraEventDictionary.size()
                         << " (" << RecoveryProgress << " %)";
                 
                 // Just dumping components...
                 else
                     Message(Console::Summary) 
-                        << "\rdumping components from " 
+                        << _("\rdumping components from ")
                         << AttemptedReconstruction << "/" << m_CameraEventDictionary.size()
                         << " (" << RecoveryProgress << " %)";
             }
@@ -477,7 +477,7 @@ void VicarImageAssembler::Reconstruct()
                     // Alert and skip...
                     Message(Console::Warning)
                         << Reconstructable->GetErrorMessage() 
-                        << ", skipping"
+                        << _(", skipping")
                         << endl;
                     continue;
                 }
@@ -488,7 +488,7 @@ void VicarImageAssembler::Reconstruct()
                     // Alert and abort...
                     ErrorMessage = 
                         Reconstructable->GetErrorMessage() +
-                        string(" (-b to skip)");
+                        string(_(" (--ignore-bad-files to skip)"));
                     throw ErrorMessage;
                 }
             }
@@ -500,7 +500,7 @@ void VicarImageAssembler::Reconstruct()
 
 #ifdef USE_DBUS_INTERFACE
         // Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
-        DBusInterface::GetInstance().EmitNotificationSignal("Recovery completed...");
+        DBusInterface::GetInstance().EmitNotificationSignal(_("Recovery completed..."));
 #endif
 
         // Update summary, if enabled, beginning with new line since last was \r only...
@@ -510,16 +510,16 @@ void VicarImageAssembler::Reconstruct()
             if(!Options::GetInstance().GetNoReconstruct())
                 Message(Console::Summary) 
                     << endl
-                    << "successfully reconstructed "
+                    << _("successfully reconstructed ")
                     << SuccessfullyReconstructed << "/" << m_CameraEventDictionary.size()
-                    << ", " << DumpedImages << " unreconstructable components dumped"
+                    << ", " << DumpedImages << _(" unreconstructable components dumped")
                     << endl;
             
             // We were not trying to reconstruct...
             else
                 Message(Console::Summary) 
                     << endl
-                    << "dumped " << DumpedImages << " image components without reconstruction"
+                    << _("dumped ") << DumpedImages << _(" image components without reconstruction")
                     << endl;
         }
     }
