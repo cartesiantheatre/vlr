@@ -37,6 +37,10 @@ import LauncherArguments
 # Assistant proxy page base class...
 from PageProxyBase import *
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
 # Recovery page proxy class...
 class RecoveryPageProxy(PageProxyBase):
 
@@ -53,7 +57,7 @@ class RecoveryPageProxy(PageProxyBase):
         # Add recovery page to assistant...
         self.registerPage(
             "recoveryPageBox",
-            "Recovery",
+            _("Recovery"),
             Gtk.AssistantPageType.PROGRESS,
             False)
 
@@ -65,7 +69,7 @@ class RecoveryPageProxy(PageProxyBase):
         # Connect the signals...
         self._abortRecoveryButton.connect("clicked", self.onAbortClicked)
         self._terminal.connect("child-exited", self.onChildProcessExit)
-        #self._recoveryPageBox.connect("expose-event", self.onExposeEvent)
+        #self._recoveryPageBox.connect("draw", self.onExposeEvent) # Gtk+v3 'expose-event' -> 'draw'
 
     # Start the recovery process...
     def startRecovery(self):
@@ -99,7 +103,7 @@ class RecoveryPageProxy(PageProxyBase):
             self._fatalLaunchError()
 
         # We got the process ID, show it...
-        print("Spawned process {0}...".format(self.processID))
+        print(_("Spawned process {0}...").format(self.processID))
 
         # Some constants to help find the VikingExtractor...
         VE_DBUS_SERVICE_NAME        = "com.cartesiantheatre.VikingExtractorService"
@@ -110,7 +114,7 @@ class RecoveryPageProxy(PageProxyBase):
         VE_DBUS_METHOD_START        = "Start"
 
         # Alert user...
-        sys.stdout.write("Waiting for VikingExtractor D-Bus service...")
+        sys.stdout.write(_("Waiting for VikingExtractor D-Bus service..."))
 
         # Connect to the session bus...
         sessionConnection = None
@@ -118,7 +122,7 @@ class RecoveryPageProxy(PageProxyBase):
 
         # Failed...
         if sessionConnection is None:
-            print("Dead session connection handle...")
+            print(_("Dead session connection handle..."))
             sys.exit(1)
 
         # Keep trying to connect until successful...
@@ -203,7 +207,7 @@ class RecoveryPageProxy(PageProxyBase):
                 continue
 
             # Done...
-            print("ok")
+            print(_("ok"))
             break
 
     # VikingExtractor could not be executed...
@@ -216,10 +220,10 @@ class RecoveryPageProxy(PageProxyBase):
         messageDialog = Gtk.MessageDialog(
             self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
             Gtk.ButtonsType.OK, 
-            "Error")
+            _("Error"))
         messageDialog.format_secondary_text(
-            "The VikingExtractor could not be launched. " \
-            "The following location was attempted:\n\n{0}".
+            _("The VikingExtractor could not be launched. "
+              "The following location was attempted:\n\n{0}").
                 format(self._vikingExtractorBinaryPath))
         messageDialog.run()
         messageDialog.destroy()
@@ -234,7 +238,7 @@ class RecoveryPageProxy(PageProxyBase):
         messageDialog = Gtk.MessageDialog(
             self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.QUESTION, 
             Gtk.ButtonsType.YES_NO, 
-            "Are you sure you'd like to abort the recovery?")
+            _("Are you sure you'd like to abort the recovery?"))
         messageDialog.set_default_response(Gtk.ResponseType.NO)
         userResponse = messageDialog.run()
         messageDialog.destroy()
@@ -256,7 +260,7 @@ class RecoveryPageProxy(PageProxyBase):
 
         # Get the exit code...
         exitCode = self._terminal.get_child_exit_status()
-        print("VikingExtractor terminated with status {0}...".format(exitCode))
+        print(_("VikingExtractor terminated with status {0}...").format(exitCode))
 
         # Any other code than zero denotes an error...
         if exitCode is not 0:
@@ -265,9 +269,9 @@ class RecoveryPageProxy(PageProxyBase):
             messageDialog = Gtk.MessageDialog(
                 self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
                 Gtk.ButtonsType.OK, 
-                "Error")
+                _("Error"))
             messageDialog.format_secondary_text(
-                "The recovery process was unsuccessful. ({0})"
+                _("The recovery process was unsuccessful. ({0})")
                     .format(exitCode))
             messageDialog.run()
             messageDialog.destroy()

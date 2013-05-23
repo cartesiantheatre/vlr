@@ -184,8 +184,14 @@ int main(int ArgumentCount, char *Arguments[])
 
     // Initialize i18n...
 
-        // Select user's preferred locale according to environment variable...
-        setlocale(LC_ALL, "");
+        // Select user's preferred locale according to environment variable and
+        //  check for error...
+        if(!setlocale(LC_ALL, ""))
+        {
+            // Alert and abort...
+            cout << "error: failed to set user locale" << endl;
+            exit(EXIT_FAILURE);
+        }
 
     #if ENABLE_NLS
 

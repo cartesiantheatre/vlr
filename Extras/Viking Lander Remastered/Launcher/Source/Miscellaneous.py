@@ -19,7 +19,7 @@
 
 """Miscellaneous: Random routines that didn't belong anywhere else"""
 
-# Imports...
+# System imports...
 from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import Gio
@@ -27,6 +27,10 @@ import os
 import subprocess
 import platform
 import sys
+
+# i18n...
+import gettext
+_ = gettext.gettext
 
 # Privates...
 _applicationName    = "Avaneya: Viking Lander Remastered DVD"
@@ -120,7 +124,7 @@ def hasInternetConnection(alertUser, parent, unqueriableDefault):
 
     # Something went wrong, but most likely the service isn't available...
     except:
-        print("Warning: NetworkManager service not found...")
+        print(_("Warning: NetworkManager service not found..."))
         return unqueriableDefault
 
     # Connected...
@@ -138,8 +142,8 @@ def hasInternetConnection(alertUser, parent, unqueriableDefault):
             messageDialog = Gtk.MessageDialog(
                 parent, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
                 Gtk.ButtonsType.OK, 
-                "You need a working internet connection in order to do this. " \
-                "You don't appear to have one right now.")
+                _("You need a working internet connection in order to do this. "
+                "You don't appear to have one right now."))
             messageDialog.run()
             messageDialog.destroy()
 
@@ -167,7 +171,7 @@ def launchResource(resourcePath):
         try:
             subprocess.Popen(["xdg-open", format(resourcePath)])
         except OSError:
-            print("Cannot launch {0}. Platform unknown...".format(resourcePath))
+            print(_("Cannot launch {0}. Platform unknown...").format(resourcePath))
 
 # Open a directory as though the user had launched it themselves using their 
 #  preferred shell...
@@ -191,5 +195,5 @@ def exploreDirectory(directory):
         try:
             subprocess.Popen(["xdg-open", format(directory)])
         except OSError:
-            print("Cannot explore {0}. Platform unknown...".format(directory))
+            print(_("Cannot explore {0}. Platform unknown...").format(directory))
 

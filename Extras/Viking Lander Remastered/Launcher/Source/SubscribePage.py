@@ -32,6 +32,10 @@ from Miscellaneous import *
 # Assistant proxy page base class...
 from PageProxyBase import *
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
 # HTML parser for GNU Mailman response...
 class MailmanParser(HTMLParser):
 
@@ -102,7 +106,7 @@ class SubscribePageProxy(PageProxyBase):
         # Register the page with the assistant...
         self.registerPage(
             "subscribePageBox", 
-            "Subscribe to Newsletter", 
+            _("Subscribe to Newsletter"), 
             Gtk.AssistantPageType.CONFIRM, 
             True)
 
@@ -128,6 +132,7 @@ class SubscribePageProxy(PageProxyBase):
             #  however many times this code path is executed...
             subscribePageIndex = self.getAbsoluteIndex(0)
             self._assistant.set_current_page(subscribePageIndex - 1)
+            #self._assistant.stop_emission("apply")
 
     # Our page in the assistent is being constructed, but not visible yet...
     def onPrepare(self):
@@ -171,15 +176,15 @@ class SubscribePageProxy(PageProxyBase):
             # Missing one or more fields...
             if not len(fullName) or not len(email) or not len(password) \
                or not len(passwordAgain):
-                raise IOError(errno.ENOMSG, "You need to fill out the whole form.")
+                raise IOError(errno.ENOMSG, _("You need to fill out the whole form."))
 
             # Email address not valid...
             if email.find("@") is -1:
-                raise IOError(errno.ENOMSG, "Invalid email address.")
+                raise IOError(errno.ENOMSG, _("Invalid email address."))
 
             # Verify passwords match...
             if password != passwordAgain:
-                raise IOError(errno.ENOMSG, "Passwords do not match.")
+                raise IOError(errno.ENOMSG, _("Passwords do not match."))
 
             # Encode POST request parameters for GNU Mailman...
             postParameters = urllib.parse.urlencode({
@@ -201,8 +206,8 @@ class SubscribePageProxy(PageProxyBase):
                 # Raise the error...
                 raise IOError(
                     errno.ENOMSG, 
-                    "There was a problem processing your subscription request "
-                    "on the remote server. Maybe try again later. ({0})".
+                    _("There was a problem processing your subscription request "
+                    "on the remote server. Maybe try again later. ({0})").
                         format(urlStream.getcode()))
 
             # Get the mailman HTML response...
@@ -241,8 +246,8 @@ class SubscribePageProxy(PageProxyBase):
             messageDialog = Gtk.MessageDialog(
                 self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
                 Gtk.ButtonsType.OK, 
-                "There was a problem communicating with the remote server. "
-                "Please try again later.\n\n\t{0}".
+                _("There was a problem communicating with the remote server. "
+                "Please try again later.\n\n\t{0}").
                     format(exception.reason))
             messageDialog.run()
             messageDialog.destroy()

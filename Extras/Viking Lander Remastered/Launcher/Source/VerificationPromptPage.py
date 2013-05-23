@@ -26,6 +26,10 @@ import LauncherArguments
 # Assistant proxy page base class...
 from PageProxyBase import *
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
 # Class containing behaviour for the disc verification prompt page...
 class VerificationPromptPageProxy(PageProxyBase):
 
@@ -44,7 +48,7 @@ class VerificationPromptPageProxy(PageProxyBase):
         # Add the verification prompt page to the assistant...
         self.registerPage(
             "verificationPromptPageBox", 
-            "Verification Prompt", 
+            _("Verification Prompt"), 
             Gtk.AssistantPageType.CONFIRM, 
             True)
 

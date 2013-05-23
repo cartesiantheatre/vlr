@@ -27,6 +27,10 @@ import platform
 import sys
 from Miscellaneous import *
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
 # Privates...
 _arguments = None
 
@@ -38,48 +42,48 @@ def _initializeArguments():
 
     # Initialize the argument parser...
     argumentParser = argparse.ArgumentParser(
-        description="Graphical user interface for the Avaneya: Viking Lander Remastered...")
+        description=_("Graphical user interface for the Avaneya: Viking Lander Remastered..."))
     
     # Define behaviour for --data-root...
     argumentParser.add_argument("--data-root", 
         action="store", 
         default=os.path.normpath(os.path.join(_getSourceDirectory(), "../Data/")),
         dest="dataRoot", 
-        help="Override path to user interface data root.")
+        help=_("Override path to user interface data root."))
 
     # Define behaviour for --mission-data-root...
     argumentParser.add_argument("--mission-data-root", 
         action="store", 
         default=os.path.normpath(os.path.join(_getSourceDirectory(), "../Mission Data/")),
         dest="missionDataRoot", 
-        help="Override path to Viking lander mission data root.")
+        help=_("Override path to Viking lander mission data root."))
 
     # Define behaviour for --no-splash...
     argumentParser.add_argument("--no-splash", 
         action="store_true", 
         dest="noSplash", 
-        help="Do not show the splash and opening video.", 
+        help=_("Do not show the splash and opening video."), 
         default=False)
 
     # Define behaviour for --no-music...
     argumentParser.add_argument("--no-background-music", 
         action="store_true", 
         dest="noBackgroundMusic", 
-        help="Do not play background music.", 
+        help=_("Do not play background music."), 
         default=False)
 
     # Define behaviour for --version...
     argumentParser.add_argument("--version", 
         action="version", 
         version=print(getLongVersionString()),
-        help="Display application version.")
+        help=_("Display application version."))
 
     # Define behaviour for --viking-extractor-bin...
     argumentParser.add_argument("--viking-extractor-bin", 
         action="store", 
         default=_getDefaultVikingExtractorPath(),
         dest="vikingExtractorBinaryPath", 
-        help="Override path to VikingExtractor executable.")
+        help=_("Override path to VikingExtractor executable."))
 
     # Parse the command line...
     global _arguments
@@ -90,7 +94,7 @@ def _initializeArguments():
     if not os.path.isfile(extractorPath):
 
         # Show debugging info...
-        print("Warning: No executable detected... \"{0}\"".
+        print(_("Warning: No executable detected... \"{0}\"").
             format(os.path.abspath(extractorPath)))
 
         # Alert user...
@@ -99,10 +103,10 @@ def _initializeArguments():
             Gtk.ButtonsType.OK, 
             "Avaneya: Viking Lander Remastered")
         messageDialog.format_secondary_text(
-            "Unfortunately your platform is not yet supported. A required " \
-            "executable was not detected.\n\n" \
+          _("Unfortunately your platform is not yet supported. A required "
+            "executable was not detected.\n\n"
             "\tOperating System: {0}\n"
-            "\tMachine Architecture: {1}".
+            "\tMachine Architecture: {1}").
                 format(getOperatingSystem(), getMachineArchitecture()))
         messageDialog.run()
         messageDialog.destroy()

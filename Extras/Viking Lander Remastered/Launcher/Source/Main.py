@@ -23,6 +23,16 @@ import gi
 import signal
 from gi.repository import GObject, Gdk
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
+# Arguments...
+import LauncherArguments
+
+# Miscellaneous routines...
+from Miscellaneous import *
+
 # Launcher...
 from LauncherApp import LauncherApp
 
@@ -35,6 +45,11 @@ if __name__ == '__main__':
     # Initialize threading environment...
     GObject.threads_init()
     Gdk.threads_init()
+
+    # Initialize i18n...
+    gettext.textdomain("VLR");
+    gettext.bindtextdomain("VLR", os.path.join(
+            LauncherArguments.getArguments().dataRoot, "Translations"))
 
     # Start the launcher GUI...
     launcher = LauncherApp()

@@ -28,6 +28,10 @@ import LauncherArguments
 # Assistant proxy page base class...
 from PageProxyBase import *
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
 # Confirm page proxy class...
 class ConfirmPageProxy(PageProxyBase):
 
@@ -40,7 +44,7 @@ class ConfirmPageProxy(PageProxyBase):
         # Add the confirm page to the assistant...
         self.registerPage(
             "confirmPageBox",
-            "Confirmation",
+            _("Confirmation"),
             Gtk.AssistantPageType.CONFIRM,
             True)
 
@@ -79,62 +83,62 @@ class ConfirmPageProxy(PageProxyBase):
         # Recovery folder...
         recoveryFolder = self._builder.get_object("recoveryFolderChooser").get_filename()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Save to: {0}\n".format(recoveryFolder))
+            _("Save to: {0}\n").format(recoveryFolder))
 
         # Overwrite...
         active = self._builder.get_object("overwriteOutputCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Output will be overwritten: {0}\n".format(_boolToYesNo(active)))
+            _("Output will be overwritten: {0}\n").format(_boolToYesNo(active)))
         if active:
             self._commandLineInterface.append("--overwrite")
 
         # Directorize by...
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), "Directorize by...\n")
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), _("Directorize by...\n"))
         
         # ...diode band class...
         active = self._builder.get_object("directorizeBandTypeClassCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "\t...diode band class: {0}\n".format(_boolToYesNo(active)))
+            _("\t...diode band class: {0}\n").format(_boolToYesNo(active)))
         if active:
             self._commandLineInterface.append("--directorize-band-class")
 
         # ...Martian location...
         active = self._builder.get_object("directorizeLocationCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "\t...Martian location: {0}\n".format(_boolToYesNo(active)))
+            _("\t...Martian location: {0}\n").format(_boolToYesNo(active)))
         if active:
             self._commandLineInterface.append("--directorize-location")
 
         # ...Martian month...
         active = self._builder.get_object("directorizeMonthCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "\t...Martian month: {0}\n".format(_boolToYesNo(active)))
+            _("\t...Martian month: {0}\n").format(_boolToYesNo(active)))
         if active:
             self._commandLineInterface.append("--directorize-month")
 
         # ...mission solar day...
         active = self._builder.get_object("directorizeSolCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "\t...mission solar day: {0}\n".format(_boolToYesNo(active)))
+            _("\t...mission solar day: {0}\n").format(_boolToYesNo(active)))
         if active:
             self._commandLineInterface.append("--directorize-sol")
 
         # No automatic rotation...
         active = self._builder.get_object("noAutomaticRotationCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Disable automatic image component orientation: {0}\n".format(_boolToYesNo(active)))
+            _("Disable automatic image component orientation: {0}\n").format(_boolToYesNo(active)))
         if active:
             self._commandLineInterface.append("--no-auto-rotate")
 
         # No reconstruction...
         active = self._builder.get_object("noReconstructionCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Dump components without reconstruction: {0}\n".format(_boolToYesNo(active)))
+            _("Dump components without reconstruction: {0}\n").format(_boolToYesNo(active)))
         if active:
             self._commandLineInterface.append("--no-reconstruct")
 
         # Filters...
-        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), "Filters...\n")
+        confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), _("Filters...\n"))
 
         # ...band type class...
         diodeFilterComboBox = self._builder.get_object("diodeFilterComboBox")
@@ -146,7 +150,7 @@ class ConfirmPageProxy(PageProxyBase):
         commandLineValue = model.get_value(iterator, 1)
 
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "\t...diode band type class: {0}\n".format(model.get_value(iterator, 0)))
+            _("\t...diode band type class: {0}\n").format(model.get_value(iterator, 0)))
         self._commandLineInterface.append("--filter-diode={0}".format(commandLineValue))
         
         # ...lander...
@@ -160,34 +164,34 @@ class ConfirmPageProxy(PageProxyBase):
         commandLineValue = model.get_value(iterator, 1)
 
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "\t...lander: {0}\n".format(humanValue))
+            _("\t...lander: {0}\n").format(humanValue))
         self._commandLineInterface.append("--filter-lander={0}".format(commandLineValue))
 
         # Use image interlacing...
         active = self._builder.get_object("useInterlacingCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Interlace images: {0}\n".format(_boolToYesNo(active)))
+            _("Interlace images: {0}\n").format(_boolToYesNo(active)))
         if active:
             self._commandLineInterface.append("--interlace")
 
         # Generate metadata...
         active = self._builder.get_object("generateMetadataCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Generate metadata: {0}\n".format(_boolToYesNo(active)))
+            _("Generate metadata: {0}\n").format(_boolToYesNo(active)))
         if active:
             self._commandLineInterface.append("--generate-metadata")
 
         # Verbosity...
         active = self._builder.get_object("verbosityCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Be verbose: {0}\n".format(_boolToYesNo(active)))
+            _("Be verbose: {0}\n").format(_boolToYesNo(active)))
         if active:
             self._commandLineInterface.append("--verbose")
 
         # Multithreading...
         active = self._builder.get_object("multithreadingCheckButton").get_active()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "Use multithreading: {0}\n".format(_boolToYesNo(active)))
+            _("Use multithreading: {0}\n").format(_boolToYesNo(active)))
         if active:
             self._commandLineInterface.append("--jobs")
 
@@ -207,7 +211,7 @@ class ConfirmPageProxy(PageProxyBase):
         # Display the full command line in the confirmation summary window...
         commandLine = " ".join(self._commandLineInterface)
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            "VikingExtractor arguments: {0}\n".format(commandLine))
+            _("VikingExtractor arguments: {0}\n").format(commandLine))
 
 # Helper function takes a boolean value and converts to a yes or no string...
 def _boolToYesNo(value):
@@ -217,7 +221,7 @@ def _boolToYesNo(value):
 
     # Convert to string...
     if value is True:
-        return "Yes"
+        return _("Yes")
     else:
-        return "No"
+        return _("No")
 

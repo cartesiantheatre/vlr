@@ -35,6 +35,10 @@ import LauncherArguments
 # Assistant proxy page base class...
 from PageProxyBase import *
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
 # Class containing behaviour for the two disc verification pages...
 class VerificationProgressPageProxy(PageProxyBase):
 
@@ -51,7 +55,7 @@ class VerificationProgressPageProxy(PageProxyBase):
         # Add the verification progress page to the assistant...
         self.registerPage(
             "verificationProgressPageBox",
-            "Verification Progress",
+            _("Verification Progress"),
             Gtk.AssistantPageType.PROGRESS,
             False)
 
@@ -101,7 +105,7 @@ class VerificationProgressPageProxy(PageProxyBase):
 
         # Already running...
         if self.isVerifying():
-            print("Verification thread already running, not relaunching...")
+            print(_("Verification thread already running, not relaunching..."))
             return
 
         # Allocate and start the thread...
@@ -123,7 +127,7 @@ class VerificationProgressPageProxy(PageProxyBase):
         # Alert user...
         messageDialog = Gtk.MessageDialog(
             self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.WARNING, 
-            Gtk.ButtonsType.OK, "Disc verification was cancelled.")
+            Gtk.ButtonsType.OK, _("Disc verification was cancelled."))
         messageDialog.run()
         messageDialog.destroy()
 
@@ -142,7 +146,7 @@ class VerificationProgressPageProxy(PageProxyBase):
         if self.isVerifying():
 
             # Alert...
-            print("Stopping disc verification thread...")
+            print(_("Stopping disc verification thread..."))
 
             # Signal the thread to quit...
             self._thread.setQuit()
@@ -192,7 +196,7 @@ class VerificationThread(threading.Thread):
         
             Gdk.threads_add_idle(GLib.PRIORITY_DEFAULT,
                 self._setQuitWithError, 
-                "I was not able to check a file I require. {0}:\n\n{1}".
+                _("I was not able to check a file I require. {0}:\n\n{1}").
                     format(Error.strerror, currentFile))
             return 0
 
@@ -247,7 +251,7 @@ class VerificationThread(threading.Thread):
 
             # Alert the user...
             self._setQuitWithError(
-                "I could not locate the list of files to verify:\n\n{0}\n\n{1}".
+                _("I could not locate the list of files to verify:\n\n{0}\n\n{1}").
                     format(manifestPath, Error.strerror))
             # Terminate...
             self.quit()
@@ -290,7 +294,7 @@ class VerificationThread(threading.Thread):
     # Thread entry point...
     def run(self):
         
-        print("Launching verification thread...")
+        print(_("Launching verification thread..."))
         
         # Calculate the total file size of all files...
         for (correctHexDigest, currentFile) in self._files:
@@ -306,7 +310,7 @@ class VerificationThread(threading.Thread):
                 Gdk.threads_add_idle(
                     GLib.PRIORITY_DEFAULT,
                     self._setQuitWithError, 
-                    "I was not able to check a file I require. {0}:\n\n{1}".
+                    _("I was not able to check a file I require. {0}:\n\n{1}").
                         format(Error.strerror, currentFile))
                 
                 # Exit the thread...
@@ -333,9 +337,9 @@ class VerificationThread(threading.Thread):
                 Gdk.threads_add_idle(
                     GLib.PRIORITY_DEFAULT,
                     self._setQuitWithError, 
-                    "Your disc might be damaged. It is recommended that you "
+                    _("Your disc might be damaged. It is recommended that you "
                     "replace it before continuing. The following file appeared "
-                    "to be corrupt:\n\n<tt>{0}</tt>\n\n".format(currentFile))
+                    "to be corrupt:\n\n<tt>{0}</tt>\n\n").format(currentFile))
 
                 # Quit the thread...
                 return
@@ -350,7 +354,7 @@ class VerificationThread(threading.Thread):
         messageDialog = Gtk.MessageDialog(
             self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.INFO, 
             Gtk.ButtonsType.OK, 
-            "The disc verification completed successfully. Your disc is probably fine.")
+            _("The disc verification completed successfully. Your disc is probably fine."))
         messageDialog.run()
         messageDialog.destroy()
 
@@ -378,7 +382,7 @@ class VerificationThread(threading.Thread):
         messageDialog = Gtk.MessageDialog(
             self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
             Gtk.ButtonsType.OK, 
-            "Disc verification failed.")
+            _("Disc verification failed."))
         messageDialog.format_secondary_markup(message)
         messageDialog.set_default_response(Gtk.ResponseType.NO)
         messageDialog.run()

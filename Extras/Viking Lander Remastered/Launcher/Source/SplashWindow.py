@@ -24,6 +24,10 @@ from gi.repository import Gtk, GObject
 # Our support modules...
 import LauncherArguments
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
 # Splash window proxy class...
 class SplashWindowProxy(object):
 

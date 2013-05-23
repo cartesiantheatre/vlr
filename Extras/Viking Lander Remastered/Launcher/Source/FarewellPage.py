@@ -27,6 +27,10 @@ from Miscellaneous import *
 # Assistant proxy page base class...
 from PageProxyBase import *
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
 # Farewell page proxy class...
 class FarewellPageProxy(PageProxyBase):
 
@@ -43,7 +47,7 @@ class FarewellPageProxy(PageProxyBase):
         # Add the farewell page to the assistant...
         self.registerPage(
             "farewellPageBox", 
-            "Farewell", 
+            _("Farewell"),
             Gtk.AssistantPageType.SUMMARY, 
             True)
 

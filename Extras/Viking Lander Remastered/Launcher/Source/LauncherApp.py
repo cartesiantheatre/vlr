@@ -55,6 +55,10 @@ from FarewellPage import FarewellPageProxy
 # Miscellaneous routines...
 from Miscellaneous import *
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
 # Launcher class...
 class LauncherApp(object):
 
@@ -103,7 +107,7 @@ class LauncherApp(object):
         # For wider screens, adjust the window size to 3/4 the width...
         (monitorWidth, monitorHeight) = getMonitorWithCursorSize()
         if monitorWidth > 1024:
-            self.assistant.resize_to_geometry(monitorWidth * 3 / 4, 1)
+            self.assistant.resize_to_geometry(monitorWidth * 0.8, 1)
 
         # If the user requested no background music, then disable GStreamer...
         if LauncherArguments.getArguments().noBackgroundMusic:
@@ -179,19 +183,19 @@ class LauncherApp(object):
         try:
 
             # Beta testers...
-            aboutDialog.add_credit_section("Beta Testers", [
+            aboutDialog.add_credit_section(_("Beta Testers"), [
                 "<a href=\"mailto:adam@avaneya.com\">Adam Gornowicz</a>",
                 "<a href=\"mailto:me@jesseknudsen.com\">Jesse Knudsen</a>",
                 "<a href=\"mailto:kip@thevertigo.com\">Kip Warner</a>",
                 "<a href=\"mailto:matt@thevertigo.com\">Matthew MacLennan</a>"])
 
             # Musicians...
-            aboutDialog.add_credit_section("Musicians", [
+            aboutDialog.add_credit_section(_("Musicians"), [
                 "<a href=\"http://www.josephliau.com\">Joseph Liau</a> (studio intro)",
                 "<a href=\"https://soundcloud.com/monokle\">Monokle (Vlad Kudryavtsev)</a> (background)"])
 
             # Shouts and thanks...
-            aboutDialog.add_credit_section("Shouts / Thanks", [
+            aboutDialog.add_credit_section(_("Shouts / Thanks"), [
                 "<a href=\"mailto:adam@avaneya.com\">Adam Gornowicz</a>",
                 "<a href=\"mailto:charles.amadeus@gmail.com\">Chuck Siegal</a>",
                 "<a href=\"http://www.freedesktop.org\">freedesktop.org</a>",
@@ -201,12 +205,15 @@ class LauncherApp(object):
                 "Project Bossanova",
                 "<a href=\"mailto:randall@executiv.es\">Randall Ross</a>",
                 "<a href=\"mailto:rms@gnu.org\">Richard Stallman</a>",
-                "<a href=\"http://www.system76.com\">System76</a>",
-                "<a href=\"http://www.meetup.com/ubuntuvancouver/\">Ubuntu Vancouver</a>",
                 "<a href=\"mailto:vr@oracology.net\">Varun Ramraj</a>"])
 
+            # Studio hardware...
+            aboutDialog.add_credit_section(_("Studio Hardware"), [
+                "<a href=\"http://freedomincluded.com/\">Freedom Included</a>",
+                "<a href=\"http://www.system76.com/\">System76</a>"])
+
             # Studio software...
-            aboutDialog.add_credit_section("Studio Software", [
+            aboutDialog.add_credit_section(_("Studio Software"), [
                 "Bazaar",
                 "Blender",
                 "D-Feet",
@@ -228,7 +235,7 @@ class LauncherApp(object):
                 "Xfce"])
 
             # Dedications...
-            aboutDialog.add_credit_section("Dedications", [
+            aboutDialog.add_credit_section(_("Dedications"), [
                 "<a href=\"https://en.wikipedia.org/wiki/Ahmad_Shah_Masoud\">Ahmad Shah Massoud</a> (1953–2001)",
                 "<a href=\"https://en.wikipedia.org/wiki/David_Kelly_%28weapons_expert%29\">David Kelly</a> (1944–2003)",
                 "<a href=\"http://splittingthesky.blogspot.ca/\">Splitting the Sky</a> (1952–2013)"])
@@ -239,10 +246,10 @@ class LauncherApp(object):
             # Append a note where people can find the complete credits...
             artistsList = aboutDialog.get_artists()
             artistsList.append(
-                "\n\n"
+                _("\n\n"
                 "All of the aforementioned contributed directly to this software. For a\n"
                 "complete list of everyone who worked on the Avaneya project, including\n"
-                "on this software, please see our master <a href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits\">Credits</a> file.")
+                "on this software, please see our master <a href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits\">Credits</a> file."))
             aboutDialog.set_artists(artistsList)
 
         # Show dialog as modeless to not block...
@@ -261,7 +268,7 @@ class LauncherApp(object):
         
             # Retrieve the error and dump on the console...
             (errorMessage, debugMessage) = message.parse_error()
-            print("Error:", errorMessage, debugMessage)
+            print(_("Error:"), errorMessage, debugMessage)
 
     # Apply button clicked...
     def onApplyEvent(self, *args):
@@ -289,7 +296,7 @@ class LauncherApp(object):
         messageDialog = Gtk.MessageDialog(
             self.assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.QUESTION, 
             Gtk.ButtonsType.YES_NO, 
-            "Are you sure you'd like to quit?")
+            _("Are you sure you'd like to quit?"))
         messageDialog.set_default_response(Gtk.ResponseType.NO)
         userResponse = messageDialog.run()
         messageDialog.destroy()

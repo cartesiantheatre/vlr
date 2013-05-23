@@ -24,6 +24,10 @@ from gi.repository import Gtk
 # Assistant proxy page base class...
 from PageProxyBase import *
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
 # Select recovery page proxy class...
 class SelectRecoveryPageProxy(PageProxyBase):
 
@@ -36,7 +40,7 @@ class SelectRecoveryPageProxy(PageProxyBase):
         # Add the select recovery page to the assistant...
         self.registerPage(
             "selectRecoveryFolderPageBox",
-            "Select Recovery Folder",
+            _("Select Recovery Folder"),
             Gtk.AssistantPageType.CONTENT,
             True)
 

@@ -25,6 +25,10 @@ import os
 # Assistant proxy page base class...
 from PageProxyBase import *
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
 # Configure pages proxy class...
 class ConfigurePagesProxy(PageProxyBase):
 
@@ -37,35 +41,35 @@ class ConfigurePagesProxy(PageProxyBase):
         # Add the configure intro page to the assistant...
         self.registerPage(
             "configureIntroPageBox", 
-            "Configure Introduction", 
+            _("Configure Introduction"), 
             Gtk.AssistantPageType.CONTENT, 
             True)
 
         # Add the configure output layout page to the assistant...
         self.registerPage(
             "configureOutputLayoutPageBox", 
-            "Configure Layout", 
+            _("Configure Layout"), 
             Gtk.AssistantPageType.CONTENT, 
             True)
 
         # Add the configure recovery page to the assistant...
         self.registerPage(
             "configureRecoveryPageBox", 
-            "Configure Recovery", 
+            _("Configure Recovery"), 
             Gtk.AssistantPageType.CONTENT, 
             True)
 
         # Add the configure filters page to the assistant...
         self.registerPage(
             "configureFiltersPageBox", 
-            "Configure Filters", 
+            _("Configure Filters"), 
             Gtk.AssistantPageType.CONTENT, 
             True)
 
         # Add the configure advanced page to the assistant...
         self.registerPage(
             "configureAdvancedPageBox", 
-            "Configure Advanced", 
+            _("Configure Advanced"), 
             Gtk.AssistantPageType.CONTENT, 
             False)
 
@@ -114,14 +118,14 @@ class ConfigurePagesProxy(PageProxyBase):
         #Output/Utopia Planitia/Scorpius/Colour/778/
         annotatedPath = ""
         if directorizeLocation:
-            annotatedPath += "Location/"
+            annotatedPath += _("Location/")
         if directorizeMonth:
-            annotatedPath += "Martian Month/"
+            annotatedPath += _("Martian Month/")
         if directorizeBandType:
-            annotatedPath += "Sensor Band Type/"
+            annotatedPath += _("Sensor Band Type/")
         if directorizeSol:
-            annotatedPath += "Mission Solar Day/"
-        annotatedPath += "Photograph.png"
+            annotatedPath += _("Mission Solar Day/")
+        annotatedPath += _("Photograph.png")
 
         # Show it...
         self.examplePathLabel.set_markup(

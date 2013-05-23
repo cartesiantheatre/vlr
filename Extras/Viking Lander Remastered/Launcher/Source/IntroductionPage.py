@@ -22,6 +22,10 @@
 from gi.repository import Gtk
 import os
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
 # Arguments...
 import LauncherArguments
 
@@ -40,7 +44,7 @@ class IntroductionPageProxy(PageProxyBase):
         # Add the introduction page to the assistant...
         self.registerPage(
             "introductionPageBox",
-            "Introduction",
+            _("Introduction"),
             Gtk.AssistantPageType.INTRO,
             True)
 

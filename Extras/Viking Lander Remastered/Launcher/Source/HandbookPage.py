@@ -28,6 +28,10 @@ import os
 import errno
 import platform
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
 from Miscellaneous import *
 
 # Assistant proxy page base class...
@@ -48,7 +52,7 @@ class HandbookPageProxy(PageProxyBase):
         # Add handbook page to assistant...
         self.registerPage(
             "handbookPageBox",
-            "Download Handbook",
+            _("Download Handbook"),
             Gtk.AssistantPageType.PROGRESS,
             True)
 
@@ -95,7 +99,7 @@ class HandbookPageProxy(PageProxyBase):
 
             # Prepare a Save As file chooser dialog to save the handbook...
             dialog = Gtk.FileChooserDialog(
-                "Please choose a download location...", 
+                _("Please choose a download location..."), 
                 self._assistant,
                 Gtk.FileChooserAction.SAVE,
                 (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_SAVE_AS, Gtk.ResponseType.OK))
@@ -139,7 +143,7 @@ class HandbookPageProxy(PageProxyBase):
             # Show the download progress bar...
             self._progressBar.show()
             self._stopHandbookDownloadButton.show()
-            self._progressBar.set_text("Contacting server, please wait...")
+            self._progressBar.set_text(_("Contacting server, please wait..."))
 
             # Try to download...
             try:
@@ -170,7 +174,7 @@ class HandbookPageProxy(PageProxyBase):
                     # User clicked the stop button...
                     if self._stopDownload:
                         raise IOError(errno.ENOMSG, 
-                            "The download of the handbook was stopped.")
+                            _("The download of the handbook was stopped."))
 
                     # Fill the buffer...
                     fileBuffer = urlStream.read(blockSize)
@@ -209,7 +213,7 @@ class HandbookPageProxy(PageProxyBase):
                 messageDialog = Gtk.MessageDialog(
                     self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.QUESTION, 
                     Gtk.ButtonsType.YES_NO, 
-                    "The book downloaded successfully. Would you like to open it?")
+                    _("The book downloaded successfully. Would you like to open it?"))
                 messageDialog.set_default_response(Gtk.ResponseType.YES)
                 userResponse = messageDialog.run()
                 messageDialog.destroy()
@@ -232,8 +236,8 @@ class HandbookPageProxy(PageProxyBase):
                 messageDialog = Gtk.MessageDialog(
                     self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, 
                     Gtk.ButtonsType.OK, 
-                    "There was a problem communicating with the remote server. "
-                    "Please try again later.\n\n\t{0}".
+                    _("There was a problem communicating with the remote server. "
+                    "Please try again later.\n\n\t{0}").
                         format(exception.reason))
                 messageDialog.run()
                 messageDialog.destroy()

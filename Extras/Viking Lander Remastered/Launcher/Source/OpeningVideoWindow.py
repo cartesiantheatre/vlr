@@ -22,6 +22,10 @@
 import os
 import sys
 
+# i18n...
+import gettext
+_ = gettext.gettext
+
 # GStreamer...
 haveGStreamer = True
 try:
@@ -30,7 +34,7 @@ try:
     from gi.repository import GstVideo, Gst
     haveGStreamer = True
 except ValueError:
-    print("GStreamer >= 1.0 not found. Will not use for opening video...")
+    print(_("GStreamer >= 1.0 not found. Will not use for opening video..."))
     haveGStreamer = False
 
 # Gtk...
@@ -150,7 +154,7 @@ class OpeningVideoWindowProxy(object):
         
             # Retrieve the error and dump on the console...
             (errorMessage, debugMessage) = message.parse_error()
-            print("Error:", errorMessage, debugMessage)
+            print(_("Error:"), errorMessage, debugMessage)
 
             # Just load the rest of the application anyways...
             self.videoDone()

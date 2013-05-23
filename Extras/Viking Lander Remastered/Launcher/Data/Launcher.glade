@@ -45,6 +45,11 @@
       </object>
     </child>
   </object>
+  <object class="GtkImage" id="handbookLicenseImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">HandbookLicense.png</property>
+  </object>
   <object class="GtkBox" id="configureAdvancedPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -173,6 +178,36 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
         <property name="position">1</property>
       </packing>
     </child>
+  </object>
+  <object class="GtkListStore" id="diodeFilterListStore">
+    <columns>
+      <!-- column-name DiodeBandTypeClass -->
+      <column type="gchararray"/>
+      <!-- column-name CommandLineParameter -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">All diode band types</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">any</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Colour</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">colour</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Infrared</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">infrared</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Sun</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">sun</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Survey</col>
+        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">survey</col>
+      </row>
+    </data>
   </object>
   <object class="GtkBox" id="configureFiltersPageBox">
     <property name="visible">True</property>
@@ -403,7 +438,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
     <property name="orientation">vertical</property>
     <property name="spacing">20</property>
     <child>
-      <object class="GtkBox" id="box17">
+      <object class="GtkBox" id="box24">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
@@ -692,36 +727,6 @@ This next page will contain the output from the &lt;b&gt;VikingExtractor&lt;/b&g
       </packing>
     </child>
   </object>
-  <object class="GtkListStore" id="diodeFilterListStore">
-    <columns>
-      <!-- column-name DiodeBandTypeClass -->
-      <column type="gchararray"/>
-      <!-- column-name CommandLineParameter -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">All diode band types</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">any</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Colour</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">colour</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Infrared</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">infrared</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Sun</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">sun</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Survey</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">survey</col>
-      </row>
-    </data>
-  </object>
   <object class="GtkImage" id="exploreMissionDataButtonImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -826,11 +831,6 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
       </packing>
     </child>
   </object>
-  <object class="GtkImage" id="handbookLicenseImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">HandbookLicense.png</property>
-  </object>
   <object class="GtkBox" id="handbookPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -839,7 +839,7 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
     <property name="orientation">vertical</property>
     <property name="spacing">8</property>
     <child>
-      <object class="GtkBox" id="box6">
+      <object class="GtkBox" id="box10">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="valign">center</property>
@@ -877,7 +877,7 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="box10">
+              <object class="GtkBox" id="box23">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">20</property>
@@ -1736,7 +1736,7 @@ Would you like to verify that the data contained on your disc is not corrupted? 
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">0</property>
+        <property name="position">1</property>
       </packing>
     </child>
   </object>
