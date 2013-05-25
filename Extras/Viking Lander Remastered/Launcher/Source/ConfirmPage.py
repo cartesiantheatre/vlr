@@ -28,10 +28,6 @@ import LauncherArguments
 # Assistant proxy page base class...
 from PageProxyBase import *
 
-# i18n...
-import gettext
-_ = gettext.gettext
-
 # Confirm page proxy class...
 class ConfirmPageProxy(PageProxyBase):
 

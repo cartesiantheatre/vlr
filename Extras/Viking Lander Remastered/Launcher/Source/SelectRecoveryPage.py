@@ -24,10 +24,6 @@ from gi.repository import Gtk
 # Assistant proxy page base class...
 from PageProxyBase import *
 
-# i18n...
-import gettext
-_ = gettext.gettext
-
 # Select recovery page proxy class...
 class SelectRecoveryPageProxy(PageProxyBase):
 

@@ -37,10 +37,6 @@ import LauncherArguments
 # Assistant proxy page base class...
 from PageProxyBase import *
 
-# i18n...
-import gettext
-_ = gettext.gettext
-
 # Recovery page proxy class...
 class RecoveryPageProxy(PageProxyBase):
 

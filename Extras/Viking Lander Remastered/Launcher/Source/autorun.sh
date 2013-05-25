@@ -451,6 +451,7 @@ CheckDebInstalled()
     local Package=$1
 
     # Check if the package is installed...
+    # TODO: Fix this so it is not locale dependent...
     echo -n "Checking if $Package is installed... "
     TestInstalled=( `apt-cache policy $Package | grep "Installed:" ` )
 

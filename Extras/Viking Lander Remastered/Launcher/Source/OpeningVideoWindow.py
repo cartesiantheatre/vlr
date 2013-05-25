@@ -22,10 +22,6 @@
 import os
 import sys
 
-# i18n...
-import gettext
-_ = gettext.gettext
-
 # GStreamer...
 haveGStreamer = True
 try:

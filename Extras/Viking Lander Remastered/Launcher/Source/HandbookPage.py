@@ -28,10 +28,6 @@ import os
 import errno
 import platform
 
-# i18n...
-import gettext
-_ = gettext.gettext
-
 from Miscellaneous import *
 
 # Assistant proxy page base class...

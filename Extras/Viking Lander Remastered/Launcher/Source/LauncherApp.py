@@ -55,10 +55,6 @@ from FarewellPage import FarewellPageProxy
 # Miscellaneous routines...
 from Miscellaneous import *
 
-# i18n...
-import gettext
-_ = gettext.gettext
-
 # Launcher class...
 class LauncherApp(object):
 

@@ -25,10 +25,6 @@ import os
 # Assistant proxy page base class...
 from PageProxyBase import *
 
-# i18n...
-import gettext
-_ = gettext.gettext
-
 # Configure pages proxy class...
 class ConfigurePagesProxy(PageProxyBase):
 

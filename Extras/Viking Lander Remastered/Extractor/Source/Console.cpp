@@ -27,9 +27,10 @@
     // Our headers...
     #include "Console.h"
     
-    // System headers...
+    // Standard C++ / POSIX system headers...
     #include <iostream>
     #include <cassert>
+    #include <cstdlib>
 
 // Using the standard namespace...
 using namespace std;
@@ -39,6 +40,28 @@ Console::Console()
     : m_UseColours(true),
       m_UseCurrentFileName(true)
 {
+    // Initialize i18n...
+
+        // Select user's preferred locale according to environment variable and
+        //  check for error...
+        if(!setlocale(LC_ALL, ""))
+        {
+            // Alert and abort...
+            cout << "error: failed to set user locale" << endl;
+            exit(EXIT_FAILURE);
+        }
+
+    #if ENABLE_NLS
+
+        // Retrieve the current message domain...
+        textdomain(PACKAGE);
+
+        // Set the base directory for all translations...
+        if(!bindtextdomain(PACKAGE, LOCALEDIR))
+            exit(EXIT_FAILURE);
+
+    #endif
+
     // Initialize the channel map...
     m_ChannelMap[Error]     = new Channel(Red,     _("error: "));
     m_ChannelMap[Info]      = new Channel(Blue,    _("info: "));

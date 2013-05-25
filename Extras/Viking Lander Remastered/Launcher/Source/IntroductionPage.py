@@ -22,10 +22,6 @@
 from gi.repository import Gtk
 import os
 
-# i18n...
-import gettext
-_ = gettext.gettext
-
 # Arguments...
 import LauncherArguments
 

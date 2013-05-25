@@ -27,10 +27,6 @@ from Miscellaneous import *
 # Assistant proxy page base class...
 from PageProxyBase import *
 
-# i18n...
-import gettext
-_ = gettext.gettext
-
 # Farewell page proxy class...
 class FarewellPageProxy(PageProxyBase):
 

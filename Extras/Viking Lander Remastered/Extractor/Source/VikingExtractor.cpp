@@ -33,7 +33,7 @@
     #include "DBusInterface.h"
 #endif
     
-    // Standard C / POSIX system headers...
+    // Standard C++ / POSIX system headers...
     #include <cassert>
     #include <iostream>
     #include <string>
@@ -174,35 +174,13 @@ static void AtExitCleanup()
 int main(int ArgumentCount, char *Arguments[])
 {
     // Variables...
-    int         OptionCharacter         = '\x0';
-    int         OptionIndex             = 0;
+    int         OptionCharacter             = '\x0';
+    int         OptionIndex                 = 0;
     string      InputFileOrRootDirectory;
     string      OutputRootDirectory;
 
     // Some user options...
-    bool        VerboseConsole          = false;
-
-    // Initialize i18n...
-
-        // Select user's preferred locale according to environment variable and
-        //  check for error...
-        if(!setlocale(LC_ALL, ""))
-        {
-            // Alert and abort...
-            cout << "error: failed to set user locale" << endl;
-            exit(EXIT_FAILURE);
-        }
-
-    #if ENABLE_NLS
-
-        // Retrieve the current message domain...
-        textdomain(PACKAGE);
-
-        // Set the base directory for all translations...
-        if(!bindtextdomain(PACKAGE, LOCALEDIR))
-            exit(EXIT_FAILURE);
-
-    #endif
+    bool        VerboseConsole              = false;
 
     // Explicit instantiation of several subsystem singletons. Order matters...
     Console::CreateSingleton();

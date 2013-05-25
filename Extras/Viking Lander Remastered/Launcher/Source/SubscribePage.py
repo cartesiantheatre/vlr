@@ -32,10 +32,6 @@ from Miscellaneous import *
 # Assistant proxy page base class...
 from PageProxyBase import *
 
-# i18n...
-import gettext
-_ = gettext.gettext
-
 # HTML parser for GNU Mailman response...
 class MailmanParser(HTMLParser):
 

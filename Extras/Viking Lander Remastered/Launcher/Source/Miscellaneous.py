@@ -28,10 +28,6 @@ import subprocess
 import platform
 import sys
 
-# i18n...
-import gettext
-_ = gettext.gettext
-
 # Privates...
 _applicationName    = "Avaneya: Viking Lander Remastered DVD"
 _versionMajor       = 0

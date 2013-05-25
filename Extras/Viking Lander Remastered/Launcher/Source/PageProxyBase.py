@@ -26,10 +26,6 @@ import os
 # Arguments...
 import LauncherArguments
 
-# i18n...
-import gettext
-_ = gettext.gettext
-
 # Page pages proxy class. Common code for all assistant pages...
 class PageProxyBase(object):
 
