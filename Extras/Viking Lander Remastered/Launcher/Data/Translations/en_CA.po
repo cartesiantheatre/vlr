@@ -1,0 +1,909 @@
+# English (Canada) translation for avaneya
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the avaneya package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: avaneya\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-05-24 19:14-0700\n"
+"PO-Revision-Date: 2013-05-25 02:30+0000\n"
+"Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
+"Language-Team: English (Canada) <en_CA@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-05-25 05:35+0000\n"
+"X-Generator: Launchpad (build 16640)\n"
+
+#: ../../Source/LauncherApp.py:186
+msgid "Beta Testers"
+msgstr "Beta Testers"
+
+#: ../../Source/LauncherApp.py:193
+msgid "Musicians"
+msgstr "Musicians"
+
+#: ../../Source/LauncherApp.py:198
+msgid "Shouts / Thanks"
+msgstr "Shouts / Thanks"
+
+#: ../../Source/LauncherApp.py:211
+msgid "Studio Hardware"
+msgstr "Studio Hardware"
+
+#: ../../Source/LauncherApp.py:216
+msgid "Studio Software"
+msgstr "Studio Software"
+
+#: ../../Source/LauncherApp.py:238
+msgid "Dedications"
+msgstr "Dedications"
+
+#: ../../Source/LauncherApp.py:249
+msgid ""
+"\n"
+"\n"
+"All of the aforementioned contributed directly to this software. For a\n"
+"complete list of everyone who worked on the Avaneya project, including\n"
+"on this software, please see our master <a "
+"href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits"
+"\">Credits</a> file."
+msgstr ""
+"\n"
+"\n"
+"All of the aforementioned contributed directly to this software. For a\n"
+"complete list of everyone who worked on the Avaneya project, including\n"
+"on this software, please see our master <a "
+"href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits"
+"\">Credits</a> file."
+
+#: ../../Source/LauncherApp.py:271 ../../Source/OpeningVideoWindow.py:157
+msgid "Error:"
+msgstr "Error:"
+
+#: ../../Source/LauncherApp.py:299
+msgid "Are you sure you'd like to quit?"
+msgstr "Are you sure you'd like to quit?"
+
+#: ../../Source/IntroductionPage.py:47
+msgid "Introduction"
+msgstr "Introduction"
+
+#: ../../Source/RecoveryPage.py:60
+msgid "Recovery"
+msgstr "Recovery"
+
+#: ../../Source/RecoveryPage.py:106
+msgid "Spawned process {0}..."
+msgstr "Spawned process {0}..."
+
+#: ../../Source/RecoveryPage.py:117
+msgid "Waiting for VikingExtractor D-Bus service..."
+msgstr "Waiting for VikingExtractor D-Bus service..."
+
+#: ../../Source/RecoveryPage.py:125
+msgid "Dead session connection handle..."
+msgstr "Dead session connection handle..."
+
+#: ../../Source/RecoveryPage.py:210
+msgid "ok"
+msgstr "ok"
+
+#: ../../Source/RecoveryPage.py:223 ../../Source/RecoveryPage.py:272
+msgid "Error"
+msgstr "Error"
+
+#: ../../Source/RecoveryPage.py:225
+msgid ""
+"The VikingExtractor could not be launched. The following location was "
+"attempted:\n"
+"\n"
+"{0}"
+msgstr ""
+"The VikingExtractor could not be launched. The following location was "
+"attempted:\n"
+"\n"
+"{0}"
+
+#: ../../Source/RecoveryPage.py:241
+msgid "Are you sure you'd like to abort the recovery?"
+msgstr "Are you sure you'd like to abort the recovery?"
+
+#: ../../Source/RecoveryPage.py:263
+msgid "VikingExtractor terminated with status {0}..."
+msgstr "VikingExtractor terminated with status {0}..."
+
+#: ../../Source/RecoveryPage.py:274
+msgid "The recovery process was unsuccessful. ({0})"
+msgstr "The recovery process was unsuccessful. ({0})"
+
+#: ../../Source/SubscribePage.py:109
+msgid "Subscribe to Newsletter"
+msgstr "Subscribe to Newsletter"
+
+#: ../../Source/SubscribePage.py:179
+msgid "You need to fill out the whole form."
+msgstr "You need to fill out the whole form."
+
+#: ../../Source/SubscribePage.py:183
+msgid "Invalid email address."
+msgstr "Invalid email address."
+
+#: ../../Source/SubscribePage.py:187
+msgid "Passwords do not match."
+msgstr "Passwords do not match."
+
+#: ../../Source/SubscribePage.py:209
+msgid ""
+"There was a problem processing your subscription request on the remote "
+"server. Maybe try again later. ({0})"
+msgstr ""
+"There was a problem processing your subscription request on the remote "
+"server. Maybe try again later. ({0})"
+
+#: ../../Source/SubscribePage.py:249 ../../Source/HandbookPage.py:239
+msgid ""
+"There was a problem communicating with the remote server. Please try again "
+"later.\n"
+"\n"
+"\t{0}"
+msgstr ""
+"There was a problem communicating with the remote server. Please try again "
+"later.\n"
+"\n"
+"\t{0}"
+
+#: ../../Source/LauncherArguments.py:45
+msgid "Graphical user interface for the Avaneya: Viking Lander Remastered..."
+msgstr ""
+"Graphical user interface for the Avaneya: Viking Lander Remastered..."
+
+#: ../../Source/LauncherArguments.py:52
+msgid "Override path to user interface data root."
+msgstr "Override path to user interface data root."
+
+#: ../../Source/LauncherArguments.py:59
+msgid "Override path to Viking lander mission data root."
+msgstr "Override path to Viking lander mission data root."
+
+#: ../../Source/LauncherArguments.py:65
+msgid "Do not show the splash and opening video."
+msgstr "Do not show the splash and opening video."
+
+#: ../../Source/LauncherArguments.py:72
+msgid "Do not play background music."
+msgstr "Do not play background music."
+
+#: ../../Source/LauncherArguments.py:79
+msgid "Display application version."
+msgstr "Display application version."
+
+#: ../../Source/LauncherArguments.py:86
+msgid "Override path to VikingExtractor executable."
+msgstr "Override path to VikingExtractor executable."
+
+#: ../../Source/LauncherArguments.py:97
+msgid "Warning: No executable detected... \"{0}\""
+msgstr "Warning: No executable detected... \"{0}\""
+
+#: ../../Source/LauncherArguments.py:106
+msgid ""
+"Unfortunately your platform is not yet supported. A required executable was "
+"not detected.\n"
+"\n"
+"\tOperating System: {0}\n"
+"\tMachine Architecture: {1}"
+msgstr ""
+"Unfortunately your platform is not yet supported. A required executable was "
+"not detected.\n"
+"\n"
+"\tOperating System: {0}\n"
+"\tMachine Architecture: {1}"
+
+#: ../../Source/VerificationProgressPage.py:58
+msgid "Verification Progress"
+msgstr "Verification Progress"
+
+#: ../../Source/VerificationProgressPage.py:108
+msgid "Verification thread already running, not relaunching..."
+msgstr "Verification thread already running, not relaunching..."
+
+#: ../../Source/VerificationProgressPage.py:130
+msgid "Disc verification was cancelled."
+msgstr "Disc verification was cancelled."
+
+#: ../../Source/VerificationProgressPage.py:149
+msgid "Stopping disc verification thread..."
+msgstr "Stopping disc verification thread..."
+
+#: ../../Source/VerificationProgressPage.py:199
+#: ../../Source/VerificationProgressPage.py:313
+msgid ""
+"I was not able to check a file I require. {0}:\n"
+"\n"
+"{1}"
+msgstr ""
+"I was not able to check a file I require. {0}:\n"
+"\n"
+"{1}"
+
+#: ../../Source/VerificationProgressPage.py:254
+msgid ""
+"I could not locate the list of files to verify:\n"
+"\n"
+"{0}\n"
+"\n"
+"{1}"
+msgstr ""
+"I could not locate the list of files to verify:\n"
+"\n"
+"{0}\n"
+"\n"
+"{1}"
+
+#: ../../Source/VerificationProgressPage.py:297
+msgid "Launching verification thread..."
+msgstr "Launching verification thread..."
+
+#: ../../Source/VerificationProgressPage.py:340
+msgid ""
+"Your disc might be damaged. It is recommended that you replace it before "
+"continuing. The following file appeared to be corrupt:\n"
+"\n"
+"<tt>{0}</tt>\n"
+"\n"
+msgstr ""
+"Your disc might be damaged. It is recommended that you replace it before "
+"continuing. The following file appeared to be corrupt:\n"
+"\n"
+"<tt>{0}</tt>\n"
+"\n"
+
+#: ../../Source/VerificationProgressPage.py:357
+msgid ""
+"The disc verification completed successfully. Your disc is probably fine."
+msgstr ""
+"The disc verification completed successfully. Your disc is probably fine."
+
+#: ../../Source/VerificationProgressPage.py:385
+msgid "Disc verification failed."
+msgstr "Disc verification failed."
+
+#: ../../Source/ConfirmPage.py:47
+msgid "Confirmation"
+msgstr "Confirmation"
+
+#: ../../Source/ConfirmPage.py:86
+msgid "Save to: {0}\n"
+msgstr "Save to: {0}\n"
+
+#: ../../Source/ConfirmPage.py:91
+msgid "Output will be overwritten: {0}\n"
+msgstr "Output will be overwritten: {0}\n"
+
+#: ../../Source/ConfirmPage.py:96
+msgid "Directorize by...\n"
+msgstr "Directorize by...\n"
+
+#: ../../Source/ConfirmPage.py:101
+msgid "\t...diode band class: {0}\n"
+msgstr "\t...diode band class: {0}\n"
+
+#: ../../Source/ConfirmPage.py:108
+msgid "\t...Martian location: {0}\n"
+msgstr "\t...Martian location: {0}\n"
+
+#: ../../Source/ConfirmPage.py:115
+msgid "\t...Martian month: {0}\n"
+msgstr "\t...Martian month: {0}\n"
+
+#: ../../Source/ConfirmPage.py:122
+msgid "\t...mission solar day: {0}\n"
+msgstr "\t...mission solar day: {0}\n"
+
+#: ../../Source/ConfirmPage.py:129
+msgid "Disable automatic image component orientation: {0}\n"
+msgstr "Disable automatic image component orientation: {0}\n"
+
+#: ../../Source/ConfirmPage.py:136
+msgid "Dump components without reconstruction: {0}\n"
+msgstr "Dump components without reconstruction: {0}\n"
+
+#: ../../Source/ConfirmPage.py:141
+msgid "Filters...\n"
+msgstr "Filters...\n"
+
+#: ../../Source/ConfirmPage.py:153
+msgid "\t...diode band type class: {0}\n"
+msgstr "\t...diode band type class: {0}\n"
+
+#: ../../Source/ConfirmPage.py:167
+msgid "\t...lander: {0}\n"
+msgstr "\t...lander: {0}\n"
+
+#: ../../Source/ConfirmPage.py:173
+msgid "Interlace images: {0}\n"
+msgstr "Interlace images: {0}\n"
+
+#: ../../Source/ConfirmPage.py:180
+msgid "Generate metadata: {0}\n"
+msgstr "Generate metadata: {0}\n"
+
+#: ../../Source/ConfirmPage.py:187
+msgid "Be verbose: {0}\n"
+msgstr "Be verbose: {0}\n"
+
+#: ../../Source/ConfirmPage.py:194
+msgid "Use multithreading: {0}\n"
+msgstr "Use multithreading: {0}\n"
+
+#: ../../Source/ConfirmPage.py:214
+msgid "VikingExtractor arguments: {0}\n"
+msgstr "VikingExtractor arguments: {0}\n"
+
+#: ../../Source/ConfirmPage.py:224
+msgid "Yes"
+msgstr "Yes"
+
+#: ../../Source/ConfirmPage.py:226
+msgid "No"
+msgstr "No"
+
+#: ../../Source/FarewellPage.py:50
+msgid "Farewell"
+msgstr "Farewell"
+
+#: ../../Source/SelectRecoveryPage.py:43
+msgid "Select Recovery Folder"
+msgstr "Select Recovery Folder"
+
+#: ../../Source/OpeningVideoWindow.py:37
+msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
+msgstr "GStreamer >= 1.0 not found. Will not use for opening video..."
+
+#: ../../Source/VerificationPromptPage.py:51
+msgid "Verification Prompt"
+msgstr "Verification Prompt"
+
+#: ../../Source/HandbookPage.py:55
+msgid "Download Handbook"
+msgstr "Download Handbook"
+
+#: ../../Source/HandbookPage.py:102
+msgid "Please choose a download location..."
+msgstr "Please choose a download location..."
+
+#: ../../Source/HandbookPage.py:146
+msgid "Contacting server, please wait..."
+msgstr "Contacting server, please wait..."
+
+#: ../../Source/HandbookPage.py:177
+msgid "The download of the handbook was stopped."
+msgstr "The download of the handbook was stopped."
+
+#: ../../Source/HandbookPage.py:216
+msgid "The book downloaded successfully. Would you like to open it?"
+msgstr "The book downloaded successfully. Would you like to open it?"
+
+#: ../../Source/Miscellaneous.py:127
+msgid "Warning: NetworkManager service not found..."
+msgstr "Warning: NetworkManager service not found..."
+
+#: ../../Source/Miscellaneous.py:145
+msgid ""
+"You need a working internet connection in order to do this. You don't appear "
+"to have one right now."
+msgstr ""
+"You need a working internet connection in order to do this. You don't appear "
+"to have one right now."
+
+#: ../../Source/Miscellaneous.py:174
+msgid "Cannot launch {0}. Platform unknown..."
+msgstr "Cannot launch {0}. Platform unknown..."
+
+#: ../../Source/Miscellaneous.py:198
+msgid "Cannot explore {0}. Platform unknown..."
+msgstr "Cannot explore {0}. Platform unknown..."
+
+#: ../../Source/ConfigurePages.py:44
+msgid "Configure Introduction"
+msgstr "Configure Introduction"
+
+#: ../../Source/ConfigurePages.py:51
+msgid "Configure Layout"
+msgstr "Configure Layout"
+
+#: ../../Source/ConfigurePages.py:58
+msgid "Configure Recovery"
+msgstr "Configure Recovery"
+
+#: ../../Source/ConfigurePages.py:65
+msgid "Configure Filters"
+msgstr "Configure Filters"
+
+#: ../../Source/ConfigurePages.py:72
+msgid "Configure Advanced"
+msgstr "Configure Advanced"
+
+#: ../../Source/ConfigurePages.py:121
+msgid "Location/"
+msgstr "Location/"
+
+#: ../../Source/ConfigurePages.py:123
+msgid "Martian Month/"
+msgstr "Martian Month/"
+
+#: ../../Source/ConfigurePages.py:125
+msgid "Sensor Band Type/"
+msgstr "Sensor Band Type/"
+
+#: ../../Source/ConfigurePages.py:127
+msgid "Mission Solar Day/"
+msgstr "Mission Solar Day/"
+
+#: ../../Source/ConfigurePages.py:128
+msgid "Photograph.png"
+msgstr "Photograph.png"
+
+#: ../Launcher.glade:9
+msgid ""
+"Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>."
+msgstr ""
+"Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>."
+
+#: ../Launcher.glade:11
+msgid "Avaneya Website"
+msgstr "Avaneya Website"
+
+#: ../Launcher.glade:79
+msgid ""
+"These options configure some advanced VikingExtractor features. If you are "
+"unsure of any of them, just leave them set at their defaults.\n"
+"\n"
+"If you are unsure about any option, just <b>hover</b> your mouse over it for "
+"an explanation. The default configuration is recommended."
+msgstr ""
+"These options configure some advanced VikingExtractor features. If you are "
+"unsure of any of them, just leave them set at their defaults.\n"
+"\n"
+"If you are unsure about any option, just <b>hover</b> your mouse over it for "
+"an explanation. The default configuration is recommended."
+
+#: ../Launcher.glade:109
+msgid "Use image interlacing"
+msgstr "Use image interlacing"
+
+#: ../Launcher.glade:114
+msgid ""
+"The recovered images are encoded in a lossless compressed PNG format for "
+"maximum quality and versatility. If you&apos;d like them to use interlacing, "
+"select this. Interlacing is a method of allowing images to incrementally "
+"load, beginning from a lower resolution to its highest one. The images are "
+"typically slightly larger, but they are useful for streaming on slower "
+"network connections."
+msgstr ""
+"The recovered images are encoded in a lossless compressed PNG format for "
+"maximum quality and versatility. If you&apos;d like them to use interlacing, "
+"select this. Interlacing is a method of allowing images to incrementally "
+"load, beginning from a lower resolution to its highest one. The images are "
+"typically slightly larger, but they are useful for streaming on slower "
+"network connections."
+
+#: ../Launcher.glade:126
+msgid "Generate metadata"
+msgstr "Generate metadata"
+
+#: ../Launcher.glade:131
+msgid ""
+"Whenever a colour image is being recovered, this option will write out a "
+"machine generated text file containing a bunch of image metadata, such as "
+"the source magnetic tape, recovery heuristics used, and so on, of each of "
+"the image bands used to reconstruct the final colour image."
+msgstr ""
+"Whenever a colour image is being recovered, this option will write out a "
+"machine generated text file containing a bunch of image metadata, such as "
+"the source magnetic tape, recovery heuristics used, and so on, of each of "
+"the image bands used to reconstruct the final colour image."
+
+#: ../Launcher.glade:143
+msgid "Be verbose"
+msgstr "Be verbose"
+
+#: ../Launcher.glade:148
+msgid ""
+"If this is enabled, the VikingExtractor will display significantly more "
+"information as it attempts to recover what it can."
+msgstr ""
+"If this is enabled, the VikingExtractor will display significantly more "
+"information as it attempts to recover what it can."
+
+#: ../Launcher.glade:162
+msgid "Use multithreading"
+msgstr "Use multithreading"
+
+#: ../Launcher.glade:168
+msgid ""
+"Take advantage of machines with more than one processor by using several "
+"simultaneously. Note that this feature is currently <b>not</b> supported."
+msgstr ""
+"Take advantage of machines with more than one processor by using several "
+"simultaneously. Note that this feature is currently <b>not</b> supported."
+
+#: ../Launcher.glade:239
+msgid ""
+"These configuration settings allow you to filter which specific types of "
+"data you are interested. If you leave these at their defaults, everything "
+"that can be recovered will be.\n"
+"\n"
+"If you are unsure about any option, just <b>hover</b> your mouse over it for "
+"an explanation. The default configuration is recommended."
+msgstr ""
+"These configuration settings allow you to filter which specific types of "
+"data you are interested. If you leave these at their defaults, everything "
+"that can be recovered will be.\n"
+"\n"
+"If you are unsure about any option, just <b>hover</b> your mouse over it for "
+"an explanation. The default configuration is recommended."
+
+#: ../Launcher.glade:286
+msgid ""
+"Extract from matching Viking lander diode filters. These include colour, "
+"infrared, sun, or survey. By default, all diode filters are acceptable."
+msgstr ""
+"Extract from matching Viking lander diode filters. These include colour, "
+"infrared, sun, or survey. By default, all diode filters are acceptable."
+
+#: ../Launcher.glade:311
+msgid "<b>Diode Filter:</b>"
+msgstr "<b>Diode Filter:</b>"
+
+#: ../Launcher.glade:331 ../Launcher.glade:337
+msgid ""
+"Perform an extraction of only images taken by a particular lander. Viking "
+"lander 2 touched down on <i>Utopia Planitia</i> and Viking lander 1 on "
+"<i>Chryse Planitia</i>."
+msgstr ""
+"Perform an extraction of only images taken by a particular lander. Viking "
+"lander 2 touched down on <i>Utopia Planitia</i> and Viking lander 1 on "
+"<i>Chryse Planitia</i>."
+
+#: ../Launcher.glade:369
+msgid "<b>Lander Filter:</b>"
+msgstr "<b>Lander Filter:</b>"
+
+#: ../Launcher.glade:414
+msgid ""
+"The <b>VikingExtractor</b> has many different configuration options that "
+"control how it recovers images and what it does with them. Over the next few "
+"steps we'll configure them.\n"
+"\n"
+"If you are unsure about any option, just <b>hover</b> your mouse over it for "
+"an explanation. The default configuration is recommended."
+msgstr ""
+"The <b>VikingExtractor</b> has many different configuration options that "
+"control how it recovers images and what it does with them. Over the next few "
+"steps we'll configure them.\n"
+"\n"
+"If you are unsure about any option, just <b>hover</b> your mouse over it for "
+"an explanation. The default configuration is recommended."
+
+#: ../Launcher.glade:462
+msgid ""
+"Let's start with how you'd like the recovered files <b>organized</b> in the "
+"directory you previously selected. If you select more than one method, they "
+"will be automatically nested within subfolders. \n"
+"\n"
+"If you are unsure about any option, just <b>hover</b> your mouse over it for "
+"an explanation. The default configuration is recommended."
+msgstr ""
+"Let's start with how you'd like the recovered files <b>organized</b> in the "
+"directory you previously selected. If you select more than one method, they "
+"will be automatically nested within subfolders. \n"
+"\n"
+"If you are unsure about any option, just <b>hover</b> your mouse over it for "
+"an explanation. The default configuration is recommended."
+
+#: ../Launcher.glade:492
+msgid "Organize by sensor band type"
+msgstr "Organize by sensor band type"
+
+#: ../Launcher.glade:497 ../Launcher.glade:498
+msgid ""
+"Organizes the images into subdirectories named after the sensor band type "
+"used on the lander to capture the data, such as Colour or Infrared."
+msgstr ""
+"Organizes the images into subdirectories named after the sensor band type "
+"used on the lander to capture the data, such as Colour or Infrared."
+
+#: ../Launcher.glade:510
+msgid "Organize by location on Martian surface"
+msgstr "Organize by location on Martian surface"
+
+#: ../Launcher.glade:515 ../Launcher.glade:516
+msgid ""
+"Organizes the images into subdirectories named after the physical location "
+"on the surface of Mars where they were taken. This will be either Utopia "
+"Planitia or Chryse Planitia."
+msgstr ""
+"Organizes the images into subdirectories named after the physical location "
+"on the surface of Mars where they were taken. This will be either Utopia "
+"Planitia or Chryse Planitia."
+
+#: ../Launcher.glade:530
+msgid "Organize by Martian month"
+msgstr "Organize by Martian month"
+
+#: ../Launcher.glade:535 ../Launcher.glade:536
+msgid ""
+"Organizes the images into subdirectories named after the month they were "
+"taken on. The months follow a Martian calendar, such as Gemini, Cancer, Leo, "
+"Virgo, and so on. For more information, see section 8.15.4 of the Avaneya "
+"Project Crew Handbook."
+msgstr ""
+"Organizes the images into subdirectories named after the month they were "
+"taken on. The months follow a Martian calendar, such as Gemini, Cancer, Leo, "
+"Virgo, and so on. For more information, see section 8.15.4 of the Avaneya "
+"Project Crew Handbook."
+
+#: ../Launcher.glade:548
+msgid "Organize by mission solar day"
+msgstr "Organize by mission solar day"
+
+#: ../Launcher.glade:553 ../Launcher.glade:554
+msgid ""
+"Put reconstructed images into subdirectories numbered after the solar day "
+"they were taken on, offset relative to zero. Solar day zero was the day of a "
+"given lander having touched down."
+msgstr ""
+"Put reconstructed images into subdirectories numbered after the solar day "
+"they were taken on, offset relative to zero. Solar day zero was the day of a "
+"given lander having touched down."
+
+#: ../Launcher.glade:571
+msgid "?"
+msgstr "?"
+
+#: ../Launcher.glade:608
+msgid ""
+"These options control how the VikingExtractor's image recovery works.\n"
+"\n"
+"If you are unsure about any option, just <b>hover</b> your mouse over it for "
+"an explanation. The default configuration is recommended."
+msgstr ""
+"These options control how the VikingExtractor's image recovery works.\n"
+"\n"
+"If you are unsure about any option, just <b>hover</b> your mouse over it for "
+"an explanation. The default configuration is recommended."
+
+#: ../Launcher.glade:636
+msgid "No automatic rotation"
+msgstr "No automatic rotation"
+
+#: ../Launcher.glade:641
+msgid ""
+"A given fully rendered image in the Viking Lander image archive might be "
+"scattered in different parts across many different files. Sometimes the "
+"parts are not all oriented the same way (rotated differently). The "
+"VikingExtractor's artificial intelligence will attempt to orient them all "
+"right side up before reassembling unless this option is selected. If you "
+"don't know what this is, you should probably leave it set to the default."
+msgstr ""
+"A given fully rendered image in the Viking Lander image archive might be "
+"scattered in different parts across many different files. Sometimes the "
+"parts are not all oriented the same way (rotated differently). The "
+"VikingExtractor's artificial intelligence will attempt to orient them all "
+"right side up before reassembling unless this option is selected. If you "
+"don't know what this is, you should probably leave it set to the default."
+
+#: ../Launcher.glade:653
+msgid "Do not reconstruct"
+msgstr "Do not reconstruct"
+
+#: ../Launcher.glade:658
+msgid ""
+"A given fully rendered image in the Viking Lander image archive might be "
+"scattered in different parts across many different files. If this option is "
+"selected, the VikingExtractor won't attempt to reassemble the images, but "
+"instead it will just extract and dump all constituent components (band data) "
+"as separate image files. If you don't know what this is, you should probably "
+"leave it set to the default."
+msgstr ""
+"A given fully rendered image in the Viking Lander image archive might be "
+"scattered in different parts across many different files. If this option is "
+"selected, the VikingExtractor won't attempt to reassemble the images, but "
+"instead it will just extract and dump all constituent components (band data) "
+"as separate image files. If you don't know what this is, you should probably "
+"leave it set to the default."
+
+#. This is set at runtime. Don't bother to translate.
+#: ../Launcher.glade:677
+msgid "(set at runtime)"
+msgstr "(set at runtime)"
+
+#: ../Launcher.glade:688
+msgid ""
+"The following is a summary of the configuration <b>VikingExtractor</b> will "
+"use for this session. If you would like to change anything, you can go back. "
+"Otherwise the recovery effort will begin as soon as you hit <i>Apply</i>.\n"
+"\n"
+"This next page will contain the output from the <b>VikingExtractor</b> "
+"process while it works. Don't be alarmed if you see many warnings. This is "
+"normal because some of the Viking lander data was not actual data or was too "
+"corrupted to be recoverable."
+msgstr ""
+"The following is a summary of the configuration <b>VikingExtractor</b> will "
+"use for this session. If you would like to change anything, you can go back. "
+"Otherwise the recovery effort will begin as soon as you hit <i>Apply</i>.\n"
+"\n"
+"This next page will contain the output from the <b>VikingExtractor</b> "
+"process while it works. Don't be alarmed if you see many warnings. This is "
+"normal because some of the Viking lander data was not actual data or was too "
+"corrupted to be recoverable."
+
+#: ../Launcher.glade:770
+msgid ""
+"Congratulations! The mission data forensic recovery has completed. To "
+"examine everything that you managed to recover, use the button below.\n"
+"\n"
+"We also recommend that, at your leisure, you take a look through our "
+"<i>Avaneya Project Crew Handbook</i> if you chose to download a free copy. "
+"This is a great place to learn more about the Avaneya project.\n"
+"\n"
+"On behalf of the Avaneya project crew, we hope that you enjoyed using this "
+"software. If you purchased a copy it, we would like to express our "
+"gratitude. Your support is critical to maintaining active and professional "
+"development of the Avaneya project."
+msgstr ""
+"Congratulations! The mission data forensic recovery has completed. To "
+"examine everything that you managed to recover, use the button below.\n"
+"\n"
+"We also recommend that, at your leisure, you take a look through our "
+"<i>Avaneya Project Crew Handbook</i> if you chose to download a free copy. "
+"This is a great place to learn more about the Avaneya project.\n"
+"\n"
+"On behalf of the Avaneya project crew, we hope that you enjoyed using this "
+"software. If you purchased a copy it, we would like to express our "
+"gratitude. Your support is critical to maintaining active and professional "
+"development of the Avaneya project."
+
+#: ../Launcher.glade:799
+msgid "Explore Recovered Mission Data"
+msgstr "Explore Recovered Mission Data"
+
+#: ../Launcher.glade:814
+msgid "Explore Source Code"
+msgstr "Explore Source Code"
+
+#: ../Launcher.glade:869
+msgid ""
+"The <i>Avaneya Project Crew Handbook</i> was written to address the needs of "
+"project contributors in our community. Would you like to download the latest "
+"revision? This requires a working internet connection."
+msgstr ""
+"The <i>Avaneya Project Crew Handbook</i> was written to address the needs of "
+"project contributors in our community. Would you like to download the latest "
+"revision? This requires a working internet connection."
+
+#: ../Launcher.glade:886
+msgid "Yes, download the latest copy."
+msgstr "Yes, download the latest copy."
+
+#: ../Launcher.glade:1007
+msgid "???"
+msgstr "???"
+
+#: ../Launcher.glade:1090
+msgid ""
+"This window contains the output from the VikingExtractor process while it "
+"works."
+msgstr ""
+"This window contains the output from the VikingExtractor process while it "
+"works."
+
+#: ../Launcher.glade:1121
+msgid "Please wait..."
+msgstr "Please wait..."
+
+#: ../Launcher.glade:1182
+msgid ""
+"Please select an <b>empty</b> folder below. This folder will be used to save "
+"all of the recoverable images. If the folder is not empty, its contents "
+"could be overwritten if you allow it."
+msgstr ""
+"Please select an <b>empty</b> folder below. This folder will be used to save "
+"all of the recoverable images. If the folder is not empty, its contents "
+"could be overwritten if you allow it."
+
+#: ../Launcher.glade:1209
+msgid "Select folder to store recovered images"
+msgstr "Select folder to store recovered images"
+
+#: ../Launcher.glade:1220
+msgid "Overwrite existing output files"
+msgstr "Overwrite existing output files"
+
+#: ../Launcher.glade:1224
+msgid ""
+"This will overwrite any existing output files that have the same name as the "
+"data recovered."
+msgstr ""
+"This will overwrite any existing output files that have the same name as the "
+"data recovered."
+
+#: ../Launcher.glade:1239
+msgid "Avaneya"
+msgstr "Avaneya"
+
+#: ../Launcher.glade:1291
+msgid ""
+"Please wait while your mission data's integrity is verified. You can safely "
+"stop this process at any time, if you wish."
+msgstr ""
+"Please wait while your mission data's integrity is verified. You can safely "
+"stop this process at any time, if you wish."
+
+#: ../Launcher.glade:1399
+msgid ""
+"This disc contains a substantial amount of data that the recovery software "
+"will try to examine for recoverable images. Although we have optimized the "
+"data, it is still very large and may take a long time depending on the speed "
+"of your computer.\n"
+"\n"
+"Would you like to verify that the data contained on your disc is not "
+"corrupted? We recommend that you do this at least once, or if you suspect "
+"that your disc may be damaged."
+msgstr ""
+"This disc contains a substantial amount of data that the recovery software "
+"will try to examine for recoverable images. Although we have optimized the "
+"data, it is still very large and may take a long time depending on the speed "
+"of your computer.\n"
+"\n"
+"Would you like to verify that the data contained on your disc is not "
+"corrupted? We recommend that you do this at least once, or if you suspect "
+"that your disc may be damaged."
+
+#: ../Launcher.glade:1425
+msgid "Perform DVD integrity check"
+msgstr "Perform DVD integrity check"
+
+#: ../Launcher.glade:1441
+msgid "Skip DVD integrity check"
+msgstr "Skip DVD integrity check"
+
+#: ../Launcher.glade:1506
+msgid ""
+"We have a <b>low volume</b> announcement mailing list that we use to make "
+"press releases and other public announcements. We would love to keep you in "
+"the loop. <i>We will never deliberately pass your information on to a third "
+"party.</i>"
+msgstr ""
+"We have a <b>low volume</b> announcement mailing list that we use to make "
+"press releases and other public announcements. We would love to keep you in "
+"the loop. <i>We will never deliberately pass your information on to a third "
+"party.</i>"
+
+#: ../Launcher.glade:1518
+msgid "Yes, please subscribe me."
+msgstr "Yes, please subscribe me."
+
+#: ../Launcher.glade:1570
+msgid "<b>Name:</b>"
+msgstr "<b>Name:</b>"
+
+#: ../Launcher.glade:1610
+msgid "<b>Email:</b>"
+msgstr "<b>Email:</b>"
+
+#: ../Launcher.glade:1650
+msgid "<b>Password:</b>"
+msgstr "<b>Password:</b>"
+
+#: ../Launcher.glade:1690
+msgid "<b>Password again:</b>"
+msgstr "<b>Password again:</b>"
+
+#: ../Launcher.glade:1711
+msgid "Thanks, but I think I'll pass."
+msgstr "Thanks, but I think I'll pass."
