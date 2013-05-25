@@ -133,7 +133,7 @@ force-update-gmo: check-gettext
 #  language...
 force-update-gmo-%: check-gettext
 	@language=`echo $@ | sed s/force-update-gmo-//` ; \
-	if test ! -f Translations/$$language.po ; then echo "file po/$$language.po does not exist" ; exit 1 ; fi ; \
+	if test ! -f Translations/$$language.po ; then echo "file Translations/$$language.po does not exist" ; exit 1 ; fi ; \
 	touch Translations/$$language.po ; \
 	cd Translations && $(MAKE) $(AM_MAKEFLAGS) update-gmo
 
@@ -205,6 +205,7 @@ update-po: check-gettext
 	else \
 		mv $(srcdir)/Translations/POTFILES.in.2 $(srcdir)/Translations/POTFILES.in ; \
 	fi
+#	sed --in-place $(srcdir)/Translations/$(PACKAGE).pot --expression=s/CHARSET/UTF-8/ # CHARSET warning hack
 	cd Translations && $(MAKE) $(AM_MAKEFLAGS) update-po
 
 # Actually clean all derived and maintainer files...
@@ -235,6 +236,7 @@ DISTCLEANFILES = \
 
 # List of files to clean up during clean target...
 CLEANFILES =                    \
+    Translations/*.gmo          \
     Source/VikingExtractor.h    \
     Tests/Recovery/22D180.png   \
     Tests/Recovery/22D180.txt   \

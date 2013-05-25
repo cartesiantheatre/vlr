@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: viking-extractor 0.5\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
-"POT-Creation-Date: 2013-05-23 18:27-0700\n"
+"POT-Creation-Date: 2013-05-24 18:28-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -229,7 +229,7 @@ msgid "Analyzing mission data, please wait..."
 msgstr ""
 
 #: Source/VicarImageAssembler.cpp:273
-msgid "\rstudying mission data index of "
+msgid "studying mission data index of "
 msgstr ""
 
 #: Source/VicarImageAssembler.cpp:295 Source/VicarImageAssembler.cpp:396
@@ -267,11 +267,11 @@ msgid "Attempting forensic mission data recovery..."
 msgstr ""
 
 #: Source/VicarImageAssembler.cpp:451
-msgid "\rattempting reconstruction "
+msgid "attempting reconstruction "
 msgstr ""
 
 #: Source/VicarImageAssembler.cpp:458
-msgid "\rdumping components from "
+msgid "dumping components from "
 msgstr ""
 
 #: Source/VicarImageAssembler.cpp:503

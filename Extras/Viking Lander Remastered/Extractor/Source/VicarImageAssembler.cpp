@@ -270,7 +270,7 @@ void VicarImageAssembler::Reconstruct()
             if(Options::GetInstance().GetSummarizeOnly())
             {
                 Message(Console::Summary) 
-                    << _("\rstudying mission data index of ")
+                    << "\r" << _("studying mission data index of ")
                     << ProspectiveFilesExamined << "/" << TotalProspectiveFiles 
                     << " (" << PercentageExamined << " %)";
             }
@@ -448,14 +448,14 @@ void VicarImageAssembler::Reconstruct()
                 // Trying to reconstruct...
                 if(!Options::GetInstance().GetNoReconstruct())
                     Message(Console::Summary) 
-                        << _("\rattempting reconstruction ")
+                        << "\r" << _("attempting reconstruction ")
                         << AttemptedReconstruction << "/" << m_CameraEventDictionary.size()
                         << " (" << RecoveryProgress << " %)";
                 
                 // Just dumping components...
                 else
                     Message(Console::Summary) 
-                        << _("\rdumping components from ")
+                        << "\r" << _("dumping components from ")
                         << AttemptedReconstruction << "/" << m_CameraEventDictionary.size()
                         << " (" << RecoveryProgress << " %)";
             }
