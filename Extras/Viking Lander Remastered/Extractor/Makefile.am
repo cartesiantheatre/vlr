@@ -209,24 +209,25 @@ update-po: check-gettext
 	cd Translations && $(MAKE) $(AM_MAKEFLAGS) update-po
 
 # Actually clean all derived and maintainer files...
-MAINTAINERCLEANFILES =                  \
-	$(srcdir)/build-aux/config.h.in     \
-	$(srcdir)/build-aux/config.guess    \
-	$(srcdir)/build-aux/config.rpath    \
-	$(srcdir)/build-aux/config.sub      \
-	$(srcdir)/build-aux/depcomp         \
-	$(srcdir)/build-aux/install-sh      \
-	$(srcdir)/build-aux/missing         \
-	$(srcdir)/build-aux                 \
-	$(srcdir)/ABOUT-NLS                 \
-	$(srcdir)/Source/config.h.in        \
-	$(srcdir)/aclocal.m4                \
-	$(srcdir)/config.guess              \
-	$(srcdir)/config.sub                \
-	$(srcdir)/configure                 \
-	$(srcdir)/depcomp                   \
-	$(srcdir)/install-sh                \
-	$(srcdir)/Makefile.in               \
+MAINTAINERCLEANFILES =                          \
+	$(srcdir)/build-aux/config.h.in             \
+	$(srcdir)/build-aux/config.guess            \
+	$(srcdir)/build-aux/config.rpath            \
+	$(srcdir)/build-aux/config.sub              \
+	$(srcdir)/build-aux/depcomp                 \
+	$(srcdir)/build-aux/install-sh              \
+	$(srcdir)/build-aux/missing                 \
+	$(srcdir)/build-aux                         \
+	$(srcdir)/Translations/Makevars.template    \
+	$(srcdir)/ABOUT-NLS                         \
+	$(srcdir)/Source/config.h.in                \
+	$(srcdir)/aclocal.m4                        \
+	$(srcdir)/config.guess                      \
+	$(srcdir)/config.sub                        \
+	$(srcdir)/configure                         \
+	$(srcdir)/depcomp                           \
+	$(srcdir)/install-sh                        \
+	$(srcdir)/Makefile.in                       \
 	$(srcdir)/missing
 
 # Additional files left behind during dist target that need to be cleaned...

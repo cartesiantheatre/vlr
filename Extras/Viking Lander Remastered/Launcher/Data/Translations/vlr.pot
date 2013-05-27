@@ -21,9 +21,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Viking Lander Remastered\n"
+"Project-Id-Version: Avaneya: Viking Lander Remastered\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-24 19:14-0700\n"
+"POT-Creation-Date: 2013-05-26 19:22-0700\n"
 "PO-Revision-Date: 2013-05-24 15:42-0700\n"
 "Last-Translator: Kip Warner <kip@thevertigo.com>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
@@ -33,31 +33,47 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: ../../Source/LauncherApp.py:186
+#. Set translators...
+#: ../../Source/LauncherApp.py:178
+msgid "translator-credits"
+msgstr ""
+
+#. Beta testers...
+#: ../../Source/LauncherApp.py:185
 msgid "Beta Testers"
 msgstr ""
 
-#: ../../Source/LauncherApp.py:193
+#. Musicians...
+#: ../../Source/LauncherApp.py:192
 msgid "Musicians"
 msgstr ""
 
-#: ../../Source/LauncherApp.py:198
+#. Shouts and thanks...
+#: ../../Source/LauncherApp.py:197
 msgid "Shouts / Thanks"
 msgstr ""
 
-#: ../../Source/LauncherApp.py:211
+#. Studio hardware...
+#: ../../Source/LauncherApp.py:210
 msgid "Studio Hardware"
 msgstr ""
 
-#: ../../Source/LauncherApp.py:216
+#. Studio software...
+#: ../../Source/LauncherApp.py:215
 msgid "Studio Software"
 msgstr ""
 
-#: ../../Source/LauncherApp.py:238
+#. Set translators...
+#: ../../Source/LauncherApp.py:237
+msgid "Translators"
+msgstr ""
+
+#. Dedications...
+#: ../../Source/LauncherApp.py:244
 msgid "Dedications"
 msgstr ""
 
-#: ../../Source/LauncherApp.py:249
+#: ../../Source/LauncherApp.py:255
 msgid ""
 "\n"
 "\n"
@@ -67,43 +83,243 @@ msgid ""
 "net/~avaneya/avaneya/trunk/view/head:/Credits\">Credits</a> file."
 msgstr ""
 
-#: ../../Source/LauncherApp.py:271 ../../Source/OpeningVideoWindow.py:157
+#: ../../Source/LauncherApp.py:277 ../../Source/OpeningVideoWindow.py:153
 msgid "Error:"
 msgstr ""
 
-#: ../../Source/LauncherApp.py:299
+#: ../../Source/LauncherApp.py:305
 msgid "Are you sure you'd like to quit?"
 msgstr ""
 
-#: ../../Source/IntroductionPage.py:47
+#: ../../Source/IntroductionPage.py:43
 msgid "Introduction"
 msgstr ""
 
-#: ../../Source/RecoveryPage.py:60
+#. Break up the introduction text by paragraphs to make it easier for
+#. translators...
+#: ../../Source/IntroductionPage.py:53
+msgid ""
+"Dear User,\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:54
+msgid ""
+"The <i>Avaneya: Viking Lander Remastered</i> initiative has an interesting "
+"story behind it, one which began with the <a href=\"https://www.avaneya.com"
+"\">Avaneya</a> project. Avaneya is a grass roots collaborative undertaking "
+"to produce a libre, DRM free, cerebral, science fiction game primarily "
+"targeting, albeit not exclusively limited to, users of the <a href=\"https://"
+"www.gnu.org/gnu/gnu-users-never-heard-of-gnu.html\">GNU operating system</"
+"a>. This operating system has been made popular through its various "
+"distributions, such as <a href=\"http://www.ubuntu.com\">Ubuntu</a>. "
+"Although the game is still in its infancy at the time of writing, it would "
+"be naïve to conclude that it has not endured several years worth of critical "
+"research and design already, of which, a significant consequence you have "
+"before you now.\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:56
+msgid ""
+"Avaneya will take place in the not too distant future on Mars, predominantly "
+"in a real region known now as <i><a href=\"https://en.wikipedia.org/wiki/"
+"Arcadia_planitia\">Arcadia Planitia</a></i>. This is approximately mid-"
+"latitude in the Red Planet's northern hemisphere.\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:58
+msgid ""
+"While designing Avaneya, we realized just how important getting the game "
+"experience right was to us. We needed to replicate the visual environmental "
+"conditions of the Martian environment as carefully as possible. We could do "
+"much better than simply making it red, and users appreciate an earnest "
+"effort at a sincere visual experience. As such, our artists required access "
+"to large sets of high resolution reference material for study.\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:60
+msgid ""
+"The closest relevant photographs available at present were taken in a "
+"neighbouring region near <i>Arcadia Planitia</i> called <a href=\"https://en."
+"wikipedia.org/wiki/Utopia_Planitia\"><i>Utopia Planitia</i></a> during the "
+"late 1970s by NASA's <a href=\"https://en.wikipedia.org/wiki/Viking_program"
+"\">Viking mission</a> to Mars. This region is very similar to <i>Arcadia "
+"Planitia</i> in appearance.\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:62
+msgid ""
+"In 1976 NASA successfully placed two Viking spacecraft into Martian orbit "
+"after many years of <a href=\"http://www.marsnews.com/missions/allmissions."
+"html\">failed</a> American and Russian attempts. These initial failures "
+"became unofficially known as the <i>\"Mars Curse\"</i> owing to their high "
+"number. The Viking orbiters both carried their own landers which "
+"successfully landed, one of which in the aforementioned <i>Utopia Planitia</"
+"i> region.\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:64
+msgid ""
+"The landers were capable of capturing high resolution photographs and other "
+"data from the surface of the planet, buffering data temporarily within "
+"internal magnetic tapes and then relaying it back to Earth through one of "
+"the orbiters when in position or sometimes directly over a UHF uplink "
+"whenever possible. They provided us with large sets of data without any "
+"major issue for four years before finally succumbing to a battery failure on "
+"one and a software update bug which shutdown the communication antenna on "
+"the other.\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:66
+msgid ""
+"An <a href=\"http://pds-imaging.jpl.nasa.gov/volumes/viking.html\">online "
+"archive</a> of all of the mission data was released into the public domain. "
+"However, due to the way this data was encoded and archived with the "
+"technology of the 1970s, it is unfortunately virtually impossible for the "
+"layman to find any recognizably photographic data in the archive. We "
+"contacted NASA's <a href=\"http://pds.nasa.gov/about/about.shtml\">Planetary "
+"Data System</a> responsible for the archival of planetary missions. They "
+"informed us that the data was produced <i>\"during the mission for use in "
+"operations, probably in a rather hectic working environment, and were not "
+"intended for archiving. In those pre-PDS days nobody gave much thought to "
+"archiving,\"</i> (1 June 2011).\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:68
+msgid ""
+"To find a complete colour photograph is a non-trivial exercise. At the time "
+"of writing, NASA still had <a href=\"http://nssdc.gsfc.nasa.gov/planetary/"
+"planetaryfaq.html#Viking-lander\">not released</a> the complete set of high "
+"resolution user accessible images on disc. During our communication, NASA "
+"noted that they did <i>\"not know what format they would be in or whether "
+"there is any existing software to read them. There is not a complete index "
+"of individual color images, so it would require going through the [original "
+"archive] to extract the color data from all the rest of the material that "
+"has been saved. This is beyond the purview of [Planetary Data System]. Are "
+"you interested in doing this?\"</i> (24 May 2011).\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:70
+msgid ""
+"We did not know what to do at this point, so we asked NASA if they would "
+"reconsider tackling this problem. They were better qualified and it would "
+"have been beneficial at a time of fiscal austerity which presented new "
+"challenges to public space exploration programs. We reasoned that renewed "
+"public interest in the Red Planet was beneficial, and this archive in "
+"particular would be especially useful, given that it would enable anyone to "
+"relive the original breathtaking experience that captured the world's "
+"attention. It marked the first successful moment in history that man saw "
+"Mars - not as a distant and impersonal celestial body as it had been known "
+"for centuries prior through telescopes, but as if he had actually been "
+"standing there with his own eyes. They were, after all, the first successful "
+"photographs ever taken from the surface of Mars. Nevertheless, NASA "
+"indicated that the recovery effort was unfortunately not logistically "
+"feasible at the time. <i>\"We have to prioritize, and we just don't have the "
+"resources now to restore these images,\"</i> (25 May 2011).\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:72
+msgid ""
+"We contemplated undertaking the significant challenge ourselves, but were "
+"very much intimidated. <i>\"The images were created using old hardware and "
+"software and therefore will require some digital archaeology to read now. "
+"The software was VICAR, which is <a href=\"http://www-mipl.jpl.nasa.gov/"
+"external/vicar.html\">still used</a> at the JPL Multimission Instrument "
+"Processing Lab, although I doubt the current version can read these images,"
+"\"</i> (25 May 2011). They followed up several days later noting that <i>"
+"\"modern VICAR has evolved so much that it will most likely be unable to "
+"read these old files, and I think you have demonstrated that,\"</i> (1 June "
+"2012).\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:74
+msgid ""
+"Needing the archive for our own creative purposes, yet willing to share our "
+"solution with everyone in response to a large degree of public interest, we "
+"set out to author a digital forensic archaeological tool to recover whatever "
+"we could of the landers' photographic mission data in a simple and easy to "
+"use manner. This software became known as the <i>Avaneya: Viking Lander "
+"Remastered</i>.\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:76
+msgid ""
+"True, we could have simply provided the recovered images alone, but we knew "
+"that the <i>libre</i> community, hobbyists in particular, would have found "
+"it far more intriguing to have taken part directly in their own digital "
+"forensic recovery effort. In addition, given that there has also been a "
+"public outcry for <i>libre</i> commercial gaming titles for the GNU "
+"operating system for more than a decade, we realized that our fans would "
+"understand that their support in purchasing a copy of this software on DVD "
+"from us would be critical in sustaining a project as ever wanting of high "
+"quality engineers and artists as it is in striving to minimize any reliance "
+"on charity.\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:78
+msgid ""
+"Nearly anything else you may wish to know about the Avaneya project you can "
+"find in our project bible, the <i>Avaneya Project Crew Handbook</i>. For "
+"example, there is a chapter titled <i>Viking Lander Remastered</i> which "
+"elaborates further on the technical details of this software for those who "
+"are curious. You will be given an opportunity momentarily to download a "
+"complementary copy of the latest revision of this book to enjoy at your "
+"leisure.\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:80
+msgid ""
+"On behalf of all of us, we would like to extend our gratitude for your "
+"having taken the time to support this project. Avaneya has an exciting "
+"future ahead of it. We hope that you will choose to be a part of it.\n"
+"\n"
+msgstr ""
+
+#: ../../Source/IntroductionPage.py:82
+msgid "\t<b><i>~ Avaneya Project Crew</i></b>\n"
+msgstr ""
+
+#: ../../Source/RecoveryPage.py:56
 msgid "Recovery"
 msgstr ""
 
-#: ../../Source/RecoveryPage.py:106
+#. We got the process ID, show it...
+#: ../../Source/RecoveryPage.py:102
 msgid "Spawned process {0}..."
 msgstr ""
 
-#: ../../Source/RecoveryPage.py:117
+#. Alert user...
+#: ../../Source/RecoveryPage.py:113
 msgid "Waiting for VikingExtractor D-Bus service..."
 msgstr ""
 
-#: ../../Source/RecoveryPage.py:125
+#: ../../Source/RecoveryPage.py:121
 msgid "Dead session connection handle..."
 msgstr ""
 
-#: ../../Source/RecoveryPage.py:210
+#. Done...
+#: ../../Source/RecoveryPage.py:206
 msgid "ok"
 msgstr ""
 
-#: ../../Source/RecoveryPage.py:223 ../../Source/RecoveryPage.py:272
+#: ../../Source/RecoveryPage.py:219 ../../Source/RecoveryPage.py:268
 msgid "Error"
 msgstr ""
 
-#: ../../Source/RecoveryPage.py:225
+#: ../../Source/RecoveryPage.py:221
 msgid ""
 "The VikingExtractor could not be launched. The following location was "
 "attempted:\n"
@@ -111,41 +327,41 @@ msgid ""
 "{0}"
 msgstr ""
 
-#: ../../Source/RecoveryPage.py:241
+#: ../../Source/RecoveryPage.py:237
 msgid "Are you sure you'd like to abort the recovery?"
 msgstr ""
 
-#: ../../Source/RecoveryPage.py:263
+#: ../../Source/RecoveryPage.py:259
 msgid "VikingExtractor terminated with status {0}..."
 msgstr ""
 
-#: ../../Source/RecoveryPage.py:274
+#: ../../Source/RecoveryPage.py:270
 msgid "The recovery process was unsuccessful. ({0})"
 msgstr ""
 
-#: ../../Source/SubscribePage.py:109
+#: ../../Source/SubscribePage.py:105
 msgid "Subscribe to Newsletter"
 msgstr ""
 
-#: ../../Source/SubscribePage.py:179
+#: ../../Source/SubscribePage.py:175
 msgid "You need to fill out the whole form."
 msgstr ""
 
-#: ../../Source/SubscribePage.py:183
+#: ../../Source/SubscribePage.py:179
 msgid "Invalid email address."
 msgstr ""
 
-#: ../../Source/SubscribePage.py:187
+#: ../../Source/SubscribePage.py:183
 msgid "Passwords do not match."
 msgstr ""
 
-#: ../../Source/SubscribePage.py:209
+#: ../../Source/SubscribePage.py:205
 msgid ""
 "There was a problem processing your subscription request on the remote "
 "server. Maybe try again later. ({0})"
 msgstr ""
 
-#: ../../Source/SubscribePage.py:249 ../../Source/HandbookPage.py:239
+#: ../../Source/SubscribePage.py:245 ../../Source/HandbookPage.py:235
 msgid ""
 "There was a problem communicating with the remote server. Please try again "
 "later.\n"
@@ -181,6 +397,7 @@ msgstr ""
 msgid "Override path to VikingExtractor executable."
 msgstr ""
 
+#. Show debugging info...
 #: ../../Source/LauncherArguments.py:97
 msgid "Warning: No executable detected... \"{0}\""
 msgstr ""
@@ -194,31 +411,32 @@ msgid ""
 "\tMachine Architecture: {1}"
 msgstr ""
 
-#: ../../Source/VerificationProgressPage.py:58
+#: ../../Source/VerificationProgressPage.py:54
 msgid "Verification Progress"
 msgstr ""
 
-#: ../../Source/VerificationProgressPage.py:108
+#: ../../Source/VerificationProgressPage.py:104
 msgid "Verification thread already running, not relaunching..."
 msgstr ""
 
-#: ../../Source/VerificationProgressPage.py:130
+#: ../../Source/VerificationProgressPage.py:126
 msgid "Disc verification was cancelled."
 msgstr ""
 
-#: ../../Source/VerificationProgressPage.py:149
+#. Alert...
+#: ../../Source/VerificationProgressPage.py:145
 msgid "Stopping disc verification thread..."
 msgstr ""
 
-#: ../../Source/VerificationProgressPage.py:199
-#: ../../Source/VerificationProgressPage.py:313
+#: ../../Source/VerificationProgressPage.py:195
+#: ../../Source/VerificationProgressPage.py:309
 msgid ""
 "I was not able to check a file I require. {0}:\n"
 "\n"
 "{1}"
 msgstr ""
 
-#: ../../Source/VerificationProgressPage.py:254
+#: ../../Source/VerificationProgressPage.py:250
 msgid ""
 "I could not locate the list of files to verify:\n"
 "\n"
@@ -227,11 +445,11 @@ msgid ""
 "{1}"
 msgstr ""
 
-#: ../../Source/VerificationProgressPage.py:297
+#: ../../Source/VerificationProgressPage.py:293
 msgid "Launching verification thread..."
 msgstr ""
 
-#: ../../Source/VerificationProgressPage.py:340
+#: ../../Source/VerificationProgressPage.py:336
 msgid ""
 "Your disc might be damaged. It is recommended that you replace it before "
 "continuing. The following file appeared to be corrupt:\n"
@@ -240,186 +458,188 @@ msgid ""
 "\n"
 msgstr ""
 
-#: ../../Source/VerificationProgressPage.py:357
+#: ../../Source/VerificationProgressPage.py:353
 msgid ""
 "The disc verification completed successfully. Your disc is probably fine."
 msgstr ""
 
-#: ../../Source/VerificationProgressPage.py:385
+#: ../../Source/VerificationProgressPage.py:381
 msgid "Disc verification failed."
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:47
+#: ../../Source/ConfirmPage.py:43
 msgid "Confirmation"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:86
+#: ../../Source/ConfirmPage.py:82
 msgid "Save to: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:91
+#: ../../Source/ConfirmPage.py:87
 msgid "Output will be overwritten: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:96
+#. Directorize by...
+#: ../../Source/ConfirmPage.py:92
 msgid "Directorize by...\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:101
+#: ../../Source/ConfirmPage.py:97
 msgid "\t...diode band class: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:108
+#: ../../Source/ConfirmPage.py:104
 msgid "\t...Martian location: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:115
+#: ../../Source/ConfirmPage.py:111
 msgid "\t...Martian month: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:122
+#: ../../Source/ConfirmPage.py:118
 msgid "\t...mission solar day: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:129
+#: ../../Source/ConfirmPage.py:125
 msgid "Disable automatic image component orientation: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:136
+#: ../../Source/ConfirmPage.py:132
 msgid "Dump components without reconstruction: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:141
+#. Filters...
+#: ../../Source/ConfirmPage.py:137
 msgid "Filters...\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:153
+#: ../../Source/ConfirmPage.py:149
 msgid "\t...diode band type class: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:167
+#: ../../Source/ConfirmPage.py:163
 msgid "\t...lander: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:173
+#: ../../Source/ConfirmPage.py:169
 msgid "Interlace images: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:180
+#: ../../Source/ConfirmPage.py:176
 msgid "Generate metadata: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:187
+#: ../../Source/ConfirmPage.py:183
 msgid "Be verbose: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:194
+#: ../../Source/ConfirmPage.py:190
 msgid "Use multithreading: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:214
+#: ../../Source/ConfirmPage.py:210
 msgid "VikingExtractor arguments: {0}\n"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:224
+#: ../../Source/ConfirmPage.py:220
 msgid "Yes"
 msgstr ""
 
-#: ../../Source/ConfirmPage.py:226
+#: ../../Source/ConfirmPage.py:222
 msgid "No"
 msgstr ""
 
-#: ../../Source/FarewellPage.py:50
+#: ../../Source/FarewellPage.py:46
 msgid "Farewell"
 msgstr ""
 
-#: ../../Source/SelectRecoveryPage.py:43
+#: ../../Source/SelectRecoveryPage.py:39
 msgid "Select Recovery Folder"
 msgstr ""
 
-#: ../../Source/OpeningVideoWindow.py:37
+#: ../../Source/OpeningVideoWindow.py:33
 msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
 msgstr ""
 
-#: ../../Source/VerificationPromptPage.py:51
+#: ../../Source/VerificationPromptPage.py:47
 msgid "Verification Prompt"
 msgstr ""
 
-#: ../../Source/HandbookPage.py:55
+#: ../../Source/HandbookPage.py:51
 msgid "Download Handbook"
 msgstr ""
 
-#: ../../Source/HandbookPage.py:102
+#: ../../Source/HandbookPage.py:98
 msgid "Please choose a download location..."
 msgstr ""
 
-#: ../../Source/HandbookPage.py:146
+#: ../../Source/HandbookPage.py:142
 msgid "Contacting server, please wait..."
 msgstr ""
 
-#: ../../Source/HandbookPage.py:177
+#: ../../Source/HandbookPage.py:173
 msgid "The download of the handbook was stopped."
 msgstr ""
 
-#: ../../Source/HandbookPage.py:216
+#: ../../Source/HandbookPage.py:212
 msgid "The book downloaded successfully. Would you like to open it?"
 msgstr ""
 
-#: ../../Source/Miscellaneous.py:127
+#: ../../Source/Miscellaneous.py:123
 msgid "Warning: NetworkManager service not found..."
 msgstr ""
 
-#: ../../Source/Miscellaneous.py:145
+#: ../../Source/Miscellaneous.py:141
 msgid ""
 "You need a working internet connection in order to do this. You don't appear "
 "to have one right now."
 msgstr ""
 
-#: ../../Source/Miscellaneous.py:174
+#: ../../Source/Miscellaneous.py:170
 msgid "Cannot launch {0}. Platform unknown..."
 msgstr ""
 
-#: ../../Source/Miscellaneous.py:198
+#: ../../Source/Miscellaneous.py:194
 msgid "Cannot explore {0}. Platform unknown..."
 msgstr ""
 
-#: ../../Source/ConfigurePages.py:44
+#: ../../Source/ConfigurePages.py:40
 msgid "Configure Introduction"
 msgstr ""
 
-#: ../../Source/ConfigurePages.py:51
+#: ../../Source/ConfigurePages.py:47
 msgid "Configure Layout"
 msgstr ""
 
-#: ../../Source/ConfigurePages.py:58
+#: ../../Source/ConfigurePages.py:54
 msgid "Configure Recovery"
 msgstr ""
 
-#: ../../Source/ConfigurePages.py:65
+#: ../../Source/ConfigurePages.py:61
 msgid "Configure Filters"
 msgstr ""
 
-#: ../../Source/ConfigurePages.py:72
+#: ../../Source/ConfigurePages.py:68
 msgid "Configure Advanced"
 msgstr ""
 
-#: ../../Source/ConfigurePages.py:121
+#: ../../Source/ConfigurePages.py:117
 msgid "Location/"
 msgstr ""
 
-#: ../../Source/ConfigurePages.py:123
+#: ../../Source/ConfigurePages.py:119
 msgid "Martian Month/"
 msgstr ""
 
-#: ../../Source/ConfigurePages.py:125
+#: ../../Source/ConfigurePages.py:121
 msgid "Sensor Band Type/"
 msgstr ""
 
-#: ../../Source/ConfigurePages.py:127
+#: ../../Source/ConfigurePages.py:123
 msgid "Mission Solar Day/"
 msgstr ""
 
-#: ../../Source/ConfigurePages.py:128
+#: ../../Source/ConfigurePages.py:124
 msgid "Photograph.png"
 msgstr ""
 

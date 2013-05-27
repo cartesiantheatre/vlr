@@ -174,6 +174,9 @@ class LauncherApp(object):
             "<a href=\"http://www.paul-laberge.com\">Paul Laberge</a>",
             "<a href=\"http://simonj-design.blogspot.it/\">Simon Lazzari</a>"])
 
+        # Set translators...
+        aboutDialog.set_translator_credits(_("translator-credits"))
+
         # Add custom sections if introspection for add_credit_section() isn't
         #  busted to shit on this machine...
         try:
@@ -229,6 +232,13 @@ class LauncherApp(object):
                 "Ubuntu",
                 "Vorbis",
                 "Xfce"])
+
+            # Set translators...
+            aboutDialog.add_credit_section(_("Translators"), [
+                #"<a href=\"mailto:\"></a> (Russian)",
+                "<a href=\"mailto:bruno9779@gmail.com\">Bruno Santoni</a> (Italian, Spanish)",
+                "<a href=\"mailto:jtantogo-1@yahoo.com\">Johann Tang</a> (Filipino)",
+                "<a href=\"http://www.josephliau.com\">Joseph Liau</a> (Chinese, Japanese)"])
 
             # Dedications...
             aboutDialog.add_credit_section(_("Dedications"), [

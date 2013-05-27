@@ -24,6 +24,9 @@ DATADIR = ../
 PODIR = .
 POTFILE = $(PODIR)/vlr.pot
 
+# Options for gettext...
+GETTEXT_OPTIONS = --add-comments --add-location --from-code=utf-8
+
 # List of all translation catalogues...
 POFILES = #ru.po
 
@@ -61,16 +64,16 @@ force-update-gmo-%:
 update-gmo: ${GMOFILES}
 
 # Create the .pot file..
-update-pot:
+update-po:
 	echo '' > $(PODIR)/messages.po # xgettext looks for this file
-	find $(SRCDIR) -iname "*.py" | xgettext --from-code=utf-8 --language Python --join-existing -f - 
+	find $(SRCDIR) -iname "*.py" | xgettext $(GETTEXT_OPTIONS) --language Python --join-existing -f - 
 	sed --in-place messages.po --expression=s/CHARSET/UTF-8/ # CHARSET warning hack
-	find $(DATADIR) -iname "*.glade" | xgettext --from-code=utf-8 --language Glade --join-existing -f - 
+	find $(DATADIR) -iname "*.glade" | xgettext $(GETTEXT_OPTIONS) --language Glade --join-existing -f - 
 	msgmerge --lang=en_CA --no-fuzzy-matching $(POTFILE) messages.po > new.pot
 	mv new.pot $(POTFILE)
 	rm messages.po
 
 # Directive to make to let it know that these targets don't generate filesystem 
 #  objects / products and therefore no need to check time stamps...
-.PHONY: all clean update-pot update-gmo force-update-gmo
+.PHONY: all clean update-po update-gmo force-update-gmo
 

@@ -6,26 +6,28 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-05-24 18:28-0700\n"
+"Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
+"POT-Creation-Date: 2013-05-26 19:19-0700\n"
 "PO-Revision-Date: 2013-05-25 04:17+0000\n"
 "Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
+"Language: en_CA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2013-05-26 04:57+0000\n"
 "X-Generator: Launchpad (build 16640)\n"
 
-#: Source/Console.cpp:43
+#. Initialize the channel map...
+#: Source/Console.cpp:66
 msgid "error: "
 msgstr "error: "
 
-#: Source/Console.cpp:44
+#: Source/Console.cpp:67
 msgid "info: "
 msgstr "info: "
 
-#: Source/Console.cpp:46
+#: Source/Console.cpp:69
 msgid "warning: "
 msgstr "warning: "
 
@@ -46,6 +48,7 @@ msgstr "Method %s.%s is not implemented."
 msgid "could not register service with session bus..."
 msgstr "could not register service with session bus..."
 
+#. Alert user...
 #: Source/DBusInterface.cpp:261
 msgid "registering on the session bus..."
 msgstr "registering on the session bus..."
@@ -90,6 +93,7 @@ msgstr "Unreconstructable/"
 msgid "Unknown Location/"
 msgstr "Unknown Location/"
 
+#. Set the error message and abort...
 #: Source/ReconstructableImage.cpp:216
 msgid "could not create output directory for file"
 msgstr "could not create output directory for file"
@@ -100,6 +104,7 @@ msgid ""
 msgstr ""
 "output metadata already exists, not overwriting (use --overwrite to override)"
 
+#. Just give a warning and abort...
 #: Source/ReconstructableImage.cpp:356
 msgid "couldn't save metadata"
 msgstr "couldn't save metadata"
@@ -150,6 +155,7 @@ msgstr "magnetic tape: "
 msgid "magnetic tape file ordinal: "
 msgstr "magnetic tape file ordinal: "
 
+#. Alert user if verbose mode enabled...
 #: Source/ReconstructableImage.cpp:385 Source/VicarImageBand.cpp:591
 msgid "mean pixel value: "
 msgstr "mean pixel value: "
@@ -178,6 +184,7 @@ msgstr "physical record padding: "
 msgid "phase offset required: "
 msgstr "phase offset required: "
 
+#. Show user, if requested...
 #: Source/ReconstructableImage.cpp:392 Source/VicarImageBand.cpp:935
 msgid "raw image offset: "
 msgstr "raw image offset: "
@@ -218,10 +225,12 @@ msgstr "unable to open input directory for indexing "
 msgid "could not stat "
 msgstr "could not stat "
 
+#. Alert user...
 #: Source/VicarImageAssembler.cpp:189
 msgid "indexing mission data, please wait..."
 msgstr "indexing mission data, please wait..."
 
+#. Provide a notification to the Viking Lander Launcher...
 #: Source/VicarImageAssembler.cpp:193
 msgid "Indexing mission data, please wait..."
 msgstr "Indexing mission data, please wait..."
@@ -230,6 +239,7 @@ msgstr "Indexing mission data, please wait..."
 msgid "no prospective files found"
 msgstr "no prospective files found"
 
+#. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 #: Source/VicarImageAssembler.cpp:245
 msgid "Analyzing mission data, please wait..."
 msgstr "Analyzing mission data, please wait..."
@@ -268,6 +278,7 @@ msgstr " is a new camera event, indexing"
 msgid " is a known camera event, indexing"
 msgstr " is a known camera event, indexing"
 
+#. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 #: Source/VicarImageAssembler.cpp:424
 msgid "Attempting forensic mission data recovery..."
 msgstr "Attempting forensic mission data recovery..."
@@ -280,6 +291,7 @@ msgstr "attempting reconstruction "
 msgid "dumping components from "
 msgstr "dumping components from "
 
+#. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 #: Source/VicarImageAssembler.cpp:503
 msgid "Recovery completed..."
 msgstr "Recovery completed..."
@@ -324,10 +336,12 @@ msgstr "could not guess image rotation"
 msgid "GNU Ocrad failed to initialize"
 msgstr "GNU Ocrad failed to initialize"
 
+#. Set error message...
 #: Source/VicarImageBand.cpp:423
 msgid "could not set OCR image"
 msgstr "could not set OCR image"
 
+#. Set error message...
 #: Source/VicarImageBand.cpp:440
 msgid "OCR pass failed"
 msgstr "OCR pass failed"
@@ -348,15 +362,14 @@ msgstr "file ended prematurely before raw image"
 msgid "band data extraction i/o error"
 msgstr "band data extraction i/o error"
 
+#. Be verbose...
 #: Source/VicarImageBand.cpp:767
 msgid "loading"
 msgstr "loading"
 
 #: Source/VicarImageBand.cpp:781
-msgid ""
-"empty file, probably blank magnetic tape or not received back on Earth"
-msgstr ""
-"empty file, probably blank magnetic tape or not received back on Earth"
+msgid "empty file, probably blank magnetic tape or not received back on Earth"
+msgstr "empty file, probably blank magnetic tape or not received back on Earth"
 
 #: Source/VicarImageBand.cpp:785
 msgid "too small to be interesting (< 4 KB)"
@@ -404,10 +417,13 @@ msgid ""
 msgstr ""
 "invalid logical record label possibly from out of phase physical boundary"
 
+#. It was, so rewind and carry on since there is no
+#. physical record padding...
 #: Source/VicarImageBand.cpp:912
 msgid "tangential physical record boundary detected, ignoring padding"
 msgstr "tangential physical record boundary detected, ignoring padding"
 
+#. Alert and seek...
 #: Source/VicarImageBand.cpp:921
 msgid "seeking passed "
 msgstr "seeking passed "
@@ -448,6 +464,9 @@ msgstr "expected positive image height"
 msgid "expected positive image width"
 msgstr "expected positive image width"
 
+#. Check pixel format is integral...
+#. Definitely integral
+#. Guessing integral
 #: Source/VicarImageBand.cpp:1300
 msgid "unsupported pixel format"
 msgstr "unsupported pixel format"
@@ -456,6 +475,7 @@ msgstr "unsupported pixel format"
 msgid "unsupported colour bit depth"
 msgstr "unsupported colour bit depth"
 
+#. If verbosity is set, display basic metadata...
 #: Source/VicarImageBand.cpp:1307
 msgid "basic metadata parser heuristic: "
 msgstr "basic metadata parser heuristic: "
@@ -496,26 +516,32 @@ msgstr "photosensor diode band type: "
 msgid "possible physical record padding: "
 msgstr "possible physical record padding: "
 
+#. Alert user if verbose enabled...
 #: Source/VicarImageBand.cpp:1344
 msgid "heuristics selected format 1 basic metadata parser"
 msgstr "heuristics selected format 1 basic metadata parser"
 
+#. Alert user if verbose enabled...
 #: Source/VicarImageBand.cpp:1415
 msgid "heuristics selected format 2 basic metadata parser"
 msgstr "heuristics selected format 2 basic metadata parser"
 
+#. Alert user if verbose enabled...
 #: Source/VicarImageBand.cpp:1499
 msgid "heuristics selected format 3 basic metadata parser"
 msgstr "heuristics selected format 3 basic metadata parser"
 
+#. Alert user if verbose enabled...
 #: Source/VicarImageBand.cpp:1567
 msgid "heuristics selected format 4 basic metadata parser"
 msgstr "heuristics selected format 4 basic metadata parser"
 
+#. Alert user if verbose enabled...
 #: Source/VicarImageBand.cpp:1636
 msgid "heuristics selected format 5 basic metadata parser"
 msgstr "heuristics selected format 5 basic metadata parser"
 
+#. Alert user if verbose enabled...
 #: Source/VicarImageBand.cpp:1705
 msgid "heuristics selected format 6 basic metadata parser"
 msgstr "heuristics selected format 6 basic metadata parser"
@@ -524,6 +550,7 @@ msgstr "heuristics selected format 6 basic metadata parser"
 msgid "invalid logical record label while parsing extended metadata"
 msgstr "invalid logical record label while parsing extended metadata"
 
+#. Alert user if verbose mode enabled...
 #: Source/VicarImageBand.cpp:1789
 msgid "psa directional vector: "
 msgstr "psa directional vector: "
@@ -536,6 +563,7 @@ msgstr "camera event label: "
 msgid "bad lander number"
 msgstr "bad lander number"
 
+#. Be verbose if requested...
 #: Source/VicarImageBand.cpp:1830
 msgid "lander number: "
 msgstr "lander number: "
@@ -544,14 +572,17 @@ msgstr "lander number: "
 msgid "filtering non-matching lander"
 msgstr "filtering non-matching lander"
 
+#. Set caller hint and return unsupported...
 #: Source/VicarImageBand.cpp:1891
 msgid "monocolour unsupported"
 msgstr "monocolour unsupported"
 
+#. Set caller hint and return unsupported...
 #: Source/VicarImageBand.cpp:1899
 msgid "unidentifiable broadband"
 msgstr "unidentifiable broadband"
 
+#. Set hint and return unknown...
 #: Source/VicarImageBand.cpp:1951
 msgid "none detected"
 msgstr "none detected"
@@ -778,30 +809,31 @@ msgstr ""
 msgid "Configured with: "
 msgstr "Configured with: "
 
-#: Source/VikingExtractor.cpp:363
+#: Source/VikingExtractor.cpp:341
 msgid "parallelization is not implemented yet, using single thread"
 msgstr "parallelization is not implemented yet, using single thread"
 
-#: Source/VikingExtractor.cpp:454
+#: Source/VikingExtractor.cpp:432
 msgid "summarize only and verbose modes cannot both be used"
 msgstr "summarize only and verbose modes cannot both be used"
 
-#: Source/VikingExtractor.cpp:466
+#: Source/VikingExtractor.cpp:444
 msgid " linked against incompatible GNU Ocrad version "
 msgstr " linked against incompatible GNU Ocrad version "
 
-#: Source/VikingExtractor.cpp:477
+#: Source/VikingExtractor.cpp:455
 msgid "GNU Ocrad needs to be at least 0.21, but got "
 msgstr "GNU Ocrad needs to be at least 0.21, but got "
 
-#: Source/VikingExtractor.cpp:493
+#. Alert, abort...
+#: Source/VikingExtractor.cpp:471
 msgid "need input file or directory, see --help"
 msgstr "need input file or directory, see --help"
 
-#: Source/VikingExtractor.cpp:506
+#: Source/VikingExtractor.cpp:484
 msgid "unknown parameter "
 msgstr "unknown parameter "
 
-#: Source/VikingExtractor.cpp:509
+#: Source/VikingExtractor.cpp:487
 msgid "), see --help"
 msgstr "), see --help"

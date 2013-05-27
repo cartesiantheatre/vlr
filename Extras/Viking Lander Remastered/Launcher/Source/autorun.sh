@@ -451,9 +451,8 @@ CheckDebInstalled()
     local Package=$1
 
     # Check if the package is installed...
-    # TODO: Fix this so it is not locale dependent...
     echo -n "Checking if $Package is installed... "
-    TestInstalled=( `apt-cache policy $Package | grep "Installed:" ` )
+    TestInstalled=( `LANGUAGE="C" apt-cache policy $Package | grep "Installed:" ` )
 
     # Installed...
     if [[ (-n "${TestInstalled}") && ("${TestInstalled[1]}" != "(none)")]]
@@ -560,6 +559,9 @@ Main()
             --auto-close \
             --no-cancel &
     ZenityProcessID=$!
+
+    # Display user's locale...
+    echo "User's locale is ${LANG} (${LANGUAGE})"
 
     # Identify the user's distro...
     IdentifyDistro
