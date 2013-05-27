@@ -25,7 +25,7 @@ PODIR = .
 POTFILE = $(PODIR)/vlr.pot
 
 # Options for gettext...
-GETTEXT_OPTIONS = --add-comments --add-location --from-code=utf-8
+GETTEXT_OPTIONS = --add-comments --no-location --from-code=utf-8
 
 # List of all translation catalogues...
 POFILES = #ru.po

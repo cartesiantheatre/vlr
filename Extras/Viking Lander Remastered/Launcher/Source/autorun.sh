@@ -231,9 +231,8 @@ IdentifyDistro()
  	readonly DistroPackageManager
 
     # Alert user of what we found...
-    echo $SymbolStatusOk
-    echo "User is running ${Distro} ${DistroCodeName}..."
-    echo "System's packages are managed by ${DistroPackageManager}..."
+    echo "${Distro} ${DistroCodeName} $SymbolStatusOk"
+    echo "Native package manager is ${DistroPackageManager}..."
 }
 
 # Lock the script to ensure no other instances are running, otherwise silently

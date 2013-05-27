@@ -169,12 +169,13 @@ class LauncherApp(object):
         
         # Set artists...
         aboutDialog.set_artists([
-            "<a href=\"mailto:jacob_vejvoda@hotmail.com\">Jacob Vejvoda</a>",
+            "<a href=\"http://www.behance.net/arsicandrija\">Andrija Arsic</a> (GNU Mailman logo)",
+            "<a href=\"mailto:jacob_vejvoda@hotmail.com\">Jacob Vejvoda</a> (UI animations)",
             "<a href=\"http://www.openclipart.org\">Open Clipart Library</a>",
-            "<a href=\"http://www.paul-laberge.com\">Paul Laberge</a>",
-            "<a href=\"http://simonj-design.blogspot.it/\">Simon Lazzari</a>"])
+            "<a href=\"http://www.paul-laberge.com\">Paul Laberge</a> (studio intro)",
+            "<a href=\"http://simonj-design.blogspot.it/\">Simon Lazzari</a> (trapsheet)"])
 
-        # Set translators...
+        # Set translators. Note to translators, put your contact info here...
         aboutDialog.set_translator_credits(_("translator-credits"))
 
         # Add custom sections if introspection for add_credit_section() isn't
@@ -184,6 +185,7 @@ class LauncherApp(object):
             # Beta testers...
             aboutDialog.add_credit_section(_("Beta Testers"), [
                 "<a href=\"mailto:adam@avaneya.com\">Adam Gornowicz</a>",
+                "<a href=\"mailto:algojervia@gmail.com\">Andreas Åberg</a>",
                 "<a href=\"mailto:me@jesseknudsen.com\">Jesse Knudsen</a>",
                 "<a href=\"mailto:kip@thevertigo.com\">Kip Warner</a>",
                 "<a href=\"mailto:matt@thevertigo.com\">Matthew MacLennan</a>"])
