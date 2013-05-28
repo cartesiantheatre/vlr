@@ -1,4 +1,4 @@
-# Spanish translation for avaneya
+# English (United Kingdom) translation for avaneya
 # Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
 # This file is distributed under the same license as the avaneya package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-05-27 00:24-0700\n"
-"PO-Revision-Date: 2013-05-26 22:21+0000\n"
-"Last-Translator: Bruno9779 <bruno9779@gmail.com>\n"
-"Language-Team: Spanish <es@li.org>\n"
+"PO-Revision-Date: 2013-05-27 11:19+0000\n"
+"Last-Translator: Anthony Harrington <untaintableangel@ubuntu.com>\n"
+"Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,475 +22,494 @@ msgid "error: "
 msgstr "error: "
 
 msgid "info: "
-msgstr ""
+msgstr "info: "
 
 msgid "warning: "
-msgstr "atención: "
+msgstr "warning: "
 
 msgid "could not emit 'Notification' signal..."
-msgstr ""
+msgstr "could not emit 'Notification' signal..."
 
 msgid "could not emit 'Progress' signal..."
-msgstr ""
+msgstr "could not emit 'Progress' signal..."
 
 #, c-format
 msgid "Method %s.%s is not implemented."
-msgstr ""
+msgstr "Method %s.%s is not implemented."
 
 msgid "could not register service with session bus..."
-msgstr ""
+msgstr "could not register service with session bus..."
 
 #. Alert user...
 msgid "registering on the session bus..."
-msgstr ""
+msgstr "registering on the session bus..."
 
 msgid "could not parse introspection XML"
-msgstr ""
+msgstr "could not parse introspection XML"
 
 msgid "could not connect with the session bus"
-msgstr ""
+msgstr "could not connect with the session bus"
 
 msgid "glib main loop quit unexpectedly..."
-msgstr ""
+msgstr "glib main loop quit unexpectedly..."
 
 msgid "invalid logical record label"
-msgstr ""
+msgstr "invalid logical record label"
 
 msgid "failed to read from input stream"
-msgstr ""
+msgstr "failed to read from input stream"
 
 msgid "unsupported diode filter class: "
-msgstr ""
+msgstr "unsupported diode filter class: "
 
 msgid "invalid lander filter"
-msgstr ""
+msgstr "invalid lander filter"
 
 msgid "cannot reconstruct image from unsupported diode band type"
-msgstr ""
+msgstr "cannot reconstruct image from unsupported diode band type"
 
 msgid "Unreconstructable/"
-msgstr ""
+msgstr "Unreconstructable/"
 
 msgid "Unknown Location/"
-msgstr ""
+msgstr "Unknown Location/"
 
 #. Set the error message and abort...
 msgid "could not create output directory for file"
-msgstr ""
+msgstr "could not create output directory for file"
 
 msgid ""
 "output metadata already exists, not overwriting (use --overwrite to override)"
 msgstr ""
+"output metadata already exists, not overwriting (use --overwrite to override)"
 
 #. Just give a warning and abort...
 msgid "couldn't save metadata"
-msgstr ""
+msgstr "couldn't save metadata"
 
 msgid ""
 "The following is a machine generated collection of metadata of each of\n"
 msgstr ""
+"The following is a machine generated collection of metadata each of\n"
 
 msgid "the image bands used to reconstruct a colour image.\n"
-msgstr ""
+msgstr "the image bands used to reconstruct a colour image.\n"
 
 msgid "basic heuristic method: "
-msgstr ""
+msgstr "basic heuristic method: "
 
 msgid "camera azimuth / elevation: "
-msgstr ""
+msgstr "camera azimuth / elevation: "
 
 msgid "camera event: "
-msgstr ""
+msgstr "camera event: "
 
 msgid "camera event solar day: "
-msgstr ""
+msgstr "camera event solar day: "
 
 msgid "diode band type: "
-msgstr ""
+msgstr "diode band type: "
 
 msgid "file size: "
-msgstr ""
+msgstr "file size: "
 
 msgid "input file: "
-msgstr ""
+msgstr "input file: "
 
 msgid "magnetic tape: "
-msgstr ""
+msgstr "magnetic tape: "
 
 msgid "magnetic tape file ordinal: "
-msgstr ""
+msgstr "magnetic tape file ordinal: "
 
 #. Alert user if verbose mode enabled...
 msgid "mean pixel value: "
-msgstr ""
+msgstr "mean pixel value: "
 
 msgid "month: "
-msgstr ""
+msgstr "month: "
 
 msgid "overlay axis present: "
-msgstr ""
+msgstr "overlay axis present: "
 
 msgid "overlay full histogram present: "
-msgstr ""
+msgstr "overlay full histogram present: "
 
 msgid "physical record size: "
-msgstr ""
+msgstr "physical record size: "
 
 msgid "physical record padding: "
-msgstr ""
+msgstr "physical record padding: "
 
 msgid "phase offset required: "
-msgstr ""
+msgstr "phase offset required: "
 
 #. Show user, if requested...
 msgid "raw image offset: "
-msgstr ""
+msgstr "raw image offset: "
 
 msgid "cannot reconstruct, dumped all bands"
-msgstr ""
+msgstr "cannot reconstruct, dumped all bands"
 
 msgid "output already exists, not overwriting (use --overwrite to override)"
-msgstr ""
+msgstr "output already exists, not overwriting (use --overwrite to override)"
 
 msgid ""
 "images for each band present, but no matching set of full histogram variants "
 "available"
 msgstr ""
+"images for each band present, but no matching set of full histogram variants "
+"available"
 
 msgid ""
 "images for each band present, but no matching set of non-overlayed variants "
 "available"
 msgstr ""
+"images for each band present, but no matching set of non-overlayed variants "
+"available"
 
 msgid "image bands not all the same size, may be missing scanlines"
-msgstr ""
+msgstr "image bands not all the same size, may be missing scanlines"
 
 msgid "unable to open input directory for indexing "
-msgstr ""
+msgstr "unable to open input directory for indexing "
 
 msgid "could not stat "
-msgstr ""
+msgstr "could not stat "
 
 #. Alert user...
 msgid "indexing mission data, please wait..."
-msgstr ""
+msgstr "indexing mission data, please wait..."
 
 #. Provide a notification to the Viking Lander Launcher...
 msgid "Indexing mission data, please wait..."
-msgstr ""
+msgstr "Indexing mission data, please wait..."
 
 msgid "no prospective files found"
-msgstr ""
+msgstr "no prospective files found"
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Analyzing mission data, please wait..."
-msgstr ""
+msgstr "Analyzing mission data, please wait..."
 
 msgid "studying mission data index of "
-msgstr ""
+msgstr "studying mission data index of "
 
 msgid ", skipping"
-msgstr ""
+msgstr ", skipping"
 
 msgid " (--ignore-bad-files to skip)"
-msgstr ""
+msgstr " (--ignore-bad-files to skip)"
 
 msgid "filtering "
-msgstr ""
+msgstr "filtering "
 
 msgid " type diode bands (--filter-diode[=type] to change)"
-msgstr ""
+msgstr " type diode bands (--filter-diode[=type] to change)"
 
 msgid "camera event doesn't identify itself, cannot index"
-msgstr ""
+msgstr "camera event doesn't identify itself, cannot index"
 
 msgid " is a new camera event, indexing"
-msgstr ""
+msgstr " is a new camera event, indexing"
 
 msgid " is a known camera event, indexing"
-msgstr ""
+msgstr " is a known camera event, indexing"
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Attempting forensic mission data recovery..."
-msgstr ""
+msgstr "Attempting forensic mission data recovery..."
 
 msgid "attempting reconstruction "
-msgstr ""
+msgstr "attempting reconstruction "
 
 msgid "dumping components from "
-msgstr ""
+msgstr "dumping components from "
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Recovery completed..."
-msgstr ""
+msgstr "Recovery completed..."
 
 msgid "successfully reconstructed "
-msgstr ""
+msgstr "successfully reconstructed "
 
 msgid " unreconstructable components dumped"
-msgstr ""
+msgstr " unreconstructable components dumped"
 
 msgid "dumped "
-msgstr ""
+msgstr "dumped "
 
 msgid " image components without reconstruction"
-msgstr ""
+msgstr " image components without reconstruction"
 
 msgid "image should be rotated 90 counterclockwise"
-msgstr ""
+msgstr "image should be rotated 90 counterclockwise"
 
 msgid "image should be rotated 180 counterclockwise"
-msgstr ""
+msgstr "image should be rotated 180 counterclockwise"
 
 msgid "image should be rotated 270 counterclockwise"
-msgstr ""
+msgstr "image should be rotated 270 counterclockwise"
 
 msgid "image does not need to be rotated"
-msgstr ""
+msgstr "image does not need to be rotated"
 
 msgid "could not guess image rotation"
-msgstr ""
+msgstr "could not guess image rotation"
 
 msgid "GNU Ocrad failed to initialize"
-msgstr ""
+msgstr "GNU Ocrad failed to initialise"
 
 #. Set error message...
 msgid "could not set OCR image"
-msgstr ""
+msgstr "could not set OCR image"
 
 #. Set error message...
 msgid "OCR pass failed"
-msgstr ""
+msgstr "OCR pass failed"
 
 msgid "input was not loaded"
-msgstr ""
+msgstr "input was not loaded"
 
 msgid "could not open input for reading"
-msgstr ""
+msgstr "could not open input for reading"
 
 msgid "file ended prematurely before raw image"
-msgstr ""
+msgstr "file ended prematurely before raw image"
 
 msgid "band data extraction i/o error"
-msgstr ""
+msgstr "band data extraction i/o error"
 
 #. Be verbose...
 msgid "loading"
-msgstr ""
+msgstr "loading"
 
 msgid ""
 "empty file, probably blank magnetic tape or not received back on Earth"
 msgstr ""
+"empty file, probably blank magnetic tape or not received back on Earth"
 
 msgid "too small to be interesting (< 4 KB)"
-msgstr ""
+msgstr "too small to be interesting (< 4 KB)"
 
 msgid "header is not intact, or not a VICAR file"
-msgstr ""
+msgstr "header is not intact, or not a VICAR file"
 
 msgid "header intact, but requires "
-msgstr ""
+msgstr "header intact, but requires "
 
 msgid " byte phase offset"
-msgstr ""
+msgstr " byte phase offset"
 
 msgid "did not originate from a Viking Lander"
-msgstr ""
+msgstr "did not originate from a Viking Lander"
 
 msgid "entering physical record "
-msgstr ""
+msgstr "entering physical record "
 
 msgid " starting at "
-msgstr ""
+msgstr " starting at "
 
 msgid "extracting logical record "
-msgstr ""
+msgstr "extracting logical record "
 
 msgid "/5 starting at "
-msgstr ""
+msgstr "/5 starting at "
 
 msgid "bad logical record terminator "
-msgstr ""
+msgstr "bad logical record terminator "
 
 msgid ""
 "invalid logical record label possibly from out of phase physical boundary"
 msgstr ""
+"invalid logical record label possibly from out of phase physical boundary"
 
 #. It was, so rewind and carry on since there is no
 #. physical record padding...
 msgid "tangential physical record boundary detected, ignoring padding"
-msgstr ""
+msgstr "tangential physical record boundary detected, ignoring padding"
 
 #. Alert and seek...
 msgid "seeking passed "
-msgstr ""
+msgstr "seeking passed "
 
 msgid " physical record padding"
-msgstr ""
+msgstr " physical record padding"
 
 msgid "unable to locate last logical record label"
-msgstr ""
+msgstr "unable to locate last logical record label"
 
 msgid "file too small to contain claimed payload "
-msgstr ""
+msgstr "file too small to contain claimed payload "
 
 msgid "internal radio/geometric calibration ("
-msgstr ""
+msgstr "internal radio/geometric calibration ("
 
 msgid "unsupported photosensor diode band type ("
-msgstr ""
+msgstr "unsupported photosensor diode band type ("
 
 msgid "exhausted basic metadata parser heuristics"
-msgstr ""
+msgstr "exhausted basic metadata parser heuristics"
 
 msgid "unsupported number of image bands"
-msgstr ""
+msgstr "unsupported number of image bands"
 
 msgid "expected positive image height"
-msgstr ""
+msgstr "expected positive image height"
 
 msgid "expected positive image width"
-msgstr ""
+msgstr "expected positive image width"
 
 #. Check pixel format is integral...
 #. Definitely integral
 #. Guessing integral
 msgid "unsupported pixel format"
-msgstr ""
+msgstr "unsupported pixel format"
 
 msgid "unsupported colour bit depth"
-msgstr ""
+msgstr "unsupported colour bit depth"
 
 #. If verbosity is set, display basic metadata...
 msgid "basic metadata parser heuristic: "
-msgstr ""
+msgstr "basic metadata parser heuristic: "
 
 msgid "bands: "
-msgstr ""
+msgstr "bands: "
 
 msgid "height: "
-msgstr ""
+msgstr "height: "
 
 msgid "width: "
-msgstr ""
+msgstr "width: "
 
 msgid "raw band data size: "
-msgstr ""
+msgstr "raw band data size: "
 
 msgid " bytes"
-msgstr ""
+msgstr " bytes"
 
 msgid "format: integral"
-msgstr ""
+msgstr "format: integral"
 
 msgid "bytes per colour: "
-msgstr ""
+msgstr "bytes per colour: "
 
 msgid "photosensor diode band type: "
-msgstr ""
+msgstr "photosensor diode band type: "
 
 msgid "possible physical record padding: "
-msgstr ""
+msgstr "possible physical record padding: "
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 1 basic metadata parser"
-msgstr ""
+msgstr "heuristics selected format 1 basic metadata parser"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 2 basic metadata parser"
-msgstr ""
+msgstr "heuristics selected format 2 basic metadata parser"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 3 basic metadata parser"
-msgstr ""
+msgstr "heuristics selected format 3 basic metadata parser"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 4 basic metadata parser"
-msgstr ""
+msgstr "heuristics selected format 4 basic metadata parser"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 5 basic metadata parser"
-msgstr ""
+msgstr "heuristics selected format 5 basic metadata parser"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 6 basic metadata parser"
-msgstr ""
+msgstr "heuristics selected format 6 basic metadata parser"
 
 msgid "invalid logical record label while parsing extended metadata"
-msgstr ""
+msgstr "invalid logical record label while parsing extended metadata"
 
 #. Alert user if verbose mode enabled...
 msgid "psa directional vector: "
-msgstr ""
+msgstr "psa directional vector: "
 
 msgid "camera event label: "
-msgstr ""
+msgstr "camera event label: "
 
 msgid "bad lander number"
-msgstr ""
+msgstr "bad lander number"
 
 #. Be verbose if requested...
 msgid "lander number: "
-msgstr ""
+msgstr "lander number: "
 
 msgid "filtering non-matching lander"
-msgstr ""
+msgstr "filtering non-matching lander"
 
 #. Set caller hint and return unsupported...
 msgid "monocolour unsupported"
-msgstr ""
+msgstr "monocolour unsupported"
 
 #. Set caller hint and return unsupported...
 msgid "unidentifiable broadband"
-msgstr ""
+msgstr "unidentifiable broadband"
 
 #. Set hint and return unknown...
 msgid "none detected"
-msgstr ""
+msgstr "none detected"
 
 msgid "filtering non-matching solar day"
-msgstr ""
+msgstr "filtering non-matching solar day"
 
 msgid "filtering non-matching camera event"
-msgstr ""
+msgstr "filtering non-matching camera event"
 
 msgid "Options:\n"
-msgstr ""
+msgstr "Options:\n"
 
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after band type class (e.g. Colour).\n"
 msgstr ""
+"                              Put reconstructed images into subdirectories\n"
+"                              named after band type class (e.g. Colour).\n"
 
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after location taken from.\n"
 msgstr ""
+"                              Put reconstructed images into subdirectories\n"
+"                              named after location taken from.\n"
 
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after Martian month taken on.\n"
 msgstr ""
+"                              Put reconstructed images into subdirectories\n"
+"                              named after Martian month taken on.\n"
 
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              numbered by camera event solar day.\n"
 msgstr ""
+"                              Put reconstructed images into subdirectories\n"
+"                              numbered by camera event solar day.\n"
 
 msgid "                              Don't write anything.\n"
-msgstr ""
+msgstr "                              Don't write anything.\n"
 
 msgid "                              Show this help.\n"
-msgstr ""
+msgstr "                              Show this help.\n"
 
 msgid ""
 "                              Don't stop on corrupt or problematic input "
 "file,\n"
 "                              but continue extraction of other files.\n"
 msgstr ""
+"                              Don't stop on corrupt or problematic input "
+"file,\n"
+"                              but continue extraction of other files.\n"
 
 msgid "                              Encode output with Adam7 interlacing\n"
-msgstr ""
+msgstr "                              Encode output with Adam7 interlacing\n"
 
 msgid ""
 "                              Number of threads to run parallelized. Only "
@@ -498,12 +517,19 @@ msgid ""
 "                              if -j is not provided, or auto if threads\n"
 "                              argument not specified.\n"
 msgstr ""
+"                              Number of threads to run parallelised. Only "
+"one\n"
+"                              if -j is not provided, or auto if threads\n"
+"                              argument not specified.\n"
 
 msgid ""
 "                              Look only for the specified matching camera "
 "event\n"
 "                              ID, such as 22A158.\n"
 msgstr ""
+"                              Look only for the specified matching camera "
+"event\n"
+"                              ID, such as 22A158.\n"
 
 msgid ""
 "                              Extract from matching supported diode filter\n"
@@ -511,31 +537,45 @@ msgid ""
 "infrared,\n"
 "                              sun, or survey.\n"
 msgstr ""
+"                              Extract from matching supported diode filter\n"
+"                              classes which are any (default), colour, "
+"infrared,\n"
+"                              sun, or survey.\n"
 
 msgid ""
 "                              Extract from specific lander only which are\n"
 "                              either (0, the default), 1, or 2.\n"
 msgstr ""
+"                              Extract from specific lander only which are\n"
+"                              either (0, the default), 1, or 2.\n"
 
 msgid ""
 "                              Look only for camera events taken on the "
 "specified\n"
 "                              solar day.\n"
 msgstr ""
+"                              Look only for camera events taken on the "
+"specified\n"
+"                              solar day.\n"
 
 msgid ""
 "                              Whenever a colour image is recovered, machine\n"
 "                              generate a text file containing various "
 "metadata.\n"
 msgstr ""
+"                              Whenever a colour image is recovered, machine\n"
+"                              generate a text file containing various "
+"metadata.\n"
 
 msgid ""
 "                              Disable VT/100 ANSI coloured terminal output.\n"
 msgstr ""
+"                              Disable VT/100 ANSI coloured terminal output.\n"
 
 msgid ""
 "                              Don't automatically rotate image as needed.\n"
 msgstr ""
+"                              Don't automatically rotate image as needed.\n"
 
 msgid ""
 "                              Don't attempt to reconstruct camera events, "
@@ -543,30 +583,40 @@ msgid ""
 "                              dump all available band data as separate "
 "images.\n"
 msgstr ""
+"                              Don't attempt to reconstruct camera events, "
+"just\n"
+"                              dump all available band data as separate "
+"images.\n"
 
 msgid "                              Overwrite any existing output files.\n"
-msgstr ""
+msgstr "                              Overwrite any existing output files.\n"
 
 msgid ""
 "                              Scan subfolders as well if input is a "
 "directory.\n"
 msgstr ""
+"                              Scan subfolders as well if input is a "
+"directory.\n"
 
 msgid ""
 "                              Show summary of progress and final results "
 "only.\n"
 msgstr ""
+"                              Show summary of progress and final results "
+"only.\n"
 
 msgid "                              Suppress all warnings and errors.\n"
-msgstr ""
+msgstr "                              Suppress all warnings and errors.\n"
 
 msgid "                              Be verbose\n"
-msgstr ""
+msgstr "                              Be verbose\n"
 
 msgid ""
 "                              Show version information\n"
 "\n"
 msgstr ""
+"                              Show version information\n"
+"\n"
 
 msgid ""
 "Converts 1970s Viking Lander era VICAR colour images to PNGs. The value of\n"
@@ -575,9 +625,14 @@ msgid ""
 "to attempt reconstruction into the provided output directory.\n"
 "\n"
 msgstr ""
+"Converts 1970s Viking Lander era VICAR colour images to PNGs. The value of\n"
+"'input' can be either a single VICAR file or a directory containing VICAR "
+"files\n"
+"to attempt reconstruction into the provided output directory.\n"
+"\n"
 
 msgid "Report bugs to "
-msgstr ""
+msgstr "Report bugs to "
 
 msgid ""
 "Copyright (C) 2010-2013 Cartesian Theatre.\n"
@@ -585,28 +640,32 @@ msgid ""
 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 "\n"
 msgstr ""
+"Copyright (C) 2010-2013 Cartesian Theatre.\n"
+"This is free software; see Copying for copying conditions. There is NO\n"
+"warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+"\n"
 
 msgid "Configured with: "
-msgstr ""
+msgstr "Configured with: "
 
 msgid "parallelization is not implemented yet, using single thread"
-msgstr ""
+msgstr "parallelisation is not implemented yet, using single thread"
 
 msgid "summarize only and verbose modes cannot both be used"
-msgstr ""
+msgstr "summarise only and verbose modes cannot both be used"
 
 msgid " linked against incompatible GNU Ocrad version "
-msgstr ""
+msgstr " linked against incompatible GNU Ocrad version "
 
 msgid "GNU Ocrad needs to be at least 0.21, but got "
-msgstr ""
+msgstr "GNU Ocrad needs to be at least 0.21, but got "
 
 #. Alert, abort...
 msgid "need input file or directory, see --help"
-msgstr ""
+msgstr "need input file or directory, see --help"
 
 msgid "unknown parameter "
-msgstr ""
+msgstr "unknown parameter "
 
 msgid "), see --help"
-msgstr ""
+msgstr "), see --help"
