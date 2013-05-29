@@ -1,4 +1,4 @@
-# Chinese (Traditional) translation for avaneya
+# Galician translation for avaneya
 # Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
 # This file is distributed under the same license as the avaneya package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-05-27 00:24-0700\n"
-"PO-Revision-Date: 2013-05-28 07:33+0000\n"
-"Last-Translator: Yong Jie Huang <yongjie989@gmail.com>\n"
-"Language-Team: Chinese (Traditional) <zh_TW@li.org>\n"
+"PO-Revision-Date: 2013-05-28 06:50+0000\n"
+"Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
+"Language-Team: Galician <gl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,206 +19,206 @@ msgstr ""
 
 #. Initialize the channel map...
 msgid "error: "
-msgstr "錯誤： "
+msgstr "erro: "
 
 msgid "info: "
-msgstr "信息： "
+msgstr "información: "
 
 msgid "warning: "
-msgstr "警告： "
+msgstr "aviso: "
 
 msgid "could not emit 'Notification' signal..."
-msgstr "不能發出'通知'訊號..."
+msgstr ""
 
 msgid "could not emit 'Progress' signal..."
-msgstr "不能發出'進度'訊號..."
+msgstr ""
 
 #, c-format
 msgid "Method %s.%s is not implemented."
-msgstr "%s.%s 方法沒有被實現。"
+msgstr ""
 
 msgid "could not register service with session bus..."
-msgstr "無法註冊會話總線(Session bus)服務..."
+msgstr ""
 
 #. Alert user...
 msgid "registering on the session bus..."
-msgstr "會話總線(Session bus)註冊中..."
+msgstr ""
 
 msgid "could not parse introspection XML"
-msgstr "無法分析introspection XML"
+msgstr ""
 
 msgid "could not connect with the session bus"
-msgstr "無法與會話總線(Session bus)進行連線"
+msgstr ""
 
 msgid "glib main loop quit unexpectedly..."
-msgstr "glib 主要的函數迴圈意外終止..."
+msgstr ""
 
 msgid "invalid logical record label"
-msgstr "無效的邏輯紀錄標籤"
+msgstr ""
 
 msgid "failed to read from input stream"
-msgstr "從輸入串流讀取失敗"
+msgstr ""
 
 msgid "unsupported diode filter class: "
-msgstr "未支援二極管過濾類別： "
+msgstr ""
 
 msgid "invalid lander filter"
-msgstr "失效的登陸者過濾"
+msgstr ""
 
 msgid "cannot reconstruct image from unsupported diode band type"
-msgstr "無法從未支援的二極管帶型重建影像"
+msgstr ""
 
 msgid "Unreconstructable/"
-msgstr "無法重建/"
+msgstr ""
 
 msgid "Unknown Location/"
-msgstr "未知的位置/"
+msgstr ""
 
 #. Set the error message and abort...
 msgid "could not create output directory for file"
-msgstr "無法建立輸出目錄給紀錄檔"
+msgstr ""
 
 msgid ""
 "output metadata already exists, not overwriting (use --overwrite to override)"
-msgstr "輸出的數據已經存在，沒有覆蓋 (使用 --overwrite去覆寫)"
+msgstr ""
 
 #. Just give a warning and abort...
 msgid "couldn't save metadata"
-msgstr "無法儲存數據"
+msgstr ""
 
 msgid ""
 "The following is a machine generated collection of metadata of each of\n"
-msgstr "以下是一個機器產生的每個數據集合\n"
+msgstr ""
 
 msgid "the image bands used to reconstruct a colour image.\n"
-msgstr "用於重建一個彩色圖像的圖像波段。\n"
+msgstr ""
 
 msgid "basic heuristic method: "
-msgstr "基本啟發式方法： "
+msgstr ""
 
 msgid "camera azimuth / elevation: "
-msgstr "相機方位角 / 仰角： "
+msgstr ""
 
 msgid "camera event: "
-msgstr "攝像機事件： "
+msgstr ""
 
 msgid "camera event solar day: "
 msgstr ""
 
 msgid "diode band type: "
-msgstr "二極管帶型 "
+msgstr ""
 
 msgid "file size: "
-msgstr "檔案大小： "
+msgstr "tamaño do ficheiro: "
 
 msgid "input file: "
-msgstr "輸入檔案： "
+msgstr "ficheiro de entrada: "
 
 msgid "magnetic tape: "
-msgstr "磁帶： "
+msgstr "fita magnética: "
 
 msgid "magnetic tape file ordinal: "
-msgstr "磁帶文件序號： "
+msgstr ""
 
 #. Alert user if verbose mode enabled...
 msgid "mean pixel value: "
-msgstr "平均像素值： "
+msgstr ""
 
 msgid "month: "
-msgstr "月： "
+msgstr "mes: "
 
 msgid "overlay axis present: "
-msgstr "覆蓋當前的坐標軸： "
+msgstr ""
 
 msgid "overlay full histogram present: "
-msgstr "覆蓋完全的當前直方圖： "
+msgstr ""
 
 msgid "physical record size: "
-msgstr "物理記錄大小： "
+msgstr "tamaño físico do rexistro: "
 
 msgid "physical record padding: "
-msgstr "物理紀錄填充： "
+msgstr ""
 
 msgid "phase offset required: "
-msgstr "相位偏移要求： "
+msgstr ""
 
 #. Show user, if requested...
 msgid "raw image offset: "
-msgstr "原始圖像偏移： "
+msgstr ""
 
 msgid "cannot reconstruct, dumped all bands"
-msgstr "不能重建，傾倒了所有波段"
+msgstr ""
 
 msgid "output already exists, not overwriting (use --overwrite to override)"
-msgstr "輸出已經存在，無法覆蓋 (使用 --overwrite參數進行覆蓋)"
+msgstr ""
 
 msgid ""
 "images for each band present, but no matching set of full histogram variants "
 "available"
-msgstr "圖像為各自波段的呈現，但是未匹配到完全的且不同的直方圖集合"
+msgstr ""
 
 msgid ""
 "images for each band present, but no matching set of non-overlayed variants "
 "available"
-msgstr "圖像為各自波段的呈現，但是未匹配到非覆蓋的集合"
+msgstr ""
 
 msgid "image bands not all the same size, may be missing scanlines"
-msgstr "圖像波段並未相同大小，也許遺失了掃描線"
+msgstr ""
 
 msgid "unable to open input directory for indexing "
-msgstr "無法打開輸入目錄索引 "
+msgstr ""
 
 msgid "could not stat "
-msgstr "無法固定 "
+msgstr ""
 
 #. Alert user...
 msgid "indexing mission data, please wait..."
-msgstr "索引任務數據，請稍候..."
+msgstr ""
 
 #. Provide a notification to the Viking Lander Launcher...
 msgid "Indexing mission data, please wait..."
-msgstr "索引任務數據，請稍候..."
+msgstr ""
 
 msgid "no prospective files found"
-msgstr "沒有發現預期的文件"
+msgstr ""
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Analyzing mission data, please wait..."
-msgstr "分析任務數據中，請稍候..."
+msgstr ""
 
 msgid "studying mission data index of "
-msgstr "學習任務數據索引 "
+msgstr ""
 
 msgid ", skipping"
-msgstr ", 跳過"
+msgstr ", omitindo"
 
 msgid " (--ignore-bad-files to skip)"
-msgstr " (使用 --ignore-bad-files 跳過)"
+msgstr ""
 
 msgid "filtering "
-msgstr "過濾 "
+msgstr ""
 
 msgid " type diode bands (--filter-diode[=type] to change)"
-msgstr " 二極管帶類型 (使用 --filter-diode[=type] 去改變)"
+msgstr ""
 
 msgid "camera event doesn't identify itself, cannot index"
-msgstr "攝像機事件不能辨識自我，無法索引"
+msgstr ""
 
 msgid " is a new camera event, indexing"
-msgstr " 是一個新的攝像機事件，索引中"
+msgstr ""
 
 msgid " is a known camera event, indexing"
-msgstr " 是一個已知的攝像機事件，索引中"
+msgstr ""
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Attempting forensic mission data recovery..."
-msgstr "嘗試辯論的任務數據恢復..."
+msgstr ""
 
 msgid "attempting reconstruction "
 msgstr ""
 
 msgid "dumping components from "
-msgstr ""
+msgstr "envorcando componentes desde "
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Recovery completed..."
@@ -231,22 +231,22 @@ msgid " unreconstructable components dumped"
 msgstr ""
 
 msgid "dumped "
-msgstr ""
+msgstr "envorcado "
 
 msgid " image components without reconstruction"
 msgstr ""
 
 msgid "image should be rotated 90 counterclockwise"
-msgstr ""
+msgstr "a imaxe ten que ser xirada 90 no sentido contrario do reloxo"
 
 msgid "image should be rotated 180 counterclockwise"
-msgstr ""
+msgstr "a imaxe ten que ser xirada 180 no sentido contrario do reloxo"
 
 msgid "image should be rotated 270 counterclockwise"
-msgstr ""
+msgstr "a imaxe ten que ser xirada 270 no sentido contrario do reloxo"
 
 msgid "image does not need to be rotated"
-msgstr ""
+msgstr "non é necesario xirar a imaxe"
 
 msgid "could not guess image rotation"
 msgstr ""
@@ -276,7 +276,7 @@ msgstr ""
 
 #. Be verbose...
 msgid "loading"
-msgstr ""
+msgstr "cargando"
 
 msgid ""
 "empty file, probably blank magnetic tape or not received back on Earth"
@@ -289,10 +289,10 @@ msgid "header is not intact, or not a VICAR file"
 msgstr ""
 
 msgid "header intact, but requires "
-msgstr ""
+msgstr "a cabeceira está intacta, mais require "
 
 msgid " byte phase offset"
-msgstr ""
+msgstr " o byte de desprazamento de fase"
 
 msgid "did not originate from a Viking Lander"
 msgstr ""
@@ -301,13 +301,13 @@ msgid "entering physical record "
 msgstr ""
 
 msgid " starting at "
-msgstr ""
+msgstr " comezando en "
 
 msgid "extracting logical record "
 msgstr ""
 
 msgid "/5 starting at "
-msgstr ""
+msgstr "/5  comezando en "
 
 msgid "bad logical record terminator "
 msgstr ""
@@ -356,35 +356,35 @@ msgstr ""
 #. Definitely integral
 #. Guessing integral
 msgid "unsupported pixel format"
-msgstr ""
+msgstr "formato de píxel non admitido"
 
 msgid "unsupported colour bit depth"
-msgstr ""
+msgstr "bit de profundidade da cor non admitido"
 
 #. If verbosity is set, display basic metadata...
 msgid "basic metadata parser heuristic: "
 msgstr ""
 
 msgid "bands: "
-msgstr ""
+msgstr "bandas: "
 
 msgid "height: "
-msgstr ""
+msgstr "alto: "
 
 msgid "width: "
-msgstr ""
+msgstr "largo: "
 
 msgid "raw band data size: "
 msgstr ""
 
 msgid " bytes"
-msgstr ""
+msgstr " bytes"
 
 msgid "format: integral"
 msgstr ""
 
 msgid "bytes per colour: "
-msgstr ""
+msgstr "bytes por cor: "
 
 msgid "photosensor diode band type: "
 msgstr ""
@@ -455,7 +455,7 @@ msgid "filtering non-matching camera event"
 msgstr ""
 
 msgid "Options:\n"
-msgstr ""
+msgstr "Opcións:\n"
 
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
@@ -577,7 +577,7 @@ msgid ""
 msgstr ""
 
 msgid "Report bugs to "
-msgstr ""
+msgstr "Informe dos fallos a "
 
 msgid ""
 "Copyright (C) 2010-2013 Cartesian Theatre.\n"
@@ -587,7 +587,7 @@ msgid ""
 msgstr ""
 
 msgid "Configured with: "
-msgstr ""
+msgstr "Configurado con: "
 
 msgid "parallelization is not implemented yet, using single thread"
 msgstr ""
@@ -606,7 +606,7 @@ msgid "need input file or directory, see --help"
 msgstr ""
 
 msgid "unknown parameter "
-msgstr ""
+msgstr "parámetro descoñecido "
 
 msgid "), see --help"
-msgstr ""
+msgstr "), vexa --help"
