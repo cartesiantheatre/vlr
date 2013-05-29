@@ -21,74 +21,15 @@
 # System imports...
 from gi.repository import Gtk
 import urllib.request
-import urllib.parse
 import urllib.error
+import json
 import errno
-from html.parser import HTMLParser
 
 # Helper functions...
 from Miscellaneous import *
 
 # Assistant proxy page base class...
 from PageProxyBase import *
-
-# HTML parser for GNU Mailman response...
-class MailmanParser(HTMLParser):
-
-    # Constructor...
-    def __init__(self):
-
-        # Initialize the base class...
-        super(MailmanParser, self).__init__(HTMLParser)
-
-        # Initialize...
-        self._messageNext = False
-        self._messageBody = None
-
-    # Get the human readable message body...
-    def getMessageBody(self):
-        assert(len(self._messageBody))
-        return self._messageBody
-
-    # Start of tag... e.g. <div id="main">
-    def handle_starttag(self, tag, attributes):
-        pass
-
-    # End of tag...
-    def handle_endtag(self, tag):
-
-        # Message seems to follow closing of </h1> tag in the body...
-        if tag == "h1":
-            self._messageNext = True
-
-    # Data contained within a tag...
-    def handle_data(self, data):
-    
-        # Expecting message...
-        if self._messageNext:
-            
-            # Store it and strip leading and trailing white space and collapse
-            #  new lines into one line...
-            self._messageBody = data.strip().replace("\n", " ")
-            
-            # Done parsing...
-            self._messageNext = False
-
-    # True if the message body indicates the subscription request was 
-    #  successful...
-    def isSubscribeOk(self):
-        
-        # Parsing should have already occured...
-        assert(len(self._messageBody))
-        
-        # Looks like it is ok...
-        # TODO: What if response not in English?
-        if self._messageBody.find("Your subscription request has been received") != -1:
-            return True
-
-        # Doesn't look like it...
-        else:
-            return False
 
 # Subscribe page proxy class...
 class SubscribePageProxy(PageProxyBase):
@@ -182,58 +123,54 @@ class SubscribePageProxy(PageProxyBase):
             if password != passwordAgain:
                 raise IOError(errno.ENOMSG, _("Passwords do not match."))
 
-            # Encode POST request parameters for GNU Mailman...
-            postParameters = urllib.parse.urlencode({
+            # Prepare JSON request...
+            jsonDictionary = {
                 "email": email, 
                 "fullname": fullName,
                 "pw": password,
                 "pw-conf": passwordAgain,
-                "digest": 0})
-            postParameters = postParameters.encode("utf-8")
+                "digest": 0
+            }
+            
+            # Convert to JSON data...
+            jsonData = json.dumps(jsonDictionary)
+            
+            # Encode Python string as UTF-8 byte stream for POST request...
+            postData = jsonData.encode("utf-8")
+            
+            # We should specify in the headers that the content type is JSON...
+            headers = {}
+            headers["Content-Type"] = "application/json; charset=utf-8"
+            
+            # Construct the request...
+            request = urllib.request.Request(
+                "https://www.avaneya.com/subscribe.php", 
+                postData, 
+                headers)
 
-            # Submit the POST request...
-            urlStream = urllib.request.urlopen(
-                "http://lists.avaneya.com/subscribe.cgi/announce-avaneya.com", 
-                postParameters, timeout=10)
+            # Submit the actual POST request...
+            urlStream = urllib.request.urlopen(request, timeout=10)
+            
+            # This should always be a code 200, and if not, an exception should
+            #  have been thrown...
+            assert(urlStream.getcode() == 200)
 
-            # Something bad happened...
-            if urlStream.getcode() is not 200:
-
-                # Raise the error...
-                raise IOError(
-                    errno.ENOMSG, 
-                    _("There was a problem processing your subscription request "
-                    "on the remote server. Maybe try again later. ({0})").
-                        format(urlStream.getcode()))
-
-            # Get the mailman HTML response...
-            mailmanMessage = urlStream.read(4096)
+            # Get the server response...
+            serverMessage = urlStream.read(4096)
 
             # Decode the byte stream response into a string...
-            mailmanMessage = mailmanMessage.decode("utf-8")
-            
-            # Create and initialize parser...
-            parser = MailmanParser()
-            parser.feed(mailmanMessage)
-            
-            # Determine whether this was an error or not so we know how to
-            #  decorate the dialog box...
-            dialogMessageType = None
-            if parser.isSubscribeOk():
-                dialogMessageType = Gtk.MessageType.INFO
-            else:
-                dialogMessageType = Gtk.MessageType.ERROR
-            
+            serverMessage = serverMessage.decode("utf-8")
+
             # Show server response in dialog box...
             messageDialog = Gtk.MessageDialog(
-                self._assistant, Gtk.DialogFlags.MODAL, dialogMessageType, 
+                self._assistant, Gtk.DialogFlags.MODAL, Gtk.MessageType.INFO, 
                 Gtk.ButtonsType.OK, 
-                parser.getMessageBody())
+                serverMessage)
             messageDialog.run()
             messageDialog.destroy()
             
             # Done...
-            return parser.isSubscribeOk()
+            return True
 
         # Communication error...
         except urllib.error.URLError as exception:

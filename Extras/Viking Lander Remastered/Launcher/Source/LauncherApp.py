@@ -237,8 +237,10 @@ class LauncherApp(object):
 
             # Set translators...
             aboutDialog.add_credit_section(_("Translators"), [
-                #"<a href=\"mailto:\"></a> (Russian)",
+                "<a href=\"mailto:voronaam@gmail.com\">Aleksey Vorona</a> (Russian)",
+                "<a href=\"mailto:untaintableangel@ubuntu.com\">Anthony Harrington</a> (UK English)",
                 "<a href=\"mailto:bruno9779@gmail.com\">Bruno Santoni</a> (Italian, Spanish)",
+                "<a href=\"https://launchpad.net/~fossfreedom\">fossfreedom</a> (UK English)",
                 "<a href=\"mailto:jtantogo-1@yahoo.com\">Johann Tang</a> (Filipino)",
                 "<a href=\"http://www.josephliau.com\">Joseph Liau</a> (Chinese, Japanese)"])
 
