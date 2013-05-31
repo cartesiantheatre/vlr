@@ -29,7 +29,7 @@ AC_COPYRIGHT([Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.c
 # Initialize Autoconf...
 AC_INIT(
     [VikingExtractor],
-    [0.5],
+    [0.9],
     [https://bugs.launchpad.net/avaneya],
     [viking-extractor],
     [https://www.avaneya.com])
