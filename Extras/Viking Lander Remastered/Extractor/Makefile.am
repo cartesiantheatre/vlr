@@ -217,7 +217,6 @@ MAINTAINERCLEANFILES =                          \
 	$(srcdir)/build-aux/depcomp                 \
 	$(srcdir)/build-aux/install-sh              \
 	$(srcdir)/build-aux/missing                 \
-	$(srcdir)/build-aux                         \
 	$(srcdir)/Translations/Makevars.template    \
 	$(srcdir)/ABOUT-NLS                         \
 	$(srcdir)/Source/config.h.in                \

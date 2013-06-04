@@ -81,6 +81,13 @@ AC_CONFIG_SRCDIR([Source/VikingExtractor.cpp])
         [dbus_interface=${enableval}], 
         [dbus_interface=no])
 
+    # D-Bus interface...
+    AC_ARG_ENABLE([static],
+        [AS_HELP_STRING([--enable-static],
+            [statically compile against what can be @<:@default: no@:>@])],
+        [static=${enableval}], 
+        [static=no])
+
 # Initialize i18n from GNU gettext...
 AM_GNU_GETTEXT_VERSION([0.18.1])
 AM_GNU_GETTEXT([external], [need-ngettext])
@@ -184,15 +191,19 @@ AC_LANG([C++])
     # zziplib...
 
         # Check for C header and library...
-        PKG_CHECK_MODULES([libzzip], [zziplib], [have_zzip=yes], [have_zzip=no])
+        if test "$static" = yes; then
+            PKG_CHECK_MODULES_STATIC([libzzip], [zziplib], [have_zzip=yes], [have_zzip=no])
+        else
+            PKG_CHECK_MODULES([libzzip], [zziplib], [have_zzip=yes], [have_zzip=no])
+        fi
         if test "x${have_zzip}" = xno; then
             AC_MSG_ERROR([zziplib runtime library is required, but was not detected...])
         fi
 
-        # Store the needed compiler and linker flags for automake since this
-        #  doesn't happen automatically like with AC_CHECK_LIB...
+        # Store the needed compiler flags for automake since this doesn't happen
+        #  automatically like with AC_CHECK_LIB. We will take care of linker
+        #  flags later...
         CXXFLAGS="$CXXFLAGS $libzzip_CFLAGS"
-        LIBS="$LIBS $libzzip_LIBS"
 
     # Portable network graphics...
     
@@ -202,16 +213,20 @@ AC_LANG([C++])
             AC_MSG_ERROR([libpng++ headers are required, but were not detected...])
         fi
 
-        # Check for C header and library...
-        PKG_CHECK_MODULES([libpng], [libpng12], [have_png=yes], [have_png=no])
+        # Check for C header and static library...
+        if test "$static" = yes; then
+            PKG_CHECK_MODULES_STATIC([libpng], [libpng12], [have_png=yes], [have_png=no])
+        else
+            PKG_CHECK_MODULES([libpng], [libpng12], [have_png=yes], [have_png=no])
+        fi
         if test "x${have_png}" = xno; then
             AC_MSG_ERROR([libpng runtime library is required, but was not detected...])
         fi
 
-        # Store the needed compiler and linker flags for automake since this
-        #  doesn't happen automatically like with AC_CHECK_LIB...
+        # Store the needed compiler flags for automake since this doesn't happen
+        #  automatically like with AC_CHECK_LIB. We will take care of linker
+        #  flags later...
         CXXFLAGS="$CXXFLAGS $libpng_CFLAGS"
-        LIBS="$LIBS $libpng_LIBS"
 
 # Checks for typedefs, structures, and compiler characteristics...
 
@@ -273,6 +288,22 @@ AC_LANG([C++])
     # Enable all warnings and treat them as errors...
     CXXFLAGS="$CXXFLAGS -Wall -Werror -Wshadow -Wextra"
 
+# Set additional linker flags...
+
+    # If static compilation is enabled, update linker...
+    if test "$static" = yes; then
+        
+        # libpng and libzzip statically link against...
+        LIBS="$LIBS -Wl,-Bstatic $libpng_LIBS $libzzip_LIBS -Wl,-Bdynamic"
+
+        # Static linking against GCC's runtimes and the standard C++ library...
+        LDFLAGS="$LDFLAGS -static-libgcc -static-libstdc++"
+
+    # Otherwise insert vanilla linker flags...
+    else
+        LIBS="$LIBS $libpng_LIBS $libzzip_LIBS"
+    fi
+
 # Generate makefiles from templates containing Autoconf substitution variables...
 AC_CONFIG_FILES([Makefile Translations/Makefile.in])
                    
@@ -292,6 +323,7 @@ Linker............: $LD $LDFLAGS $LIBS
 Optional package features:
     D-Bus interface...........: $dbus_interface
     Native language support...: $USE_NLS
+    Static binary.............: $static
 
 Now type 'make @<:@<target>@:>@' where the 
 optional <target> is:
