@@ -1,0 +1,671 @@
+# English (United Kingdom) translation for avaneya
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the avaneya package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: avaneya\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-05 13:08-0700\n"
+"PO-Revision-Date: 2013-05-27 11:19+0000\n"
+"Last-Translator: Anthony Harrington <untaintableangel@ubuntu.com>\n"
+"Language-Team: English (United Kingdom) <en_GB@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-06-06 05:35+0000\n"
+"X-Generator: Launchpad (build 16667)\n"
+
+#. Initialize the channel map...
+msgid "error: "
+msgstr "error: "
+
+msgid "info: "
+msgstr "info: "
+
+msgid "warning: "
+msgstr "warning: "
+
+msgid "could not emit 'Notification' signal..."
+msgstr "could not emit 'Notification' signal..."
+
+msgid "could not emit 'Progress' signal..."
+msgstr "could not emit 'Progress' signal..."
+
+#, c-format
+msgid "Method %s.%s is not implemented."
+msgstr "Method %s.%s is not implemented."
+
+msgid "could not register service with session bus..."
+msgstr "could not register service with session bus..."
+
+#. Alert user...
+msgid "registering on the session bus..."
+msgstr "registering on the session bus..."
+
+msgid "could not parse introspection XML"
+msgstr "could not parse introspection XML"
+
+msgid "could not connect with the session bus"
+msgstr "could not connect with the session bus"
+
+msgid "glib main loop quit unexpectedly..."
+msgstr "glib main loop quit unexpectedly..."
+
+msgid "invalid logical record label"
+msgstr "invalid logical record label"
+
+msgid "failed to read from input stream"
+msgstr "failed to read from input stream"
+
+msgid "unsupported diode filter class: "
+msgstr "unsupported diode filter class: "
+
+msgid "invalid lander filter"
+msgstr "invalid lander filter"
+
+msgid "cannot reconstruct image from unsupported diode band type"
+msgstr "cannot reconstruct image from unsupported diode band type"
+
+msgid "Unreconstructable/"
+msgstr "Unreconstructable/"
+
+msgid "Unknown Location/"
+msgstr "Unknown Location/"
+
+#. Set the error message and abort...
+msgid "could not create output directory for file"
+msgstr "could not create output directory for file"
+
+msgid ""
+"output metadata already exists, not overwriting (use --overwrite to override)"
+msgstr ""
+"output metadata already exists, not overwriting (use --overwrite to override)"
+
+#. Just give a warning and abort...
+msgid "couldn't save metadata"
+msgstr "couldn't save metadata"
+
+msgid ""
+"The following is a machine generated collection of metadata of each of\n"
+msgstr ""
+"The following is a machine generated collection of metadata each of\n"
+
+msgid "the image bands used to reconstruct a colour image.\n"
+msgstr "the image bands used to reconstruct a colour image.\n"
+
+msgid "basic heuristic method: "
+msgstr "basic heuristic method: "
+
+msgid "camera azimuth / elevation: "
+msgstr "camera azimuth / elevation: "
+
+msgid "camera event: "
+msgstr "camera event: "
+
+msgid "camera event solar day: "
+msgstr "camera event solar day: "
+
+msgid "diode band type: "
+msgstr "diode band type: "
+
+msgid "file size: "
+msgstr "file size: "
+
+msgid "input file: "
+msgstr "input file: "
+
+msgid "magnetic tape: "
+msgstr "magnetic tape: "
+
+msgid "magnetic tape file ordinal: "
+msgstr "magnetic tape file ordinal: "
+
+#. Alert user if verbose mode enabled...
+msgid "mean pixel value: "
+msgstr "mean pixel value: "
+
+msgid "month: "
+msgstr "month: "
+
+msgid "overlay axis present: "
+msgstr "overlay axis present: "
+
+msgid "overlay full histogram present: "
+msgstr "overlay full histogram present: "
+
+msgid "physical record size: "
+msgstr "physical record size: "
+
+msgid "physical record padding: "
+msgstr "physical record padding: "
+
+msgid "phase offset required: "
+msgstr "phase offset required: "
+
+#. Show user, if requested...
+msgid "raw image offset: "
+msgstr "raw image offset: "
+
+msgid "cannot reconstruct, dumped all bands"
+msgstr "cannot reconstruct, dumped all bands"
+
+msgid "output already exists, not overwriting (use --overwrite to override)"
+msgstr "output already exists, not overwriting (use --overwrite to override)"
+
+msgid ""
+"images for each band present, but no matching set of full histogram variants "
+"available"
+msgstr ""
+"images for each band present, but no matching set of full histogram variants "
+"available"
+
+msgid ""
+"images for each band present, but no matching set of non-overlayed variants "
+"available"
+msgstr ""
+"images for each band present, but no matching set of non-overlayed variants "
+"available"
+
+msgid "image bands not all the same size, may be missing scanlines"
+msgstr "image bands not all the same size, may be missing scanlines"
+
+msgid "unable to open input directory for indexing "
+msgstr "unable to open input directory for indexing "
+
+msgid "could not stat "
+msgstr "could not stat "
+
+#. Alert user...
+msgid "indexing mission data, please wait..."
+msgstr "indexing mission data, please wait..."
+
+#. Provide a notification to the Viking Lander Launcher...
+msgid "Indexing mission data, please wait..."
+msgstr "Indexing mission data, please wait..."
+
+msgid "no prospective files found"
+msgstr "no prospective files found"
+
+#. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+msgid "Analyzing mission data, please wait..."
+msgstr "Analyzing mission data, please wait..."
+
+msgid "studying mission data index of "
+msgstr "studying mission data index of "
+
+msgid ", skipping"
+msgstr ", skipping"
+
+msgid " (--ignore-bad-files to skip)"
+msgstr " (--ignore-bad-files to skip)"
+
+msgid "filtering "
+msgstr "filtering "
+
+msgid " type diode bands (--filter-diode[=type] to change)"
+msgstr " type diode bands (--filter-diode[=type] to change)"
+
+msgid "camera event doesn't identify itself, cannot index"
+msgstr "camera event doesn't identify itself, cannot index"
+
+msgid " is a new camera event, indexing"
+msgstr " is a new camera event, indexing"
+
+msgid " is a known camera event, indexing"
+msgstr " is a known camera event, indexing"
+
+#. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+msgid "Attempting forensic mission data recovery..."
+msgstr "Attempting forensic mission data recovery..."
+
+msgid "attempting reconstruction "
+msgstr "attempting reconstruction "
+
+msgid "dumping components from "
+msgstr "dumping components from "
+
+#. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+msgid "Recovery completed..."
+msgstr "Recovery completed..."
+
+msgid "successfully reconstructed "
+msgstr "successfully reconstructed "
+
+msgid " unreconstructable components dumped"
+msgstr " unreconstructable components dumped"
+
+msgid "dumped "
+msgstr "dumped "
+
+msgid " image components without reconstruction"
+msgstr " image components without reconstruction"
+
+msgid "image should be rotated 90 counterclockwise"
+msgstr "image should be rotated 90 counterclockwise"
+
+msgid "image should be rotated 180 counterclockwise"
+msgstr "image should be rotated 180 counterclockwise"
+
+msgid "image should be rotated 270 counterclockwise"
+msgstr "image should be rotated 270 counterclockwise"
+
+msgid "image does not need to be rotated"
+msgstr "image does not need to be rotated"
+
+msgid "could not guess image rotation"
+msgstr "could not guess image rotation"
+
+msgid "GNU Ocrad failed to initialize"
+msgstr "GNU Ocrad failed to initialise"
+
+#. Set error message...
+msgid "could not set OCR image"
+msgstr "could not set OCR image"
+
+#. Set error message...
+msgid "OCR pass failed"
+msgstr "OCR pass failed"
+
+msgid "input was not loaded"
+msgstr "input was not loaded"
+
+msgid "could not open input for reading"
+msgstr "could not open input for reading"
+
+msgid "file ended prematurely before raw image"
+msgstr "file ended prematurely before raw image"
+
+msgid "band data extraction i/o error"
+msgstr "band data extraction i/o error"
+
+#. Be verbose...
+msgid "loading"
+msgstr "loading"
+
+msgid ""
+"empty file, probably blank magnetic tape or not received back on Earth"
+msgstr ""
+"empty file, probably blank magnetic tape or not received back on Earth"
+
+msgid "too small to be interesting (< 4 KB)"
+msgstr "too small to be interesting (< 4 KB)"
+
+msgid "header is not intact, or not a VICAR file"
+msgstr "header is not intact, or not a VICAR file"
+
+msgid "header intact, but requires "
+msgstr "header intact, but requires "
+
+msgid " byte phase offset"
+msgstr " byte phase offset"
+
+msgid "did not originate from a Viking Lander"
+msgstr "did not originate from a Viking Lander"
+
+msgid "entering physical record "
+msgstr "entering physical record "
+
+msgid " starting at "
+msgstr " starting at "
+
+msgid "extracting logical record "
+msgstr "extracting logical record "
+
+msgid "/5 starting at "
+msgstr "/5 starting at "
+
+msgid "bad logical record terminator "
+msgstr "bad logical record terminator "
+
+msgid ""
+"invalid logical record label possibly from out of phase physical boundary"
+msgstr ""
+"invalid logical record label possibly from out of phase physical boundary"
+
+#. It was, so rewind and carry on since there is no
+#. physical record padding...
+msgid "tangential physical record boundary detected, ignoring padding"
+msgstr "tangential physical record boundary detected, ignoring padding"
+
+#. Alert and seek...
+msgid "seeking passed "
+msgstr "seeking passed "
+
+msgid " physical record padding"
+msgstr " physical record padding"
+
+msgid "unable to locate last logical record label"
+msgstr "unable to locate last logical record label"
+
+msgid "file too small to contain claimed payload "
+msgstr "file too small to contain claimed payload "
+
+msgid "internal radio/geometric calibration ("
+msgstr "internal radio/geometric calibration ("
+
+msgid "unsupported photosensor diode band type ("
+msgstr "unsupported photosensor diode band type ("
+
+msgid "exhausted basic metadata parser heuristics"
+msgstr "exhausted basic metadata parser heuristics"
+
+msgid "unsupported number of image bands"
+msgstr "unsupported number of image bands"
+
+msgid "expected positive image height"
+msgstr "expected positive image height"
+
+msgid "expected positive image width"
+msgstr "expected positive image width"
+
+#. Check pixel format is integral...
+#. Definitely integral
+#. Guessing integral
+msgid "unsupported pixel format"
+msgstr "unsupported pixel format"
+
+msgid "unsupported colour bit depth"
+msgstr "unsupported colour bit depth"
+
+#. If verbosity is set, display basic metadata...
+msgid "basic metadata parser heuristic: "
+msgstr "basic metadata parser heuristic: "
+
+msgid "bands: "
+msgstr "bands: "
+
+msgid "height: "
+msgstr "height: "
+
+msgid "width: "
+msgstr "width: "
+
+msgid "raw band data size: "
+msgstr "raw band data size: "
+
+msgid " bytes"
+msgstr " bytes"
+
+msgid "format: integral"
+msgstr "format: integral"
+
+msgid "bytes per colour: "
+msgstr "bytes per colour: "
+
+msgid "photosensor diode band type: "
+msgstr "photosensor diode band type: "
+
+msgid "possible physical record padding: "
+msgstr "possible physical record padding: "
+
+#. Alert user if verbose enabled...
+msgid "heuristics selected format 1 basic metadata parser"
+msgstr "heuristics selected format 1 basic metadata parser"
+
+#. Alert user if verbose enabled...
+msgid "heuristics selected format 2 basic metadata parser"
+msgstr "heuristics selected format 2 basic metadata parser"
+
+#. Alert user if verbose enabled...
+msgid "heuristics selected format 3 basic metadata parser"
+msgstr "heuristics selected format 3 basic metadata parser"
+
+#. Alert user if verbose enabled...
+msgid "heuristics selected format 4 basic metadata parser"
+msgstr "heuristics selected format 4 basic metadata parser"
+
+#. Alert user if verbose enabled...
+msgid "heuristics selected format 5 basic metadata parser"
+msgstr "heuristics selected format 5 basic metadata parser"
+
+#. Alert user if verbose enabled...
+msgid "heuristics selected format 6 basic metadata parser"
+msgstr "heuristics selected format 6 basic metadata parser"
+
+msgid "invalid logical record label while parsing extended metadata"
+msgstr "invalid logical record label while parsing extended metadata"
+
+#. Alert user if verbose mode enabled...
+msgid "psa directional vector: "
+msgstr "psa directional vector: "
+
+msgid "camera event label: "
+msgstr "camera event label: "
+
+msgid "bad lander number"
+msgstr "bad lander number"
+
+#. Be verbose if requested...
+msgid "lander number: "
+msgstr "lander number: "
+
+msgid "filtering non-matching lander"
+msgstr "filtering non-matching lander"
+
+#. Set caller hint and return unsupported...
+msgid "monocolour unsupported"
+msgstr "monocolour unsupported"
+
+#. Set caller hint and return unsupported...
+msgid "unidentifiable broadband"
+msgstr "unidentifiable broadband"
+
+#. Set hint and return unknown...
+msgid "none detected"
+msgstr "none detected"
+
+msgid "filtering non-matching solar day"
+msgstr "filtering non-matching solar day"
+
+msgid "filtering non-matching camera event"
+msgstr "filtering non-matching camera event"
+
+msgid "Options:\n"
+msgstr "Options:\n"
+
+msgid ""
+"                              Put reconstructed images into subdirectories\n"
+"                              named after band type class (e.g. Colour).\n"
+msgstr ""
+"                              Put reconstructed images into subdirectories\n"
+"                              named after band type class (e.g. Colour).\n"
+
+msgid ""
+"                              Put reconstructed images into subdirectories\n"
+"                              named after location taken from.\n"
+msgstr ""
+"                              Put reconstructed images into subdirectories\n"
+"                              named after location taken from.\n"
+
+msgid ""
+"                              Put reconstructed images into subdirectories\n"
+"                              named after Martian month taken on.\n"
+msgstr ""
+"                              Put reconstructed images into subdirectories\n"
+"                              named after Martian month taken on.\n"
+
+msgid ""
+"                              Put reconstructed images into subdirectories\n"
+"                              numbered by camera event solar day.\n"
+msgstr ""
+"                              Put reconstructed images into subdirectories\n"
+"                              numbered by camera event solar day.\n"
+
+msgid "                              Don't write anything.\n"
+msgstr "                              Don't write anything.\n"
+
+msgid "                              Show this help.\n"
+msgstr "                              Show this help.\n"
+
+msgid ""
+"                              Don't stop on corrupt or problematic input "
+"file,\n"
+"                              but continue extraction of other files.\n"
+msgstr ""
+"                              Don't stop on corrupt or problematic input "
+"file,\n"
+"                              but continue extraction of other files.\n"
+
+msgid "                              Encode output with Adam7 interlacing\n"
+msgstr "                              Encode output with Adam7 interlacing\n"
+
+msgid ""
+"                              Number of threads to run parallelized. Only "
+"one\n"
+"                              if -j is not provided, or auto if threads\n"
+"                              argument not specified.\n"
+msgstr ""
+"                              Number of threads to run parallelised. Only "
+"one\n"
+"                              if -j is not provided, or auto if threads\n"
+"                              argument not specified.\n"
+
+msgid ""
+"                              Look only for the specified matching camera "
+"event\n"
+"                              ID, such as 22A158.\n"
+msgstr ""
+"                              Look only for the specified matching camera "
+"event\n"
+"                              ID, such as 22A158.\n"
+
+msgid ""
+"                              Extract from matching supported diode filter\n"
+"                              classes which are any (default), colour, "
+"infrared,\n"
+"                              sun, or survey.\n"
+msgstr ""
+"                              Extract from matching supported diode filter\n"
+"                              classes which are any (default), colour, "
+"infrared,\n"
+"                              sun, or survey.\n"
+
+msgid ""
+"                              Extract from specific lander only which are\n"
+"                              either (0, the default), 1, or 2.\n"
+msgstr ""
+"                              Extract from specific lander only which are\n"
+"                              either (0, the default), 1, or 2.\n"
+
+msgid ""
+"                              Look only for camera events taken on the "
+"specified\n"
+"                              solar day.\n"
+msgstr ""
+"                              Look only for camera events taken on the "
+"specified\n"
+"                              solar day.\n"
+
+msgid ""
+"                              Whenever a colour image is recovered, machine\n"
+"                              generate a text file containing various "
+"metadata.\n"
+msgstr ""
+"                              Whenever a colour image is recovered, machine\n"
+"                              generate a text file containing various "
+"metadata.\n"
+
+msgid ""
+"                              Disable VT/100 ANSI coloured terminal output.\n"
+msgstr ""
+"                              Disable VT/100 ANSI coloured terminal output.\n"
+
+msgid ""
+"                              Don't automatically rotate image as needed.\n"
+msgstr ""
+"                              Don't automatically rotate image as needed.\n"
+
+msgid ""
+"                              Don't attempt to reconstruct camera events, "
+"just\n"
+"                              dump all available band data as separate "
+"images.\n"
+msgstr ""
+"                              Don't attempt to reconstruct camera events, "
+"just\n"
+"                              dump all available band data as separate "
+"images.\n"
+
+msgid "                              Overwrite any existing output files.\n"
+msgstr "                              Overwrite any existing output files.\n"
+
+msgid ""
+"                              Scan subfolders as well if input is a "
+"directory.\n"
+msgstr ""
+"                              Scan subfolders as well if input is a "
+"directory.\n"
+
+msgid ""
+"                              Show summary of progress and final results "
+"only.\n"
+msgstr ""
+"                              Show summary of progress and final results "
+"only.\n"
+
+msgid "                              Suppress all warnings and errors.\n"
+msgstr "                              Suppress all warnings and errors.\n"
+
+msgid "                              Be verbose\n"
+msgstr "                              Be verbose\n"
+
+msgid ""
+"                              Show version information\n"
+"\n"
+msgstr ""
+"                              Show version information\n"
+"\n"
+
+msgid ""
+"Converts 1970s Viking Lander era VICAR colour images to PNGs. The value of\n"
+"'input' can be either a single VICAR file or a directory containing VICAR "
+"files\n"
+"to attempt reconstruction into the provided output directory.\n"
+"\n"
+msgstr ""
+"Converts 1970s Viking Lander era VICAR colour images to PNGs. The value of\n"
+"'input' can be either a single VICAR file or a directory containing VICAR "
+"files\n"
+"to attempt reconstruction into the provided output directory.\n"
+"\n"
+
+msgid "Report bugs to "
+msgstr "Report bugs to "
+
+msgid ""
+"Copyright (C) 2010-2013 Cartesian Theatre.\n"
+"This is free software; see Copying for copying conditions. There is NO\n"
+"warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+"\n"
+msgstr ""
+"Copyright (C) 2010-2013 Cartesian Theatre.\n"
+"This is free software; see Copying for copying conditions. There is NO\n"
+"warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+"\n"
+
+msgid "Configured with: "
+msgstr "Configured with: "
+
+msgid "parallelization is not implemented yet, using single thread"
+msgstr "parallelisation is not implemented yet, using single thread"
+
+msgid "summarize only and verbose modes cannot both be used"
+msgstr "summarise only and verbose modes cannot both be used"
+
+msgid " linked against incompatible GNU Ocrad version "
+msgstr " linked against incompatible GNU Ocrad version "
+
+msgid "GNU Ocrad needs to be at least 0.21, but got "
+msgstr "GNU Ocrad needs to be at least 0.21, but got "
+
+#. Alert, abort...
+msgid "need input file or directory, see --help"
+msgstr "need input file or directory, see --help"
+
+msgid "unknown parameter "
+msgstr "unknown parameter "
+
+msgid "), see --help"
+msgstr "), see --help"
