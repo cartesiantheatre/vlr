@@ -1,31 +1,34 @@
 # Ukrainian translation for avaneya
 # Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
 # This file is distributed under the same license as the avaneya package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
 #
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+# Yuri Chornoivan <yurchor@ukr.net>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-05-27 00:21-0700\n"
-"PO-Revision-Date: 2013-05-28 14:03+0000\n"
-"Last-Translator: Yuri Chornoivan <yurchor@gmail.com>\n"
+"POT-Creation-Date: 2013-06-05 20:42-0700\n"
+"PO-Revision-Date: 2013-06-06 02:36+0000\n"
+"Last-Translator: yurchor <Unknown>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-05-29 06:07+0000\n"
-"X-Generator: Launchpad (build 16640)\n"
+"X-Launchpad-Export-Date: 2013-06-06 05:35+0000\n"
+"X-Generator: Launchpad (build 16667)\n"
+"Language: uk\n"
 
 #. Set translators. Note to translators, put your contact info here...
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Yuri Chornoivan https://launchpad.net/~yurchor-gmail"
+"  Yuri Chornoivan https://launchpad.net/~yurchor-gmail\n"
+"  yurchor https://launchpad.net/~yurchor-deactivatedaccount"
 
 #. Beta testers...
 msgid "Beta Testers"
-msgstr ""
+msgstr "Бета-тестери"
 
 #. Musicians...
 msgid "Musicians"
@@ -33,7 +36,7 @@ msgstr "Музиканти"
 
 #. Shouts and thanks...
 msgid "Shouts / Thanks"
-msgstr ""
+msgstr "Подяки"
 
 #. Studio hardware...
 msgid "Studio Hardware"
@@ -65,10 +68,10 @@ msgid "Error:"
 msgstr "Помилка:"
 
 msgid "Are you sure you'd like to quit?"
-msgstr ""
+msgstr "Ви справді бажаєте завершити гру?"
 
 msgid "Introduction"
-msgstr ""
+msgstr "Вступ"
 
 #. Break up the introduction text by paragraphs to make it easier for
 #. translators...
@@ -76,6 +79,8 @@ msgid ""
 "Dear User,\n"
 "\n"
 msgstr ""
+"Шановний користувачу,\n"
+"\n"
 
 msgid ""
 "The <i>Avaneya: Viking Lander Remastered</i> initiative has an interesting "
@@ -251,10 +256,10 @@ msgid ""
 msgstr ""
 
 msgid "\t<b><i>~ Avaneya Project Crew</i></b>\n"
-msgstr ""
+msgstr "\t<b><i>~ Команда проекту Avaneya</i></b>\n"
 
 msgid "Recovery"
-msgstr ""
+msgstr "Відновлення"
 
 #. We got the process ID, show it...
 msgid "Spawned process {0}..."
@@ -269,10 +274,10 @@ msgstr ""
 
 #. Done...
 msgid "ok"
-msgstr ""
+msgstr "гаразд"
 
 msgid "Error"
-msgstr ""
+msgstr "Помилка"
 
 msgid ""
 "The VikingExtractor could not be launched. The following location was "
@@ -297,15 +302,10 @@ msgid "You need to fill out the whole form."
 msgstr ""
 
 msgid "Invalid email address."
-msgstr ""
+msgstr "Некоректна адреса електронної пошти."
 
 msgid "Passwords do not match."
-msgstr ""
-
-msgid ""
-"There was a problem processing your subscription request on the remote "
-"server. Maybe try again later. ({0})"
-msgstr ""
+msgstr "Паролі не збігаються."
 
 msgid ""
 "There was a problem communicating with the remote server. Please try again "
@@ -393,7 +393,7 @@ msgid "Disc verification failed."
 msgstr ""
 
 msgid "Confirmation"
-msgstr ""
+msgstr "Підтвердження"
 
 msgid "Save to: {0}\n"
 msgstr ""
@@ -449,10 +449,10 @@ msgid "VikingExtractor arguments: {0}\n"
 msgstr ""
 
 msgid "Yes"
-msgstr ""
+msgstr "Так"
 
 msgid "No"
-msgstr ""
+msgstr "Ні"
 
 msgid "Farewell"
 msgstr ""
@@ -476,13 +476,13 @@ msgid "Contacting server, please wait..."
 msgstr ""
 
 msgid "The download of the handbook was stopped."
-msgstr ""
+msgstr "Звантаження підручника було зупинено."
 
 msgid "The book downloaded successfully. Would you like to open it?"
 msgstr ""
 
 msgid "Warning: NetworkManager service not found..."
-msgstr ""
+msgstr "Попередження: не виявлено служби NetworkManager…"
 
 msgid ""
 "You need a working internet connection in order to do this. You don't appear "
@@ -490,47 +490,47 @@ msgid ""
 msgstr ""
 
 msgid "Cannot launch {0}. Platform unknown..."
-msgstr ""
+msgstr "Не вдалося запустити {0}. Невідома платформа…"
 
 msgid "Cannot explore {0}. Platform unknown..."
-msgstr ""
+msgstr "Не вдалося вивчити {0}. Невідома платформа…"
 
 msgid "Configure Introduction"
 msgstr ""
 
 msgid "Configure Layout"
-msgstr ""
+msgstr "Налаштувати компонування"
 
 msgid "Configure Recovery"
-msgstr ""
+msgstr "Налаштувати відновлення"
 
 msgid "Configure Filters"
-msgstr ""
+msgstr "Налаштувати фільтри"
 
 msgid "Configure Advanced"
-msgstr ""
+msgstr "Додаткове налаштовування"
 
 msgid "Location/"
-msgstr ""
+msgstr "Місце/"
 
 msgid "Martian Month/"
-msgstr ""
+msgstr "Марсіанський місяць/"
 
 msgid "Sensor Band Type/"
-msgstr ""
+msgstr "Тип смуги датчика/"
 
 msgid "Mission Solar Day/"
-msgstr ""
+msgstr "Сонячний день завдання/"
 
 msgid "Photograph.png"
-msgstr ""
+msgstr "Фотографія.png"
 
 msgid ""
 "Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>."
-msgstr ""
+msgstr "© Cartesian Theatre <info@cartesiantheatre.com>, 2010–2013."
 
 msgid "Avaneya Website"
-msgstr ""
+msgstr "Сайт Avaneya"
 
 msgid ""
 "These options configure some advanced VikingExtractor features. If you are "
@@ -562,7 +562,7 @@ msgid ""
 msgstr ""
 
 msgid "Generate metadata"
-msgstr ""
+msgstr "Створювати метадані"
 
 msgid ""
 "Whenever a colour image is being recovered, this option will write out a "
@@ -572,7 +572,7 @@ msgid ""
 msgstr ""
 
 msgid "Be verbose"
-msgstr ""
+msgstr "Докладні повідомлення"
 
 msgid ""
 "If this is enabled, the VikingExtractor will display significantly more "
@@ -580,7 +580,7 @@ msgid ""
 msgstr ""
 
 msgid "Use multithreading"
-msgstr ""
+msgstr "Використовувати багато потоків обробки"
 
 msgid ""
 "Take advantage of machines with more than one processor by using several "
@@ -590,38 +590,6 @@ msgstr ""
 msgid ""
 "Take advantage of machines with more than one processor by using several "
 "simultaneously. Note that this feature is currently not supported."
-msgstr ""
-
-msgid ""
-"These configuration settings allow you to filter which specific types of "
-"data you are interested. If you leave these at their defaults, everything "
-"that can be recovered will be.\n"
-"\n"
-"If you are unsure about any option, just <b>hover</b> your mouse over it for "
-"an explanation. The default configuration is recommended."
-msgstr ""
-
-msgid ""
-"Extract from matching Viking lander diode filters. These include colour, "
-"infrared, sun, or survey. By default, all diode filters are acceptable."
-msgstr ""
-
-msgid "<b>Diode Filter:</b>"
-msgstr ""
-
-msgid ""
-"Perform an extraction of only images taken by a particular lander. Viking "
-"lander 2 touched down on <i>Utopia Planitia</i> and Viking lander 1 on "
-"<i>Chryse Planitia</i>."
-msgstr ""
-
-msgid ""
-"Perform an extraction of only images taken by a particular lander. Viking "
-"lander 2 touched down on Utopia Planitia and Viking lander 1 on Chryse "
-"Planitia."
-msgstr ""
-
-msgid "<b>Lander Filter:</b>"
 msgstr ""
 
 msgid ""
@@ -643,7 +611,7 @@ msgid ""
 msgstr ""
 
 msgid "Organize by sensor band type"
-msgstr ""
+msgstr "Впорядкувати за типом смуги датчика"
 
 msgid ""
 "Organizes the images into subdirectories named after the sensor band type "
@@ -651,7 +619,7 @@ msgid ""
 msgstr ""
 
 msgid "Organize by location on Martian surface"
-msgstr ""
+msgstr "Впорядкувати за місцем на марсіанській сфері"
 
 msgid ""
 "Organizes the images into subdirectories named after the physical location "
@@ -660,7 +628,7 @@ msgid ""
 msgstr ""
 
 msgid "Organize by Martian month"
-msgstr ""
+msgstr "Впорядкувати за марсіанським місяцем"
 
 msgid ""
 "Organizes the images into subdirectories named after the month they were "
@@ -670,7 +638,7 @@ msgid ""
 msgstr ""
 
 msgid "Organize by mission solar day"
-msgstr ""
+msgstr "Впорядкувати за сонячним днем завдання"
 
 msgid ""
 "Put reconstructed images into subdirectories numbered after the solar day "
@@ -679,7 +647,7 @@ msgid ""
 msgstr ""
 
 msgid "?"
-msgstr ""
+msgstr "?"
 
 msgid ""
 "These options control how the VikingExtractor's image recovery works.\n"
@@ -712,6 +680,10 @@ msgid ""
 "leave it set to the default."
 msgstr ""
 
+#. This is set at runtime. Don't bother to translate.
+msgid "(set at runtime)"
+msgstr ""
+
 msgid ""
 "The following is a summary of the configuration <b>VikingExtractor</b> will "
 "use for this session. If you would like to change anything, you can go back. "
@@ -723,9 +695,37 @@ msgid ""
 "corrupted to be recoverable."
 msgstr ""
 
-#. This is set at runtime. Don't bother to translate.
-msgid "(set at runtime)"
+msgid ""
+"These configuration settings allow you to filter which specific types of "
+"data you are interested. If you leave these at their defaults, everything "
+"that can be recovered will be.\n"
+"\n"
+"If you are unsure about any option, just <b>hover</b> your mouse over it for "
+"an explanation. The default configuration is recommended."
 msgstr ""
+
+msgid ""
+"Extract from matching Viking lander diode filters. These include colour, "
+"infrared, sun, or survey. By default, all diode filters are acceptable."
+msgstr ""
+
+msgid "<b>Diode Filter:</b>"
+msgstr "<b>Діодний фільтр:</b>"
+
+msgid ""
+"Perform an extraction of only images taken by a particular lander. Viking "
+"lander 2 touched down on <i>Utopia Planitia</i> and Viking lander 1 on "
+"<i>Chryse Planitia</i>."
+msgstr ""
+
+msgid ""
+"Perform an extraction of only images taken by a particular lander. Viking "
+"lander 2 touched down on Utopia Planitia and Viking lander 1 on Chryse "
+"Planitia."
+msgstr ""
+
+msgid "<b>Lander Filter:</b>"
+msgstr "<b>Фільтр посадкового модуля:</b>"
 
 msgid ""
 "Congratulations! The mission data forensic recovery has completed. To "
@@ -754,10 +754,10 @@ msgid ""
 msgstr ""
 
 msgid "Yes, download the latest copy."
-msgstr ""
+msgstr "Так, звантажити найсвіжішу копію."
 
 msgid "???"
-msgstr ""
+msgstr "???"
 
 msgid ""
 "This window contains the output from the VikingExtractor process while it "
@@ -765,7 +765,7 @@ msgid ""
 msgstr ""
 
 msgid "Please wait..."
-msgstr ""
+msgstr "Зачекайте, будь ласка..."
 
 msgid ""
 "Please select an <b>empty</b> folder below. This folder will be used to save "
@@ -774,10 +774,10 @@ msgid ""
 msgstr ""
 
 msgid "Select folder to store recovered images"
-msgstr ""
+msgstr "Виберіть теку для зберігання відновлених зображень"
 
 msgid "Overwrite existing output files"
-msgstr ""
+msgstr "Перезаписати наявні файли виведених даних"
 
 msgid ""
 "This will overwrite any existing output files that have the same name as the "
@@ -785,36 +785,11 @@ msgid ""
 msgstr ""
 
 msgid "Avaneya"
-msgstr ""
+msgstr "Avaneya"
 
 msgid ""
 "Please wait while your mission data's integrity is verified. You can safely "
 "stop this process at any time, if you wish."
-msgstr ""
-
-msgid ""
-"We have a <b>low volume</b> announcement mailing list that we use to make "
-"press releases and other public announcements. We would love to keep you in "
-"the loop. <i>We will never deliberately pass your information on to a third "
-"party.</i>"
-msgstr ""
-
-msgid "Yes, please subscribe me."
-msgstr ""
-
-msgid "<b>Name:</b>"
-msgstr ""
-
-msgid "<b>Email:</b>"
-msgstr ""
-
-msgid "<b>Password:</b>"
-msgstr ""
-
-msgid "<b>Password again:</b>"
-msgstr ""
-
-msgid "Thanks, but I think I'll pass."
 msgstr ""
 
 msgid ""
@@ -832,4 +807,29 @@ msgid "Perform DVD integrity check"
 msgstr ""
 
 msgid "Skip DVD integrity check"
+msgstr ""
+
+msgid ""
+"We have a <b>low volume</b> announcement mailing list that we use to make "
+"press releases and other public announcements. We would love to keep you in "
+"the loop. <i>We will never deliberately pass your information on to a third "
+"party.</i>"
+msgstr ""
+
+msgid "Yes, please subscribe me."
+msgstr "Так, хочу підписатися."
+
+msgid "<b>Name:</b>"
+msgstr "<b>Ім’я:</b>"
+
+msgid "<b>Email:</b>"
+msgstr "<b>Ел. пошта:</b>"
+
+msgid "<b>Password:</b>"
+msgstr "<b>Пароль:</b>"
+
+msgid "<b>Password again:</b>"
+msgstr "<b>Пароль (ще раз):</b>"
+
+msgid "Thanks, but I think I'll pass."
 msgstr ""

@@ -22,15 +22,15 @@ msgstr ""
 "Project-Id-Version: viking-extractor 0.5\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
 "POT-Creation-Date: 2013-06-05 13:08-0700\n"
-"PO-Revision-Date: 2013-05-31 03:26+0000\n"
+"PO-Revision-Date: 2013-06-06 04:25+0000\n"
 "Last-Translator: Aleksey Vorona <voronaam@yandex.ru>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-01 05:31+0000\n"
-"X-Generator: Launchpad (build 16660)\n"
+"X-Launchpad-Export-Date: 2013-06-06 05:35+0000\n"
+"X-Generator: Launchpad (build 16667)\n"
+"Language: ru\n"
 
 #. Initialize the channel map...
 msgid "error: "
@@ -75,10 +75,10 @@ msgid "failed to read from input stream"
 msgstr "не удалось прочитать входной поток"
 
 msgid "unsupported diode filter class: "
-msgstr "неподдеживаемый класс диодного фильтра: "
+msgstr "неподдеживаемый фильтр по классу фотодиода: "
 
 msgid "invalid lander filter"
-msgstr "некорректный конечный фильтра"
+msgstr "некорректный фильтр по посадочному модулю"
 
 msgid "cannot reconstruct image from unsupported diode band type"
 msgstr ""
@@ -106,7 +106,8 @@ msgstr "не удалось сохранить метаданные"
 
 msgid ""
 "The following is a machine generated collection of metadata of each of\n"
-msgstr "Ниже приведён набор машинно сгенерировнных метаданных для каждого из\n"
+msgstr ""
+"Ниже приведён набор машинно сгенерировнных метаданных для каждого из\n"
 
 msgid "the image bands used to reconstruct a colour image.\n"
 msgstr ""
@@ -225,7 +226,8 @@ msgid "filtering "
 msgstr "фильтруются "
 
 msgid " type diode bands (--filter-diode[=type] to change)"
-msgstr " тип диодных полос (используйте --filter-diode[=type] чтобы изменить)"
+msgstr ""
+" тип диодных полос (используйте --filter-diode[=type] чтобы изменить)"
 
 msgid "camera event doesn't identify itself, cannot index"
 msgstr "камера не представилась, не удалось проиндексировать"
@@ -307,7 +309,8 @@ msgstr "ошибка ввода/вывода при извлечении дан�
 msgid "loading"
 msgstr "загрузка"
 
-msgid "empty file, probably blank magnetic tape or not received back on Earth"
+msgid ""
+"empty file, probably blank magnetic tape or not received back on Earth"
 msgstr ""
 "пустой файл, возможно чистая магнитная лента или лента не полученная на Земле"
 
@@ -682,7 +685,8 @@ msgid "Configured with: "
 msgstr "Заданные настройки: "
 
 msgid "parallelization is not implemented yet, using single thread"
-msgstr "параллелизация пока не поддерживается, используется только один поток"
+msgstr ""
+"параллелизация пока не поддерживается, используется только один поток"
 
 msgid "summarize only and verbose modes cannot both be used"
 msgstr "краткий и подробный режимы не могут быть заданы одновременно"

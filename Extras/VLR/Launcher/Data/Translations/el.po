@@ -7,33 +7,35 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-05-27 00:21-0700\n"
-"PO-Revision-Date: 2013-05-29 10:38+0000\n"
-"Last-Translator: tzem <athmakrigiannis@gmail.com>\n"
+"POT-Creation-Date: 2013-06-05 20:42-0700\n"
+"PO-Revision-Date: 2013-06-06 04:28+0000\n"
+"Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
 "Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-05-30 06:05+0000\n"
-"X-Generator: Launchpad (build 16652)\n"
+"X-Launchpad-Export-Date: 2013-06-06 05:35+0000\n"
+"X-Generator: Launchpad (build 16667)\n"
 
 #. Set translators. Note to translators, put your contact info here...
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  George Christofis https://launchpad.net/~geochr\n"
+"  Kip Warner https://launchpad.net/~kip\n"
 "  tzem https://launchpad.net/~athmakrigiannis"
 
 #. Beta testers...
 msgid "Beta Testers"
-msgstr ""
+msgstr "Δοκιμαστές"
 
 #. Musicians...
 msgid "Musicians"
-msgstr ""
+msgstr "Μουσικοί"
 
 #. Shouts and thanks...
 msgid "Shouts / Thanks"
-msgstr ""
+msgstr "Φωνές / Ευχαριστίες"
 
 #. Studio hardware...
 msgid "Studio Hardware"
@@ -45,11 +47,11 @@ msgstr ""
 
 #. Set translators...
 msgid "Translators"
-msgstr ""
+msgstr "Μεταφραστές"
 
 #. Dedications...
 msgid "Dedications"
-msgstr ""
+msgstr "Αφιερώσεις"
 
 msgid ""
 "\n"
@@ -253,10 +255,10 @@ msgid ""
 msgstr ""
 
 msgid "\t<b><i>~ Avaneya Project Crew</i></b>\n"
-msgstr ""
+msgstr "\t<b><i>~ Ομάδα του πρότζεκτ Avaneya</i></b>\n"
 
 msgid "Recovery"
-msgstr ""
+msgstr "Ανάκτηση"
 
 #. We got the process ID, show it...
 msgid "Spawned process {0}..."
@@ -264,17 +266,17 @@ msgstr ""
 
 #. Alert user...
 msgid "Waiting for VikingExtractor D-Bus service..."
-msgstr ""
+msgstr "Αναμονή για την υπηρεσία D-Bus VikingExtractor..."
 
 msgid "Dead session connection handle..."
 msgstr ""
 
 #. Done...
 msgid "ok"
-msgstr ""
+msgstr "ok"
 
 msgid "Error"
-msgstr ""
+msgstr "Σφάλμα"
 
 msgid ""
 "The VikingExtractor could not be launched. The following location was "
@@ -284,30 +286,25 @@ msgid ""
 msgstr ""
 
 msgid "Are you sure you'd like to abort the recovery?"
-msgstr ""
+msgstr "Είστε σίγουρος/η ότι επιθυμείτε να ματαιώσετε την ανάκτηση;"
 
 msgid "VikingExtractor terminated with status {0}..."
-msgstr ""
+msgstr "Το VikingExtractor τερματίστηκε με κατάσταση {0}..."
 
 msgid "The recovery process was unsuccessful. ({0})"
-msgstr ""
+msgstr "Η διαδικασία ανάκτησης ήταν ανεπιτυχής. ({0})"
 
 msgid "Subscribe to Newsletter"
-msgstr ""
+msgstr "Γίνε συνδρομητής στο ενημερωτικό δελτίο"
 
 msgid "You need to fill out the whole form."
-msgstr ""
+msgstr "Χρειάζεται να συμπληρώσετε ολόκληρη την φόρμα."
 
 msgid "Invalid email address."
-msgstr ""
+msgstr "Μη έγκυρη διεύθυνση ηλεκτρονικού ταχυδρομείου."
 
 msgid "Passwords do not match."
-msgstr ""
-
-msgid ""
-"There was a problem processing your subscription request on the remote "
-"server. Maybe try again later. ({0})"
-msgstr ""
+msgstr "Οι κωδικοί πρόσβασης δεν ταιριάζουν."
 
 msgid ""
 "There was a problem communicating with the remote server. Please try again "
@@ -315,6 +312,10 @@ msgid ""
 "\n"
 "\t{0}"
 msgstr ""
+"Προέκυψε ένα πρόβλημα επικοινωνίας με τον απομακρυσμένο εξυπηρετητή. "
+"Παρακαλώ δοκιμάστε αργότερα.\n"
+"\n"
+"\t{0}"
 
 msgid "Graphical user interface for the Avaneya: Viking Lander Remastered..."
 msgstr ""
@@ -329,10 +330,10 @@ msgid "Do not show the splash and opening video."
 msgstr ""
 
 msgid "Do not play background music."
-msgstr ""
+msgstr "Να μην αναπαράγεται μουσική στο παρασκήνιο."
 
 msgid "Display application version."
-msgstr ""
+msgstr "Εμφάνιση έκδοσης της εφαρμογής."
 
 msgid "Override path to VikingExtractor executable."
 msgstr ""
@@ -350,10 +351,11 @@ msgid ""
 msgstr ""
 
 msgid "Verification Progress"
-msgstr ""
+msgstr "Διαδικασία ταυτοποίησης"
 
 msgid "Verification thread already running, not relaunching..."
 msgstr ""
+"Η διαδικασία ταυτοποίησης βρίσκεται σε εξέλιξη, μην επανεκκινήσετε..."
 
 msgid "Disc verification was cancelled."
 msgstr ""
@@ -395,10 +397,10 @@ msgid "Disc verification failed."
 msgstr ""
 
 msgid "Confirmation"
-msgstr ""
+msgstr "Επιβεβαίωση"
 
 msgid "Save to: {0}\n"
-msgstr ""
+msgstr "Αποθήκευση σε: {0}\n"
 
 msgid "Output will be overwritten: {0}\n"
 msgstr ""
@@ -411,10 +413,10 @@ msgid "\t...diode band class: {0}\n"
 msgstr ""
 
 msgid "\t...Martian location: {0}\n"
-msgstr ""
+msgstr "\t...Αρειανή τοποθεσία: {0}\n"
 
 msgid "\t...Martian month: {0}\n"
-msgstr ""
+msgstr "\t...Αρειανός μήνας: {0}\n"
 
 msgid "\t...mission solar day: {0}\n"
 msgstr ""
@@ -427,16 +429,16 @@ msgstr ""
 
 #. Filters...
 msgid "Filters...\n"
-msgstr ""
+msgstr "Φίλτρα...\n"
 
 msgid "\t...diode band type class: {0}\n"
 msgstr ""
 
 msgid "\t...lander: {0}\n"
-msgstr ""
+msgstr "\t...προσεδάφιση: {0}\n"
 
 msgid "Interlace images: {0}\n"
-msgstr ""
+msgstr "Σύμπλεγμα εικόνων: {0}\n"
 
 msgid "Generate metadata: {0}\n"
 msgstr ""
@@ -451,19 +453,21 @@ msgid "VikingExtractor arguments: {0}\n"
 msgstr ""
 
 msgid "Yes"
-msgstr ""
+msgstr "Ναι"
 
 msgid "No"
-msgstr ""
+msgstr "Όχι"
 
 msgid "Farewell"
-msgstr ""
+msgstr "Αντίο"
 
 msgid "Select Recovery Folder"
-msgstr ""
+msgstr "Επιλογή φακέλου ανάκτησης"
 
 msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
 msgstr ""
+"GStreamer >= 1.0 δε βρέθηκε. Δε θα χρησιμοποιηθεί για το άνοιγμα του "
+"βίντεο..."
 
 msgid "Verification Prompt"
 msgstr ""
@@ -472,51 +476,53 @@ msgid "Download Handbook"
 msgstr ""
 
 msgid "Please choose a download location..."
-msgstr ""
+msgstr "Παρακαλώ επιλέξτε μία τοποθεσία για μεταφόρτωση..."
 
 msgid "Contacting server, please wait..."
-msgstr ""
+msgstr "Σύνδεση με τον εξυπηρετητή, παρακαλώ περιμένετε..."
 
 msgid "The download of the handbook was stopped."
-msgstr ""
+msgstr "Η μεταφόρτωση του εγχειριδίου σταμάτησε."
 
 msgid "The book downloaded successfully. Would you like to open it?"
-msgstr ""
+msgstr "Το βιβλίο μεταφορτώθηκε επιτυχώς. Θα θέλατε να το ανοίξετε;"
 
 msgid "Warning: NetworkManager service not found..."
-msgstr ""
+msgstr "Προειδοποίηση: Η υπηρεσία NetworkManager δε βρέθηκε..."
 
 msgid ""
 "You need a working internet connection in order to do this. You don't appear "
 "to have one right now."
 msgstr ""
+"Χρειάζεστε μία ενεργή σύνδεση στο διαδίκτυο για να το πραγματοποιήσετε αυτό. "
+"Δε φαίνεται να έχετε μία τέτοια σύνδεση αυτή τη στιγμή."
 
 msgid "Cannot launch {0}. Platform unknown..."
-msgstr ""
+msgstr "Αδυναμία εκκίνησης {0}. Άγνωστη πλατφόρμα..."
 
 msgid "Cannot explore {0}. Platform unknown..."
-msgstr ""
+msgstr "Αδυναμία εξερεύνησης {0}. Άγνωστη πλατφόρμα..."
 
 msgid "Configure Introduction"
 msgstr ""
 
 msgid "Configure Layout"
-msgstr ""
+msgstr "Ρύθμιση διάταξης"
 
 msgid "Configure Recovery"
-msgstr ""
+msgstr "Ρυθμίσεις ανάκτησης"
 
 msgid "Configure Filters"
-msgstr ""
+msgstr "Ρυθμίσεις φίλτρων"
 
 msgid "Configure Advanced"
-msgstr ""
+msgstr "Προχωρημένες ρυθμίσεις"
 
 msgid "Location/"
-msgstr ""
+msgstr "Τοποθεσία/"
 
 msgid "Martian Month/"
-msgstr ""
+msgstr "Αρειανός μήνας/"
 
 msgid "Sensor Band Type/"
 msgstr ""
@@ -525,14 +531,15 @@ msgid "Mission Solar Day/"
 msgstr ""
 
 msgid "Photograph.png"
-msgstr ""
+msgstr "Photograph.png"
 
 msgid ""
 "Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>."
 msgstr ""
+"Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>."
 
 msgid "Avaneya Website"
-msgstr ""
+msgstr "Ιστοσελίδα Avaneya"
 
 msgid ""
 "These options configure some advanced VikingExtractor features. If you are "
@@ -595,38 +602,6 @@ msgid ""
 msgstr ""
 
 msgid ""
-"These configuration settings allow you to filter which specific types of "
-"data you are interested. If you leave these at their defaults, everything "
-"that can be recovered will be.\n"
-"\n"
-"If you are unsure about any option, just <b>hover</b> your mouse over it for "
-"an explanation. The default configuration is recommended."
-msgstr ""
-
-msgid ""
-"Extract from matching Viking lander diode filters. These include colour, "
-"infrared, sun, or survey. By default, all diode filters are acceptable."
-msgstr ""
-
-msgid "<b>Diode Filter:</b>"
-msgstr ""
-
-msgid ""
-"Perform an extraction of only images taken by a particular lander. Viking "
-"lander 2 touched down on <i>Utopia Planitia</i> and Viking lander 1 on "
-"<i>Chryse Planitia</i>."
-msgstr ""
-
-msgid ""
-"Perform an extraction of only images taken by a particular lander. Viking "
-"lander 2 touched down on Utopia Planitia and Viking lander 1 on Chryse "
-"Planitia."
-msgstr ""
-
-msgid "<b>Lander Filter:</b>"
-msgstr ""
-
-msgid ""
 "The <b>VikingExtractor</b> has many different configuration options that "
 "control how it recovers images and what it does with them. Over the next few "
 "steps we'll configure them.\n"
@@ -662,7 +637,7 @@ msgid ""
 msgstr ""
 
 msgid "Organize by Martian month"
-msgstr ""
+msgstr "Οργάνωση κατά Αρειανό μήνα"
 
 msgid ""
 "Organizes the images into subdirectories named after the month they were "
@@ -681,7 +656,7 @@ msgid ""
 msgstr ""
 
 msgid "?"
-msgstr ""
+msgstr ";"
 
 msgid ""
 "These options control how the VikingExtractor's image recovery works.\n"
@@ -691,7 +666,7 @@ msgid ""
 msgstr ""
 
 msgid "No automatic rotation"
-msgstr ""
+msgstr "Όχι αυτόματη περιστροφή"
 
 msgid ""
 "A given fully rendered image in the Viking Lander image archive might be "
@@ -714,6 +689,10 @@ msgid ""
 "leave it set to the default."
 msgstr ""
 
+#. This is set at runtime. Don't bother to translate.
+msgid "(set at runtime)"
+msgstr ""
+
 msgid ""
 "The following is a summary of the configuration <b>VikingExtractor</b> will "
 "use for this session. If you would like to change anything, you can go back. "
@@ -725,9 +704,37 @@ msgid ""
 "corrupted to be recoverable."
 msgstr ""
 
-#. This is set at runtime. Don't bother to translate.
-msgid "(set at runtime)"
+msgid ""
+"These configuration settings allow you to filter which specific types of "
+"data you are interested. If you leave these at their defaults, everything "
+"that can be recovered will be.\n"
+"\n"
+"If you are unsure about any option, just <b>hover</b> your mouse over it for "
+"an explanation. The default configuration is recommended."
 msgstr ""
+
+msgid ""
+"Extract from matching Viking lander diode filters. These include colour, "
+"infrared, sun, or survey. By default, all diode filters are acceptable."
+msgstr ""
+
+msgid "<b>Diode Filter:</b>"
+msgstr ""
+
+msgid ""
+"Perform an extraction of only images taken by a particular lander. Viking "
+"lander 2 touched down on <i>Utopia Planitia</i> and Viking lander 1 on "
+"<i>Chryse Planitia</i>."
+msgstr ""
+
+msgid ""
+"Perform an extraction of only images taken by a particular lander. Viking "
+"lander 2 touched down on Utopia Planitia and Viking lander 1 on Chryse "
+"Planitia."
+msgstr ""
+
+msgid "<b>Lander Filter:</b>"
+msgstr "<b>Φίλτρο προσεδάφισης:</b>"
 
 msgid ""
 "Congratulations! The mission data forensic recovery has completed. To "
@@ -756,10 +763,10 @@ msgid ""
 msgstr ""
 
 msgid "Yes, download the latest copy."
-msgstr ""
+msgstr "Ναι, μεταφόρτωση του τελευταίου αντιγράφου."
 
 msgid "???"
-msgstr ""
+msgstr ";;;"
 
 msgid ""
 "This window contains the output from the VikingExtractor process while it "
@@ -767,7 +774,7 @@ msgid ""
 msgstr ""
 
 msgid "Please wait..."
-msgstr ""
+msgstr "Παρακαλώ περιμένετε..."
 
 msgid ""
 "Please select an <b>empty</b> folder below. This folder will be used to save "
@@ -776,7 +783,7 @@ msgid ""
 msgstr ""
 
 msgid "Select folder to store recovered images"
-msgstr ""
+msgstr "Επιλογή φακέλου για αποθήκευση ανακτημένων εικόνων"
 
 msgid "Overwrite existing output files"
 msgstr ""
@@ -787,36 +794,11 @@ msgid ""
 msgstr ""
 
 msgid "Avaneya"
-msgstr ""
+msgstr "Avaneya"
 
 msgid ""
 "Please wait while your mission data's integrity is verified. You can safely "
 "stop this process at any time, if you wish."
-msgstr ""
-
-msgid ""
-"We have a <b>low volume</b> announcement mailing list that we use to make "
-"press releases and other public announcements. We would love to keep you in "
-"the loop. <i>We will never deliberately pass your information on to a third "
-"party.</i>"
-msgstr ""
-
-msgid "Yes, please subscribe me."
-msgstr ""
-
-msgid "<b>Name:</b>"
-msgstr ""
-
-msgid "<b>Email:</b>"
-msgstr ""
-
-msgid "<b>Password:</b>"
-msgstr ""
-
-msgid "<b>Password again:</b>"
-msgstr ""
-
-msgid "Thanks, but I think I'll pass."
 msgstr ""
 
 msgid ""
@@ -834,4 +816,29 @@ msgid "Perform DVD integrity check"
 msgstr ""
 
 msgid "Skip DVD integrity check"
+msgstr ""
+
+msgid ""
+"We have a <b>low volume</b> announcement mailing list that we use to make "
+"press releases and other public announcements. We would love to keep you in "
+"the loop. <i>We will never deliberately pass your information on to a third "
+"party.</i>"
+msgstr ""
+
+msgid "Yes, please subscribe me."
+msgstr "Ναι, παρακαλώ θέλω να γίνω συνδρομητής."
+
+msgid "<b>Name:</b>"
+msgstr "<b>Όνομα:</b>"
+
+msgid "<b>Email:</b>"
+msgstr "<b>Ηλεκτρονική διεύθυνση:</b>"
+
+msgid "<b>Password:</b>"
+msgstr "<b>Κωδικός πρόσβασης:</b>"
+
+msgid "<b>Password again:</b>"
+msgstr "<b>Κωδικός πρόσβασης ξανά:</b>"
+
+msgid "Thanks, but I think I'll pass."
 msgstr ""

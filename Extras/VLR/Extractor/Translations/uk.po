@@ -1,202 +1,216 @@
 # Ukrainian translation for avaneya
 # Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
 # This file is distributed under the same license as the avaneya package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
 #
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+# Yuri Chornoivan <yurchor@ukr.net>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-05-27 00:24-0700\n"
-"PO-Revision-Date: 2013-05-30 03:59+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-05 13:08-0700\n"
+"PO-Revision-Date: 2013-06-06 02:18+0000\n"
+"Last-Translator: yurchor <Unknown>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-01 05:31+0000\n"
-"X-Generator: Launchpad (build 16660)\n"
+"X-Launchpad-Export-Date: 2013-06-06 05:35+0000\n"
+"X-Generator: Launchpad (build 16667)\n"
+"Language: uk\n"
 
 #. Initialize the channel map...
 msgid "error: "
-msgstr ""
+msgstr "помилка: "
 
 msgid "info: "
-msgstr ""
+msgstr "інформація: "
 
 msgid "warning: "
-msgstr ""
+msgstr "попередження: "
 
 msgid "could not emit 'Notification' signal..."
-msgstr ""
+msgstr "не вдалося видати сигнал «Notification»…"
 
 msgid "could not emit 'Progress' signal..."
-msgstr ""
+msgstr "не вдалося видати сигнал «Progress»…"
 
 #, c-format
 msgid "Method %s.%s is not implemented."
-msgstr ""
+msgstr "Метод %s.%s не реалізовано."
 
 msgid "could not register service with session bus..."
-msgstr ""
+msgstr "не вдалося зареєструвати службу за допомогою каналу сеансу…"
 
 #. Alert user...
 msgid "registering on the session bus..."
-msgstr ""
+msgstr "реєструємо канал сеансу…"
 
 msgid "could not parse introspection XML"
-msgstr ""
+msgstr "не вдалося обробити XML з даними самоаналізу"
 
 msgid "could not connect with the session bus"
-msgstr ""
+msgstr "не вдалося встановити з’єднання з каналом сеансу"
 
 msgid "glib main loop quit unexpectedly..."
-msgstr ""
+msgstr "основний цикл glib несподівано завершив роботу…"
 
 msgid "invalid logical record label"
-msgstr ""
+msgstr "некоректна мітка логічного запису"
 
 msgid "failed to read from input stream"
-msgstr ""
+msgstr "не вдалося прочитати дані з вхідного потоку"
 
 msgid "unsupported diode filter class: "
-msgstr ""
+msgstr "непідтримуваний клас фільтрів діодів: "
 
 msgid "invalid lander filter"
 msgstr ""
 
 msgid "cannot reconstruct image from unsupported diode band type"
 msgstr ""
+"неможливо відновити зображення, отримане на основі непідтримуваного типу "
+"смуги діодів"
 
 msgid "Unreconstructable/"
-msgstr ""
+msgstr "Невідновлювані/"
 
 msgid "Unknown Location/"
-msgstr ""
+msgstr "Невідоме місце/"
 
 #. Set the error message and abort...
 msgid "could not create output directory for file"
-msgstr ""
+msgstr "не вдалося створити каталог для виведення даних для файла"
 
 msgid ""
 "output metadata already exists, not overwriting (use --overwrite to override)"
 msgstr ""
+"виявлено оброблені метадані, не будемо їх перезаписувати (скористайтеся --"
+"overwrite, щоб перевизначити)"
 
 #. Just give a warning and abort...
 msgid "couldn't save metadata"
-msgstr ""
+msgstr "не вдалося зберегти метадані"
 
 msgid ""
 "The following is a machine generated collection of metadata of each of\n"
-msgstr ""
+msgstr "Нижче наведено створену комп’ютером збірку метаданих кожної зі\n"
 
 msgid "the image bands used to reconstruct a colour image.\n"
 msgstr ""
+"смуг зображення, використаної для відновлення кольорового зображення.\n"
 
 msgid "basic heuristic method: "
-msgstr ""
+msgstr "базовий евристичний метод: "
 
 msgid "camera azimuth / elevation: "
-msgstr ""
+msgstr "азимут/висота камери: "
 
 msgid "camera event: "
-msgstr ""
+msgstr "момент камери: "
 
 msgid "camera event solar day: "
-msgstr ""
+msgstr "сонячний день моменту камери: "
 
 msgid "diode band type: "
-msgstr ""
+msgstr "тип смуги діодів: "
 
 msgid "file size: "
-msgstr ""
+msgstr "розмір файла: "
 
 msgid "input file: "
-msgstr ""
+msgstr "вхідний файл: "
 
 msgid "magnetic tape: "
-msgstr ""
+msgstr "магнітна стрічка: "
 
 msgid "magnetic tape file ordinal: "
-msgstr ""
+msgstr "порядковий номер файла на магнітній стрічці: "
 
 #. Alert user if verbose mode enabled...
 msgid "mean pixel value: "
-msgstr ""
+msgstr "середнє значення за пікселями: "
 
 msgid "month: "
-msgstr ""
+msgstr "місяць: "
 
 msgid "overlay axis present: "
-msgstr ""
+msgstr "наявність накладної вісі: "
 
 msgid "overlay full histogram present: "
-msgstr ""
+msgstr "наявність накладної повної гістограми: "
 
 msgid "physical record size: "
-msgstr ""
+msgstr "розмір фізичного запису: "
 
 msgid "physical record padding: "
-msgstr ""
+msgstr "рамка фізичного запису: "
 
 msgid "phase offset required: "
-msgstr ""
+msgstr "потрібний фазовий відступ: "
 
 #. Show user, if requested...
 msgid "raw image offset: "
-msgstr ""
+msgstr "відступ необробленого зображення: "
 
 msgid "cannot reconstruct, dumped all bands"
-msgstr ""
+msgstr "не вдалося відновити, створено дамп усіх смуг"
 
 msgid "output already exists, not overwriting (use --overwrite to override)"
 msgstr ""
+"виявлено оброблені дані, не будемо їх перезаписувати (скористайтеся --"
+"overwrite, щоб перевизначити)"
 
 msgid ""
 "images for each band present, but no matching set of full histogram variants "
 "available"
 msgstr ""
+"виявлено зображення для кожної зі смуг, але не виявлено відповідного набору "
+"варіантів повної гістограми"
 
 msgid ""
 "images for each band present, but no matching set of non-overlayed variants "
 "available"
 msgstr ""
+"виявлено зображення для кожної зі смуг, але не виявлено відповідного набору "
+"ненакладених варіантів"
 
 msgid "image bands not all the same size, may be missing scanlines"
 msgstr ""
+"смуги зображення мають різні розміри, ймовірно, пропущено рядки сканування"
 
 msgid "unable to open input directory for indexing "
-msgstr ""
+msgstr "не вдалося відкрити каталог вхідних даних для індексування "
 
 msgid "could not stat "
-msgstr ""
+msgstr "не вдалося створити статистичні дані "
 
 #. Alert user...
 msgid "indexing mission data, please wait..."
-msgstr ""
+msgstr "індексуємо дані завдання, будь ласка, зачекайте…"
 
 #. Provide a notification to the Viking Lander Launcher...
 msgid "Indexing mission data, please wait..."
-msgstr ""
+msgstr "Індексуємо дані завдання, будь ласка, зачекайте…"
 
 msgid "no prospective files found"
-msgstr ""
+msgstr "не виявлено очікуваних файлів"
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Analyzing mission data, please wait..."
-msgstr ""
+msgstr "Аналізуємо дані завдання, зачекайте…"
 
 msgid "studying mission data index of "
-msgstr ""
+msgstr "вивчаємо індекс даних завдання "
 
 msgid ", skipping"
-msgstr ""
+msgstr ", пропускаємо"
 
 msgid " (--ignore-bad-files to skip)"
-msgstr ""
+msgstr " (скористайтеся --ignore-bad-files, щоб пропустити)"
 
 msgid "filtering "
-msgstr ""
+msgstr "фільтрування "
 
 msgid " type diode bands (--filter-diode[=type] to change)"
 msgstr ""
@@ -215,96 +229,98 @@ msgid "Attempting forensic mission data recovery..."
 msgstr ""
 
 msgid "attempting reconstruction "
-msgstr ""
+msgstr "намагаємося відновити "
 
 msgid "dumping components from "
-msgstr ""
+msgstr "створюємо дамп компонентів з "
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Recovery completed..."
-msgstr ""
+msgstr "Відновлення завершено…"
 
 msgid "successfully reconstructed "
-msgstr ""
+msgstr "успішно відновлено "
 
 msgid " unreconstructable components dumped"
 msgstr ""
 
 msgid "dumped "
-msgstr ""
+msgstr "створено дамп "
 
 msgid " image components without reconstruction"
-msgstr ""
+msgstr " компоненти зображення без реконструкції"
 
 msgid "image should be rotated 90 counterclockwise"
-msgstr ""
+msgstr "зображення слід обернути на 90 проти годинникової стрілки"
 
 msgid "image should be rotated 180 counterclockwise"
-msgstr ""
+msgstr "зображення слід обернути на 180 проти годинникової стрілки"
 
 msgid "image should be rotated 270 counterclockwise"
-msgstr ""
+msgstr "зображення слід обернути на 270 проти годинникової стрілки"
 
 msgid "image does not need to be rotated"
-msgstr ""
+msgstr "у обертанні зображення немає потреби"
 
 msgid "could not guess image rotation"
-msgstr ""
+msgstr "не вдалося визначити кут обертання зображення"
 
 msgid "GNU Ocrad failed to initialize"
-msgstr ""
+msgstr "Не вдалося ініціалізувати GNU Ocrad"
 
 #. Set error message...
 msgid "could not set OCR image"
-msgstr ""
+msgstr "не вдалося встановити зображення для розпізнавання тексту"
 
 #. Set error message...
 msgid "OCR pass failed"
-msgstr ""
+msgstr "помилка під час розпізнавання символів"
 
 msgid "input was not loaded"
-msgstr ""
+msgstr "вхідні дані не завантажено"
 
 msgid "could not open input for reading"
-msgstr ""
+msgstr "не вдалося відкрити вхідні дані для читання"
 
 msgid "file ended prematurely before raw image"
-msgstr ""
+msgstr "передчасне завершення файла до даних необробленого зображення"
 
 msgid "band data extraction i/o error"
-msgstr ""
+msgstr "помилка введення/виведення під час видобування даних смуги"
 
 #. Be verbose...
 msgid "loading"
-msgstr ""
+msgstr "завантаження"
 
 msgid ""
 "empty file, probably blank magnetic tape or not received back on Earth"
 msgstr ""
+"порожній файл, ймовірно порожня магнітна стрічка або сигнал не було отримано "
+"на Землі"
 
 msgid "too small to be interesting (< 4 KB)"
-msgstr ""
+msgstr "занадто малий, щоб містити цікаві дані (< 4 кБ)"
 
 msgid "header is not intact, or not a VICAR file"
-msgstr ""
+msgstr "заголовок було змінено або файл не є файлом VICAR"
 
 msgid "header intact, but requires "
-msgstr ""
+msgstr "заголовок не змінено, але потрібний "
 
 msgid " byte phase offset"
-msgstr ""
+msgstr " -байтовий відступ фази"
 
 msgid "did not originate from a Viking Lander"
-msgstr ""
+msgstr "не походить від Viking Lander"
 
 msgid "entering physical record "
-msgstr ""
+msgstr "входимо до фізичного запису "
 
 msgid " starting at "
-msgstr ""
+msgstr " починаємо з "
 
 msgid "extracting logical record "
-msgstr ""
+msgstr "видобуваємо логічний запис "
 
 msgid "/5 starting at "
 msgstr ""
@@ -326,7 +342,7 @@ msgid "seeking passed "
 msgstr ""
 
 msgid " physical record padding"
-msgstr ""
+msgstr " рамка фізичного запису"
 
 msgid "unable to locate last logical record label"
 msgstr ""
@@ -359,38 +375,38 @@ msgid "unsupported pixel format"
 msgstr ""
 
 msgid "unsupported colour bit depth"
-msgstr ""
+msgstr "непідтримувана глибина кольорів"
 
 #. If verbosity is set, display basic metadata...
 msgid "basic metadata parser heuristic: "
 msgstr ""
 
 msgid "bands: "
-msgstr ""
+msgstr "смуги: "
 
 msgid "height: "
-msgstr ""
+msgstr "висота: "
 
 msgid "width: "
-msgstr ""
+msgstr "ширина: "
 
 msgid "raw band data size: "
 msgstr ""
 
 msgid " bytes"
-msgstr ""
+msgstr " байтів"
 
 msgid "format: integral"
 msgstr ""
 
 msgid "bytes per colour: "
-msgstr ""
+msgstr "байтів на колір: "
 
 msgid "photosensor diode band type: "
-msgstr ""
+msgstr "тип смуги діодів фотодатчика: "
 
 msgid "possible physical record padding: "
-msgstr ""
+msgstr "можлива рамка фізичного запису: "
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 1 basic metadata parser"
@@ -421,24 +437,24 @@ msgstr ""
 
 #. Alert user if verbose mode enabled...
 msgid "psa directional vector: "
-msgstr ""
+msgstr "вектор напрямку psa: "
 
 msgid "camera event label: "
-msgstr ""
+msgstr "мітка моменту камери: "
 
 msgid "bad lander number"
-msgstr ""
+msgstr "помилковий номер посадкового модуля"
 
 #. Be verbose if requested...
 msgid "lander number: "
-msgstr ""
+msgstr "номер посадкового модуля: "
 
 msgid "filtering non-matching lander"
 msgstr ""
 
 #. Set caller hint and return unsupported...
 msgid "monocolour unsupported"
-msgstr ""
+msgstr "підтримки монохромних даних не передбачено"
 
 #. Set caller hint and return unsupported...
 msgid "unidentifiable broadband"
@@ -446,16 +462,16 @@ msgstr ""
 
 #. Set hint and return unknown...
 msgid "none detected"
-msgstr ""
+msgstr "не виявлено жодного"
 
 msgid "filtering non-matching solar day"
-msgstr ""
+msgstr "фільтруємо невідповідний сонячний день"
 
 msgid "filtering non-matching camera event"
-msgstr ""
+msgstr "фільтруємо невідповідний момент камери"
 
 msgid "Options:\n"
-msgstr ""
+msgstr "Параметри:\n"
 
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
@@ -478,10 +494,10 @@ msgid ""
 msgstr ""
 
 msgid "                              Don't write anything.\n"
-msgstr ""
+msgstr "                              Нічого не записувати.\n"
 
 msgid "                              Show this help.\n"
-msgstr ""
+msgstr "                              Показати цю довідкову інформацію.\n"
 
 msgid ""
 "                              Don't stop on corrupt or problematic input "
@@ -536,6 +552,8 @@ msgstr ""
 msgid ""
 "                              Don't automatically rotate image as needed.\n"
 msgstr ""
+"                              Не виконувати автоматичного обертання "
+"зображень.\n"
 
 msgid ""
 "                              Don't attempt to reconstruct camera events, "
@@ -546,27 +564,36 @@ msgstr ""
 
 msgid "                              Overwrite any existing output files.\n"
 msgstr ""
+"                              Перезаписувати наявні файли виведених даних.\n"
 
 msgid ""
 "                              Scan subfolders as well if input is a "
 "directory.\n"
 msgstr ""
+"                              Шукати дані і у підкаталогах, якщо вказано "
+"каталог з вхідними даними.\n"
 
 msgid ""
 "                              Show summary of progress and final results "
 "only.\n"
 msgstr ""
+"                              Показати лише резюме щодо поступу і остаточні "
+"результати.\n"
 
 msgid "                              Suppress all warnings and errors.\n"
 msgstr ""
+"                              Не показувати повідомлень щодо попереджень і "
+"помилок.\n"
 
 msgid "                              Be verbose\n"
-msgstr ""
+msgstr "                              Докладний режим\n"
 
 msgid ""
 "                              Show version information\n"
 "\n"
 msgstr ""
+"                              Показати інформацію щодо версії\n"
+"\n"
 
 msgid ""
 "Converts 1970s Viking Lander era VICAR colour images to PNGs. The value of\n"
@@ -577,7 +604,7 @@ msgid ""
 msgstr ""
 
 msgid "Report bugs to "
-msgstr ""
+msgstr "Про вади повідомляйте на адресу "
 
 msgid ""
 "Copyright (C) 2010-2013 Cartesian Theatre.\n"
@@ -587,26 +614,27 @@ msgid ""
 msgstr ""
 
 msgid "Configured with: "
-msgstr ""
+msgstr "Налаштовано для роботи з: "
 
 msgid "parallelization is not implemented yet, using single thread"
-msgstr ""
+msgstr "паралелізацію ще не реалізовано, використовуємо один потік обробки"
 
 msgid "summarize only and verbose modes cannot both be used"
 msgstr ""
 
 msgid " linked against incompatible GNU Ocrad version "
-msgstr ""
+msgstr " скомпоновано з несумісною версією GNU Ocrad "
 
 msgid "GNU Ocrad needs to be at least 0.21, but got "
 msgstr ""
+"Для роботи потрібен GNU Ocrad версії новішої за 0.21, втім, виявлено "
 
 #. Alert, abort...
 msgid "need input file or directory, see --help"
-msgstr ""
+msgstr "слід вказати файл або каталог вхідних даних, див. --help"
 
 msgid "unknown parameter "
-msgstr ""
+msgstr "невідомий параметр "
 
 msgid "), see --help"
-msgstr ""
+msgstr "), див. --help"

@@ -83,6 +83,13 @@ class ConfigurePagesProxy(PageProxyBase):
         self.directorizeMonthCheckButton.connect("toggled", self.onDirectorizeToggle)
         self.directorizeSolCheckButton.connect("toggled", self.onDirectorizeToggle)
 
+        # Load the Viking lander model animation...
+        animation = GdkPixbuf.PixbufAnimation.new_from_file(
+            os.path.join(
+                LauncherArguments.getArguments().dataRoot, "VikingLanderModel.gif"))
+        self._vikingModelImage.set_from_animation(animation)
+        self._vikingModelImage.show()
+
         # Update the example path...
         self._updateExamplePath()
 
@@ -97,23 +104,6 @@ class ConfigurePagesProxy(PageProxyBase):
         #  button isn't visible prematurely in the assistant...
         if currentPageIndex == self.getAbsoluteIndex(4):
             self._assistant.set_page_complete(self.getPageInGroup(4), True)
-
-        # Load the verification animation, if first page...
-        if currentPageIndex == self.getAbsoluteIndex(0):
-            animation = GdkPixbuf.PixbufAnimation.new_from_file(
-                os.path.join(
-                    LauncherArguments.getArguments().dataRoot, "VikingLanderModel.gif"))
-            self._vikingModelImage.set_from_animation(animation)
-            self._vikingModelImage.show()
-        
-        # Otherwise unload it if not visible...
-        else:
-            
-            # It is necessary to unload the animation via something like 
-            #  set_from_stock() because GObject introspection at the time was
-            #  busted to shit for None parameter to set_from_animation()...
-            self._vikingModelImage.set_from_stock(
-                Gtk.STOCK_MISSING_IMAGE, Gtk.IconSize.BUTTON)
 
     # Any of the directorize buttons were toggled. Update the example path...
     def onDirectorizeToggle(self, toggleButton):
