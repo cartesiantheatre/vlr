@@ -31,6 +31,8 @@
     #include <iostream>
     #include <cassert>
     #include <cstdlib>
+    #include <cstring>
+    #include <cerrno>
 
 // Using the standard namespace...
 using namespace std;
@@ -53,12 +55,28 @@ Console::Console()
 
     #if ENABLE_NLS
 
-        // Retrieve the current message domain...
-        textdomain(PACKAGE);
+        // Set the current message domain and check for error...
+        if(!textdomain(PACKAGE))
+        {
+            // Alert and abort...
+            cout << "error: failed to set text domain (" 
+                 << strerror(errno) << ")" << endl;
+            exit(EXIT_FAILURE);        
+        }
 
-        // Set the base directory for all translations...
-        if(!bindtextdomain(PACKAGE, LOCALEDIR))
-            exit(EXIT_FAILURE);
+        // Find the locale base directory...
+        
+            // Overridden through environment variable...
+            if(getenv("VE_LOCALE_DIR"))
+            {
+                // Alert and set...
+                cout << "VE_LOCALE_DIR=" << getenv("VE_LOCALE_DIR") << endl;
+                bindtextdomain(PACKAGE, getenv("VE_LOCALE_DIR"));
+            }
+
+            // Not overridden, use configure time default...
+            else
+                bindtextdomain(PACKAGE, LOCALEDIR);
 
     #endif
 

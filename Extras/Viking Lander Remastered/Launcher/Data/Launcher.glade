@@ -45,16 +45,10 @@
       </object>
     </child>
   </object>
-  <object class="GtkImage" id="handbookLicenseImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">HandbookLicense.png</property>
-  </object>
   <object class="GtkBox" id="configureAdvancedPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="orientation">vertical</property>
-    <property name="spacing">20</property>
     <child>
       <object class="GtkBox" id="box20">
         <property name="visible">True</property>
@@ -98,7 +92,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">0</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -185,201 +179,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="padding">10</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
-    </child>
-  </object>
-  <object class="GtkBox" id="configureFiltersPageBox">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="orientation">vertical</property>
-    <child>
-      <object class="GtkBox" id="box19">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="valign">center</property>
-        <property name="vexpand">True</property>
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkBox" id="box26">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkImage" id="image5">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="xpad">10</property>
-                <property name="pixbuf">Lens.png</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label9">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">These configuration settings allow you to filter which specific types of data you are interested. If you leave these at their defaults, everything that can be recovered will be.
-
-If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is recommended.</property>
-                <property name="use_markup">True</property>
-                <property name="wrap">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="box3">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">center</property>
-            <property name="border_width">20</property>
-            <property name="spacing">10</property>
-            <child>
-              <object class="GtkFrame" id="frame1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label_xalign">0</property>
-                <child>
-                  <object class="GtkAlignment" id="alignment1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="left_padding">12</property>
-                    <child>
-                      <object class="GtkBox" id="box1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="border_width">10</property>
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">10</property>
-                        <child>
-                          <object class="GtkComboBox" id="diodeFilterComboBox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="has_tooltip">True</property>
-                            <property name="tooltip_markup" translatable="yes">Extract from matching Viking lander diode filters. These include colour, infrared, sun, or survey. By default, all diode filters are acceptable.</property>
-                            <property name="tooltip_text" translatable="yes">Extract from matching Viking lander diode filters. These include colour, infrared, sun, or survey. By default, all diode filters are acceptable.</property>
-                            <property name="model">diodeFilterListStore</property>
-                            <property name="active">0</property>
-                            <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext1"/>
-                              <attributes>
-                                <attribute name="markup">0</attribute>
-                                <attribute name="text">0</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="label">
-                  <object class="GtkLabel" id="label10">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Diode Filter:&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkFrame" id="frame2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label_xalign">0</property>
-                <child>
-                  <object class="GtkAlignment" id="alignment2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="has_tooltip">True</property>
-                    <property name="tooltip_markup" translatable="yes">Perform an extraction of only images taken by a particular lander. Viking lander 2 touched down on &lt;i&gt;Utopia Planitia&lt;/i&gt; and Viking lander 1 on &lt;i&gt;Chryse Planitia&lt;/i&gt;.</property>
-                    <property name="tooltip_text" translatable="yes">Perform an extraction of only images taken by a particular lander. Viking lander 2 touched down on Utopia Planitia and Viking lander 1 on Chryse Planitia.</property>
-                    <property name="left_padding">12</property>
-                    <child>
-                      <object class="GtkBox" id="box2">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip_markup" translatable="yes">Perform an extraction of only images taken by a particular lander. Viking lander 2 touched down on &lt;i&gt;Utopia Planitia&lt;/i&gt; and Viking lander 1 on &lt;i&gt;Chryse Planitia&lt;/i&gt;.</property>
-                        <property name="tooltip_text" translatable="yes">Perform an extraction of only images taken by a particular lander. Viking lander 2 touched down on Utopia Planitia and Viking lander 1 on Chryse Planitia.</property>
-                        <property name="border_width">10</property>
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">10</property>
-                        <child>
-                          <object class="GtkComboBox" id="landerFilterComboBox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="model">landerFilterListStore</property>
-                            <property name="active">0</property>
-                            <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext2"/>
-                              <attributes>
-                                <attribute name="markup">0</attribute>
-                                <attribute name="text">0</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="label">
-                  <object class="GtkLabel" id="label11">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Lander Filter:&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
@@ -400,14 +200,15 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
         <property name="can_focus">False</property>
         <property name="vexpand">True</property>
         <child>
-          <object class="GtkImage" id="image3">
+          <object class="GtkImage" id="vikingModelImage">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="pixbuf">Configure.png</property>
+            <property name="stock">gtk-missing-image</property>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+            <property name="padding">10</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -704,6 +505,9 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
       </packing>
     </child>
   </object>
+  <object class="GtkTextBuffer" id="confirmTextBuffer">
+    <property name="text" translatable="yes" comments="This is set at runtime. Don't bother to translate.">(set at runtime)</property>
+  </object>
   <object class="GtkBox" id="confirmPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -714,7 +518,7 @@ If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse ove
         <property name="can_focus">False</property>
         <property name="vexpand">True</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">10</property>
+        <property name="spacing">20</property>
         <child>
           <object class="GtkLabel" id="label13">
             <property name="visible">True</property>
@@ -764,9 +568,6 @@ This next page will contain the output from the &lt;b&gt;VikingExtractor&lt;/b&g
       </packing>
     </child>
   </object>
-  <object class="GtkTextBuffer" id="confirmTextBuffer">
-    <property name="text" translatable="yes" comments="This is set at runtime. Don't bother to translate.">(set at runtime)</property>
-  </object>
   <object class="GtkListStore" id="diodeFilterListStore">
     <columns>
       <!-- column-name DiodeBandTypeClass -->
@@ -797,6 +598,200 @@ This next page will contain the output from the &lt;b&gt;VikingExtractor&lt;/b&g
       </row>
     </data>
   </object>
+  <object class="GtkBox" id="configureFiltersPageBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkBox" id="box19">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="valign">center</property>
+        <property name="vexpand">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkBox" id="box26">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkImage" id="image5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xpad">10</property>
+                <property name="pixbuf">Lens.png</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label9">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">These configuration settings allow you to filter which specific types of data you are interested. If you leave these at their defaults, everything that can be recovered will be.
+
+If you are unsure about any option, just &lt;b&gt;hover&lt;/b&gt; your mouse over it for an explanation. The default configuration is recommended.</property>
+                <property name="use_markup">True</property>
+                <property name="wrap">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="border_width">20</property>
+            <property name="spacing">10</property>
+            <child>
+              <object class="GtkFrame" id="frame1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0</property>
+                <child>
+                  <object class="GtkAlignment" id="alignment1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="left_padding">12</property>
+                    <child>
+                      <object class="GtkBox" id="box1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="border_width">10</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">10</property>
+                        <child>
+                          <object class="GtkComboBox" id="diodeFilterComboBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="has_tooltip">True</property>
+                            <property name="tooltip_markup" translatable="yes">Extract from matching Viking lander diode filters. These include colour, infrared, sun, or survey. By default, all diode filters are acceptable.</property>
+                            <property name="tooltip_text" translatable="yes">Extract from matching Viking lander diode filters. These include colour, infrared, sun, or survey. By default, all diode filters are acceptable.</property>
+                            <property name="model">diodeFilterListStore</property>
+                            <property name="active">0</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                              <attributes>
+                                <attribute name="markup">0</attribute>
+                                <attribute name="text">0</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLabel" id="label10">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Diode Filter:&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkFrame" id="frame2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0</property>
+                <child>
+                  <object class="GtkAlignment" id="alignment2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="has_tooltip">True</property>
+                    <property name="tooltip_markup" translatable="yes">Perform an extraction of only images taken by a particular lander. Viking lander 2 touched down on &lt;i&gt;Utopia Planitia&lt;/i&gt; and Viking lander 1 on &lt;i&gt;Chryse Planitia&lt;/i&gt;.</property>
+                    <property name="tooltip_text" translatable="yes">Perform an extraction of only images taken by a particular lander. Viking lander 2 touched down on Utopia Planitia and Viking lander 1 on Chryse Planitia.</property>
+                    <property name="left_padding">12</property>
+                    <child>
+                      <object class="GtkBox" id="box2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="has_tooltip">True</property>
+                        <property name="tooltip_markup" translatable="yes">Perform an extraction of only images taken by a particular lander. Viking lander 2 touched down on &lt;i&gt;Utopia Planitia&lt;/i&gt; and Viking lander 1 on &lt;i&gt;Chryse Planitia&lt;/i&gt;.</property>
+                        <property name="tooltip_text" translatable="yes">Perform an extraction of only images taken by a particular lander. Viking lander 2 touched down on Utopia Planitia and Viking lander 1 on Chryse Planitia.</property>
+                        <property name="border_width">10</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">10</property>
+                        <child>
+                          <object class="GtkComboBox" id="landerFilterComboBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="model">landerFilterListStore</property>
+                            <property name="active">0</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                              <attributes>
+                                <attribute name="markup">0</attribute>
+                                <attribute name="text">0</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLabel" id="label11">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Lander Filter:&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
   <object class="GtkImage" id="exploreMissionDataButtonImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -811,7 +806,6 @@ This next page will contain the output from the &lt;b&gt;VikingExtractor&lt;/b&g
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="hexpand">True</property>
-    <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkBox" id="box9">
@@ -913,10 +907,14 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
       </packing>
     </child>
   </object>
+  <object class="GtkImage" id="handbookLicenseImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">HandbookLicense.png</property>
+  </object>
   <object class="GtkBox" id="handbookPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkBox" id="box6">
@@ -1071,7 +1069,6 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="vexpand">True</property>
-    <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <property name="spacing">8</property>
     <child>
@@ -1158,34 +1155,78 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
       </object>
     </child>
   </object>
+  <object class="GtkAdjustment" id="recoveryTerminalAdjustment">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkBox" id="recoveryPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="orientation">vertical</property>
     <property name="spacing">2</property>
     <child>
-      <object class="GtkViewport" id="viewport2">
+      <object class="GtkFrame" id="frame3">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="vexpand">True</property>
-        <property name="shadow_type">etched-in</property>
+        <property name="label_xalign">0</property>
+        <property name="shadow_type">in</property>
         <child>
-          <object class="VteTerminal" id="recoveryTerminal">
+          <object class="GtkAlignment" id="alignment3">
             <property name="visible">True</property>
-            <property name="app_paintable">True</property>
-            <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">This window contains the output from the VikingExtractor process while it works.</property>
-            <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
-            <property name="hscroll_policy">natural</property>
-            <property name="vscroll_policy">natural</property>
-            <property name="background_saturation">1</property>
-            <property name="background_tint_color">#00000fa0ffff</property>
-            <property name="cursor_blink_mode">on</property>
-            <property name="encoding">UTF-8</property>
-            <property name="pointer_autohide">True</property>
-            <property name="scrollback_lines">5000</property>
-            <property name="scroll_on_keystroke">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkBox" id="box32">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="VteTerminal" id="recoveryTerminal">
+                    <property name="visible">True</property>
+                    <property name="app_paintable">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">This window contains the output from the VikingExtractor process while it works.</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="hscroll_policy">natural</property>
+                    <property name="vadjustment">recoveryTerminalAdjustment</property>
+                    <property name="vscroll_policy">natural</property>
+                    <property name="background_saturation">1</property>
+                    <property name="background_tint_color">#00000fa0ffff</property>
+                    <property name="cursor_blink_mode">on</property>
+                    <property name="encoding">UTF-8</property>
+                    <property name="pointer_autohide">True</property>
+                    <property name="scrollback_lines">5000</property>
+                    <property name="scroll_on_keystroke">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrollbar" id="scrollbar1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="adjustment">recoveryTerminalAdjustment</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLabel" id="label17">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="use_markup">True</property>
           </object>
         </child>
       </object>
@@ -1239,7 +1280,6 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
   <object class="GtkBox" id="selectRecoveryFolderPageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkBox" id="box15">
@@ -1364,7 +1404,6 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
     <property name="can_focus">False</property>
     <property name="valign">center</property>
     <property name="hexpand">True</property>
-    <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkBox" id="box21">
@@ -1456,10 +1495,118 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
       </packing>
     </child>
   </object>
+  <object class="GtkBox" id="verificationPromptPageBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">8</property>
+    <child>
+      <object class="GtkBox" id="box14">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="valign">center</property>
+        <property name="vexpand">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkBox" id="box12">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkImage" id="image1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="pixbuf">Verification.png</property>
+                <property name="icon-size">3</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">This disc contains a substantial amount of data that the recovery software will try to examine for recoverable images. Although we have optimized the data, it is still very large and may take a long time depending on the speed of your computer.
+
+Would you like to verify that the data contained on your disc is not corrupted? We recommend that you do this at least once, or if you suspect that your disc may be damaged.</property>
+                <property name="wrap">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box5">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="spacing">20</property>
+            <child>
+              <object class="GtkRadioButton" id="performVerificationCheckRadio">
+                <property name="label" translatable="yes">Perform DVD integrity check</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="xalign">0</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="skipVerificationCheckRadio">
+                <property name="label" translatable="yes">Skip DVD integrity check</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="xalign">0</property>
+                <property name="draw_indicator">True</property>
+                <property name="group">performVerificationCheckRadio</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+  </object>
   <object class="GtkBox" id="subscribePageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="border_width">20</property>
     <property name="orientation">vertical</property>
     <property name="spacing">8</property>
     <child>
@@ -1725,116 +1872,6 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
         <property name="expand">True</property>
         <property name="fill">True</property>
         <property name="position">1</property>
-      </packing>
-    </child>
-  </object>
-  <object class="GtkBox" id="verificationPromptPageBox">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="border_width">20</property>
-    <property name="orientation">vertical</property>
-    <property name="spacing">8</property>
-    <child>
-      <object class="GtkBox" id="box14">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="halign">center</property>
-        <property name="valign">center</property>
-        <property name="vexpand">True</property>
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkBox" id="box12">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkImage" id="image1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="pixbuf">Verification.png</property>
-                <property name="icon-size">3</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="label" translatable="yes">This disc contains a substantial amount of data that the recovery software will try to examine for recoverable images. Although we have optimized the data, it is still very large and may take a long time depending on the speed of your computer.
-
-Would you like to verify that the data contained on your disc is not corrupted? We recommend that you do this at least once, or if you suspect that your disc may be damaged.</property>
-                <property name="wrap">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="box5">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">center</property>
-            <property name="spacing">20</property>
-            <child>
-              <object class="GtkRadioButton" id="performVerificationCheckRadio">
-                <property name="label" translatable="yes">Perform DVD integrity check</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="xalign">0</property>
-                <property name="active">True</property>
-                <property name="draw_indicator">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkRadioButton" id="skipVerificationCheckRadio">
-                <property name="label" translatable="yes">Skip DVD integrity check</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="xalign">0</property>
-                <property name="draw_indicator">True</property>
-                <property name="group">performVerificationCheckRadio</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
       </packing>
     </child>
   </object>

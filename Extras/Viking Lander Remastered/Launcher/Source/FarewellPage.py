@@ -62,5 +62,5 @@ class FarewellPageProxy(PageProxyBase):
 
     # Explore source code button pressed. Open browser...
     def onExploreSourceCodeButton(self, button):
-        launchResource("https://bazaar.launchpad.net/~avaneya/avaneya/trunk/files/head:/Extras/Viking%20Lander%20Remastered/Extractor/")
+        launchResource("https://bazaar.launchpad.net/~avaneya/avaneya/trunk/files/head:/Extras/VLR/Extractor/")
 

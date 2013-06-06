@@ -41,7 +41,7 @@
     #include <iomanip>
     #include <dirent.h>
     #include <sys/stat.h>
-    #include <errno.h>
+    #include <cerrno>
     #include <fnmatch.h>
 
 // Using the standard namespace...

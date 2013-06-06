@@ -128,6 +128,24 @@ FindLauncherMain()
     fi
 }
 
+# Set the VikingExtractor's locale directory environment variable to point to 
+#  the DVD if found...
+SetVikingExtractorLocaleDirectory()
+{
+    # Alert user...
+    echo -n "Checking for local VikingExtractor l10n catalogue... "
+
+    # Check within local media...
+    if [ -f "$AutostartScriptDirectory/Extractor/share/locale/en_CA/LC_MESSAGES/viking-extractor.mo" ] ; then
+        VE_LOCALE_DIR="$AutostartScriptDirectory/Extractor/share/locale"
+        echo "$VE_LOCALE_DIR " $SymbolStatusOk
+
+    # Guess systems...
+    else
+	    echo $SymbolStatusFail
+    fi
+}
+
 # Signal trap to always run on exit... (e.g. ctrl-c)
 OnExit()
 {
@@ -306,41 +324,86 @@ PrepareDebianBased()
     declare -a local PackagesRequired;
 
     # Calculate which packages we need...
-    case "$DistroCodeName" in
+    case "$Distro" in
 
         # Note: Do not place commas between packages! Bash treats them as part
         #       of the array element...
 
-        # Ubuntu...
+        # Ubuntu based...
+        [Uu]buntu)
 
-            # Precise...
-            "precise")
-                PackagesRequired=("python3-gi")
-            ;;
-            
-            # Quantal...
-            "quantal")
-                PackagesRequired=("python3-gi")
-            ;;
-            
-            # Raring...
-            "raring")
-                PackagesRequired=("python3-gi")
+            # Which release?
+            case "$DistroCodeName" in
+
+                # Precise...
+                "precise")
+                    PackagesRequired=("python3-gi")
+                ;;
+                
+                # Quantal...
+                "quantal")
+                    PackagesRequired=("python3-gi")
+                ;;
+
+                # Raring...
+                "raring")
+                    PackagesRequired=("python3-gi")
+                ;;
+
+                # Unknown release...
+                *)
+                    # Try to guess...
+                    PackagesRequired=("python3-gi")
+                    echo "Warning: Unknown $Distro release ($DistroCodeName)." \
+                        "Guessing dependencies..."
+                ;;
+
+            esac
             ;;
 
-        # Fedora...
-            
-            # Beefy Miracle...
-            "Beefy Miracle")
-                PackagesRequired=("python3-gobject")
+        # Fedora based...
+        [Ff]edora)
+
+            # Which release?
+            case "$DistroCodeName" in
+
+                # Beefy Miracle...
+                "Beefy Miracle")
+                    PackagesRequired=("python3-gobject")
+                ;;
+
+                # Unknown release...
+                *)
+                    # Try to guess...
+                    PackagesRequired=("python3-gobject")
+                    echo "Warning: Unknown $Distro release ($DistroCodeName)." \
+                        "Guessing dependencies..."
+                ;;
+
+            esac
             ;;
 
         # Debian...
-        
-            # Debian Wheezy. Squeeze doesn't have the latter two needed
-            #  packages...
-            "wheezy")
-                PackagesRequired=("python3-gi")
+        [Dd]ebian)
+
+            # Which release?
+            case "$DistroCodeName" in
+                
+                # Debian Wheezy. Squeeze doesn't have the latter two needed
+                #  packages...
+                "wheezy")
+                    PackagesRequired=("python3-gi")
+                ;;
+
+                # Unknown release...
+                *)
+                    # Try to guess...
+                    PackagesRequired=("python3-gi")
+                    echo "Warning: Unknown $Distro release ($DistroCodeName)." \
+                        "Guessing dependencies..."
+                ;;
+
+            esac
             ;;
 
         # Unknown distro...
@@ -478,7 +541,9 @@ CheckRPMInstalled()
 
     # Check if the package is installed...
     echo -n "Checking if $Package is installed... "
-    yum list installed $Package &> /dev/null
+    $OldLanguage=$LANGUAGE
+    LANGUAGE="C" yum list installed $Package &> /dev/null
+    $LANGUAGE=$OldLanguage
 
     # Installed...
     if [ $? == 0 ]
@@ -591,6 +656,10 @@ Main()
 
     # Find the launcher...
     FindLauncherMain
+    
+    # Set the VikingExtractor locale directory environment if running off of
+    #  disc and not in standard FHS..
+    SetVikingExtractorLocaleDirectory
 
     # Run the launcher...
     echo -n "Launching GUI using... "

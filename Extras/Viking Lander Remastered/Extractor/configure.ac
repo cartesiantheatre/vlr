@@ -138,7 +138,7 @@ AC_LANG([C++])
     PKG_PROG_PKG_CONFIG([0.25])
 
     # Standard C++ library headers...
-    AC_CHECK_HEADERS([algorithm cassert cstdlib errno.h iomanip limits map ostream set sstream vector], [],
+    AC_CHECK_HEADERS([algorithm cassert cerrno cstdlib iomanip limits map ostream set sstream vector], [],
         [AC_MSG_ERROR([missing some required standard C++ headers...])])
     
     # POSIX headers...

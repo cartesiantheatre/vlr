@@ -70,7 +70,7 @@ class PageProxyBase(object):
 
         # We need to update the image size every time the page is resized, and 
         #  consequently, redrawn... (Gtk+ 3 'expose-event' -> 'draw')
-        self._viewport.connect("draw", self.onBannerImageResize, page)
+        self._scrolledWindow.connect("draw", self.onBannerImageResize, page)
 
         # Add the image to the top of the GUI...
         page.pack_start(self._scrolledWindow, False, False, 0)
@@ -93,10 +93,10 @@ class PageProxyBase(object):
 
     # We need to update the image size every time the page is resized, and 
     #  consequently, redrawn...
-    def onBannerImageResize(self, imageWidget, event, page):
+    def onBannerImageResize(self, scrolledWindow, event, page):
 
         # Get the new size of the image widget...
-        allocation = imageWidget.get_allocation()
+        allocation = scrolledWindow.get_allocation()
         
         # If the requested dimensions are different than what's in the pixel
         #  buffer, then resize...
