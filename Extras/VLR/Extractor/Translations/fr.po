@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 13:08-0700\n"
-"PO-Revision-Date: 2013-06-02 00:06+0000\n"
-"Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
+"PO-Revision-Date: 2013-06-06 06:06+0000\n"
+"Last-Translator: lann <lann@worldonline.fr>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-06 05:35+0000\n"
+"X-Launchpad-Export-Date: 2013-06-07 06:03+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Initialize the channel map...
@@ -240,12 +240,18 @@ msgstr ""
 
 msgid "image should be rotated 90 counterclockwise"
 msgstr ""
+"l'image devrait subir une rotation de 90° dans le sens des aiguilles d'une "
+"montre"
 
 msgid "image should be rotated 180 counterclockwise"
 msgstr ""
+"l'image devrait subir une rotation de 180° dans le sens des aiguilles d'une "
+"montre"
 
 msgid "image should be rotated 270 counterclockwise"
 msgstr ""
+"l'image devrait subir une rotation de 270° dans le sens des aiguilles d'une "
+"montre"
 
 msgid "image does not need to be rotated"
 msgstr "l'image n'a pas besoin d'être pivotée"
@@ -303,13 +309,13 @@ msgid "entering physical record "
 msgstr ""
 
 msgid " starting at "
-msgstr ""
+msgstr " démarrage à "
 
 msgid "extracting logical record "
 msgstr ""
 
 msgid "/5 starting at "
-msgstr ""
+msgstr "/5 démarrage à "
 
 msgid "bad logical record terminator "
 msgstr ""
@@ -349,16 +355,16 @@ msgid "unsupported number of image bands"
 msgstr ""
 
 msgid "expected positive image height"
-msgstr ""
+msgstr "attendu une hauteur positive de l'image"
 
 msgid "expected positive image width"
-msgstr ""
+msgstr "attendu une largeur positive de l'image"
 
 #. Check pixel format is integral...
 #. Definitely integral
 #. Guessing integral
 msgid "unsupported pixel format"
-msgstr ""
+msgstr "le format du pixel n'est pas supporté"
 
 msgid "unsupported colour bit depth"
 msgstr ""

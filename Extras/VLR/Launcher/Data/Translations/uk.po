@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-06-05 20:42-0700\n"
-"PO-Revision-Date: 2013-06-06 02:36+0000\n"
+"POT-Creation-Date: 2013-06-05 22:20-0700\n"
+"PO-Revision-Date: 2013-06-07 00:12+0000\n"
 "Last-Translator: yurchor <Unknown>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-06 05:35+0000\n"
+"X-Launchpad-Export-Date: 2013-06-07 06:03+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 "Language: uk\n"
 
@@ -23,6 +23,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Avaneya Project Crew https://launchpad.net/~avaneya\n"
 "  Yuri Chornoivan https://launchpad.net/~yurchor-gmail\n"
 "  yurchor https://launchpad.net/~yurchor-deactivatedaccount"
 
@@ -263,14 +264,14 @@ msgstr "Відновлення"
 
 #. We got the process ID, show it...
 msgid "Spawned process {0}..."
-msgstr ""
+msgstr "Породжений процес {0}…"
 
 #. Alert user...
 msgid "Waiting for VikingExtractor D-Bus service..."
-msgstr ""
+msgstr "Очікуємо на службу D-Bus VikingExtractor…"
 
 msgid "Dead session connection handle..."
-msgstr ""
+msgstr "Обробник розірваного з’єднання сеансу…"
 
 #. Done...
 msgid "ok"
@@ -285,21 +286,25 @@ msgid ""
 "\n"
 "{0}"
 msgstr ""
+"Не вдалося запустити VikingExtractor. Було виконано спробу обробки цього "
+"місця:\n"
+"\n"
+"{0}"
 
 msgid "Are you sure you'd like to abort the recovery?"
-msgstr ""
+msgstr "Ви справді хочете перервати відновлення?"
 
 msgid "VikingExtractor terminated with status {0}..."
-msgstr ""
+msgstr "VikingExtractor перервано зі станом {0}…"
 
 msgid "The recovery process was unsuccessful. ({0})"
-msgstr ""
+msgstr "Процес відновлення не був успішним. ({0})"
 
 msgid "Subscribe to Newsletter"
-msgstr ""
+msgstr "Підписатися на новини"
 
 msgid "You need to fill out the whole form."
-msgstr ""
+msgstr "Вам слід заповнити всю форму."
 
 msgid "Invalid email address."
 msgstr "Некоректна адреса електронної пошти."
@@ -313,31 +318,38 @@ msgid ""
 "\n"
 "\t{0}"
 msgstr ""
+"Під час спроби обмінятися даними з віддаленим сервером виникли проблеми. "
+"Будь ласка, повторіть спробу пізніше.\n"
+"\n"
+"\t{0}"
 
 msgid "Graphical user interface for the Avaneya: Viking Lander Remastered..."
-msgstr ""
+msgstr "Графічний інтерфейс до Avaneya: переробленому Viking Lander…"
 
 msgid "Override path to user interface data root."
 msgstr ""
+"Перевизначити шлях до кореневого каталогу даних інтерфейсу користувача."
 
 msgid "Override path to Viking lander mission data root."
 msgstr ""
+"Перевизначити шлях до кореневого каталогу з даними завдання посадкового "
+"модуля «Вікінг»."
 
 msgid "Do not show the splash and opening video."
-msgstr ""
+msgstr "Не показувати вікно вітання та початкове відео."
 
 msgid "Do not play background music."
-msgstr ""
+msgstr "Не відтворювати фонову музику."
 
 msgid "Display application version."
-msgstr ""
+msgstr "Показати дані щодо версії програми."
 
 msgid "Override path to VikingExtractor executable."
-msgstr ""
+msgstr "Перевизначити шлях до виконуваного файла VikingExtractor."
 
 #. Show debugging info...
 msgid "Warning: No executable detected... \"{0}\""
-msgstr ""
+msgstr "Попередження: не виявлено виконуваного файла… «{0}»"
 
 msgid ""
 "Unfortunately your platform is not yet supported. A required executable was "
@@ -346,25 +358,33 @@ msgid ""
 "\tOperating System: {0}\n"
 "\tMachine Architecture: {1}"
 msgstr ""
+"На жаль, підтримки вашої платформи ще не передбачено. Потрібного "
+"виконуваного файла не виявлено.\n"
+"\n"
+"\tОпераційна система: {0}\n"
+"\tАрхітектура: {1}"
 
 msgid "Verification Progress"
-msgstr ""
+msgstr "Поступ перевірки"
 
 msgid "Verification thread already running, not relaunching..."
-msgstr ""
+msgstr "Процедуру перевірки вже запущено, не перезапускаємо її…"
 
 msgid "Disc verification was cancelled."
-msgstr ""
+msgstr "Перевірку диска було скасовано."
 
 #. Alert...
 msgid "Stopping disc verification thread..."
-msgstr ""
+msgstr "Зупиняємо процедуру перевірки диска…"
 
 msgid ""
 "I was not able to check a file I require. {0}:\n"
 "\n"
 "{1}"
 msgstr ""
+"Не вдалося перевірити потрібний файл. {0}:\n"
+"\n"
+"{1}"
 
 msgid ""
 "I could not locate the list of files to verify:\n"
@@ -373,9 +393,14 @@ msgid ""
 "\n"
 "{1}"
 msgstr ""
+"Не вдалося знайти список файлів для перевірки:\n"
+"\n"
+"{0}\n"
+"\n"
+"{1}"
 
 msgid "Launching verification thread..."
-msgstr ""
+msgstr "Розпочинаємо процедуру перевірки…"
 
 msgid ""
 "Your disc might be damaged. It is recommended that you replace it before "
@@ -384,69 +409,75 @@ msgid ""
 "<tt>{0}</tt>\n"
 "\n"
 msgstr ""
+"Здається, ваш диск пошкоджено. Рекомендуємо вам його замінити, перш ніж "
+"продовжувати обробку. Пошкодження виявлено у цьому файлі:\n"
+"\n"
+"<tt>{0}</tt>\n"
+"\n"
 
 msgid ""
 "The disc verification completed successfully. Your disc is probably fine."
 msgstr ""
+"Перевірку диска успішно завершено. З вашим диском, ймовірно, усе гаразд."
 
 msgid "Disc verification failed."
-msgstr ""
+msgstr "На диску виявлено помилки."
 
 msgid "Confirmation"
 msgstr "Підтвердження"
 
 msgid "Save to: {0}\n"
-msgstr ""
+msgstr "Зберегти до: {0}\n"
 
 msgid "Output will be overwritten: {0}\n"
-msgstr ""
+msgstr "Виведені дані буде перезаписано: {0}\n"
 
 #. Directorize by...
 msgid "Directorize by...\n"
-msgstr ""
+msgstr "Розподіл за каталогами за…\n"
 
 msgid "\t...diode band class: {0}\n"
-msgstr ""
+msgstr "\t…класом смуги діодів: {0}\n"
 
 msgid "\t...Martian location: {0}\n"
-msgstr ""
+msgstr "\t…місцевістю на Марсі: {0}\n"
 
 msgid "\t...Martian month: {0}\n"
-msgstr ""
+msgstr "\t…марсіанським місяцем: {0}\n"
 
 msgid "\t...mission solar day: {0}\n"
-msgstr ""
+msgstr "\t…сонячним днем завдання: {0}\n"
 
 msgid "Disable automatic image component orientation: {0}\n"
-msgstr ""
+msgstr "Вимкнути автоматичне орієнтування компонентів зображення: {0}\n"
 
 msgid "Dump components without reconstruction: {0}\n"
-msgstr ""
+msgstr "Створити дамп компонентів без відновлення: {0}\n"
 
 #. Filters...
 msgid "Filters...\n"
-msgstr ""
+msgstr "Фільтри…\n"
 
 msgid "\t...diode band type class: {0}\n"
-msgstr ""
+msgstr "\t…за класом типу смуги діодів: {0}\n"
 
 msgid "\t...lander: {0}\n"
-msgstr ""
+msgstr "\t…за посадковим модулем: {0}\n"
 
 msgid "Interlace images: {0}\n"
-msgstr ""
+msgstr "Черезрядковість зображень: {0}\n"
 
 msgid "Generate metadata: {0}\n"
-msgstr ""
+msgstr "Створювати метадані: {0}\n"
 
 msgid "Be verbose: {0}\n"
-msgstr ""
+msgstr "Докладний режим: {0}\n"
 
 msgid "Use multithreading: {0}\n"
-msgstr ""
+msgstr "Обробка у декілька потоків: {0}\n"
 
 msgid "VikingExtractor arguments: {0}\n"
-msgstr ""
+msgstr "Параметри VikingExtractor: {0}\n"
 
 msgid "Yes"
 msgstr "Так"
@@ -458,28 +489,28 @@ msgid "Farewell"
 msgstr ""
 
 msgid "Select Recovery Folder"
-msgstr ""
+msgstr "Вкажіть теку відновлення"
 
 msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
-msgstr ""
+msgstr "Не виявлено GStreamer >= 1.0. Початкове відео не буде показано…"
 
 msgid "Verification Prompt"
-msgstr ""
+msgstr "Запит щодо перевірки"
 
 msgid "Download Handbook"
-msgstr ""
+msgstr "Звантажити підручник"
 
 msgid "Please choose a download location..."
-msgstr ""
+msgstr "Будь ласка, виберіть місце, де буде збережено дані…"
 
 msgid "Contacting server, please wait..."
-msgstr ""
+msgstr "Встановлюємо зв’язок з сервером, зачекайте…"
 
 msgid "The download of the handbook was stopped."
 msgstr "Звантаження підручника було зупинено."
 
 msgid "The book downloaded successfully. Would you like to open it?"
-msgstr ""
+msgstr "Підручник успішно отримано. Хочете відкрити його?"
 
 msgid "Warning: NetworkManager service not found..."
 msgstr "Попередження: не виявлено служби NetworkManager…"
@@ -488,6 +519,8 @@ msgid ""
 "You need a working internet connection in order to do this. You don't appear "
 "to have one right now."
 msgstr ""
+"Для виконання цього завдання потрібне працездатне інтернет-з’єднання. "
+"Здається, такого з’єднання у вас зараз немає."
 
 msgid "Cannot launch {0}. Platform unknown..."
 msgstr "Не вдалося запустити {0}. Невідома платформа…"
@@ -496,7 +529,7 @@ msgid "Cannot explore {0}. Platform unknown..."
 msgstr "Не вдалося вивчити {0}. Невідома платформа…"
 
 msgid "Configure Introduction"
-msgstr ""
+msgstr "Вступ до налаштовування"
 
 msgid "Configure Layout"
 msgstr "Налаштувати компонування"
@@ -593,6 +626,38 @@ msgid ""
 msgstr ""
 
 msgid ""
+"These configuration settings allow you to filter which specific types of "
+"data you are interested. If you leave these at their defaults, everything "
+"that can be recovered will be.\n"
+"\n"
+"If you are unsure about any option, just <b>hover</b> your mouse over it for "
+"an explanation. The default configuration is recommended."
+msgstr ""
+
+msgid ""
+"Extract from matching Viking lander diode filters. These include colour, "
+"infrared, sun, or survey. By default, all diode filters are acceptable."
+msgstr ""
+
+msgid "<b>Diode Filter:</b>"
+msgstr "<b>Діодний фільтр:</b>"
+
+msgid ""
+"Perform an extraction of only images taken by a particular lander. Viking "
+"lander 2 touched down on <i>Utopia Planitia</i> and Viking lander 1 on "
+"<i>Chryse Planitia</i>."
+msgstr ""
+
+msgid ""
+"Perform an extraction of only images taken by a particular lander. Viking "
+"lander 2 touched down on Utopia Planitia and Viking lander 1 on Chryse "
+"Planitia."
+msgstr ""
+
+msgid "<b>Lander Filter:</b>"
+msgstr "<b>Фільтр посадкового модуля:</b>"
+
+msgid ""
 "The <b>VikingExtractor</b> has many different configuration options that "
 "control how it recovers images and what it does with them. Over the next few "
 "steps we'll configure them.\n"
@@ -657,7 +722,7 @@ msgid ""
 msgstr ""
 
 msgid "No automatic rotation"
-msgstr ""
+msgstr "Без автоматичного обертання"
 
 msgid ""
 "A given fully rendered image in the Viking Lander image archive might be "
@@ -669,7 +734,7 @@ msgid ""
 msgstr ""
 
 msgid "Do not reconstruct"
-msgstr ""
+msgstr "Не відновлювати"
 
 msgid ""
 "A given fully rendered image in the Viking Lander image archive might be "
@@ -682,7 +747,7 @@ msgstr ""
 
 #. This is set at runtime. Don't bother to translate.
 msgid "(set at runtime)"
-msgstr ""
+msgstr "(встановлюється під час роботи)"
 
 msgid ""
 "The following is a summary of the configuration <b>VikingExtractor</b> will "
@@ -694,38 +759,6 @@ msgid ""
 "normal because some of the Viking lander data was not actual data or was too "
 "corrupted to be recoverable."
 msgstr ""
-
-msgid ""
-"These configuration settings allow you to filter which specific types of "
-"data you are interested. If you leave these at their defaults, everything "
-"that can be recovered will be.\n"
-"\n"
-"If you are unsure about any option, just <b>hover</b> your mouse over it for "
-"an explanation. The default configuration is recommended."
-msgstr ""
-
-msgid ""
-"Extract from matching Viking lander diode filters. These include colour, "
-"infrared, sun, or survey. By default, all diode filters are acceptable."
-msgstr ""
-
-msgid "<b>Diode Filter:</b>"
-msgstr "<b>Діодний фільтр:</b>"
-
-msgid ""
-"Perform an extraction of only images taken by a particular lander. Viking "
-"lander 2 touched down on <i>Utopia Planitia</i> and Viking lander 1 on "
-"<i>Chryse Planitia</i>."
-msgstr ""
-
-msgid ""
-"Perform an extraction of only images taken by a particular lander. Viking "
-"lander 2 touched down on Utopia Planitia and Viking lander 1 on Chryse "
-"Planitia."
-msgstr ""
-
-msgid "<b>Lander Filter:</b>"
-msgstr "<b>Фільтр посадкового модуля:</b>"
 
 msgid ""
 "Congratulations! The mission data forensic recovery has completed. To "
@@ -742,10 +775,10 @@ msgid ""
 msgstr ""
 
 msgid "Explore Recovered Mission Data"
-msgstr ""
+msgstr "Оглянути відновлені дані завдань"
 
 msgid "Explore Source Code"
-msgstr ""
+msgstr "Оглянути початковий код"
 
 msgid ""
 "The <i>Avaneya Project Crew Handbook</i> was written to address the needs of "
@@ -804,10 +837,10 @@ msgid ""
 msgstr ""
 
 msgid "Perform DVD integrity check"
-msgstr ""
+msgstr "Виконати перевірку цілісності DVD"
 
 msgid "Skip DVD integrity check"
-msgstr ""
+msgstr "Пропустити перевірку цілісності DVD"
 
 msgid ""
 "We have a <b>low volume</b> announcement mailing list that we use to make "
@@ -832,4 +865,4 @@ msgid "<b>Password again:</b>"
 msgstr "<b>Пароль (ще раз):</b>"
 
 msgid "Thanks, but I think I'll pass."
-msgstr ""
+msgstr "Дякую, але не зараз."
