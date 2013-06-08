@@ -9,13 +9,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 13:08-0700\n"
-"PO-Revision-Date: 2013-06-06 02:18+0000\n"
+"PO-Revision-Date: 2013-06-07 09:47+0000\n"
 "Last-Translator: yurchor <Unknown>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-07 06:03+0000\n"
+"X-Launchpad-Export-Date: 2013-06-08 06:00+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 "Language: uk\n"
 
@@ -65,7 +65,7 @@ msgid "unsupported diode filter class: "
 msgstr "непідтримуваний клас фільтрів діодів: "
 
 msgid "invalid lander filter"
-msgstr ""
+msgstr "некоректний фільтр посадкового модуля"
 
 msgid "cannot reconstruct image from unsupported diode band type"
 msgstr ""
@@ -213,20 +213,20 @@ msgid "filtering "
 msgstr "фільтрування "
 
 msgid " type diode bands (--filter-diode[=type] to change)"
-msgstr ""
+msgstr " за типом смуг діодів (--filter-diode[=тип], щоб змінити)"
 
 msgid "camera event doesn't identify itself, cannot index"
-msgstr ""
+msgstr "момент камери не визначено, індексування неможливе"
 
 msgid " is a new camera event, indexing"
-msgstr ""
+msgstr " є новим моментом камери, індексуємо"
 
 msgid " is a known camera event, indexing"
-msgstr ""
+msgstr " є вже відомим моментом камери, індексуємо"
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Attempting forensic mission data recovery..."
-msgstr ""
+msgstr "Намагаємося виконати точне відновлення даних завдання…"
 
 msgid "attempting reconstruction "
 msgstr "намагаємося відновити "
@@ -242,7 +242,7 @@ msgid "successfully reconstructed "
 msgstr "успішно відновлено "
 
 msgid " unreconstructable components dumped"
-msgstr ""
+msgstr " створено дамп невідновлюваних компонентів"
 
 msgid "dumped "
 msgstr "створено дамп "
@@ -323,63 +323,64 @@ msgid "extracting logical record "
 msgstr "видобуваємо логічний запис "
 
 msgid "/5 starting at "
-msgstr ""
+msgstr "/5 починаємо з "
 
 msgid "bad logical record terminator "
-msgstr ""
+msgstr "помилковий роздільник логічного запису "
 
 msgid ""
 "invalid logical record label possibly from out of phase physical boundary"
 msgstr ""
+"некоректна мітка логічного запису, можливо через вихід з фази фізичної межі"
 
 #. It was, so rewind and carry on since there is no
 #. physical record padding...
 msgid "tangential physical record boundary detected, ignoring padding"
-msgstr ""
+msgstr "виявлено межу дотичного фізичного запису, ігноруємо рамку"
 
 #. Alert and seek...
 msgid "seeking passed "
-msgstr ""
+msgstr "позиціювання пройдено "
 
 msgid " physical record padding"
 msgstr " рамка фізичного запису"
 
 msgid "unable to locate last logical record label"
-msgstr ""
+msgstr "не вдалося знайти мітку останнього логічного запису"
 
 msgid "file too small to contain claimed payload "
-msgstr ""
+msgstr "файл є надто малим, щоб містити належний об’єм даних "
 
 msgid "internal radio/geometric calibration ("
-msgstr ""
+msgstr "внутрішнє радіо- або геометричне калібрування ("
 
 msgid "unsupported photosensor diode band type ("
-msgstr ""
+msgstr "непідтримуваний тип смуги діодів фотодатчика ("
 
 msgid "exhausted basic metadata parser heuristics"
-msgstr ""
+msgstr "вичерпано можливості базового обробника метаданих"
 
 msgid "unsupported number of image bands"
-msgstr ""
+msgstr "непідтримувана кількість смуг зображення"
 
 msgid "expected positive image height"
-msgstr ""
+msgstr "очікувалася додатна висота зображення"
 
 msgid "expected positive image width"
-msgstr ""
+msgstr "очікувалася додатна ширина зображення"
 
 #. Check pixel format is integral...
 #. Definitely integral
 #. Guessing integral
 msgid "unsupported pixel format"
-msgstr ""
+msgstr "непідтримуваний формат у пікселях"
 
 msgid "unsupported colour bit depth"
 msgstr "непідтримувана глибина кольорів"
 
 #. If verbosity is set, display basic metadata...
 msgid "basic metadata parser heuristic: "
-msgstr ""
+msgstr "евристика базового обробника метаданих: "
 
 msgid "bands: "
 msgstr "смуги: "
@@ -391,13 +392,13 @@ msgid "width: "
 msgstr "ширина: "
 
 msgid "raw band data size: "
-msgstr ""
+msgstr "об’єм необроблених даних смуги: "
 
 msgid " bytes"
 msgstr " байтів"
 
 msgid "format: integral"
-msgstr ""
+msgstr "формат: цілісне"
 
 msgid "bytes per colour: "
 msgstr "байтів на колір: "
@@ -410,30 +411,31 @@ msgstr "можлива рамка фізичного запису: "
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 1 basic metadata parser"
-msgstr ""
+msgstr "евристикою вибрано формат 1 базового обробника метаданих"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 2 basic metadata parser"
-msgstr ""
+msgstr "евристикою вибрано формат 2 базового обробника метаданих"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 3 basic metadata parser"
-msgstr ""
+msgstr "евристикою вибрано формат 3 базового обробника метаданих"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 4 basic metadata parser"
-msgstr ""
+msgstr "евристикою вибрано формат 4 базового обробника метаданих"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 5 basic metadata parser"
-msgstr ""
+msgstr "евристикою вибрано формат 5 базового обробника метаданих"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 6 basic metadata parser"
-msgstr ""
+msgstr "евристикою вибрано формат 6 базового обробника метаданих"
 
 msgid "invalid logical record label while parsing extended metadata"
 msgstr ""
+"некоректна мітка логічного запису під час обробки розширених метаданих"
 
 #. Alert user if verbose mode enabled...
 msgid "psa directional vector: "
@@ -450,7 +452,7 @@ msgid "lander number: "
 msgstr "номер посадкового модуля: "
 
 msgid "filtering non-matching lander"
-msgstr ""
+msgstr "фільтруємо невідповідний посадковий модуль"
 
 #. Set caller hint and return unsupported...
 msgid "monocolour unsupported"
@@ -458,7 +460,7 @@ msgstr "підтримки монохромних даних не передба
 
 #. Set caller hint and return unsupported...
 msgid "unidentifiable broadband"
-msgstr ""
+msgstr "непридатний до визначення широкий діапазон"
 
 #. Set hint and return unknown...
 msgid "none detected"
@@ -477,21 +479,35 @@ msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after band type class (e.g. Colour).\n"
 msgstr ""
+"                              Зберегти відновлені зображення до "
+"підкаталогів,\n"
+"                              названих за класами типів смуг (наприклад, "
+"колір).\n"
 
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after location taken from.\n"
 msgstr ""
+"                              Зберегти відновлені зображення до "
+"підкаталогів,\n"
+"                              названих за місцями, де їх було зроблено.\n"
 
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after Martian month taken on.\n"
 msgstr ""
+"                              Зберегти відновлені зображення до "
+"підкаталогів,\n"
+"                              названих за назвами марсіанських місяців, коли "
+"їх було зроблено.\n"
 
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              numbered by camera event solar day.\n"
 msgstr ""
+"                              Зберегти відновлені зображення до "
+"підкаталогів,\n"
+"                              пронумерованих за сонячним днем зйомки.\n"
 
 msgid "                              Don't write anything.\n"
 msgstr "                              Нічого не записувати.\n"
@@ -504,9 +520,15 @@ msgid ""
 "file,\n"
 "                              but continue extraction of other files.\n"
 msgstr ""
+"                              Не зупиняти обробку на пошкоджених або "
+"проблемних початкових файлах,\n"
+"                              продовжувати видобування даних до інших "
+"файлів.\n"
 
 msgid "                              Encode output with Adam7 interlacing\n"
 msgstr ""
+"                              Закодувати виведені дані з використанням "
+"черезрядковості Adam7\n"
 
 msgid ""
 "                              Number of threads to run parallelized. Only "
@@ -514,12 +536,20 @@ msgid ""
 "                              if -j is not provided, or auto if threads\n"
 "                              argument not specified.\n"
 msgstr ""
+"                              Кількість потоків паралельної обробки. Якщо не "
+"вказано -j,\n"
+"                              буде використано лише один. Якщо аргумент не "
+"вказано,\n"
+"                              його буде визначено автоматично.\n"
 
 msgid ""
 "                              Look only for the specified matching camera "
 "event\n"
 "                              ID, such as 22A158.\n"
 msgstr ""
+"                              Шукати лише вказаний за ідентифікатор момент "
+"камери,\n"
+"                              наприклад 22A158.\n"
 
 msgid ""
 "                              Extract from matching supported diode filter\n"
@@ -527,27 +557,43 @@ msgid ""
 "infrared,\n"
 "                              sun, or survey.\n"
 msgstr ""
+"                              Видобувати дані лише відповідних підтримуваних "
+"класів діодних фільтрів:\n"
+"                              any (типовий), colour (кольоровий), infrared "
+"(інфрачервоний),\n"
+"                              sun (сонячний) або survey (оглядовий).\n"
 
 msgid ""
 "                              Extract from specific lander only which are\n"
 "                              either (0, the default), 1, or 2.\n"
 msgstr ""
+"                              Видобути дані лише для відповідного "
+"посадкового модуля:\n"
+"                              будь-якого (0, типовий), 1 або 2.\n"
 
 msgid ""
 "                              Look only for camera events taken on the "
 "specified\n"
 "                              solar day.\n"
 msgstr ""
+"                              Шукати лише моменти зйомки, виконаної у "
+"вказаний\n"
+"                              сонячний день.\n"
 
 msgid ""
 "                              Whenever a colour image is recovered, machine\n"
 "                              generate a text file containing various "
 "metadata.\n"
 msgstr ""
+"                              Під час відновлення всіх кольорових зображень "
+"створювати\n"
+"                              текстовий файл з різноманітними метаданими.\n"
 
 msgid ""
 "                              Disable VT/100 ANSI coloured terminal output.\n"
 msgstr ""
+"                              Вимкнути символи розфарбовування для виведення "
+"на термінал ANSI VT/100.\n"
 
 msgid ""
 "                              Don't automatically rotate image as needed.\n"
@@ -561,6 +607,10 @@ msgid ""
 "                              dump all available band data as separate "
 "images.\n"
 msgstr ""
+"                              Не намагатися відновити результати зйомки, "
+"просто\n"
+"                              створити дамп всіх доступних даних смуг як "
+"окремих зображень.\n"
 
 msgid "                              Overwrite any existing output files.\n"
 msgstr ""
@@ -602,6 +652,13 @@ msgid ""
 "to attempt reconstruction into the provided output directory.\n"
 "\n"
 msgstr ""
+"Перетворює дані кольорових зображень посадкових модулів Viking у форматі "
+"кольорових зображень VICAR, зроблених у 1970-ті роки, у зображення PNG. "
+"Значенням\n"
+"«input» може бути або окремий файл VICAR, або каталог, у якому зберігаються "
+"файли VICAR.\n"
+"Відновлення виконуватиметься до вказаного каталогу виведення даних.\n"
+"\n"
 
 msgid "Report bugs to "
 msgstr "Про вади повідомляйте на адресу "
@@ -612,6 +669,11 @@ msgid ""
 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 "\n"
 msgstr ""
+"© Cartesian Theatre, 2010–2013.\n"
+"Це програмне забезпечення є вільним, умови копіювання викладено у файлі "
+"Copying. Умовами ліцензування програми НЕ передбачено жодних гарантій, "
+"зокрема гарантій працездатності або придатності для певної мети.\n"
+"\n"
 
 msgid "Configured with: "
 msgstr "Налаштовано для роботи з: "
@@ -621,6 +683,7 @@ msgstr "паралелізацію ще не реалізовано, викор�
 
 msgid "summarize only and verbose modes cannot both be used"
 msgstr ""
+"не можна використовувати одночасно режим лише резюме і докладний режим"
 
 msgid " linked against incompatible GNU Ocrad version "
 msgstr " скомпоновано з несумісною версією GNU Ocrad "

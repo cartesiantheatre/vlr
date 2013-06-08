@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 13:08-0700\n"
-"PO-Revision-Date: 2013-06-07 03:52+0000\n"
-"Last-Translator: J B <Unknown>\n"
+"PO-Revision-Date: 2013-06-08 02:20+0000\n"
+"Last-Translator: Joe Tang <Unknown>\n"
 "Language-Team: Filipino <fil@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-07 06:03+0000\n"
+"X-Launchpad-Export-Date: 2013-06-08 06:00+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Initialize the channel map...
@@ -28,10 +28,10 @@ msgid "warning: "
 msgstr ""
 
 msgid "could not emit 'Notification' signal..."
-msgstr ""
+msgstr "hindi mailabas ang 'Notification' signal..."
 
 msgid "could not emit 'Progress' signal..."
-msgstr ""
+msgstr "hindi mailabas ang 'Progress' signal..."
 
 #, c-format
 msgid "Method %s.%s is not implemented."
@@ -42,7 +42,7 @@ msgstr ""
 
 #. Alert user...
 msgid "registering on the session bus..."
-msgstr ""
+msgstr "nagrerehistro sa session bus"
 
 msgid "could not parse introspection XML"
 msgstr ""
@@ -69,7 +69,7 @@ msgid "cannot reconstruct image from unsupported diode band type"
 msgstr ""
 
 msgid "Unreconstructable/"
-msgstr ""
+msgstr "Hindi kayang mabuo"
 
 msgid "Unknown Location/"
 msgstr ""
@@ -84,7 +84,7 @@ msgstr ""
 
 #. Just give a warning and abort...
 msgid "couldn't save metadata"
-msgstr ""
+msgstr "hindi ma-save and metadata"
 
 msgid ""
 "The following is a machine generated collection of metadata of each of\n"
@@ -97,19 +97,19 @@ msgid "basic heuristic method: "
 msgstr ""
 
 msgid "camera azimuth / elevation: "
-msgstr ""
+msgstr "camera azimuth / elevation: "
 
 msgid "camera event: "
 msgstr ""
 
 msgid "camera event solar day: "
-msgstr ""
+msgstr "camera event solar day: "
 
 msgid "diode band type: "
-msgstr ""
+msgstr "uri ng diode band: "
 
 msgid "file size: "
-msgstr ""
+msgstr "laki ng filel: "
 
 msgid "input file: "
 msgstr ""

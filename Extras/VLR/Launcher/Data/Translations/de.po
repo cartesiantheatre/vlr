@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 22:20-0700\n"
-"PO-Revision-Date: 2013-06-05 12:31+0000\n"
+"PO-Revision-Date: 2013-06-07 19:25+0000\n"
 "Last-Translator: Daniel Winzen <d@winzen4.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-07 06:03+0000\n"
+"X-Launchpad-Export-Date: 2013-06-08 06:00+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -66,7 +66,7 @@ msgid "Error:"
 msgstr "Fehler:"
 
 msgid "Are you sure you'd like to quit?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie das Programm beenden möchten?"
 
 msgid "Introduction"
 msgstr "Einleitung"
@@ -254,7 +254,7 @@ msgid ""
 msgstr ""
 
 msgid "\t<b><i>~ Avaneya Project Crew</i></b>\n"
-msgstr ""
+msgstr "\t<b><i>~ Avaneya Projekt Mannschaft</i></b>\n"
 
 msgid "Recovery"
 msgstr "Wiederherstellung"
@@ -265,7 +265,7 @@ msgstr ""
 
 #. Alert user...
 msgid "Waiting for VikingExtractor D-Bus service..."
-msgstr ""
+msgstr "Warten auf VikingExtractor D-Bus Dienst …"
 
 msgid "Dead session connection handle..."
 msgstr ""
@@ -283,15 +283,19 @@ msgid ""
 "\n"
 "{0}"
 msgstr ""
+"Der VikingExtractor konnte nicht gestartet werden. Der folgende Ort wurde "
+"probiert:\n"
+"\n"
+"{0}"
 
 msgid "Are you sure you'd like to abort the recovery?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie die Wiederherstellung abbrechen möchten?"
 
 msgid "VikingExtractor terminated with status {0}..."
-msgstr ""
+msgstr "VikingExtractor wurde mit dem Status {0} beendet"
 
 msgid "The recovery process was unsuccessful. ({0})"
-msgstr ""
+msgstr "Der Wiederherstellungsprozess war nicht erfolgreich. ({0})"
 
 msgid "Subscribe to Newsletter"
 msgstr "Abonniere den Newsletter"
@@ -311,9 +315,13 @@ msgid ""
 "\n"
 "\t{0}"
 msgstr ""
+"Beim Kommunizieren mit dem entfernten Server ist ein Fehler aufgetreten. "
+"Bitte versuchen Sie es später erneut.\n"
+"\n"
+"\t{0}"
 
 msgid "Graphical user interface for the Avaneya: Viking Lander Remastered..."
-msgstr ""
+msgstr "Grafische Benutzeroberfläche für Avaneya: Viking Lander Remastered …"
 
 msgid "Override path to user interface data root."
 msgstr ""
@@ -322,20 +330,20 @@ msgid "Override path to Viking lander mission data root."
 msgstr ""
 
 msgid "Do not show the splash and opening video."
-msgstr ""
+msgstr "Ladebildschirm und Startvideo nicht anzeigen."
 
 msgid "Do not play background music."
-msgstr ""
+msgstr "Hintergrundmusik nicht wiedergeben."
 
 msgid "Display application version."
-msgstr ""
+msgstr "Anwendungsversion anzeigen."
 
 msgid "Override path to VikingExtractor executable."
-msgstr ""
+msgstr "Pfad zur VikingExtractor Programmdatei überschreiben."
 
 #. Show debugging info...
 msgid "Warning: No executable detected... \"{0}\""
-msgstr ""
+msgstr "Warnung: Keine ausführbare Datei gefunden … \"{0}\""
 
 msgid ""
 "Unfortunately your platform is not yet supported. A required executable was "
@@ -344,6 +352,11 @@ msgid ""
 "\tOperating System: {0}\n"
 "\tMachine Architecture: {1}"
 msgstr ""
+"Leider ist Ihre Plattform noch nicht unterstützt. Eine benötigte ausführbare "
+"Datei wurde nicht gefunden.\n"
+"\n"
+"\tBetriebssystem: {0}\n"
+"\tArchitektur: {1}"
 
 msgid "Verification Progress"
 msgstr ""
@@ -435,7 +448,7 @@ msgid "Interlace images: {0}\n"
 msgstr ""
 
 msgid "Generate metadata: {0}\n"
-msgstr ""
+msgstr "Metadaten erstellen: {0}\n"
 
 msgid "Be verbose: {0}\n"
 msgstr "Ausführlich sein: {0}\n"
@@ -444,7 +457,7 @@ msgid "Use multithreading: {0}\n"
 msgstr "Multithreading benutzen: {0}\n"
 
 msgid "VikingExtractor arguments: {0}\n"
-msgstr ""
+msgstr "VikingExtractor Argumente: {0}\n"
 
 msgid "Yes"
 msgstr "Ja"
@@ -468,45 +481,47 @@ msgid "Download Handbook"
 msgstr "Handbuch herunterladen"
 
 msgid "Please choose a download location..."
-msgstr ""
+msgstr "Bitte wählen Sie einen Ort zum Herunterladen aus …"
 
 msgid "Contacting server, please wait..."
-msgstr ""
+msgstr "Verbinde mit dem Server, bitte warten …"
 
 msgid "The download of the handbook was stopped."
-msgstr ""
+msgstr "Das Herunterladen des Handbuches wurde gestoppt."
 
 msgid "The book downloaded successfully. Would you like to open it?"
-msgstr ""
+msgstr "Das Buch wurde erfolgreich heruntergeladen. Möchten Sie es öffnen?"
 
 msgid "Warning: NetworkManager service not found..."
-msgstr ""
+msgstr "Warnung: NetworkManager-Dienst wurde nicht gefunden …"
 
 msgid ""
 "You need a working internet connection in order to do this. You don't appear "
 "to have one right now."
 msgstr ""
+"Um dies zu tun, brauchen Sie eine funktionierende Internetverbindung. Es "
+"sieht nicht so aus als hätten sie im Moment eine."
 
 msgid "Cannot launch {0}. Platform unknown..."
-msgstr ""
+msgstr "{0} kann nicht gestartet werden. Plattform unbekannt ."
 
 msgid "Cannot explore {0}. Platform unknown..."
 msgstr ""
 
 msgid "Configure Introduction"
-msgstr ""
+msgstr "Einleitung konfigurieren"
 
 msgid "Configure Layout"
 msgstr "Layout konfigurieren"
 
 msgid "Configure Recovery"
-msgstr ""
+msgstr "Wiederherstellung konfigurieren"
 
 msgid "Configure Filters"
 msgstr "Filter einrichten"
 
 msgid "Configure Advanced"
-msgstr ""
+msgstr "Erweiterte Einstellungen"
 
 msgid "Location/"
 msgstr "Ort/"
@@ -521,7 +536,7 @@ msgid "Mission Solar Day/"
 msgstr ""
 
 msgid "Photograph.png"
-msgstr ""
+msgstr "Fotografie.png"
 
 msgid ""
 "Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>."
@@ -561,7 +576,7 @@ msgid ""
 msgstr ""
 
 msgid "Generate metadata"
-msgstr ""
+msgstr "Metadaten erstellen"
 
 msgid ""
 "Whenever a colour image is being recovered, this option will write out a "
@@ -688,7 +703,7 @@ msgid ""
 msgstr ""
 
 msgid "No automatic rotation"
-msgstr ""
+msgstr "Nicht automatisch drehen"
 
 msgid ""
 "A given fully rendered image in the Viking Lander image archive might be "
@@ -700,7 +715,7 @@ msgid ""
 msgstr ""
 
 msgid "Do not reconstruct"
-msgstr ""
+msgstr "Nicht rekonstruieren"
 
 msgid ""
 "A given fully rendered image in the Viking Lander image archive might be "
@@ -776,7 +791,7 @@ msgid "Select folder to store recovered images"
 msgstr ""
 
 msgid "Overwrite existing output files"
-msgstr ""
+msgstr "Bestehende Ausgabedateien überschreiben"
 
 msgid ""
 "This will overwrite any existing output files that have the same name as the "
@@ -816,7 +831,7 @@ msgid ""
 msgstr ""
 
 msgid "Yes, please subscribe me."
-msgstr ""
+msgstr "Ja, bitte melde mich an."
 
 msgid "<b>Name:</b>"
 msgstr "<b>Name:</b>"
@@ -831,4 +846,4 @@ msgid "<b>Password again:</b>"
 msgstr "<b>Password erneut:</b>"
 
 msgid "Thanks, but I think I'll pass."
-msgstr ""
+msgstr "Danke, aber ich denke ich werde passen."
