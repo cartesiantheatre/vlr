@@ -1,4 +1,4 @@
-# Italian translation for avaneya
+# Uzbek translation for avaneya
 # Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
 # This file is distributed under the same license as the avaneya package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 13:08-0700\n"
-"PO-Revision-Date: 2013-06-08 17:29+0000\n"
-"Last-Translator: Gianfranco Frisani <gfrisani@libero.it>\n"
-"Language-Team: Italian <it@li.org>\n"
+"PO-Revision-Date: 2013-06-08 11:15+0000\n"
+"Last-Translator: Akmal Xushvaqov <akmalxster@gmail.com>\n"
+"Language-Team: Uzbek <uz@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,126 +19,119 @@ msgstr ""
 
 #. Initialize the channel map...
 msgid "error: "
-msgstr "Errore: "
+msgstr "хато: "
 
 msgid "info: "
-msgstr "Informazioni: "
+msgstr "маълумот: "
 
 msgid "warning: "
-msgstr "Attenzione: "
+msgstr "огоҳлантириш: "
 
 msgid "could not emit 'Notification' signal..."
-msgstr "Non é stato possibile emettere il segnale «Notificazione» ..."
+msgstr ""
 
 msgid "could not emit 'Progress' signal..."
-msgstr "Non é stato possibile emettere il segnale «Avanzamento» ..."
+msgstr ""
 
 #, c-format
 msgid "Method %s.%s is not implemented."
-msgstr "Il metodo %s.%s non é stato implementato"
+msgstr ""
 
 msgid "could not register service with session bus..."
-msgstr "Non é stato possibile registrare il servizio nel Bus di sessione"
+msgstr ""
 
 #. Alert user...
 msgid "registering on the session bus..."
-msgstr "Registrazione nel bus di sessione..."
+msgstr ""
 
 msgid "could not parse introspection XML"
-msgstr "Non é stato possibile analizzare l'introspezione XML"
+msgstr ""
 
 msgid "could not connect with the session bus"
-msgstr "Non é stato possibile connettersi al bus di sessione"
+msgstr ""
 
 msgid "glib main loop quit unexpectedly..."
-msgstr "Il loop principale di glib si é arrestato inaspettatamente"
+msgstr ""
 
 msgid "invalid logical record label"
-msgstr "etichetta del record logico non valida"
+msgstr ""
 
 msgid "failed to read from input stream"
-msgstr "lettura del flusso di input non riuscita"
+msgstr ""
 
 msgid "unsupported diode filter class: "
-msgstr "Classe del filtro con diodi non supportata: "
+msgstr ""
 
 msgid "invalid lander filter"
-msgstr "filtro del modulo di atterraggio non valido"
+msgstr ""
 
 msgid "cannot reconstruct image from unsupported diode band type"
 msgstr ""
-"non è possibile ricostruire l'immagine dal tipo di banda del diodo non "
-"supportata"
 
 msgid "Unreconstructable/"
-msgstr "Non ricostruibile/"
+msgstr ""
 
 msgid "Unknown Location/"
-msgstr "Posizione sconosciuta/"
+msgstr ""
 
 #. Set the error message and abort...
 msgid "could not create output directory for file"
-msgstr "Non è possibile creare la directory di output per il file"
+msgstr ""
 
 msgid ""
 "output metadata already exists, not overwriting (use --overwrite to override)"
 msgstr ""
-"I metadati di output esistono già, non sovrascrivere (usare --overwrite per "
-"ignorare)"
 
 #. Just give a warning and abort...
 msgid "couldn't save metadata"
-msgstr "non è stato possibile salvare i metadati"
+msgstr ""
 
 msgid ""
 "The following is a machine generated collection of metadata of each of\n"
 msgstr ""
-"Ciò che segue è una collezione di metadati generati da una macchina per "
-"ciascuno di\n"
 
 msgid "the image bands used to reconstruct a colour image.\n"
 msgstr ""
-"le strisce di immagini usate per riconstruire un immagine a colori.\n"
 
 msgid "basic heuristic method: "
-msgstr "Metodo euristico di base: "
+msgstr ""
 
 msgid "camera azimuth / elevation: "
-msgstr "Azimut o elevazione della telecamera: "
+msgstr ""
 
 msgid "camera event: "
-msgstr "Evento della telecamera: "
+msgstr ""
 
 msgid "camera event solar day: "
-msgstr "Giorno solare dell'evento della telecamera: "
+msgstr ""
 
 msgid "diode band type: "
-msgstr "Tipo della banda del diodo: "
+msgstr ""
 
 msgid "file size: "
-msgstr "Dimensioni del file: "
+msgstr ""
 
 msgid "input file: "
-msgstr "File di input: "
+msgstr ""
 
 msgid "magnetic tape: "
-msgstr "Nastro magnetico: "
+msgstr ""
 
 msgid "magnetic tape file ordinal: "
-msgstr "Numero progressivo del nastro magnetico: "
+msgstr ""
 
 #. Alert user if verbose mode enabled...
 msgid "mean pixel value: "
-msgstr "valore medio del pixel: "
+msgstr ""
 
 msgid "month: "
-msgstr "Mese: "
+msgstr ""
 
 msgid "overlay axis present: "
-msgstr "Presente asse sovraimpresso: "
+msgstr ""
 
 msgid "overlay full histogram present: "
-msgstr "Presente istogramma completo in sovrimpressione: "
+msgstr ""
 
 msgid "physical record size: "
 msgstr ""
@@ -173,37 +166,37 @@ msgid "image bands not all the same size, may be missing scanlines"
 msgstr ""
 
 msgid "unable to open input directory for indexing "
-msgstr "Non è possibile aprire la directory di input per l'indicizzazione "
+msgstr ""
 
 msgid "could not stat "
 msgstr ""
 
 #. Alert user...
 msgid "indexing mission data, please wait..."
-msgstr "Indicizzazione dei dati della missione, attendere..."
+msgstr ""
 
 #. Provide a notification to the Viking Lander Launcher...
 msgid "Indexing mission data, please wait..."
-msgstr "Indicizzazione dei dati della missione, attendere..."
+msgstr ""
 
 msgid "no prospective files found"
 msgstr ""
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Analyzing mission data, please wait..."
-msgstr "Analisi dei dati di missione, attendere..."
+msgstr ""
 
 msgid "studying mission data index of "
 msgstr ""
 
 msgid ", skipping"
-msgstr ", saltando"
+msgstr ""
 
 msgid " (--ignore-bad-files to skip)"
 msgstr ""
 
 msgid "filtering "
-msgstr "filtrando "
+msgstr ""
 
 msgid " type diode bands (--filter-diode[=type] to change)"
 msgstr ""
@@ -222,44 +215,44 @@ msgid "Attempting forensic mission data recovery..."
 msgstr ""
 
 msgid "attempting reconstruction "
-msgstr "provando a riconstruire "
+msgstr ""
 
 msgid "dumping components from "
-msgstr "scartando i componenti da "
+msgstr ""
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Recovery completed..."
-msgstr "Recupero completato..."
+msgstr ""
 
 msgid "successfully reconstructed "
-msgstr "successivamente riconstruito "
+msgstr ""
 
 msgid " unreconstructable components dumped"
-msgstr " i componenti non riconstruibili sono stati scartati"
+msgstr ""
 
 msgid "dumped "
-msgstr "scartato "
+msgstr ""
 
 msgid " image components without reconstruction"
 msgstr ""
 
 msgid "image should be rotated 90 counterclockwise"
-msgstr "l'immagine dovrebbe essere girata di 90º in senso antiorario"
+msgstr ""
 
 msgid "image should be rotated 180 counterclockwise"
-msgstr "l'immagine dovrebbe essere girata di 180º in senso antiorario"
+msgstr ""
 
 msgid "image should be rotated 270 counterclockwise"
-msgstr "l'immagine dovrebbe essere girata di 270º in senso antiorario"
+msgstr ""
 
 msgid "image does not need to be rotated"
-msgstr "non c'é bisogno di girare l'immagine"
+msgstr ""
 
 msgid "could not guess image rotation"
 msgstr ""
 
 msgid "GNU Ocrad failed to initialize"
-msgstr "GNU Ocrad non ha potuto iniziare"
+msgstr ""
 
 #. Set error message...
 msgid "could not set OCR image"
@@ -283,7 +276,7 @@ msgstr ""
 
 #. Be verbose...
 msgid "loading"
-msgstr "caricamento in corso"
+msgstr ""
 
 msgid ""
 "empty file, probably blank magnetic tape or not received back on Earth"
@@ -308,13 +301,13 @@ msgid "entering physical record "
 msgstr ""
 
 msgid " starting at "
-msgstr " cominciando a "
+msgstr ""
 
 msgid "extracting logical record "
 msgstr ""
 
 msgid "/5 starting at "
-msgstr "/5 cominciando a "
+msgstr ""
 
 msgid "bad logical record terminator "
 msgstr ""
@@ -363,7 +356,7 @@ msgstr ""
 #. Definitely integral
 #. Guessing integral
 msgid "unsupported pixel format"
-msgstr "il formato dei pixel non é supportato"
+msgstr ""
 
 msgid "unsupported colour bit depth"
 msgstr ""
@@ -373,25 +366,25 @@ msgid "basic metadata parser heuristic: "
 msgstr ""
 
 msgid "bands: "
-msgstr "strisce: "
+msgstr ""
 
 msgid "height: "
-msgstr "altezza: "
+msgstr ""
 
 msgid "width: "
-msgstr "larghezza: "
+msgstr ""
 
 msgid "raw band data size: "
 msgstr ""
 
 msgid " bytes"
-msgstr " bytes"
+msgstr ""
 
 msgid "format: integral"
-msgstr "formato: integrale"
+msgstr ""
 
 msgid "bytes per colour: "
-msgstr "bytes per colore: "
+msgstr ""
 
 msgid "photosensor diode band type: "
 msgstr ""
@@ -453,7 +446,7 @@ msgstr ""
 
 #. Set hint and return unknown...
 msgid "none detected"
-msgstr "nessuno rilevato"
+msgstr ""
 
 msgid "filtering non-matching solar day"
 msgstr ""
@@ -462,7 +455,7 @@ msgid "filtering non-matching camera event"
 msgstr ""
 
 msgid "Options:\n"
-msgstr "Opzioni:\n"
+msgstr ""
 
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
@@ -594,7 +587,7 @@ msgid ""
 msgstr ""
 
 msgid "Configured with: "
-msgstr "Configurato con: "
+msgstr ""
 
 msgid "parallelization is not implemented yet, using single thread"
 msgstr ""
@@ -613,7 +606,7 @@ msgid "need input file or directory, see --help"
 msgstr ""
 
 msgid "unknown parameter "
-msgstr "parametro sconosciuto "
+msgstr ""
 
 msgid "), see --help"
-msgstr "), vedi --help"
+msgstr ""

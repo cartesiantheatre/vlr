@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 22:20-0700\n"
-"PO-Revision-Date: 2013-05-28 14:04+0000\n"
+"PO-Revision-Date: 2013-06-08 20:12+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-07 06:03+0000\n"
+"X-Launchpad-Export-Date: 2013-06-09 05:29+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -33,15 +33,15 @@ msgstr "Músicos"
 
 #. Shouts and thanks...
 msgid "Shouts / Thanks"
-msgstr ""
+msgstr "Agradecimientos"
 
 #. Studio hardware...
 msgid "Studio Hardware"
-msgstr ""
+msgstr "Hardware del estudio"
 
 #. Studio software...
 msgid "Studio Software"
-msgstr ""
+msgstr "Software del estudio"
 
 #. Set translators...
 msgid "Translators"
@@ -253,18 +253,18 @@ msgid ""
 msgstr ""
 
 msgid "\t<b><i>~ Avaneya Project Crew</i></b>\n"
-msgstr ""
+msgstr "\t<b><i>~El equipo del proyecto Avaneya</i></b>\n"
 
 msgid "Recovery"
-msgstr ""
+msgstr "Recuperación"
 
 #. We got the process ID, show it...
 msgid "Spawned process {0}..."
-msgstr ""
+msgstr "Se ha creado el proceso {0}…"
 
 #. Alert user...
 msgid "Waiting for VikingExtractor D-Bus service..."
-msgstr ""
+msgstr "Esperando al servicio de D-Bus de VikingExtractor…"
 
 msgid "Dead session connection handle..."
 msgstr ""
@@ -381,6 +381,11 @@ msgid ""
 "<tt>{0}</tt>\n"
 "\n"
 msgstr ""
+"Puede que su disco esté dañado. Se recomienda que lo reemplace antes de "
+"continuar. El siguiente archivo aparenta estar dañado:\n"
+"\n"
+"<tt>{0}</tt>\n"
+"\n"
 
 msgid ""
 "The disc verification completed successfully. Your disc is probably fine."
@@ -455,7 +460,7 @@ msgid "Farewell"
 msgstr ""
 
 msgid "Select Recovery Folder"
-msgstr ""
+msgstr "Seleccione la carpeta de recuperación"
 
 msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
 msgstr ""
@@ -464,7 +469,7 @@ msgid "Verification Prompt"
 msgstr ""
 
 msgid "Download Handbook"
-msgstr ""
+msgstr "Descargar la guía"
 
 msgid "Please choose a download location..."
 msgstr "Elija una ubicación para la descarga…"
@@ -473,10 +478,10 @@ msgid "Contacting server, please wait..."
 msgstr "Contactando al servidor, espere…"
 
 msgid "The download of the handbook was stopped."
-msgstr ""
+msgstr "Se ha detenido la descarga de la guía."
 
 msgid "The book downloaded successfully. Would you like to open it?"
-msgstr ""
+msgstr "Se ha descargado la guía correctamente. ¿Quiere abrirla?"
 
 msgid "Warning: NetworkManager service not found..."
 msgstr "Aviso: no se encontró el servicio de NetworkManager…"
@@ -520,7 +525,7 @@ msgid "Mission Solar Day/"
 msgstr ""
 
 msgid "Photograph.png"
-msgstr ""
+msgstr "Fotografía.png"
 
 msgid ""
 "Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>."
