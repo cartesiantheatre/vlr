@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 13:08-0700\n"
-"PO-Revision-Date: 2013-06-08 17:29+0000\n"
+"PO-Revision-Date: 2013-06-09 18:21+0000\n"
 "Last-Translator: Gianfranco Frisani <gfrisani@libero.it>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-09 05:29+0000\n"
+"X-Launchpad-Export-Date: 2013-06-11 06:03+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Initialize the channel map...
@@ -113,7 +113,7 @@ msgid "camera event solar day: "
 msgstr "Giorno solare dell'evento della telecamera: "
 
 msgid "diode band type: "
-msgstr "Tipo della banda del diodo: "
+msgstr "Tipo di banda del diodo: "
 
 msgid "file size: "
 msgstr "Dimensioni del file: "
@@ -135,10 +135,10 @@ msgid "month: "
 msgstr "Mese: "
 
 msgid "overlay axis present: "
-msgstr "Presente asse sovraimpresso: "
+msgstr "Presente asse sovrapposto: "
 
 msgid "overlay full histogram present: "
-msgstr "Presente istogramma completo in sovrimpressione: "
+msgstr "Presente istogramma completo in sovrapposizione: "
 
 msgid "physical record size: "
 msgstr ""
@@ -222,7 +222,7 @@ msgid "Attempting forensic mission data recovery..."
 msgstr ""
 
 msgid "attempting reconstruction "
-msgstr "provando a riconstruire "
+msgstr "Tentativo di ricostruzione "
 
 msgid "dumping components from "
 msgstr "scartando i componenti da "
@@ -232,96 +232,100 @@ msgid "Recovery completed..."
 msgstr "Recupero completato..."
 
 msgid "successfully reconstructed "
-msgstr "successivamente riconstruito "
+msgstr "Ricostruzione riuscita "
 
 msgid " unreconstructable components dumped"
-msgstr " i componenti non riconstruibili sono stati scartati"
+msgstr " componenti non ricostruibili scartati"
 
 msgid "dumped "
-msgstr "scartato "
+msgstr "Scartato "
 
 msgid " image components without reconstruction"
-msgstr ""
+msgstr " componenti dell'immagine senza ricostruzione"
 
 msgid "image should be rotated 90 counterclockwise"
-msgstr "l'immagine dovrebbe essere girata di 90º in senso antiorario"
+msgstr "L'immagine deve essere ruotata di 90° in senso antiorario"
 
 msgid "image should be rotated 180 counterclockwise"
-msgstr "l'immagine dovrebbe essere girata di 180º in senso antiorario"
+msgstr "L'immagine deve essere ruotata di 180° in senso antiorario"
 
 msgid "image should be rotated 270 counterclockwise"
-msgstr "l'immagine dovrebbe essere girata di 270º in senso antiorario"
+msgstr "L'immagine deve essere ruotata di 270° in senso antiorario"
 
 msgid "image does not need to be rotated"
-msgstr "non c'é bisogno di girare l'immagine"
+msgstr "Non è necessario ruotare l'immagine"
 
 msgid "could not guess image rotation"
-msgstr ""
+msgstr "Non è possibile stimare la rotazione dell'immagine"
 
 msgid "GNU Ocrad failed to initialize"
-msgstr "GNU Ocrad non ha potuto iniziare"
+msgstr "Inizializzazione di GNU Ocrad non riuscita"
 
 #. Set error message...
 msgid "could not set OCR image"
-msgstr ""
+msgstr "Non è possibile impostare l'immagine OCR"
 
 #. Set error message...
 msgid "OCR pass failed"
-msgstr ""
+msgstr "Correzione OCR non riuscita"
 
 msgid "input was not loaded"
-msgstr ""
+msgstr "L'input non è stato caricato"
 
 msgid "could not open input for reading"
-msgstr ""
+msgstr "Non è possibile aprire l'input in lettura"
 
 msgid "file ended prematurely before raw image"
-msgstr ""
+msgstr "Il file è stato chiuso in modo anomalo prima dell'immagine grezza"
 
 msgid "band data extraction i/o error"
-msgstr ""
+msgstr "Errore i/o nell'estrazione dei dati di banda"
 
 #. Be verbose...
 msgid "loading"
-msgstr "caricamento in corso"
+msgstr "Caricamento in corso"
 
 msgid ""
 "empty file, probably blank magnetic tape or not received back on Earth"
 msgstr ""
+"File vuoto, probabilmente a causa di un nastro magnetico vuoto o non "
+"ricevuto sulla Terra"
 
 msgid "too small to be interesting (< 4 KB)"
-msgstr ""
+msgstr "Troppo piccolo per essere interessante (<4 KB)"
 
 msgid "header is not intact, or not a VICAR file"
-msgstr ""
+msgstr "L'intestazione non è integra o non è un file VICAR"
 
 msgid "header intact, but requires "
-msgstr ""
+msgstr "Intestazione integra, ma richiede "
 
 msgid " byte phase offset"
-msgstr ""
+msgstr " una correzione di fase dei byte"
 
 msgid "did not originate from a Viking Lander"
-msgstr ""
+msgstr "Non ha origine da un Viking Lander"
 
 msgid "entering physical record "
-msgstr ""
+msgstr "Inserimento del record fisico "
 
 msgid " starting at "
-msgstr " cominciando a "
+msgstr " inizio in "
 
 msgid "extracting logical record "
-msgstr ""
+msgstr "Estrazione del record logico "
 
 msgid "/5 starting at "
-msgstr "/5 cominciando a "
+msgstr "/5 inizio in "
 
 msgid "bad logical record terminator "
-msgstr ""
+msgstr "Chiusura del record logico errata "
 
 msgid ""
 "invalid logical record label possibly from out of phase physical boundary"
 msgstr ""
+"Etichetta del record logico non valida probabilmente a causa di uno "
+"sfasamento della delimitazione fisica"
 
 #. It was, so rewind and carry on since there is no
 #. physical record padding...
@@ -330,74 +334,74 @@ msgstr ""
 
 #. Alert and seek...
 msgid "seeking passed "
-msgstr ""
+msgstr "Ricerca approvata "
 
 msgid " physical record padding"
-msgstr ""
+msgstr " spaziatura del record fisico"
 
 msgid "unable to locate last logical record label"
-msgstr ""
+msgstr "Non è possibile individuare l'etichetta dell'ultimo record logico"
 
 msgid "file too small to contain claimed payload "
-msgstr ""
+msgstr "File troppo piccolo per contenere il carico utile richiesto "
 
 msgid "internal radio/geometric calibration ("
-msgstr ""
+msgstr "Radio interna/calibrazione geometrica ("
 
 msgid "unsupported photosensor diode band type ("
-msgstr ""
+msgstr "Tipo di banda del diodo del fotosensore non supportato ("
 
 msgid "exhausted basic metadata parser heuristics"
 msgstr ""
 
 msgid "unsupported number of image bands"
-msgstr ""
+msgstr "Numero di bande di immagine non supportato"
 
 msgid "expected positive image height"
-msgstr ""
+msgstr "Prevista altezza dell'immagine positiva"
 
 msgid "expected positive image width"
-msgstr ""
+msgstr "Prevista larghezza dell'immagine positiva"
 
 #. Check pixel format is integral...
 #. Definitely integral
 #. Guessing integral
 msgid "unsupported pixel format"
-msgstr "il formato dei pixel non é supportato"
+msgstr "Formato di pixel non supportato"
 
 msgid "unsupported colour bit depth"
 msgstr ""
 
 #. If verbosity is set, display basic metadata...
 msgid "basic metadata parser heuristic: "
-msgstr ""
+msgstr "Decodificatore euristico dei metadati di base: "
 
 msgid "bands: "
-msgstr "strisce: "
+msgstr "Bande: "
 
 msgid "height: "
-msgstr "altezza: "
+msgstr "Altezza: "
 
 msgid "width: "
-msgstr "larghezza: "
+msgstr "Larghezza: "
 
 msgid "raw band data size: "
 msgstr ""
 
 msgid " bytes"
-msgstr " bytes"
+msgstr " Byte"
 
 msgid "format: integral"
-msgstr "formato: integrale"
+msgstr "Formato: integrale"
 
 msgid "bytes per colour: "
-msgstr "bytes per colore: "
+msgstr "Byte per colore: "
 
 msgid "photosensor diode band type: "
-msgstr ""
+msgstr "Tipo di banda del diodo del fotosensore: "
 
 msgid "possible physical record padding: "
-msgstr ""
+msgstr "Spaziatura del record fisico possibile: "
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 1 basic metadata parser"
