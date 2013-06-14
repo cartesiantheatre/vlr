@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 22:20-0700\n"
-"PO-Revision-Date: 2013-06-02 11:48+0000\n"
-"Last-Translator: Avaneya Project Crew <avaneya-private@lists.avaneya.com>\n"
+"PO-Revision-Date: 2013-06-14 04:15+0000\n"
+"Last-Translator: Oleg Koptev <koptev.oleg@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-07 06:03+0000\n"
+"X-Launchpad-Export-Date: 2013-06-14 06:02+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -35,7 +35,7 @@ msgstr "Музыканты"
 
 #. Shouts and thanks...
 msgid "Shouts / Thanks"
-msgstr ""
+msgstr "Благодарности"
 
 #. Studio hardware...
 msgid "Studio Hardware"
@@ -51,7 +51,7 @@ msgstr "Переводчики"
 
 #. Dedications...
 msgid "Dedications"
-msgstr ""
+msgstr "Посвящение"
 
 msgid ""
 "\n"
@@ -62,6 +62,13 @@ msgid ""
 "href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits"
 "\">Credits</a> file."
 msgstr ""
+"\n"
+"\n"
+"Все вышеупомянутые люди напрямую внесли вклад в развитие этой программы.\n"
+"Для ознакомления с полным списком всех, принявших участие в разработке \n"
+"проекта Avaneya, включая и эту программу, обратитесь к файлу <a "
+"href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits"
+"\">Credits</a>."
 
 msgid "Error:"
 msgstr "Ошибка:"
@@ -78,6 +85,8 @@ msgid ""
 "Dear User,\n"
 "\n"
 msgstr ""
+"Уважаемый пользователь,\n"
+"\n"
 
 msgid ""
 "The <i>Avaneya: Viking Lander Remastered</i> initiative has an interesting "

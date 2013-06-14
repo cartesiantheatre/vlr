@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 13:08-0700\n"
-"PO-Revision-Date: 2013-06-05 02:12+0000\n"
-"Last-Translator: Yong Jie Huang <yongjie989@gmail.com>\n"
+"PO-Revision-Date: 2013-06-14 05:25+0000\n"
+"Last-Translator: Po-Chun Huang <Unknown>\n"
 "Language-Team: Chinese (Traditional) <zh_TW@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-07 06:03+0000\n"
+"X-Launchpad-Export-Date: 2013-06-14 06:02+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Initialize the channel map...
@@ -63,7 +63,7 @@ msgid "unsupported diode filter class: "
 msgstr "未支援二極管過濾類別： "
 
 msgid "invalid lander filter"
-msgstr "失效的登陸者過濾"
+msgstr "無效的登陸器過濾"
 
 msgid "cannot reconstruct image from unsupported diode band type"
 msgstr "無法從未支援的二極管帶型重建影像"
@@ -295,7 +295,7 @@ msgid " byte phase offset"
 msgstr " 位元組偏移"
 
 msgid "did not originate from a Viking Lander"
-msgstr "並非源自於一個 Viking Lander"
+msgstr "並非源自於一個 Viking 登陸器"
 
 msgid "entering physical record "
 msgstr "進入物理記錄 "
@@ -427,7 +427,7 @@ msgid "camera event label: "
 msgstr "攝像機事件的標籤： "
 
 msgid "bad lander number"
-msgstr "壞的登陸器數量"
+msgstr "糟糕的登陸器數量"
 
 #. Be verbose if requested...
 msgid "lander number: "

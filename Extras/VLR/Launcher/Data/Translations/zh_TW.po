@@ -8,19 +8,20 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 22:20-0700\n"
-"PO-Revision-Date: 2013-06-05 13:18+0000\n"
-"Last-Translator: Yong Jie Huang <yongjie989@gmail.com>\n"
+"PO-Revision-Date: 2013-06-14 05:55+0000\n"
+"Last-Translator: Po-Chun Huang <Unknown>\n"
 "Language-Team: Chinese (Traditional) <zh_TW@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-07 06:03+0000\n"
+"X-Launchpad-Export-Date: 2013-06-14 06:02+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Set translators. Note to translators, put your contact info here...
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Po-Chun Huang https://launchpad.net/~aphroteus\n"
 "  Yong Jie Huang https://launchpad.net/~yj.huang"
 
 #. Beta testers...
@@ -72,7 +73,7 @@ msgid "Error:"
 msgstr "錯誤："
 
 msgid "Are you sure you'd like to quit?"
-msgstr "您確定要離開嗎？"
+msgstr "您確定要離開嗎?"
 
 msgid "Introduction"
 msgstr "介紹"
@@ -260,10 +261,10 @@ msgid ""
 msgstr ""
 
 msgid "\t<b><i>~ Avaneya Project Crew</i></b>\n"
-msgstr ""
+msgstr "\t<b><i>~ Avaneya 專案全體人員</i></b>\n"
 
 msgid "Recovery"
-msgstr ""
+msgstr "修復"
 
 #. We got the process ID, show it...
 msgid "Spawned process {0}..."
@@ -271,17 +272,17 @@ msgstr ""
 
 #. Alert user...
 msgid "Waiting for VikingExtractor D-Bus service..."
-msgstr ""
+msgstr "正在等待 VikingExtractor D-Bus 服務..."
 
 msgid "Dead session connection handle..."
 msgstr ""
 
 #. Done...
 msgid "ok"
-msgstr ""
+msgstr "確定"
 
 msgid "Error"
-msgstr ""
+msgstr "錯誤"
 
 msgid ""
 "The VikingExtractor could not be launched. The following location was "
@@ -291,25 +292,25 @@ msgid ""
 msgstr ""
 
 msgid "Are you sure you'd like to abort the recovery?"
-msgstr ""
+msgstr "您確定您要中止修復嗎?"
 
 msgid "VikingExtractor terminated with status {0}..."
 msgstr ""
 
 msgid "The recovery process was unsuccessful. ({0})"
-msgstr ""
+msgstr "修復程序失敗。 ({0})"
 
 msgid "Subscribe to Newsletter"
-msgstr ""
+msgstr "訂閱新訊息"
 
 msgid "You need to fill out the whole form."
-msgstr ""
+msgstr "您必須完整填寫表格。"
 
 msgid "Invalid email address."
-msgstr ""
+msgstr "無效的電子郵件位址。"
 
 msgid "Passwords do not match."
-msgstr ""
+msgstr "密碼不符。"
 
 msgid ""
 "There was a problem communicating with the remote server. Please try again "
@@ -317,6 +318,9 @@ msgid ""
 "\n"
 "\t{0}"
 msgstr ""
+"與遠端伺服器通訊出現問題。請稍候再試。\n"
+"\n"
+"\t{0}"
 
 msgid "Graphical user interface for the Avaneya: Viking Lander Remastered..."
 msgstr ""
@@ -331,17 +335,17 @@ msgid "Do not show the splash and opening video."
 msgstr ""
 
 msgid "Do not play background music."
-msgstr ""
+msgstr "不播放背景音樂。"
 
 msgid "Display application version."
-msgstr ""
+msgstr "顯示應用程式版本。"
 
 msgid "Override path to VikingExtractor executable."
 msgstr ""
 
 #. Show debugging info...
 msgid "Warning: No executable detected... \"{0}\""
-msgstr ""
+msgstr "警告：沒有偵測到可執行的... \"{0}\""
 
 msgid ""
 "Unfortunately your platform is not yet supported. A required executable was "
@@ -350,19 +354,23 @@ msgid ""
 "\tOperating System: {0}\n"
 "\tMachine Architecture: {1}"
 msgstr ""
+"不幸的是尚未支援您的平台。沒有偵測到一個必要的可執行文件。\n"
+"\n"
+"\t作業系統：{0}\n"
+"\t機器結構：{1}"
 
 msgid "Verification Progress"
-msgstr ""
+msgstr "驗證進度"
 
 msgid "Verification thread already running, not relaunching..."
-msgstr ""
+msgstr "驗證線程已經執行，不二次啟動..."
 
 msgid "Disc verification was cancelled."
-msgstr ""
+msgstr "光碟驗證已取消。"
 
 #. Alert...
 msgid "Stopping disc verification thread..."
-msgstr ""
+msgstr "正在停止光碟驗證線程..."
 
 msgid ""
 "I was not able to check a file I require. {0}:\n"
@@ -379,7 +387,7 @@ msgid ""
 msgstr ""
 
 msgid "Launching verification thread..."
-msgstr ""
+msgstr "啟動驗證線程..."
 
 msgid ""
 "Your disc might be damaged. It is recommended that you replace it before "
@@ -388,22 +396,26 @@ msgid ""
 "<tt>{0}</tt>\n"
 "\n"
 msgstr ""
+"您的光碟可能已損毀。建議您更換後再繼續。 以下文件已損壞：\n"
+"\n"
+"<tt>{0}</tt>\n"
+"\n"
 
 msgid ""
 "The disc verification completed successfully. Your disc is probably fine."
-msgstr ""
+msgstr "光碟驗證已成功的完成。您的光碟看樣子還不錯。"
 
 msgid "Disc verification failed."
-msgstr ""
+msgstr "光碟驗證失敗"
 
 msgid "Confirmation"
-msgstr ""
+msgstr "確認"
 
 msgid "Save to: {0}\n"
-msgstr ""
+msgstr "儲存到：{0}\n"
 
 msgid "Output will be overwritten: {0}\n"
-msgstr ""
+msgstr "輸出將會覆寫：{0}\n"
 
 #. Directorize by...
 msgid "Directorize by...\n"
@@ -429,7 +441,7 @@ msgstr ""
 
 #. Filters...
 msgid "Filters...\n"
-msgstr ""
+msgstr "過濾器...\n"
 
 msgid "\t...diode band type class: {0}\n"
 msgstr ""
@@ -453,40 +465,40 @@ msgid "VikingExtractor arguments: {0}\n"
 msgstr ""
 
 msgid "Yes"
-msgstr ""
+msgstr "是"
 
 msgid "No"
-msgstr ""
+msgstr "否"
 
 msgid "Farewell"
 msgstr ""
 
 msgid "Select Recovery Folder"
-msgstr ""
+msgstr "選擇修復的資料夾"
 
 msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
-msgstr ""
+msgstr "找不到GStreamer >= 1.0。將不會使用於開啟影片..."
 
 msgid "Verification Prompt"
-msgstr ""
+msgstr "驗證提示"
 
 msgid "Download Handbook"
-msgstr ""
+msgstr "下載手冊"
 
 msgid "Please choose a download location..."
-msgstr ""
+msgstr "請選擇下載位置..."
 
 msgid "Contacting server, please wait..."
-msgstr ""
+msgstr "正在聯繫伺服器，請稍候..."
 
 msgid "The download of the handbook was stopped."
-msgstr ""
+msgstr "下載手冊已停止。"
 
 msgid "The book downloaded successfully. Would you like to open it?"
-msgstr ""
+msgstr "手冊已成功下載。您想要開啟它?"
 
 msgid "Warning: NetworkManager service not found..."
-msgstr ""
+msgstr "警告：找不到 NetworkManager 服務..."
 
 msgid ""
 "You need a working internet connection in order to do this. You don't appear "
@@ -494,28 +506,28 @@ msgid ""
 msgstr ""
 
 msgid "Cannot launch {0}. Platform unknown..."
-msgstr ""
+msgstr "無法啟動 {0}。未知的平台..."
 
 msgid "Cannot explore {0}. Platform unknown..."
-msgstr ""
+msgstr "無法探索 {0}。未知的平台..."
 
 msgid "Configure Introduction"
-msgstr ""
+msgstr "簡介配置"
 
 msgid "Configure Layout"
-msgstr ""
+msgstr "佈局配置"
 
 msgid "Configure Recovery"
-msgstr ""
+msgstr "修復配置"
 
 msgid "Configure Filters"
-msgstr ""
+msgstr "過濾器配置"
 
 msgid "Configure Advanced"
-msgstr ""
+msgstr "進階配置"
 
 msgid "Location/"
-msgstr ""
+msgstr "位置/"
 
 msgid "Martian Month/"
 msgstr ""
@@ -534,7 +546,7 @@ msgid ""
 msgstr ""
 
 msgid "Avaneya Website"
-msgstr ""
+msgstr "Avaneya 網站"
 
 msgid ""
 "These options configure some advanced VikingExtractor features. If you are "
@@ -584,7 +596,7 @@ msgid ""
 msgstr ""
 
 msgid "Use multithreading"
-msgstr ""
+msgstr "使用多線程"
 
 msgid ""
 "Take advantage of machines with more than one processor by using several "
@@ -626,7 +638,7 @@ msgid ""
 msgstr ""
 
 msgid "<b>Lander Filter:</b>"
-msgstr ""
+msgstr "<b>登錄器過濾器：</b>"
 
 msgid ""
 "The <b>VikingExtractor</b> has many different configuration options that "
@@ -683,7 +695,7 @@ msgid ""
 msgstr ""
 
 msgid "?"
-msgstr ""
+msgstr "?"
 
 msgid ""
 "These options control how the VikingExtractor's image recovery works.\n"
@@ -693,7 +705,7 @@ msgid ""
 msgstr ""
 
 msgid "No automatic rotation"
-msgstr ""
+msgstr "不自動旋轉"
 
 msgid ""
 "A given fully rendered image in the Viking Lander image archive might be "
@@ -718,7 +730,7 @@ msgstr ""
 
 #. This is set at runtime. Don't bother to translate.
 msgid "(set at runtime)"
-msgstr ""
+msgstr "(set at runtime)"
 
 msgid ""
 "The following is a summary of the configuration <b>VikingExtractor</b> will "
@@ -746,22 +758,22 @@ msgid ""
 msgstr ""
 
 msgid "Explore Recovered Mission Data"
-msgstr ""
+msgstr "探索已修復的任務資料"
 
 msgid "Explore Source Code"
-msgstr ""
+msgstr "探索原始碼"
 
 msgid ""
 "The <i>Avaneya Project Crew Handbook</i> was written to address the needs of "
 "project contributors in our community. Would you like to download the latest "
 "revision? This requires a working internet connection."
-msgstr ""
+msgstr "<i>Avaneya 專案全體人員手冊</i>的撰寫是為了解決我們社群的專案貢獻者的需求。您想下載最新版本嗎?這需要網路連線。"
 
 msgid "Yes, download the latest copy."
-msgstr ""
+msgstr "是的，下載最新的副本"
 
 msgid "???"
-msgstr ""
+msgstr "???"
 
 msgid ""
 "This window contains the output from the VikingExtractor process while it "
@@ -769,7 +781,7 @@ msgid ""
 msgstr ""
 
 msgid "Please wait..."
-msgstr ""
+msgstr "請稍候..."
 
 msgid ""
 "Please select an <b>empty</b> folder below. This folder will be used to save "
@@ -778,10 +790,10 @@ msgid ""
 msgstr ""
 
 msgid "Select folder to store recovered images"
-msgstr ""
+msgstr "選擇資料夾，儲存已修復的影像"
 
 msgid "Overwrite existing output files"
-msgstr ""
+msgstr "覆寫已存在的輸出檔案"
 
 msgid ""
 "This will overwrite any existing output files that have the same name as the "
@@ -789,7 +801,7 @@ msgid ""
 msgstr ""
 
 msgid "Avaneya"
-msgstr ""
+msgstr "Avaneya"
 
 msgid ""
 "Please wait while your mission data's integrity is verified. You can safely "
@@ -808,10 +820,10 @@ msgid ""
 msgstr ""
 
 msgid "Perform DVD integrity check"
-msgstr ""
+msgstr "執行DVD完整性檢查"
 
 msgid "Skip DVD integrity check"
-msgstr ""
+msgstr "略過DVD完整性檢查"
 
 msgid ""
 "We have a <b>low volume</b> announcement mailing list that we use to make "
@@ -821,19 +833,19 @@ msgid ""
 msgstr ""
 
 msgid "Yes, please subscribe me."
-msgstr ""
+msgstr "是的，請訂閱我。"
 
 msgid "<b>Name:</b>"
-msgstr ""
+msgstr "<b>名稱:</b>"
 
 msgid "<b>Email:</b>"
-msgstr ""
+msgstr "<b>電子郵件：</b>"
 
 msgid "<b>Password:</b>"
-msgstr ""
+msgstr "<b>密碼：</b>"
 
 msgid "<b>Password again:</b>"
-msgstr ""
+msgstr "<b>再一次密碼：</b>"
 
 msgid "Thanks, but I think I'll pass."
 msgstr ""
