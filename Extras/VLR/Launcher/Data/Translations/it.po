@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 22:20-0700\n"
-"PO-Revision-Date: 2013-06-13 12:25+0000\n"
+"PO-Revision-Date: 2013-06-15 02:37+0000\n"
 "Last-Translator: Gianfranco Frisani <gfrisani@libero.it>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-14 06:02+0000\n"
+"X-Launchpad-Export-Date: 2013-06-15 05:25+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -23,7 +23,8 @@ msgstr ""
 "Launchpad Contributions:\n"
 "  Avaneya Project Crew https://launchpad.net/~avaneya\n"
 "  Bruno9779 https://launchpad.net/~bruno9779\n"
-"  Gianfranco Frisani https://launchpad.net/~gfrisani"
+"  Gianfranco Frisani https://launchpad.net/~gfrisani\n"
+"  Kip Warner https://launchpad.net/~kip"
 
 #. Beta testers...
 msgid "Beta Testers"
@@ -416,7 +417,7 @@ msgid "Waiting for VikingExtractor D-Bus service..."
 msgstr "In attesa del servizio VikingExtractor D-Bus ..."
 
 msgid "Dead session connection handle..."
-msgstr ""
+msgstr "Gestore della sessione di connessione non attivo..."
 
 #. Done...
 msgid "ok"
@@ -577,7 +578,7 @@ msgstr "L'output verrà sovrascritto: {0}\n"
 
 #. Directorize by...
 msgid "Directorize by...\n"
-msgstr ""
+msgstr "Riordinato in directory da...\n"
 
 msgid "\t...diode band class: {0}\n"
 msgstr "\t...classe della banda del diodo: {0}\n"
@@ -639,7 +640,7 @@ msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
 msgstr "GStreamer >= 1.0 non trovato. Non verrà usato per aprire i video..."
 
 msgid "Verification Prompt"
-msgstr ""
+msgstr "Richiesta di verifica"
 
 msgid "Download Handbook"
 msgstr "Scarica il manuale"
@@ -1156,4 +1157,4 @@ msgid "<b>Password again:</b>"
 msgstr "<b>Conferma password</b>"
 
 msgid "Thanks, but I think I'll pass."
-msgstr ""
+msgstr "Grazie, ma non si accetta."

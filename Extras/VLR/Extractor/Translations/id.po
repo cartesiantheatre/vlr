@@ -1,4 +1,4 @@
-# Filipino translation for avaneya
+# Indonesian translation for avaneya
 # Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
 # This file is distributed under the same license as the avaneya package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 13:08-0700\n"
-"PO-Revision-Date: 2013-06-14 08:19+0000\n"
-"Last-Translator: Joe Tang <Unknown>\n"
-"Language-Team: Filipino <fil@li.org>\n"
+"PO-Revision-Date: 2013-06-15 03:02+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Indonesian <id@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,506 +19,475 @@ msgstr ""
 
 #. Initialize the channel map...
 msgid "error: "
-msgstr "error: "
+msgstr ""
 
 msgid "info: "
-msgstr "info: "
+msgstr ""
 
 msgid "warning: "
-msgstr "babala: "
+msgstr ""
 
 msgid "could not emit 'Notification' signal..."
-msgstr "hindi mailabas ang 'Notification' signal..."
+msgstr ""
 
 msgid "could not emit 'Progress' signal..."
-msgstr "hindi mailabas ang 'Progress' signal..."
+msgstr ""
 
 #, c-format
 msgid "Method %s.%s is not implemented."
-msgstr "Method %s.%s is not implemented."
+msgstr ""
 
 msgid "could not register service with session bus..."
-msgstr "hindi marehistro and service sa session bus"
+msgstr ""
 
 #. Alert user...
 msgid "registering on the session bus..."
-msgstr "nagrerehistro sa session bus"
+msgstr ""
 
 msgid "could not parse introspection XML"
-msgstr "could not parse introspection XML"
+msgstr ""
 
 msgid "could not connect with the session bus"
-msgstr "hindi makakonekta sa session bus"
+msgstr ""
 
 msgid "glib main loop quit unexpectedly..."
-msgstr "natapos ng bigla ang glib main loop"
+msgstr ""
 
 msgid "invalid logical record label"
-msgstr "imbalido ang label ng talaang lohikal"
+msgstr ""
 
 msgid "failed to read from input stream"
-msgstr "bigo ang pagbasa sa input stream"
+msgstr ""
 
 msgid "unsupported diode filter class: "
-msgstr "di-suportadong diode filter class: "
+msgstr ""
 
 msgid "invalid lander filter"
-msgstr "invalid lander filter"
+msgstr ""
 
 msgid "cannot reconstruct image from unsupported diode band type"
-msgstr "hindi mabuo ang larawan mula sa hindi suportadong diode band type"
+msgstr ""
 
 msgid "Unreconstructable/"
-msgstr "Hindi mabuo/"
+msgstr ""
 
 msgid "Unknown Location/"
-msgstr "Hindi Kilalang Lokasyon/"
+msgstr ""
 
 #. Set the error message and abort...
 msgid "could not create output directory for file"
-msgstr "hindi makagawa ng output directory para sa file"
+msgstr ""
 
 msgid ""
 "output metadata already exists, not overwriting (use --overwrite to override)"
 msgstr ""
-"output metadata already exists, not overwriting (use --overwrite to override)"
 
 #. Just give a warning and abort...
 msgid "couldn't save metadata"
-msgstr "hindi ma-save and metadata"
+msgstr ""
 
 msgid ""
 "The following is a machine generated collection of metadata of each of\n"
-msgstr "Ang sumusunod ay koleksiyong metadata na binuo ng machine ng bawat\n"
+msgstr ""
 
 msgid "the image bands used to reconstruct a colour image.\n"
-msgstr "mga image bands na ginamit sa pagbuo ng larawang may kulay\n"
+msgstr ""
 
 msgid "basic heuristic method: "
-msgstr "basic heuristic method: "
+msgstr ""
 
 msgid "camera azimuth / elevation: "
-msgstr "camera azimuth / elevation: "
+msgstr ""
 
 msgid "camera event: "
-msgstr "pangyayaring kamera: "
+msgstr ""
 
 msgid "camera event solar day: "
-msgstr "camera event solar day: "
+msgstr ""
 
 msgid "diode band type: "
-msgstr "uri ng diode band: "
+msgstr ""
 
 msgid "file size: "
-msgstr "laki ng filel: "
+msgstr ""
 
 msgid "input file: "
-msgstr "pampasok na file: "
+msgstr ""
 
 msgid "magnetic tape: "
-msgstr "magnetic tape: "
+msgstr ""
 
 msgid "magnetic tape file ordinal: "
-msgstr "magnetic tape file ordinal: "
+msgstr ""
 
 #. Alert user if verbose mode enabled...
 msgid "mean pixel value: "
-msgstr "mean pixel value: "
+msgstr ""
 
 msgid "month: "
-msgstr "buwan: "
+msgstr ""
 
 msgid "overlay axis present: "
-msgstr "nahanap na overlay axis: "
+msgstr ""
 
 msgid "overlay full histogram present: "
-msgstr "nahanap na overlay full histogram "
+msgstr ""
 
 msgid "physical record size: "
-msgstr "laki ng talaang pisikal "
+msgstr ""
 
 msgid "physical record padding: "
-msgstr "padding ng talaang pisikal "
+msgstr ""
 
 msgid "phase offset required: "
-msgstr "nangangailangan ng phase offset "
+msgstr ""
 
 #. Show user, if requested...
 msgid "raw image offset: "
-msgstr "raw image offset: "
+msgstr ""
 
 msgid "cannot reconstruct, dumped all bands"
-msgstr "hindi mabuo, lahat ng bands ay itinambak"
+msgstr ""
 
 msgid "output already exists, not overwriting (use --overwrite to override)"
 msgstr ""
-"mayroon nang output, hindi sinusulatan ng bago (gamitin ang --overwrite "
-"upang ma-override)"
 
 msgid ""
 "images for each band present, but no matching set of full histogram variants "
 "available"
 msgstr ""
-"nandyan ang larawan para sa bawat band, ngunit walang pumapares na full "
-"histogram variants"
 
 msgid ""
 "images for each band present, but no matching set of non-overlayed variants "
 "available"
 msgstr ""
-"nandyan ang larawan para sa bawat band, ngunit walang pumapares na non-"
-"overlayed variants"
 
 msgid "image bands not all the same size, may be missing scanlines"
 msgstr ""
-"hindi pare-parehas ang mga image bands, posibleng nagkukulang ng scanlines"
 
 msgid "unable to open input directory for indexing "
-msgstr "hindi kayang buksan ang input directory upang ma-index "
+msgstr ""
 
 msgid "could not stat "
-msgstr "hindi makapag stat "
+msgstr ""
 
 #. Alert user...
 msgid "indexing mission data, please wait..."
-msgstr "iniindex ang mission data, mag-antay po..."
+msgstr ""
 
 #. Provide a notification to the Viking Lander Launcher...
 msgid "Indexing mission data, please wait..."
-msgstr "Iniindex ang mission data, mag-antay po..."
+msgstr ""
 
 msgid "no prospective files found"
-msgstr "walang nahanap na prospective file"
+msgstr ""
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Analyzing mission data, please wait..."
-msgstr "Sinusuri ang mission data, mag-intay po..."
+msgstr ""
 
 msgid "studying mission data index of "
-msgstr "pinag-aaralan ang mission data index of "
+msgstr ""
 
 msgid ", skipping"
-msgstr ", nilalampasan"
+msgstr ""
 
 msgid " (--ignore-bad-files to skip)"
-msgstr " (--ignore-bad-files upang laktawan)"
+msgstr ""
 
 msgid "filtering "
-msgstr "sinasalang "
+msgstr ""
 
 msgid " type diode bands (--filter-diode[=type] to change)"
-msgstr " uri ng diode bands (--filter-diode[=type] upang palitan)"
+msgstr ""
 
 msgid "camera event doesn't identify itself, cannot index"
 msgstr ""
-"ang kamera ay hindi nagpakilala sa sarili, hindi matuloy ang pag-index"
 
 msgid " is a new camera event, indexing"
-msgstr " ay isang bagong pangyayari ng kamera, tuloy ang pag-index"
+msgstr ""
 
 msgid " is a known camera event, indexing"
-msgstr " ay isang bagong pangyayari ng kamera, tuloy ang pag-index"
+msgstr ""
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Attempting forensic mission data recovery..."
-msgstr "Sinusubukan ang pagrecover ng forensic mission data..."
+msgstr ""
 
 msgid "attempting reconstruction "
-msgstr "Sinusubukang buuin "
+msgstr ""
 
 msgid "dumping components from "
-msgstr "itambak ang mga parte mula sa "
+msgstr ""
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Recovery completed..."
-msgstr "Natapos na ang recovery"
+msgstr ""
 
 msgid "successfully reconstructed "
-msgstr "matagumpay ang pagbuo "
+msgstr ""
 
 msgid " unreconstructable components dumped"
-msgstr " itinambak ang mga parteng hindi mabuo"
+msgstr ""
 
 msgid "dumped "
-msgstr "itinambak "
+msgstr ""
 
 msgid " image components without reconstruction"
-msgstr " image components without reconstruction"
+msgstr ""
 
 msgid "image should be rotated 90 counterclockwise"
-msgstr "kailangan ikutin ang larawan ng 90 counterclockwise"
+msgstr ""
 
 msgid "image should be rotated 180 counterclockwise"
-msgstr "kailangan ikutin ang larawan ng 180 counterclockwise"
+msgstr ""
 
 msgid "image should be rotated 270 counterclockwise"
-msgstr "kailangan ikutin ang larawan ng 270 counterclockwise"
+msgstr ""
 
 msgid "image does not need to be rotated"
-msgstr "hindi kailangang ikutin ang larawan"
+msgstr ""
 
 msgid "could not guess image rotation"
-msgstr "hindi matiyak ang pag-ikot sa larawan"
+msgstr ""
 
 msgid "GNU Ocrad failed to initialize"
-msgstr "hindi na-initialize ang GNU Ocrad"
+msgstr ""
 
 #. Set error message...
 msgid "could not set OCR image"
-msgstr "hindi ma-set ang OCR image"
+msgstr ""
 
 #. Set error message...
 msgid "OCR pass failed"
-msgstr "nabigo ang OCR pass"
+msgstr ""
 
 msgid "input was not loaded"
-msgstr "hindi nai-load ang input"
+msgstr ""
 
 msgid "could not open input for reading"
-msgstr "hindi mabuksan ang input upang mabasa"
+msgstr ""
 
 msgid "file ended prematurely before raw image"
-msgstr "natapos ng bitin ang file bago sa raw image"
+msgstr ""
 
 msgid "band data extraction i/o error"
-msgstr "band data extraction i/o error"
+msgstr ""
 
 #. Be verbose...
 msgid "loading"
-msgstr "naglo-load"
+msgstr ""
 
 msgid ""
 "empty file, probably blank magnetic tape or not received back on Earth"
 msgstr ""
-"file ay walang laman, posibleng blanko ang magnetic tape o hindi natanggap "
-"sa Earth"
 
 msgid "too small to be interesting (< 4 KB)"
-msgstr "sobrang liit, hindi kaakit-akit (< 4 KB)"
+msgstr ""
 
 msgid "header is not intact, or not a VICAR file"
-msgstr "hindi buo ang header, o hindi isang Vicar file"
+msgstr ""
 
 msgid "header intact, but requires "
-msgstr "buo ang header, ngunit nangangailangan ng "
+msgstr ""
 
 msgid " byte phase offset"
-msgstr " byte phase offset"
+msgstr ""
 
 msgid "did not originate from a Viking Lander"
-msgstr "hindi nagmula sa isa sa mga Viking Lander"
+msgstr ""
 
 msgid "entering physical record "
-msgstr "pinapasok ang talaang pisikal "
+msgstr ""
 
 msgid " starting at "
-msgstr " nagsisimula sa "
+msgstr ""
 
 msgid "extracting logical record "
-msgstr "kinukuha ang talaang lohikal "
+msgstr ""
 
 msgid "/5 starting at "
-msgstr "/5 nagsisimula sa "
+msgstr ""
 
 msgid "bad logical record terminator "
-msgstr "sirang pantapos ng talaang lohikal "
+msgstr ""
 
 msgid ""
 "invalid logical record label possibly from out of phase physical boundary"
 msgstr ""
-"imbalidong label ng talaang lohikal posibleng mula sa out of phase na "
-"pagitang pisikal"
 
 #. It was, so rewind and carry on since there is no
 #. physical record padding...
 msgid "tangential physical record boundary detected, ignoring padding"
 msgstr ""
-"may natukoy na pagitang pisikal na tangential, padding ay di-papapansinin"
 
 #. Alert and seek...
 msgid "seeking passed "
-msgstr "natapos ang paghahanap "
+msgstr ""
 
 msgid " physical record padding"
-msgstr " padding ng talaang pisikal"
+msgstr ""
 
 msgid "unable to locate last logical record label"
-msgstr "hindi mahanap ang huling label ng talaang lohikal"
+msgstr ""
 
 msgid "file too small to contain claimed payload "
-msgstr "sobrang liit ang file upang maglaman ng claimed payload "
+msgstr ""
 
 msgid "internal radio/geometric calibration ("
-msgstr "internal radio/geometric calibration ("
+msgstr ""
 
 msgid "unsupported photosensor diode band type ("
-msgstr "hindi suporta ang photosensor diode band type ("
+msgstr ""
 
 msgid "exhausted basic metadata parser heuristics"
-msgstr "naubos ang basic metadata parser heuristics"
+msgstr ""
 
 msgid "unsupported number of image bands"
-msgstr "hindi suportado ang bilang ng image bands"
+msgstr ""
 
 msgid "expected positive image height"
-msgstr "ang positibong sukat ng taas ng larawan ang hinahanap"
+msgstr ""
 
 msgid "expected positive image width"
-msgstr "ang positibong sukat ng lapad ng larawan ang hinahanap"
+msgstr ""
 
 #. Check pixel format is integral...
 #. Definitely integral
 #. Guessing integral
 msgid "unsupported pixel format"
-msgstr "hindi suportado ang pixel format"
+msgstr ""
 
 msgid "unsupported colour bit depth"
-msgstr "hindi suportado ang color bit depth"
+msgstr ""
 
 #. If verbosity is set, display basic metadata...
 msgid "basic metadata parser heuristic: "
-msgstr "basic metadata parser heuristic: "
+msgstr ""
 
 msgid "bands: "
-msgstr "bands: "
+msgstr ""
 
 msgid "height: "
-msgstr "taas: "
+msgstr ""
 
 msgid "width: "
-msgstr "lapad: "
+msgstr ""
 
 msgid "raw band data size: "
-msgstr "sukat-laki ng raw band data: "
+msgstr ""
 
 msgid " bytes"
-msgstr " bytes"
+msgstr ""
 
 msgid "format: integral"
-msgstr "format: integral"
+msgstr ""
 
 msgid "bytes per colour: "
-msgstr "bytes bawat kulay "
+msgstr ""
 
 msgid "photosensor diode band type: "
-msgstr "uri ng photosensor diode band "
+msgstr ""
 
 msgid "possible physical record padding: "
-msgstr "posibleng pagpapalaman sa talaang pisikal: "
+msgstr ""
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 1 basic metadata parser"
-msgstr "heuristics selected format 1 basic metadata parser"
+msgstr ""
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 2 basic metadata parser"
-msgstr "heuristics selected format 2 basic metadata parser"
+msgstr ""
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 3 basic metadata parser"
-msgstr "heuristics selected format 3 basic metadata parser"
+msgstr ""
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 4 basic metadata parser"
-msgstr "heuristics selected format 4 basic metadata parser"
+msgstr ""
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 5 basic metadata parser"
-msgstr "heuristics selected format 5 basic metadata parser"
+msgstr ""
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 6 basic metadata parser"
-msgstr "heuristics selected format 6 basic metadata parser"
+msgstr ""
 
 msgid "invalid logical record label while parsing extended metadata"
 msgstr ""
-"imbalidong label ng talaang lohikal nung pagsuri sa extended metadata"
 
 #. Alert user if verbose mode enabled...
 msgid "psa directional vector: "
 msgstr ""
 
 msgid "camera event label: "
-msgstr "label ng pangyayaring kamera "
+msgstr ""
 
 msgid "bad lander number"
-msgstr "sirang numero ng lander"
+msgstr ""
 
 #. Be verbose if requested...
 msgid "lander number: "
-msgstr "numero ng lander: "
+msgstr ""
 
 msgid "filtering non-matching lander"
-msgstr "sinasala ang mga lander na hindi tumutugma"
+msgstr ""
 
 #. Set caller hint and return unsupported...
 msgid "monocolour unsupported"
-msgstr "di-suportado ang monocolour"
+msgstr ""
 
 #. Set caller hint and return unsupported...
 msgid "unidentifiable broadband"
-msgstr "di-matukoy na broadband"
+msgstr ""
 
 #. Set hint and return unknown...
 msgid "none detected"
-msgstr "walang naitukoy"
+msgstr ""
 
 msgid "filtering non-matching solar day"
-msgstr "sinasala ang di-tumutugma na araw de-araw (solar day)"
+msgstr ""
 
 msgid "filtering non-matching camera event"
-msgstr "sinasala ang di-tumutugma na pangyayaring kamera"
+msgstr ""
 
 msgid "Options:\n"
-msgstr "Pagpipilian:\n"
+msgstr ""
 
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after band type class (e.g. Colour).\n"
 msgstr ""
-"                              Ilagay ang mga larawang nabuo sa loob ng mga "
-"subdirectory\n"
-"                              ipinangalan sa klase ng uri ng band (hal. "
-"Kulay).\n"
 
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after location taken from.\n"
 msgstr ""
-"                              Ilagay ang mga larawang nabuo sa loob ng mga "
-"subdirectory\n"
-"                              ipinangalan sa kinuhaang lugar\n"
 
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after Martian month taken on.\n"
 msgstr ""
-"                              Ilagay ang mga larawang nabuo sa loob ng mga "
-"subdirectory\n"
-"                              Ipinangalan sa buwan (month) na Martian\n"
 
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              numbered by camera event solar day.\n"
 msgstr ""
-"                              Ilagay ang mga larawang nabuo sa loob ng mga "
-"subdirectory\n"
-"                              ibinilang ukol sa araw de-araw ng pangyayaring "
-"kamera\n"
 
 msgid "                              Don't write anything.\n"
-msgstr "                              Huwag isulat\n"
+msgstr ""
 
 msgid "                              Show this help.\n"
-msgstr "                              Ipakita ang patnubay na ito.\n"
+msgstr ""
 
 msgid ""
 "                              Don't stop on corrupt or problematic input "
 "file,\n"
 "                              but continue extraction of other files.\n"
 msgstr ""
-"                              Huwag tumigil sa sirang input file\n"
-"                              Subalit ituloy ang paglinang sa ibang file.\n"
 
 msgid "                              Encode output with Adam7 interlacing\n"
 msgstr ""
@@ -529,19 +498,12 @@ msgid ""
 "                              if -j is not provided, or auto if threads\n"
 "                              argument not specified.\n"
 msgstr ""
-"                              Bilang ng threads na patatakbuhin ng sabay. "
-"Isa lamang\n"
-"                              kapag walang -j, o auto kapag ang threads\n"
-"                              argument ay hindi tiniyak.\n"
 
 msgid ""
 "                              Look only for the specified matching camera "
 "event\n"
 "                              ID, such as 22A158.\n"
 msgstr ""
-"                              Hanapin lamang ang tinukoy na pangyayaring "
-"kamera\n"
-"                              ID, tulad ng 22A158.\n"
 
 msgid ""
 "                              Extract from matching supported diode filter\n"
@@ -554,37 +516,26 @@ msgid ""
 "                              Extract from specific lander only which are\n"
 "                              either (0, the default), 1, or 2.\n"
 msgstr ""
-"                              Tanging  (0, the default), 1, or 2.\n"
-"                              lamang ang kunin mula sa tiyak na lander.\n"
 
 msgid ""
 "                              Look only for camera events taken on the "
 "specified\n"
 "                              solar day.\n"
 msgstr ""
-"                              Tanging mga pangyayaring kamera na kinuha sa "
-"tinukoy \n"
-"                              na araw de-araw ang hanapin.\n"
 
 msgid ""
 "                              Whenever a colour image is recovered, machine\n"
 "                              generate a text file containing various "
 "metadata.\n"
 msgstr ""
-"                              Tuwing na-recover ang may kulay na larawan, "
-"machine\n"
-"                              maglabas ng text file na naglalaman ng iba't "
-"ibang metadata\n"
 
 msgid ""
 "                              Disable VT/100 ANSI coloured terminal output.\n"
 msgstr ""
-"                              Di-paganahin ang VT/100 ANSI coloured terminal "
-"output.\n"
 
 msgid ""
 "                              Don't automatically rotate image as needed.\n"
-msgstr "                              Huwag kusang ikutin ang larawan.\n"
+msgstr ""
 
 msgid ""
 "                              Don't attempt to reconstruct camera events, "
@@ -624,12 +575,6 @@ msgid ""
 "to attempt reconstruction into the provided output directory.\n"
 "\n"
 msgstr ""
-"Ginagawang PNG ang mga larawang de-kulay  ng 1970s Viking Lander . Ang "
-"value\n"
-"ng 'input' ay puwedeng isang Vicar file o directory na naglalaman ng Vicar "
-"files\n"
-"upang tangkahing mabuo sa ibinigay na output directory.\n"
-"\n"
 
 msgid "Report bugs to "
 msgstr ""

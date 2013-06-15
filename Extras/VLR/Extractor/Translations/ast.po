@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 13:08-0700\n"
-"PO-Revision-Date: 2013-05-27 19:43+0000\n"
+"PO-Revision-Date: 2013-06-14 20:48+0000\n"
 "Last-Translator: Xuacu Saturio <xuacusk8@gmail.com>\n"
 "Language-Team: Asturian <ast@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-07 06:03+0000\n"
+"X-Launchpad-Export-Date: 2013-06-15 05:25+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Initialize the channel map...
@@ -138,66 +138,73 @@ msgid "overlay full histogram present: "
 msgstr ""
 
 msgid "physical record size: "
-msgstr ""
+msgstr "tamañu del rexistru físicu: "
 
 msgid "physical record padding: "
-msgstr ""
+msgstr "rellenu del rexistru físicu: "
 
 msgid "phase offset required: "
-msgstr ""
+msgstr "desplazamientu de fase requeríu: "
 
 #. Show user, if requested...
 msgid "raw image offset: "
-msgstr ""
+msgstr "desplazamientu d'imaxe en bruto: "
 
 msgid "cannot reconstruct, dumped all bands"
-msgstr ""
+msgstr "nun se pue reconstruir, abandonaes toles bandes"
 
 msgid "output already exists, not overwriting (use --overwrite to override)"
 msgstr ""
+"la salida yá existe, nun se sobreescribe (use --overwrite pa forzalo)"
 
 msgid ""
 "images for each band present, but no matching set of full histogram variants "
 "available"
 msgstr ""
+"hai imaxes pa cada banda, pero nun ta disponible dengún conxuntu de "
+"variantes d'histograma completu que coincida"
 
 msgid ""
 "images for each band present, but no matching set of non-overlayed variants "
 "available"
 msgstr ""
+"hai imaxes pa cada banda, pero nun ta disponible dengún conxuntu de "
+"variantes ensin superposición que coincida"
 
 msgid "image bands not all the same size, may be missing scanlines"
 msgstr ""
+"les bandes de la imaxe nun tienen toes el mesmu tamañu, puen faltar llinies "
+"d'escanéu"
 
 msgid "unable to open input directory for indexing "
-msgstr ""
+msgstr "nun pue abrise'l direutoriu d'entrada pa facer l'índiz "
 
 msgid "could not stat "
 msgstr ""
 
 #. Alert user...
 msgid "indexing mission data, please wait..."
-msgstr ""
+msgstr "faciendo índiz de datos de la misión, espere por favor..."
 
 #. Provide a notification to the Viking Lander Launcher...
 msgid "Indexing mission data, please wait..."
-msgstr ""
+msgstr "Faciendo índiz de datos de la misión, espere por favor..."
 
 msgid "no prospective files found"
-msgstr ""
+msgstr "nun s'alcontraron posibles ficheros"
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Analyzing mission data, please wait..."
-msgstr ""
+msgstr "Analizando los datos de la misión, espere por favor..."
 
 msgid "studying mission data index of "
-msgstr ""
+msgstr "estudiando l'índiz de datos de la misión de "
 
 msgid ", skipping"
-msgstr ""
+msgstr ", saltando"
 
 msgid " (--ignore-bad-files to skip)"
-msgstr ""
+msgstr " (--ignore-bad-files pa saltalo)"
 
 msgid "filtering "
 msgstr ""

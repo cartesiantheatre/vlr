@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 13:08-0700\n"
-"PO-Revision-Date: 2013-06-14 05:25+0000\n"
+"PO-Revision-Date: 2013-06-15 00:49+0000\n"
 "Last-Translator: Po-Chun Huang <Unknown>\n"
 "Language-Team: Chinese (Traditional) <zh_TW@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-14 06:02+0000\n"
+"X-Launchpad-Export-Date: 2013-06-15 05:25+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Initialize the channel map...
@@ -60,10 +60,10 @@ msgid "failed to read from input stream"
 msgstr "從輸入串流讀取失敗"
 
 msgid "unsupported diode filter class: "
-msgstr "未支援二極管過濾類別： "
+msgstr "未支援二極管篩選類別： "
 
 msgid "invalid lander filter"
-msgstr "無效的登陸器過濾"
+msgstr "無效的著陸器篩選器"
 
 msgid "cannot reconstruct image from unsupported diode band type"
 msgstr "無法從未支援的二極管帶型重建影像"
@@ -196,7 +196,7 @@ msgid " (--ignore-bad-files to skip)"
 msgstr " (使用 --ignore-bad-files 跳過)"
 
 msgid "filtering "
-msgstr "過濾 "
+msgstr "篩選中 "
 
 msgid " type diode bands (--filter-diode[=type] to change)"
 msgstr " 二極管帶類型 (使用 --filter-diode[=type] 去改變)"
@@ -222,7 +222,7 @@ msgstr "傾倒組件中從 "
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Recovery completed..."
-msgstr "恢復完成..."
+msgstr "恢復已完成..."
 
 msgid "successfully reconstructed "
 msgstr "重建成功 "
@@ -295,7 +295,7 @@ msgid " byte phase offset"
 msgstr " 位元組偏移"
 
 msgid "did not originate from a Viking Lander"
-msgstr "並非源自於一個 Viking 登陸器"
+msgstr "並非源自於一個維京著陸器"
 
 msgid "entering physical record "
 msgstr "進入物理記錄 "
@@ -338,7 +338,7 @@ msgid "internal radio/geometric calibration ("
 msgstr "內部的無線電/幾何校正 ("
 
 msgid "unsupported photosensor diode band type ("
-msgstr "不受支持的光敏二極管帶型 ("
+msgstr "不支援的光度感測器二極體頻段 ("
 
 msgid "exhausted basic metadata parser heuristics"
 msgstr "用盡基本元數據分析器啟發式"
@@ -387,7 +387,7 @@ msgid "bytes per colour: "
 msgstr "每一顏色位元組 "
 
 msgid "photosensor diode band type: "
-msgstr "光敏二極管頻帶類型： "
+msgstr "光度感測器二極體頻段類型： "
 
 msgid "possible physical record padding: "
 msgstr "可能的物理紀錄填充： "
@@ -427,14 +427,14 @@ msgid "camera event label: "
 msgstr "攝像機事件的標籤： "
 
 msgid "bad lander number"
-msgstr "糟糕的登陸器數量"
+msgstr "糟糕的著陸器數量"
 
 #. Be verbose if requested...
 msgid "lander number: "
-msgstr "登陸器數量： "
+msgstr "著陸器數量： "
 
 msgid "filtering non-matching lander"
-msgstr "過濾未符合的登陸器"
+msgstr "篩選未符合的著陸器"
 
 #. Set caller hint and return unsupported...
 msgid "monocolour unsupported"
@@ -449,10 +449,10 @@ msgid "none detected"
 msgstr "未察覺的"
 
 msgid "filtering non-matching solar day"
-msgstr "過濾未符合的太陽日"
+msgstr "篩選未符合的太陽日"
 
 msgid "filtering non-matching camera event"
-msgstr "過濾未符合的攝像機事件"
+msgstr "篩選未符合的攝影機事件"
 
 msgid "Options:\n"
 msgstr "選項:\n"
@@ -526,15 +526,15 @@ msgid ""
 "infrared,\n"
 "                              sun, or survey.\n"
 msgstr ""
-"                              從符合的支援二極管過濾器中抓取\n"
+"                              從符合的支援二極管篩選器中抓取\n"
 "                              類別可以是任何的 (預設)，顏色，紅外線，\n"
-"                              陽光下，或調查。\n"
+"                              陽光，或察勘。\n"
 
 msgid ""
 "                              Extract from specific lander only which are\n"
 "                              either (0, the default), 1, or 2.\n"
 msgstr ""
-"                              只從那些特定的登錄器抓取\n"
+"                              只從那些特定的著錄器抓取\n"
 "                              任一個 (預設0) 1, 或 2。\n"
 
 msgid ""
@@ -603,8 +603,8 @@ msgid ""
 "to attempt reconstruction into the provided output directory.\n"
 "\n"
 msgstr ""
-"轉換 1970s Viking Lander era VICAR 彩色影像為PNGs。這個值為\n"
-"'輸入'可以是任一個VICAR或一個目錄裡包含著VICAR檔案\n"
+"將1970年代維京著陸器時代的VICAR 彩色影像轉換為PNG。這個\n"
+"'輸入'值可以是一個VICAR檔或一個目錄裡包含著多個VICAR檔案\n"
 "試圖重建所提供的輸出目錄。\n"
 "\n"
 
