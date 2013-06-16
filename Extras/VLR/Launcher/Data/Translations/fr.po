@@ -8,24 +8,29 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 22:20-0700\n"
-"PO-Revision-Date: 2013-05-28 14:04+0000\n"
-"Last-Translator: Pierre Slamich <pierre.slamich@gmail.com>\n"
+"PO-Revision-Date: 2013-06-15 19:45+0000\n"
+"Last-Translator: Hélion du Mas des Bourboux <helion331990@gmail.com>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-07 06:03+0000\n"
+"X-Launchpad-Export-Date: 2013-06-16 04:51+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Set translators. Note to translators, put your contact info here...
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Pierre Slamich https://launchpad.net/~pierre-slamich"
+"  Baptiste Fontaine https://launchpad.net/~bfontaine\n"
+"  Hélion du Mas des Bourboux https://launchpad.net/~helion331990\n"
+"  Nicolas Delvaux https://launchpad.net/~malizor\n"
+"  Pierre Slamich https://launchpad.net/~pierre-slamich\n"
+"  Sylvie Gallet https://launchpad.net/~sylvie-gallet\n"
+"  Yves MATHIEU https://launchpad.net/~ymathieu"
 
 #. Beta testers...
 msgid "Beta Testers"
-msgstr ""
+msgstr "Beta Testeurs"
 
 #. Musicians...
 msgid "Musicians"
@@ -33,7 +38,7 @@ msgstr "Musiciens"
 
 #. Shouts and thanks...
 msgid "Shouts / Thanks"
-msgstr ""
+msgstr "Protester / remercier"
 
 #. Studio hardware...
 msgid "Studio Hardware"
@@ -65,10 +70,10 @@ msgid "Error:"
 msgstr "Erreur :"
 
 msgid "Are you sure you'd like to quit?"
-msgstr ""
+msgstr "Voulez vous vraiment quitter ?"
 
 msgid "Introduction"
-msgstr ""
+msgstr "Introduction"
 
 #. Break up the introduction text by paragraphs to make it easier for
 #. translators...
@@ -76,6 +81,8 @@ msgid ""
 "Dear User,\n"
 "\n"
 msgstr ""
+"Cher utilisateur,\n"
+"\n"
 
 msgid ""
 "The <i>Avaneya: Viking Lander Remastered</i> initiative has an interesting "
@@ -251,10 +258,10 @@ msgid ""
 msgstr ""
 
 msgid "\t<b><i>~ Avaneya Project Crew</i></b>\n"
-msgstr ""
+msgstr "\t<b><i>~ L'équipe du projet Avaneya</i></b>\n"
 
 msgid "Recovery"
-msgstr ""
+msgstr "Récupération"
 
 #. We got the process ID, show it...
 msgid "Spawned process {0}..."
@@ -262,14 +269,14 @@ msgstr ""
 
 #. Alert user...
 msgid "Waiting for VikingExtractor D-Bus service..."
-msgstr ""
+msgstr "En attente du service D-Bus VikingExtractor…"
 
 msgid "Dead session connection handle..."
 msgstr ""
 
 #. Done...
 msgid "ok"
-msgstr ""
+msgstr "ok"
 
 msgid "Error"
 msgstr "Erreur"
@@ -282,22 +289,22 @@ msgid ""
 msgstr ""
 
 msgid "Are you sure you'd like to abort the recovery?"
-msgstr ""
+msgstr "Êtes-vous certain de vouloir annuler la récupération ?"
 
 msgid "VikingExtractor terminated with status {0}..."
 msgstr ""
 
 msgid "The recovery process was unsuccessful. ({0})"
-msgstr ""
+msgstr "Le processus de récupération n'a pas réussi. ({0})"
 
 msgid "Subscribe to Newsletter"
-msgstr ""
+msgstr "S'abonner à la lettre d'information"
 
 msgid "You need to fill out the whole form."
-msgstr ""
+msgstr "Vous devez remplir entièrement le formulaire."
 
 msgid "Invalid email address."
-msgstr ""
+msgstr "Adresse de courriel invalide."
 
 msgid "Passwords do not match."
 msgstr "Les deux mots de passe ne correspondent pas."
@@ -308,6 +315,10 @@ msgid ""
 "\n"
 "\t{0}"
 msgstr ""
+"La communication avec le serveur distant a rencontré un problème. Veuillez "
+"réessayer plus tard.\n"
+"\n"
+"\t{0}"
 
 msgid "Graphical user interface for the Avaneya: Viking Lander Remastered..."
 msgstr ""
@@ -325,10 +336,10 @@ msgid "Do not play background music."
 msgstr ""
 
 msgid "Display application version."
-msgstr ""
+msgstr "Afficher la version de l'application."
 
 msgid "Override path to VikingExtractor executable."
-msgstr ""
+msgstr "Écraser le chemin vers l'exécutable de VikingExtractor."
 
 #. Show debugging info...
 msgid "Warning: No executable detected... \"{0}\""
@@ -341,6 +352,11 @@ msgid ""
 "\tOperating System: {0}\n"
 "\tMachine Architecture: {1}"
 msgstr ""
+"Malheureusement votre plate-forme n'est pas encore prise en charge. Un "
+"exécutable requis n'a pas été détecté.\n"
+"\n"
+"\tSystème d'exploitation : {0}\n"
+"\tArchitecture de la machine : {1}"
 
 msgid "Verification Progress"
 msgstr ""
@@ -349,7 +365,7 @@ msgid "Verification thread already running, not relaunching..."
 msgstr ""
 
 msgid "Disc verification was cancelled."
-msgstr ""
+msgstr "La vérification du disque a été annulée."
 
 #. Alert...
 msgid "Stopping disc verification thread..."
@@ -368,6 +384,11 @@ msgid ""
 "\n"
 "{1}"
 msgstr ""
+"Je n'ai pas pu trouver la liste des fichiers à vérifier :\n"
+"\n"
+"{0}\n"
+"\n"
+"{1}"
 
 msgid "Launching verification thread..."
 msgstr ""
@@ -379,22 +400,29 @@ msgid ""
 "<tt>{0}</tt>\n"
 "\n"
 msgstr ""
+"Votre disque est peut-être endommagé. Il vous est recommandé de le remplacer "
+"avant de continuer. Les fichiers suivants semblent corrompus :\n"
+"\n"
+"<tt>{0}</tt>\n"
+"\n"
 
 msgid ""
 "The disc verification completed successfully. Your disc is probably fine."
 msgstr ""
+"La vérification du disque s’est terminée avec succès. Votre disque n’a "
+"probablement pas de problème."
 
 msgid "Disc verification failed."
-msgstr ""
+msgstr "La vérification du disque a échoué."
 
 msgid "Confirmation"
 msgstr "Confirmation"
 
 msgid "Save to: {0}\n"
-msgstr ""
+msgstr "Enregistrer vers : {0}\n"
 
 msgid "Output will be overwritten: {0}\n"
-msgstr ""
+msgstr "Le fichier de sortie serra écrasé : {0}\n"
 
 #. Directorize by...
 msgid "Directorize by...\n"
@@ -404,13 +432,13 @@ msgid "\t...diode band class: {0}\n"
 msgstr ""
 
 msgid "\t...Martian location: {0}\n"
-msgstr ""
+msgstr "\t…Emplacement sur Mars : {0}\n"
 
 msgid "\t...Martian month: {0}\n"
-msgstr ""
+msgstr "\t[tab…Mois martien : {0}\n"
 
 msgid "\t...mission solar day: {0}\n"
-msgstr ""
+msgstr "\t…Jour solaire de la mission : {0}\n"
 
 msgid "Disable automatic image component orientation: {0}\n"
 msgstr ""
@@ -420,7 +448,7 @@ msgstr ""
 
 #. Filters...
 msgid "Filters...\n"
-msgstr ""
+msgstr "Filtres…\n"
 
 msgid "\t...diode band type class: {0}\n"
 msgstr ""
@@ -432,7 +460,7 @@ msgid "Interlace images: {0}\n"
 msgstr ""
 
 msgid "Generate metadata: {0}\n"
-msgstr ""
+msgstr "Générer des métadonnées : {0}\n"
 
 msgid "Be verbose: {0}\n"
 msgstr ""
@@ -441,7 +469,7 @@ msgid "Use multithreading: {0}\n"
 msgstr ""
 
 msgid "VikingExtractor arguments: {0}\n"
-msgstr ""
+msgstr "Arguments de VikingExtractor : {0}\n"
 
 msgid "Yes"
 msgstr "Oui"
@@ -453,7 +481,7 @@ msgid "Farewell"
 msgstr ""
 
 msgid "Select Recovery Folder"
-msgstr ""
+msgstr "Choisir le dossier de récupération"
 
 msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
 msgstr ""
@@ -462,7 +490,7 @@ msgid "Verification Prompt"
 msgstr ""
 
 msgid "Download Handbook"
-msgstr ""
+msgstr "Télécharger le manuel"
 
 msgid "Please choose a download location..."
 msgstr ""
@@ -471,18 +499,20 @@ msgid "Contacting server, please wait..."
 msgstr ""
 
 msgid "The download of the handbook was stopped."
-msgstr ""
+msgstr "Le téléchargement du manuel a été interrompu."
 
 msgid "The book downloaded successfully. Would you like to open it?"
-msgstr ""
+msgstr "Le livre a été téléchargé avec succès. Voulez-vous l'ouvrir ?"
 
 msgid "Warning: NetworkManager service not found..."
-msgstr ""
+msgstr "Avertissement : le service NetworkManager n'a pas été trouvé…"
 
 msgid ""
 "You need a working internet connection in order to do this. You don't appear "
 "to have one right now."
 msgstr ""
+"Vous devez avoir une connexion internet qui fonctionne afin de faire cela. "
+"Vous ne semblez pas en avoir une."
 
 msgid "Cannot launch {0}. Platform unknown..."
 msgstr ""
@@ -491,31 +521,31 @@ msgid "Cannot explore {0}. Platform unknown..."
 msgstr ""
 
 msgid "Configure Introduction"
-msgstr ""
+msgstr "Configurer l'introduction"
 
 msgid "Configure Layout"
-msgstr ""
+msgstr "Configurer la disposition"
 
 msgid "Configure Recovery"
-msgstr ""
+msgstr "Configurer la récupération"
 
 msgid "Configure Filters"
 msgstr "Configurer les filtres"
 
 msgid "Configure Advanced"
-msgstr ""
+msgstr "Configurer les paramètres avancés"
 
 msgid "Location/"
-msgstr ""
+msgstr "Lieu/"
 
 msgid "Martian Month/"
-msgstr ""
+msgstr "Mois martien/"
 
 msgid "Sensor Band Type/"
 msgstr ""
 
 msgid "Mission Solar Day/"
-msgstr ""
+msgstr "Jour solaire de la mission/"
 
 msgid "Photograph.png"
 msgstr ""
@@ -526,7 +556,7 @@ msgstr ""
 "Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>."
 
 msgid "Avaneya Website"
-msgstr ""
+msgstr "Site Web de Avaneya"
 
 msgid ""
 "These options configure some advanced VikingExtractor features. If you are "
@@ -558,7 +588,7 @@ msgid ""
 msgstr ""
 
 msgid "Generate metadata"
-msgstr ""
+msgstr "Générer les méta-données"
 
 msgid ""
 "Whenever a colour image is being recovered, this option will write out a "
@@ -647,16 +677,19 @@ msgid ""
 msgstr ""
 
 msgid "Organize by location on Martian surface"
-msgstr ""
+msgstr "Organiser selon le lieu à la surface de Mars"
 
 msgid ""
 "Organizes the images into subdirectories named after the physical location "
 "on the surface of Mars where they were taken. This will be either Utopia "
 "Planitia or Chryse Planitia."
 msgstr ""
+"Organise les images en sous-dossiers qui sont nommés selon le lieu physique "
+"à la surface de Mars où ces photos ont été prise. Ce nom serra ainsi soit "
+"Utopia Planitia soit Chryse Planitia."
 
 msgid "Organize by Martian month"
-msgstr ""
+msgstr "Organiser selon le mois martien"
 
 msgid ""
 "Organizes the images into subdirectories named after the month they were "
@@ -666,7 +699,7 @@ msgid ""
 msgstr ""
 
 msgid "Organize by mission solar day"
-msgstr ""
+msgstr "Organiser selon le jour solaire de la mission"
 
 msgid ""
 "Put reconstructed images into subdirectories numbered after the solar day "
@@ -738,10 +771,10 @@ msgid ""
 msgstr ""
 
 msgid "Explore Recovered Mission Data"
-msgstr ""
+msgstr "Explorer les données de mission récupérées"
 
 msgid "Explore Source Code"
-msgstr ""
+msgstr "Explorer le code source"
 
 msgid ""
 "The <i>Avaneya Project Crew Handbook</i> was written to address the needs of "
@@ -750,7 +783,7 @@ msgid ""
 msgstr ""
 
 msgid "Yes, download the latest copy."
-msgstr ""
+msgstr "Oui, télécharger la dernière copie."
 
 msgid "???"
 msgstr ""
@@ -761,7 +794,7 @@ msgid ""
 msgstr ""
 
 msgid "Please wait..."
-msgstr ""
+msgstr "Veuillez patienter…"
 
 msgid ""
 "Please select an <b>empty</b> folder below. This folder will be used to save "
@@ -770,18 +803,20 @@ msgid ""
 msgstr ""
 
 msgid "Select folder to store recovered images"
-msgstr ""
+msgstr "Choisissez un dossier où enregistrer les images récupérées"
 
 msgid "Overwrite existing output files"
-msgstr ""
+msgstr "Écraser les fichiers de sortie existant"
 
 msgid ""
 "This will overwrite any existing output files that have the same name as the "
 "data recovered."
 msgstr ""
+"Ceci écrasera n'importe quel fichier de sortie possédant le même nom que les "
+"données récupérées."
 
 msgid "Avaneya"
-msgstr ""
+msgstr "Avaneya"
 
 msgid ""
 "Please wait while your mission data's integrity is verified. You can safely "
@@ -800,10 +835,10 @@ msgid ""
 msgstr ""
 
 msgid "Perform DVD integrity check"
-msgstr ""
+msgstr "Effectuer une vérification de l'intégrité du DVD"
 
 msgid "Skip DVD integrity check"
-msgstr ""
+msgstr "Passer la vérification de l'intégrité du DVD"
 
 msgid ""
 "We have a <b>low volume</b> announcement mailing list that we use to make "
@@ -816,16 +851,16 @@ msgid "Yes, please subscribe me."
 msgstr ""
 
 msgid "<b>Name:</b>"
-msgstr ""
+msgstr "<b>Nom :</b>"
 
 msgid "<b>Email:</b>"
-msgstr ""
+msgstr "<b>Courriel :</b>"
 
 msgid "<b>Password:</b>"
-msgstr ""
+msgstr "<b>Mot de passe :</b>"
 
 msgid "<b>Password again:</b>"
-msgstr ""
+msgstr "<b>Mot de passe de nouveau :</b>"
 
 msgid "Thanks, but I think I'll pass."
 msgstr ""

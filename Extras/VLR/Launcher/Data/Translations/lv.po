@@ -1,4 +1,4 @@
-# Spanish translation for avaneya
+# Latvian translation for avaneya
 # Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
 # This file is distributed under the same license as the avaneya package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 22:20-0700\n"
-"PO-Revision-Date: 2013-06-15 13:44+0000\n"
-"Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
-"Language-Team: Spanish <es@li.org>\n"
+"PO-Revision-Date: 2013-06-15 15:19+0000\n"
+"Last-Translator: admresdeserv. <jeanmarc.gailis@gmail.com>\n"
+"Language-Team: Latvian <lv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,35 +21,35 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Adolfo Jayme Barrientos https://launchpad.net/~fitoschido"
+"  admresdeserv. https://launchpad.net/~jeanmarc-gailis"
 
 #. Beta testers...
 msgid "Beta Testers"
-msgstr "Probadores beta"
+msgstr "Beta Testetaji"
 
 #. Musicians...
 msgid "Musicians"
-msgstr "Músicos"
+msgstr "Muziki"
 
 #. Shouts and thanks...
 msgid "Shouts / Thanks"
-msgstr "Agradecimientos"
+msgstr ""
 
 #. Studio hardware...
 msgid "Studio Hardware"
-msgstr "Hardware del estudio"
+msgstr ""
 
 #. Studio software...
 msgid "Studio Software"
-msgstr "Software del estudio"
+msgstr ""
 
 #. Set translators...
 msgid "Translators"
-msgstr "Traductores"
+msgstr "Tulkotāji"
 
 #. Dedications...
 msgid "Dedications"
-msgstr "Dedicaciones"
+msgstr ""
 
 msgid ""
 "\n"
@@ -60,24 +60,15 @@ msgid ""
 "href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits"
 "\">Credits</a> file."
 msgstr ""
-"\n"
-"\n"
-"Todas las personas mencionadas han colaborado directamente con este "
-"software.\n"
-"Para una lista completa de todos los que han trabajado en el proyecto "
-"Avaneya, además\n"
-"de este software, véase nuestro archivo principal de <a "
-"href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits"
-"\">créditos</a>."
 
 msgid "Error:"
-msgstr "Error:"
+msgstr "Kļūda:"
 
 msgid "Are you sure you'd like to quit?"
-msgstr "¿Está seguro de que quiere salir?"
+msgstr "Vai esat drosi ka velaties pamest?"
 
 msgid "Introduction"
-msgstr "Introducción"
+msgstr "Ievads"
 
 #. Break up the introduction text by paragraphs to make it easier for
 #. translators...
@@ -85,7 +76,7 @@ msgid ""
 "Dear User,\n"
 "\n"
 msgstr ""
-"Estimado usuario,\n"
+"Dargais Lietotajs,\n"
 "\n"
 
 msgid ""
@@ -122,13 +113,6 @@ msgid ""
 "to large sets of high resolution reference material for study.\n"
 "\n"
 msgstr ""
-"Mientras diseñàbamos Avaneya, nos dimos cuenta de cuán importante era para "
-"nosotros crear una experiencia de juego perfecta. Necesitábamos replicar las "
-"condiciones visuales del entorno marciano cuidadosamente. Podíamos crear "
-"algo mucho mejor que solo un entorno rojo, y los usuarios valoran esfuerzos "
-"en experiencias visuales sinceras. Por ello, nuestros artistas tuvieron que "
-"estudiar mucho material de referencia en alta resolución.\n"
-"\n"
 
 msgid ""
 "The closest relevant photographs available at present were taken in a "
@@ -267,34 +251,30 @@ msgid ""
 "future ahead of it. We hope that you will choose to be a part of it.\n"
 "\n"
 msgstr ""
-"A nombre de todos nosotros, nos gustaría expresar nuestra gratitud por "
-"tomarte el tiempo de apoyar al proyecto. Avaneya tiene un futuro "
-"emocionante, y esperamos que elijas formar parte de él.\n"
-"\n"
 
 msgid "\t<b><i>~ Avaneya Project Crew</i></b>\n"
-msgstr "\t<b><i>~El equipo del proyecto Avaneya</i></b>\n"
+msgstr "\t<b><i>~Avaneya Projektu Komanda</i></b>\n"
 
 msgid "Recovery"
-msgstr "Recuperación"
+msgstr ""
 
 #. We got the process ID, show it...
 msgid "Spawned process {0}..."
-msgstr "Se ha creado el proceso {0}…"
+msgstr ""
 
 #. Alert user...
 msgid "Waiting for VikingExtractor D-Bus service..."
-msgstr "Esperando al servicio de D-Bus de VikingExtractor…"
+msgstr ""
 
 msgid "Dead session connection handle..."
 msgstr ""
 
 #. Done...
 msgid "ok"
-msgstr "aceptar"
+msgstr "labi"
 
 msgid "Error"
-msgstr "Error"
+msgstr "Kļūda"
 
 msgid ""
 "The VikingExtractor could not be launched. The following location was "
@@ -307,22 +287,22 @@ msgid "Are you sure you'd like to abort the recovery?"
 msgstr ""
 
 msgid "VikingExtractor terminated with status {0}..."
-msgstr "VikingExtractor finalizó con el estado {0}…"
+msgstr ""
 
 msgid "The recovery process was unsuccessful. ({0})"
 msgstr ""
 
 msgid "Subscribe to Newsletter"
-msgstr "Suscribirse al boletín de noticias"
+msgstr ""
 
 msgid "You need to fill out the whole form."
-msgstr "Necesita rellenar el formulario completo."
+msgstr ""
 
 msgid "Invalid email address."
-msgstr "La dirección de correo electrónico no es válida."
+msgstr ""
 
 msgid "Passwords do not match."
-msgstr "Las contraseñas no coinciden."
+msgstr "Paroles nesakrīt."
 
 msgid ""
 "There was a problem communicating with the remote server. Please try again "
@@ -341,20 +321,20 @@ msgid "Override path to Viking lander mission data root."
 msgstr ""
 
 msgid "Do not show the splash and opening video."
-msgstr "No mostrar la pantalla de inicio y vídeo de apertura."
+msgstr ""
 
 msgid "Do not play background music."
-msgstr "No reproducir la música de fondo."
+msgstr ""
 
 msgid "Display application version."
-msgstr "Mostrar la versión de la aplicación."
+msgstr ""
 
 msgid "Override path to VikingExtractor executable."
 msgstr ""
 
 #. Show debugging info...
 msgid "Warning: No executable detected... \"{0}\""
-msgstr "Aviso: no se detectó ningún ejecutable… «{0}»"
+msgstr ""
 
 msgid ""
 "Unfortunately your platform is not yet supported. A required executable was "
@@ -401,11 +381,6 @@ msgid ""
 "<tt>{0}</tt>\n"
 "\n"
 msgstr ""
-"Puede que su disco esté dañado. Se recomienda que lo reemplace antes de "
-"continuar. El siguiente archivo aparenta estar dañado:\n"
-"\n"
-"<tt>{0}</tt>\n"
-"\n"
 
 msgid ""
 "The disc verification completed successfully. Your disc is probably fine."
@@ -415,13 +390,13 @@ msgid "Disc verification failed."
 msgstr ""
 
 msgid "Confirmation"
-msgstr "Confirmación"
+msgstr ""
 
 msgid "Save to: {0}\n"
-msgstr "Guardar en: {0}\n"
+msgstr ""
 
 msgid "Output will be overwritten: {0}\n"
-msgstr "La salida se sobreescribirá: {0}\n"
+msgstr ""
 
 #. Directorize by...
 msgid "Directorize by...\n"
@@ -447,7 +422,7 @@ msgstr ""
 
 #. Filters...
 msgid "Filters...\n"
-msgstr "Filtros…\n"
+msgstr ""
 
 msgid "\t...diode band type class: {0}\n"
 msgstr ""
@@ -459,7 +434,7 @@ msgid "Interlace images: {0}\n"
 msgstr ""
 
 msgid "Generate metadata: {0}\n"
-msgstr "Generar metadatos: {0}\n"
+msgstr ""
 
 msgid "Be verbose: {0}\n"
 msgstr ""
@@ -471,16 +446,16 @@ msgid "VikingExtractor arguments: {0}\n"
 msgstr ""
 
 msgid "Yes"
-msgstr "Sí"
+msgstr ""
 
 msgid "No"
-msgstr "No"
+msgstr ""
 
 msgid "Farewell"
 msgstr ""
 
 msgid "Select Recovery Folder"
-msgstr "Seleccione la carpeta de recuperación"
+msgstr ""
 
 msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
 msgstr ""
@@ -489,22 +464,22 @@ msgid "Verification Prompt"
 msgstr ""
 
 msgid "Download Handbook"
-msgstr "Descargar la guía"
+msgstr ""
 
 msgid "Please choose a download location..."
-msgstr "Elija una ubicación para la descarga…"
+msgstr ""
 
 msgid "Contacting server, please wait..."
-msgstr "Contactando al servidor, espere…"
+msgstr ""
 
 msgid "The download of the handbook was stopped."
-msgstr "Se ha detenido la descarga de la guía."
+msgstr ""
 
 msgid "The book downloaded successfully. Would you like to open it?"
-msgstr "Se ha descargado la guía correctamente. ¿Quiere abrirla?"
+msgstr ""
 
 msgid "Warning: NetworkManager service not found..."
-msgstr "Aviso: no se encontró el servicio de NetworkManager…"
+msgstr ""
 
 msgid ""
 "You need a working internet connection in order to do this. You don't appear "
@@ -527,7 +502,7 @@ msgid "Configure Recovery"
 msgstr ""
 
 msgid "Configure Filters"
-msgstr "Configurar los filtros"
+msgstr ""
 
 msgid "Configure Advanced"
 msgstr ""
@@ -545,14 +520,14 @@ msgid "Mission Solar Day/"
 msgstr ""
 
 msgid "Photograph.png"
-msgstr "Fotografía.png"
+msgstr ""
 
 msgid ""
 "Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>."
-msgstr "Copyright © 2010–2013 Cartesian Theatre <info@cartesiantheatre.com>."
+msgstr ""
 
 msgid "Avaneya Website"
-msgstr "Sitio web de Avaneya"
+msgstr ""
 
 msgid ""
 "These options configure some advanced VikingExtractor features. If you are "
@@ -584,7 +559,7 @@ msgid ""
 msgstr ""
 
 msgid "Generate metadata"
-msgstr "Generar metadatos"
+msgstr ""
 
 msgid ""
 "Whenever a colour image is being recovered, this option will write out a "
@@ -701,7 +676,7 @@ msgid ""
 msgstr ""
 
 msgid "?"
-msgstr "¿?"
+msgstr ""
 
 msgid ""
 "These options control how the VikingExtractor's image recovery works.\n"
@@ -723,7 +698,7 @@ msgid ""
 msgstr ""
 
 msgid "Do not reconstruct"
-msgstr "No reconstruir"
+msgstr ""
 
 msgid ""
 "A given fully rendered image in the Viking Lander image archive might be "
@@ -767,7 +742,7 @@ msgid "Explore Recovered Mission Data"
 msgstr ""
 
 msgid "Explore Source Code"
-msgstr "Explorar el código fuente"
+msgstr ""
 
 msgid ""
 "The <i>Avaneya Project Crew Handbook</i> was written to address the needs of "
@@ -776,20 +751,18 @@ msgid ""
 msgstr ""
 
 msgid "Yes, download the latest copy."
-msgstr "Sí, descargar la copia más reciente."
+msgstr ""
 
 msgid "???"
-msgstr "¿?"
+msgstr ""
 
 msgid ""
 "This window contains the output from the VikingExtractor process while it "
 "works."
 msgstr ""
-"Esta ventana contiene la salida del proceso VikingExtractor mientras está en "
-"funcionamiento."
 
 msgid "Please wait..."
-msgstr "Espere…"
+msgstr ""
 
 msgid ""
 "Please select an <b>empty</b> folder below. This folder will be used to save "
@@ -809,7 +782,7 @@ msgid ""
 msgstr ""
 
 msgid "Avaneya"
-msgstr "Avaneya"
+msgstr ""
 
 msgid ""
 "Please wait while your mission data's integrity is verified. You can safely "
@@ -841,19 +814,19 @@ msgid ""
 msgstr ""
 
 msgid "Yes, please subscribe me."
-msgstr "Sí, suscribirme."
+msgstr ""
 
 msgid "<b>Name:</b>"
-msgstr "<b>Nombre:</b>"
+msgstr ""
 
 msgid "<b>Email:</b>"
-msgstr "<b>Correo electrónico:</b>"
+msgstr ""
 
 msgid "<b>Password:</b>"
-msgstr "<b>Contraseña:</b>"
+msgstr ""
 
 msgid "<b>Password again:</b>"
-msgstr "<b>Contraseña de nuevo:</b>"
+msgstr ""
 
 msgid "Thanks, but I think I'll pass."
 msgstr ""
