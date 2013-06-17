@@ -8,18 +8,18 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 13:08-0700\n"
-"PO-Revision-Date: 2013-06-15 21:12+0000\n"
+"PO-Revision-Date: 2013-06-16 07:01+0000\n"
 "Last-Translator: Joe Tang <Unknown>\n"
 "Language-Team: Filipino <fil@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-16 04:51+0000\n"
+"X-Launchpad-Export-Date: 2013-06-17 05:28+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Initialize the channel map...
 msgid "error: "
-msgstr "error: "
+msgstr "kamalian: "
 
 msgid "info: "
 msgstr "info: "
@@ -35,20 +35,20 @@ msgstr "hindi mailabas ang 'Progress' signal..."
 
 #, c-format
 msgid "Method %s.%s is not implemented."
-msgstr "Method %s.%s is not implemented."
+msgstr "Hindi naipatupad ang method %s.%s."
 
 msgid "could not register service with session bus..."
-msgstr "hindi marehistro and service sa session bus"
+msgstr "hindi marehistro ang service sa session bus"
 
 #. Alert user...
 msgid "registering on the session bus..."
 msgstr "nagrerehistro sa session bus"
 
 msgid "could not parse introspection XML"
-msgstr "could not parse introspection XML"
+msgstr "hindi masuri ang introspection XML"
 
 msgid "could not connect with the session bus"
-msgstr "hindi makakonekta sa session bus"
+msgstr "hindi kayang kumabit sa session bus"
 
 msgid "glib main loop quit unexpectedly..."
 msgstr "natapos ng bigla ang glib main loop"
@@ -63,25 +63,26 @@ msgid "unsupported diode filter class: "
 msgstr "di-suportadong diode filter class: "
 
 msgid "invalid lander filter"
-msgstr "invalid lander filter"
+msgstr "imbalidong lander filter"
 
 msgid "cannot reconstruct image from unsupported diode band type"
 msgstr "hindi mabuo ang larawan mula sa hindi suportadong diode band type"
 
 msgid "Unreconstructable/"
-msgstr "Hindi mabuo/"
+msgstr "'Di kayang mabuo/"
 
 msgid "Unknown Location/"
-msgstr "Hindi Kilalang Lokasyon/"
+msgstr "Di-kilalang lugar/"
 
 #. Set the error message and abort...
 msgid "could not create output directory for file"
-msgstr "hindi makagawa ng output directory para sa file"
+msgstr "di-kayang gumawa ng output directory para sa file"
 
 msgid ""
 "output metadata already exists, not overwriting (use --overwrite to override)"
 msgstr ""
-"output metadata already exists, not overwriting (use --overwrite to override)"
+"mayroon nang output metadata, hindi tatabunan (gamitin ang --overwrite upang "
+"ituloy)"
 
 #. Just give a warning and abort...
 msgid "couldn't save metadata"
@@ -89,10 +90,11 @@ msgstr "hindi ma-save and metadata"
 
 msgid ""
 "The following is a machine generated collection of metadata of each of\n"
-msgstr "Ang sumusunod ay koleksiyong metadata na binuo ng machine ng bawat\n"
+msgstr ""
+"Ang sumusunod ay koleksiyong metadata na binuo ng machine, ng bawat\n"
 
 msgid "the image bands used to reconstruct a colour image.\n"
-msgstr "mga image bands na ginamit sa pagbuo ng larawang may kulay\n"
+msgstr "mga image bands na ginamit sa pagbuo ng larawang de-kulay\n"
 
 msgid "basic heuristic method: "
 msgstr "basic heuristic method: "
@@ -104,7 +106,7 @@ msgid "camera event: "
 msgstr "pangyayaring kamera: "
 
 msgid "camera event solar day: "
-msgstr "camera event solar day: "
+msgstr "pangyayaring kamera araw de-araw: "
 
 msgid "diode band type: "
 msgstr "uri ng diode band: "
@@ -113,7 +115,7 @@ msgid "file size: "
 msgstr "laki ng filel: "
 
 msgid "input file: "
-msgstr "pampasok na file: "
+msgstr "input file: "
 
 msgid "magnetic tape: "
 msgstr "magnetic tape: "
@@ -609,17 +611,21 @@ msgid ""
 "                              Scan subfolders as well if input is a "
 "directory.\n"
 msgstr ""
+"                              Suriin na rin ang mga subfolder kapag ang "
+"input ay isang directory.\n"
 
 msgid ""
 "                              Show summary of progress and final results "
 "only.\n"
 msgstr ""
+"                              Ipakita ang buod ng tinrabaho at ang mga "
+"natapos  na resulta.\n"
 
 msgid "                              Suppress all warnings and errors.\n"
-msgstr ""
+msgstr "                              Pigilin ang mga babala at kamalian.\n"
 
 msgid "                              Be verbose\n"
-msgstr ""
+msgstr "                              Iklian\n"
 
 msgid ""
 "                              Show version information\n"
@@ -651,28 +657,34 @@ msgid ""
 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 "\n"
 msgstr ""
+"Copyright (C) 2010-2013 Cartesian Theatre.\n"
+"Ito ay libreng software; tingnan ang Copying para sa mga kondisyong "
+"pagkopya. WALANG\n"
+"warantiya; kahit sa KAKAYAHANG PANGANGALAKAL o KAANGKUPAN PARA SA ISANG "
+"PARTIKULAR NA LAYUNIN\n"
+"\n"
 
 msgid "Configured with: "
-msgstr ""
+msgstr "Inayos gamit ang: "
 
 msgid "parallelization is not implemented yet, using single thread"
-msgstr ""
+msgstr "hindi pa naipatupad ang parallelization, single thread ang gagamitin"
 
 msgid "summarize only and verbose modes cannot both be used"
-msgstr ""
+msgstr "hindi pwedeng ipagsabay ang summarize only at verbose mode"
 
 msgid " linked against incompatible GNU Ocrad version "
-msgstr ""
+msgstr " naugnay sa di-bagay na GNU Ocrad version "
 
 msgid "GNU Ocrad needs to be at least 0.21, but got "
-msgstr ""
+msgstr "Pinakamababa na ang 0.21 para sa GNU Ocrad, ngunit ang nakuha ay "
 
 #. Alert, abort...
 msgid "need input file or directory, see --help"
-msgstr ""
+msgstr "nangangailangan ng input file o directory, tingnan --help"
 
 msgid "unknown parameter "
-msgstr ""
+msgstr "di-kilalang parametro "
 
 msgid "), see --help"
-msgstr ""
+msgstr "), see --help"

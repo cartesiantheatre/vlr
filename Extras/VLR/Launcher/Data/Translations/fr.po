@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 22:20-0700\n"
-"PO-Revision-Date: 2013-06-15 19:45+0000\n"
-"Last-Translator: Hélion du Mas des Bourboux <helion331990@gmail.com>\n"
+"PO-Revision-Date: 2013-06-16 22:00+0000\n"
+"Last-Translator: Nicolas Delvaux <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-16 04:51+0000\n"
+"X-Launchpad-Export-Date: 2013-06-17 05:28+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -265,7 +265,7 @@ msgstr "Récupération"
 
 #. We got the process ID, show it...
 msgid "Spawned process {0}..."
-msgstr ""
+msgstr "Processus {0} lancé..."
 
 #. Alert user...
 msgid "Waiting for VikingExtractor D-Bus service..."
@@ -287,12 +287,16 @@ msgid ""
 "\n"
 "{0}"
 msgstr ""
+"Le VikingExtractor n'a pas pu être lancé. L'emplacement suivant a été "
+"tenté :\n"
+"\n"
+"{0}"
 
 msgid "Are you sure you'd like to abort the recovery?"
 msgstr "Êtes-vous certain de vouloir annuler la récupération ?"
 
 msgid "VikingExtractor terminated with status {0}..."
-msgstr ""
+msgstr "Le VikingExtractor a terminé avec le statut {0}..."
 
 msgid "The recovery process was unsuccessful. ({0})"
 msgstr "Le processus de récupération n'a pas réussi. ({0})"
@@ -330,10 +334,10 @@ msgid "Override path to Viking lander mission data root."
 msgstr ""
 
 msgid "Do not show the splash and opening video."
-msgstr ""
+msgstr "Ne pas montrer l'écran d'accueil ni la vidéo d'introduction."
 
 msgid "Do not play background music."
-msgstr ""
+msgstr "Désactiver la musique de fond."
 
 msgid "Display application version."
 msgstr "Afficher la version de l'application."
@@ -343,7 +347,7 @@ msgstr "Écraser le chemin vers l'exécutable de VikingExtractor."
 
 #. Show debugging info...
 msgid "Warning: No executable detected... \"{0}\""
-msgstr ""
+msgstr "Avertissement : aucun exécutable détecté… « {0} »"
 
 msgid ""
 "Unfortunately your platform is not yet supported. A required executable was "
@@ -359,7 +363,7 @@ msgstr ""
 "\tArchitecture de la machine : {1}"
 
 msgid "Verification Progress"
-msgstr ""
+msgstr "Processus de vérification"
 
 msgid "Verification thread already running, not relaunching..."
 msgstr ""
@@ -369,13 +373,16 @@ msgstr "La vérification du disque a été annulée."
 
 #. Alert...
 msgid "Stopping disc verification thread..."
-msgstr ""
+msgstr "Arrêt de la tache de vérification du disque…"
 
 msgid ""
 "I was not able to check a file I require. {0}:\n"
 "\n"
 "{1}"
 msgstr ""
+"Je n'ai pas pu vérifier un fichier dont j'ai besoin. {0} :\n"
+"\n"
+"{1}"
 
 msgid ""
 "I could not locate the list of files to verify:\n"
@@ -391,7 +398,7 @@ msgstr ""
 "{1}"
 
 msgid "Launching verification thread..."
-msgstr ""
+msgstr "Lancement de la tache de vérification…"
 
 msgid ""
 "Your disc might be damaged. It is recommended that you replace it before "
@@ -485,6 +492,8 @@ msgstr "Choisir le dossier de récupération"
 
 msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
 msgstr ""
+"GStreamer >= 1.0 n'a pas été trouvé. Ne sera pas utilisé pour la vidéo "
+"d'introduction..."
 
 msgid "Verification Prompt"
 msgstr ""
@@ -493,10 +502,10 @@ msgid "Download Handbook"
 msgstr "Télécharger le manuel"
 
 msgid "Please choose a download location..."
-msgstr ""
+msgstr "Veuillez choisir l'emplacement de téléchargement..."
 
 msgid "Contacting server, please wait..."
-msgstr ""
+msgstr "Communication avec le serveur, veuillez patienter..."
 
 msgid "The download of the handbook was stopped."
 msgstr "Le téléchargement du manuel a été interrompu."
@@ -786,12 +795,14 @@ msgid "Yes, download the latest copy."
 msgstr "Oui, télécharger la dernière copie."
 
 msgid "???"
-msgstr ""
+msgstr "???"
 
 msgid ""
 "This window contains the output from the VikingExtractor process while it "
 "works."
 msgstr ""
+"Cette fenêtre contient la sortie du VikingExtractor pendant son "
+"fonctionnement."
 
 msgid "Please wait..."
 msgstr "Veuillez patienter…"
@@ -801,6 +812,9 @@ msgid ""
 "all of the recoverable images. If the folder is not empty, its contents "
 "could be overwritten if you allow it."
 msgstr ""
+"Veuillez choisir un dossier <b>vide</b> ci-dessous. Ce dossier sera utilisé "
+"pour enregistrer toutes les images récupérables. Si le dossier n'est pas "
+"vide, son contenu pourra être écrasé si vous l'autorisez."
 
 msgid "Select folder to store recovered images"
 msgstr "Choisissez un dossier où enregistrer les images récupérées"
@@ -848,7 +862,7 @@ msgid ""
 msgstr ""
 
 msgid "Yes, please subscribe me."
-msgstr ""
+msgstr "Oui, inscrivez moi."
 
 msgid "<b>Name:</b>"
 msgstr "<b>Nom :</b>"
@@ -863,4 +877,4 @@ msgid "<b>Password again:</b>"
 msgstr "<b>Mot de passe de nouveau :</b>"
 
 msgid "Thanks, but I think I'll pass."
-msgstr ""
+msgstr "Non, merci."

@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 13:08-0700\n"
-"PO-Revision-Date: 2013-06-15 09:17+0000\n"
+"PO-Revision-Date: 2013-06-16 22:01+0000\n"
 "Last-Translator: Hélion du Mas des Bourboux <helion331990@gmail.com>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-16 04:51+0000\n"
+"X-Launchpad-Export-Date: 2013-06-17 05:28+0000\n"
 "X-Generator: Launchpad (build 16667)\n"
 
 #. Initialize the channel map...
@@ -38,17 +38,17 @@ msgid "Method %s.%s is not implemented."
 msgstr "La méthode %s.%s n'est pas implémentée"
 
 msgid "could not register service with session bus..."
-msgstr ""
+msgstr "Impossible d'enregistrer le service avec le bus de session..."
 
 #. Alert user...
 msgid "registering on the session bus..."
-msgstr ""
+msgstr "Enregistrement sur le bus de session..."
 
 msgid "could not parse introspection XML"
-msgstr ""
+msgstr "Impossible d'analyser les XML d'introspection"
 
 msgid "could not connect with the session bus"
-msgstr ""
+msgstr "Impossible de se connecter au bus de session"
 
 msgid "glib main loop quit unexpectedly..."
 msgstr "la boucle principale de gib a quitté de façon inattendue…"
@@ -229,7 +229,7 @@ msgid "Recovery completed..."
 msgstr "Restauration terminée…"
 
 msgid "successfully reconstructed "
-msgstr ""
+msgstr "Restauré avec succès "
 
 msgid " unreconstructable components dumped"
 msgstr ""
