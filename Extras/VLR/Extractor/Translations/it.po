@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 13:08-0700\n"
-"PO-Revision-Date: 2013-06-17 12:06+0000\n"
-"Last-Translator: Gianfranco Frisani <gfrisani@libero.it>\n"
+"PO-Revision-Date: 2013-06-22 20:23+0000\n"
+"Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-18 06:20+0000\n"
-"X-Generator: Launchpad (build 16673)\n"
+"X-Launchpad-Export-Date: 2013-06-23 05:19+0000\n"
+"X-Generator: Launchpad (build 16677)\n"
 
 #. Initialize the channel map...
 msgid "error: "
@@ -141,42 +141,49 @@ msgid "overlay full histogram present: "
 msgstr "Presente istogramma completo in sovrapposizione: "
 
 msgid "physical record size: "
-msgstr ""
+msgstr "dimensioni del record fisico: "
 
 msgid "physical record padding: "
-msgstr ""
+msgstr "spaziatura interna del record fisico: "
 
 msgid "phase offset required: "
-msgstr ""
+msgstr "richiesta correzione di fase: "
 
 #. Show user, if requested...
 msgid "raw image offset: "
-msgstr ""
+msgstr "correzione immagine grezza: "
 
 msgid "cannot reconstruct, dumped all bands"
-msgstr ""
+msgstr "ricostruzione non possibile, scaricate tutte le bande"
 
 msgid "output already exists, not overwriting (use --overwrite to override)"
 msgstr ""
+"l'output esiste già, non sovrascrivere (usare --overwrite per ignorare)"
 
 msgid ""
 "images for each band present, but no matching set of full histogram variants "
 "available"
 msgstr ""
+"presenti immagini per ciascuna banda, ma non corrispondono all'insieme delle "
+"varianti disponibili per l'istogramma completo"
 
 msgid ""
 "images for each band present, but no matching set of non-overlayed variants "
 "available"
 msgstr ""
+"presenti immagini per ciascuna banda, ma non è disponibile nessun insieme "
+"corrispondente di varianti non sovrapposte"
 
 msgid "image bands not all the same size, may be missing scanlines"
 msgstr ""
+"le bande dell'immagine non sono delle stesse dimensioni, potrebbero mancare "
+"delle linee di scansione"
 
 msgid "unable to open input directory for indexing "
 msgstr "Non è possibile aprire la directory di input per l'indicizzazione "
 
 msgid "could not stat "
-msgstr ""
+msgstr "parametrazione non possibile "
 
 #. Alert user...
 msgid "indexing mission data, please wait..."
@@ -187,39 +194,40 @@ msgid "Indexing mission data, please wait..."
 msgstr "Indicizzazione dei dati della missione, attendere..."
 
 msgid "no prospective files found"
-msgstr ""
+msgstr "non trovati file potenziali"
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Analyzing mission data, please wait..."
 msgstr "Analisi dei dati di missione, attendere..."
 
 msgid "studying mission data index of "
-msgstr ""
+msgstr "studio dell'indice dei dati della missione di "
 
 msgid ", skipping"
 msgstr ", saltando"
 
 msgid " (--ignore-bad-files to skip)"
-msgstr ""
+msgstr " (--ignore-bad-files per saltare)"
 
 msgid "filtering "
 msgstr "filtrando "
 
 msgid " type diode bands (--filter-diode[=type] to change)"
-msgstr ""
+msgstr " bande del tipo di diodo (--filter-diode[=type] per modificare)"
 
 msgid "camera event doesn't identify itself, cannot index"
 msgstr ""
+"evento della telecamera non riconosciuto, indicizzazione non possibile"
 
 msgid " is a new camera event, indexing"
-msgstr ""
+msgstr " è un nuovo evento della telecamera, indicizzazione"
 
 msgid " is a known camera event, indexing"
-msgstr ""
+msgstr " è un evento della telecamera conosciuto, indicizzazione"
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 msgid "Attempting forensic mission data recovery..."
-msgstr ""
+msgstr "Tentativo di recupero forense dei dati della missione..."
 
 msgid "attempting reconstruction "
 msgstr "Tentativo di ricostruzione "
@@ -331,6 +339,7 @@ msgstr ""
 #. physical record padding...
 msgid "tangential physical record boundary detected, ignoring padding"
 msgstr ""
+"rilevata una delimitazione tangente del record fisico, ignorata la spaziatura"
 
 #. Alert and seek...
 msgid "seeking passed "
@@ -352,7 +361,7 @@ msgid "unsupported photosensor diode band type ("
 msgstr "Tipo di banda del diodo del fotosensore non supportato ("
 
 msgid "exhausted basic metadata parser heuristics"
-msgstr ""
+msgstr "decodificatore euristico dei metadati di base esaurito"
 
 msgid "unsupported number of image bands"
 msgstr "Numero di bande di immagine non supportato"
@@ -370,7 +379,7 @@ msgid "unsupported pixel format"
 msgstr "Formato di pixel non supportato"
 
 msgid "unsupported colour bit depth"
-msgstr ""
+msgstr "profondità del bit di colore non supportata"
 
 #. If verbosity is set, display basic metadata...
 msgid "basic metadata parser heuristic: "
@@ -386,7 +395,7 @@ msgid "width: "
 msgstr "Larghezza: "
 
 msgid "raw band data size: "
-msgstr ""
+msgstr "dimensioni dei dati della banda grezza: "
 
 msgid " bytes"
 msgstr " Byte"
@@ -406,29 +415,37 @@ msgstr "Spaziatura del record fisico possibile: "
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 1 basic metadata parser"
 msgstr ""
+"selezionato formato 1 del decodificatore euristico dei metadati di base"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 2 basic metadata parser"
 msgstr ""
+"selezionato formato 2 del decodificatore euristico dei metadati di base"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 3 basic metadata parser"
 msgstr ""
+"selezionato formato 3 del decodificatore euristico dei metadati di base"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 4 basic metadata parser"
 msgstr ""
+"selezionato formato 4 del decodificatore euristico dei metadati di base"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 5 basic metadata parser"
 msgstr ""
+"selezionato formato 5 del decodificatore euristico dei metadati di base"
 
 #. Alert user if verbose enabled...
 msgid "heuristics selected format 6 basic metadata parser"
 msgstr ""
+"selezionato formato 6 del decodificatore euristico dei metadati di base"
 
 msgid "invalid logical record label while parsing extended metadata"
 msgstr ""
+"etichetta del record logico non valida durante la decodificazione dei "
+"metadati estesi"
 
 #. Alert user if verbose mode enabled...
 msgid "psa directional vector: "
@@ -684,11 +701,11 @@ msgid " linked against incompatible GNU Ocrad version "
 msgstr " collegata a una versione GNU Ocrad incompatibile "
 
 msgid "GNU Ocrad needs to be at least 0.21, but got "
-msgstr ""
+msgstr "È necessario che GNU Ocrad sia almeno 0.21, ma "
 
 #. Alert, abort...
 msgid "need input file or directory, see --help"
-msgstr ""
+msgstr "È necessario un file o una directory di input, consultare --help"
 
 msgid "unknown parameter "
 msgstr "parametro sconosciuto "
