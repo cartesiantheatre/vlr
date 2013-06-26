@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-05 22:20-0700\n"
-"PO-Revision-Date: 2013-06-15 16:36+0000\n"
+"PO-Revision-Date: 2013-06-25 13:24+0000\n"
 "Last-Translator: Oleg Koptev <koptev.oleg@gmail.com>\n"
 "Language-Team: RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-16 04:51+0000\n"
-"X-Generator: Launchpad (build 16667)\n"
+"X-Launchpad-Export-Date: 2013-06-26 05:19+0000\n"
+"X-Generator: Launchpad (build 16681)\n"
 "Language: ru\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -406,14 +406,14 @@ msgstr "Восстановление"
 
 #. We got the process ID, show it...
 msgid "Spawned process {0}..."
-msgstr ""
+msgstr "Порождённый процесс {0}..."
 
 #. Alert user...
 msgid "Waiting for VikingExtractor D-Bus service..."
 msgstr "Ожидание службы D-Bus для VikingExtractor"
 
 msgid "Dead session connection handle..."
-msgstr ""
+msgstr "Дескриптор соединения «мёртвой» сессии..."
 
 #. Done...
 msgid "ok"
@@ -448,7 +448,7 @@ msgid "You need to fill out the whole form."
 msgstr "Нужно заполнить форму полностью."
 
 msgid "Invalid email address."
-msgstr "Недопустимый email адрес."
+msgstr "Недопустимый адрес электронной почты."
 
 msgid "Passwords do not match."
 msgstr "Пароли не совпадают."
@@ -471,12 +471,13 @@ msgstr ""
 
 msgid "Override path to user interface data root."
 msgstr ""
+"Изменить путь к корневому каталогу данных пользовательского интерфейса."
 
 msgid "Override path to Viking lander mission data root."
-msgstr ""
+msgstr "Изменить путь к корневому каталогу данных миссии «Викинг»."
 
 msgid "Do not show the splash and opening video."
-msgstr ""
+msgstr "Не показывать заставку и видеоролик."
 
 msgid "Do not play background music."
 msgstr "Не воспроизводить фоновую музыку"
@@ -485,7 +486,7 @@ msgid "Display application version."
 msgstr "Отображать версию приложения."
 
 msgid "Override path to VikingExtractor executable."
-msgstr ""
+msgstr "Изменить путь к исполняемому файлу VikingExtractor."
 
 #. Show debugging info...
 msgid "Warning: No executable detected... \"{0}\""
@@ -578,7 +579,7 @@ msgid "Directorize by...\n"
 msgstr "Каталогизировать по...\n"
 
 msgid "\t...diode band class: {0}\n"
-msgstr ""
+msgstr "\t...класс полосы пропускания: {0}\n"
 
 msgid "\t...Martian location: {0}\n"
 msgstr "\t...Местоположению на Марсе: {0}\n"
@@ -590,35 +591,35 @@ msgid "\t...mission solar day: {0}\n"
 msgstr "\t...солнечному дню программы: {0}\n"
 
 msgid "Disable automatic image component orientation: {0}\n"
-msgstr ""
+msgstr "Отключить автоориентацию компонентов изображения: {0}\n"
 
 msgid "Dump components without reconstruction: {0}\n"
-msgstr ""
+msgstr "Извлекать компоненты без реконструкции: {0}\n"
 
 #. Filters...
 msgid "Filters...\n"
 msgstr "Фильтры...\n"
 
 msgid "\t...diode band type class: {0}\n"
-msgstr ""
+msgstr "\t...тип полосы пропускания: {0}\n"
 
 msgid "\t...lander: {0}\n"
-msgstr ""
+msgstr "\t...спускаемый аппарат: {0}\n"
 
 msgid "Interlace images: {0}\n"
-msgstr ""
+msgstr "Чередовать изображения: {0}\n"
 
 msgid "Generate metadata: {0}\n"
 msgstr "Создание метаданных: {0}\n"
 
 msgid "Be verbose: {0}\n"
-msgstr ""
+msgstr "Подробный отчёт: {0}\n"
 
 msgid "Use multithreading: {0}\n"
 msgstr "Использовать многопоточность: {0}\n"
 
 msgid "VikingExtractor arguments: {0}\n"
-msgstr ""
+msgstr "Аргументы VikingExtractor: {0}\n"
 
 msgid "Yes"
 msgstr "Да"
@@ -627,7 +628,7 @@ msgid "No"
 msgstr "Нет"
 
 msgid "Farewell"
-msgstr ""
+msgstr "До свидания"
 
 msgid "Select Recovery Folder"
 msgstr "Выберите папку восстановления"
@@ -693,7 +694,7 @@ msgid "Martian Month/"
 msgstr "Месяц Марса/"
 
 msgid "Sensor Band Type/"
-msgstr ""
+msgstr "Тип полосы пропускания сенсора/"
 
 msgid "Mission Solar Day/"
 msgstr "Солнечный день программы/"
@@ -716,9 +717,15 @@ msgid ""
 "If you are unsure about any option, just <b>hover</b> your mouse over it for "
 "an explanation. The default configuration is recommended."
 msgstr ""
+"Здесь находятся некоторые тонкие настройки VikingExtractor. Если вы не "
+"уверены в их предназначении, просто оставьте всё как есть.\n"
+"\n"
+"Чтобы получить информацию о какой-либо настройке, <b>задержите</b> курсор "
+"над её названием. Рекомендуется использовать конфигурацию настроек по "
+"умолчанию."
 
 msgid "Use image interlacing"
-msgstr ""
+msgstr "Использовать прогрессивную развёртку"
 
 msgid ""
 "The recovered images are encoded in a lossless compressed PNG format for "
@@ -728,6 +735,13 @@ msgid ""
 "typically slightly larger, but they are useful for streaming on slower "
 "network connections."
 msgstr ""
+"Восстановленые изображения сохраняются в сжатом графическом формате без "
+"потерь PNG для обеспечения наивысшего качества и удобства использования. "
+"Если вы хотите сохранить их в прогрессивном формате, активируйте эту "
+"настройку. При сохранении изображения в прогрессивном формате, оно будет "
+"отображаться на экране постепенно, от версии с меньшим разрешением к "
+"большему. Такие изображения, как правило, имеют немного больший объём, "
+"однако они более удобны для передачи по сетям с медленным соединением."
 
 msgid ""
 "The recovered images are encoded in a lossless compressed PNG format for "
@@ -737,9 +751,16 @@ msgid ""
 "typically slightly larger, but they are useful for streaming on slower "
 "network connections."
 msgstr ""
+"Восстановленые изображения сохраняются в сжатом графическом формате без "
+"потерь PNG для обеспечения наивысшего качества и удобства использования. "
+"Если вы хотите сохранить их в прогрессивном формате, активируйте эту "
+"настройку. При сохранении изображения в прогрессивном формате, оно будет "
+"отображаться на экране постепенно, от версии с меньшим разрешением к "
+"большему. Такие изображения, как правило, имеют немного больший объём, "
+"однако они более удобны для передачи по сетям с медленным соединением."
 
 msgid "Generate metadata"
-msgstr ""
+msgstr "Создание метаданных"
 
 msgid ""
 "Whenever a colour image is being recovered, this option will write out a "
@@ -747,14 +768,21 @@ msgid ""
 "the source magnetic tape, recovery heuristics used, and so on, of each of "
 "the image bands used to reconstruct the final colour image."
 msgstr ""
+"В каждом случае восстановления цветного изображения, при активированной "
+"настройке, программа будет создавать текстовый файл, содержащий метаданные - "
+"информацию об изображении, например: иноформацию об исходной магнитной "
+"ленте, о способе эвристического восстановления, и т. д. для каждого из "
+"каналов, использованного для восстановления конечного изображения."
 
 msgid "Be verbose"
-msgstr ""
+msgstr "Подробный вывод"
 
 msgid ""
 "If this is enabled, the VikingExtractor will display significantly more "
 "information as it attempts to recover what it can."
 msgstr ""
+"При активации этой настройки, VikingExtractor будет выводить на экран "
+"намного больше информации о ходе восстановления."
 
 msgid "Use multithreading"
 msgstr "Использовать многопоточность"
@@ -1027,7 +1055,7 @@ msgid "<b>Name:</b>"
 msgstr "<b>Имя:</b>"
 
 msgid "<b>Email:</b>"
-msgstr "<b>Email:</b>"
+msgstr "<b>Электронная почта:</b>"
 
 msgid "<b>Password:</b>"
 msgstr "<b>Пароль:</b>"
