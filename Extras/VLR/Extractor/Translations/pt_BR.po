@@ -1,0 +1,623 @@
+# Brazilian Portuguese translation for avaneya
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the avaneya package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: avaneya\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-05 13:08-0700\n"
+"PO-Revision-Date: 2013-06-30 15:52+0000\n"
+"Last-Translator: gabriell nascimento <gabriellhrn@gmail.com>\n"
+"Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-07-01 05:21+0000\n"
+"X-Generator: Launchpad (build 16692)\n"
+
+#. Initialize the channel map...
+msgid "error: "
+msgstr "erro: "
+
+msgid "info: "
+msgstr "informação: "
+
+msgid "warning: "
+msgstr "aviso: "
+
+msgid "could not emit 'Notification' signal..."
+msgstr "não foi possível emitir sinal de 'Notificação'..."
+
+msgid "could not emit 'Progress' signal..."
+msgstr "não foi possível emitir sinal de 'Progresso'..."
+
+#, c-format
+msgid "Method %s.%s is not implemented."
+msgstr "Método %s.%s não está implementado."
+
+msgid "could not register service with session bus..."
+msgstr "não foi possível registrar o serviço com o barramento de sessão..."
+
+#. Alert user...
+msgid "registering on the session bus..."
+msgstr "registrando no barramento de sessão..."
+
+msgid "could not parse introspection XML"
+msgstr "não foi possível analisar XML de introspecção"
+
+msgid "could not connect with the session bus"
+msgstr "não foi possível conectar com o barramento de sessão"
+
+msgid "glib main loop quit unexpectedly..."
+msgstr "laço principal do glib saiu inesperadamente"
+
+msgid "invalid logical record label"
+msgstr "rótulo de gravação lógico inválido"
+
+msgid "failed to read from input stream"
+msgstr "falha ao ler do fluxo de entrada"
+
+msgid "unsupported diode filter class: "
+msgstr "classe de filtro de diodo não suportada: "
+
+msgid "invalid lander filter"
+msgstr "filtro lander inválido"
+
+msgid "cannot reconstruct image from unsupported diode band type"
+msgstr ""
+"não foi possível reconstruir imagem de tipo de banda de diodo não suportado"
+
+msgid "Unreconstructable/"
+msgstr "Não construível/"
+
+msgid "Unknown Location/"
+msgstr "Localização desconhecida/"
+
+#. Set the error message and abort...
+msgid "could not create output directory for file"
+msgstr "não foi possível criar diretório de saída para o arquivo"
+
+msgid ""
+"output metadata already exists, not overwriting (use --overwrite to override)"
+msgstr ""
+"metadado de saída já existente, não sobrescrito (use --overwrite para "
+"sobrescrever)"
+
+#. Just give a warning and abort...
+msgid "couldn't save metadata"
+msgstr "não foi possível salvar o metadado"
+
+msgid ""
+"The following is a machine generated collection of metadata of each of\n"
+msgstr "A seguir é uma coleção gerada por máquina de metadados de cada de\n"
+
+msgid "the image bands used to reconstruct a colour image.\n"
+msgstr "bandas de imagem usadas para reconstruir uma imagem colorida.\n"
+
+msgid "basic heuristic method: "
+msgstr "método de heurística básico: "
+
+msgid "camera azimuth / elevation: "
+msgstr "azimute de câmera / elevação: "
+
+msgid "camera event: "
+msgstr "evento de câmera: "
+
+msgid "camera event solar day: "
+msgstr "evento de câmera de dia solar: "
+
+msgid "diode band type: "
+msgstr "tipo de banda de diodo: "
+
+msgid "file size: "
+msgstr "tamanho do arquivo: "
+
+msgid "input file: "
+msgstr "arquivo de entrada: "
+
+msgid "magnetic tape: "
+msgstr "fita magnética: "
+
+msgid "magnetic tape file ordinal: "
+msgstr "ordinal de arquivo de fita magnética: "
+
+#. Alert user if verbose mode enabled...
+msgid "mean pixel value: "
+msgstr "valor médio de pixel: "
+
+msgid "month: "
+msgstr "mês: "
+
+msgid "overlay axis present: "
+msgstr "sobreposição de eixo presente: "
+
+msgid "overlay full histogram present: "
+msgstr "sobreposição de histograma completo presente: "
+
+msgid "physical record size: "
+msgstr "tamanho de gravação física: "
+
+msgid "physical record padding: "
+msgstr "espaçamento de gravação física: "
+
+msgid "phase offset required: "
+msgstr "deslocamento de fase requerido: "
+
+#. Show user, if requested...
+msgid "raw image offset: "
+msgstr "espaçamento de imagem bruta: "
+
+msgid "cannot reconstruct, dumped all bands"
+msgstr "não foi possível reconstruir, descarregou todas as bandas"
+
+msgid "output already exists, not overwriting (use --overwrite to override)"
+msgstr ""
+"saída já existente, não sobrescrita (use --overwrite para sobrescrever)"
+
+msgid ""
+"images for each band present, but no matching set of full histogram variants "
+"available"
+msgstr ""
+"imagens de cada banda presente, mas nenhuma combinação de variantes de "
+"histograma completo disponível"
+
+msgid ""
+"images for each band present, but no matching set of non-overlayed variants "
+"available"
+msgstr ""
+
+msgid "image bands not all the same size, may be missing scanlines"
+msgstr ""
+
+msgid "unable to open input directory for indexing "
+msgstr ""
+
+msgid "could not stat "
+msgstr ""
+
+#. Alert user...
+msgid "indexing mission data, please wait..."
+msgstr ""
+
+#. Provide a notification to the Viking Lander Launcher...
+msgid "Indexing mission data, please wait..."
+msgstr ""
+
+msgid "no prospective files found"
+msgstr ""
+
+#. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+msgid "Analyzing mission data, please wait..."
+msgstr ""
+
+msgid "studying mission data index of "
+msgstr ""
+
+msgid ", skipping"
+msgstr ""
+
+msgid " (--ignore-bad-files to skip)"
+msgstr ""
+
+msgid "filtering "
+msgstr ""
+
+msgid " type diode bands (--filter-diode[=type] to change)"
+msgstr ""
+
+msgid "camera event doesn't identify itself, cannot index"
+msgstr ""
+
+msgid " is a new camera event, indexing"
+msgstr ""
+
+msgid " is a known camera event, indexing"
+msgstr ""
+
+#. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+msgid "Attempting forensic mission data recovery..."
+msgstr ""
+
+msgid "attempting reconstruction "
+msgstr "tentando reconstrução "
+
+msgid "dumping components from "
+msgstr "descarregando componentes de "
+
+#. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+msgid "Recovery completed..."
+msgstr "recuperação completa..."
+
+msgid "successfully reconstructed "
+msgstr "reconstruído com sucesso "
+
+msgid " unreconstructable components dumped"
+msgstr " componentes não reconstruíveis descarregados"
+
+msgid "dumped "
+msgstr "descarregado "
+
+msgid " image components without reconstruction"
+msgstr " componentes de imagem sem reconstrução"
+
+msgid "image should be rotated 90 counterclockwise"
+msgstr "imagem deveria ser rotacionada 90 graus anti-horário"
+
+msgid "image should be rotated 180 counterclockwise"
+msgstr "imagem deveria ser rotacionada 180 graus anti-horário"
+
+msgid "image should be rotated 270 counterclockwise"
+msgstr "imagem deveria ser rotacionada 270 graus anti-horário"
+
+msgid "image does not need to be rotated"
+msgstr "imagem não precisa ser rotacionada"
+
+msgid "could not guess image rotation"
+msgstr "não foi possível adivinhar rotação da imagem"
+
+msgid "GNU Ocrad failed to initialize"
+msgstr "GNU Ocrad falhou ao iniciar"
+
+#. Set error message...
+msgid "could not set OCR image"
+msgstr "não foi possível definir imagem OCR"
+
+#. Set error message...
+msgid "OCR pass failed"
+msgstr "passagem OCR falhou"
+
+msgid "input was not loaded"
+msgstr "entrada não foi carregada"
+
+msgid "could not open input for reading"
+msgstr "não foi possível abrir entrada para leitura"
+
+msgid "file ended prematurely before raw image"
+msgstr "arquivo encerrou prematuramente antes da imagem bruta"
+
+msgid "band data extraction i/o error"
+msgstr "erro de e/s na extração de dados da banda"
+
+#. Be verbose...
+msgid "loading"
+msgstr "carregando"
+
+msgid ""
+"empty file, probably blank magnetic tape or not received back on Earth"
+msgstr ""
+"arquivo vazio, provavelmente fita magnética em branco ou não recebeu de "
+"volta em Terra"
+
+msgid "too small to be interesting (< 4 KB)"
+msgstr "muito pequeno para ser interessante (< 4 KB)"
+
+msgid "header is not intact, or not a VICAR file"
+msgstr "cabeçalho não está intacto ou arquivo não é VICAR"
+
+msgid "header intact, but requires "
+msgstr "cabeçalho intacto, mas requer "
+
+msgid " byte phase offset"
+msgstr " byte de espaçamento de fase"
+
+msgid "did not originate from a Viking Lander"
+msgstr "não foi originado de um Viking Lander"
+
+msgid "entering physical record "
+msgstr "entrando com gravação física "
+
+msgid " starting at "
+msgstr " inciando em "
+
+msgid "extracting logical record "
+msgstr "extraindo gravação lógica "
+
+msgid "/5 starting at "
+msgstr "/5 iniciando em "
+
+msgid "bad logical record terminator "
+msgstr "terminador de gravação lógica inválida "
+
+msgid ""
+"invalid logical record label possibly from out of phase physical boundary"
+msgstr ""
+"rótulo de gravação lógica inválido possivelmente fora de limite físico de "
+"fase"
+
+#. It was, so rewind and carry on since there is no
+#. physical record padding...
+msgid "tangential physical record boundary detected, ignoring padding"
+msgstr ""
+"limite de gravação física tangencial detectada, ignorando espaçamento"
+
+#. Alert and seek...
+msgid "seeking passed "
+msgstr "busca passada "
+
+msgid " physical record padding"
+msgstr " espaçamento de gravação física"
+
+msgid "unable to locate last logical record label"
+msgstr "não foi capaz de localizar último rótulo de gravação lógica"
+
+msgid "file too small to contain claimed payload "
+msgstr "arquivo muito pequeno para conter carga alegada "
+
+msgid "internal radio/geometric calibration ("
+msgstr "calibração de rádio/geométrica interna ("
+
+msgid "unsupported photosensor diode band type ("
+msgstr "foto-sensor de tipo de banda de diodo não suportado ("
+
+msgid "exhausted basic metadata parser heuristics"
+msgstr ""
+
+msgid "unsupported number of image bands"
+msgstr ""
+
+msgid "expected positive image height"
+msgstr ""
+
+msgid "expected positive image width"
+msgstr ""
+
+#. Check pixel format is integral...
+#. Definitely integral
+#. Guessing integral
+msgid "unsupported pixel format"
+msgstr ""
+
+msgid "unsupported colour bit depth"
+msgstr ""
+
+#. If verbosity is set, display basic metadata...
+msgid "basic metadata parser heuristic: "
+msgstr ""
+
+msgid "bands: "
+msgstr ""
+
+msgid "height: "
+msgstr ""
+
+msgid "width: "
+msgstr ""
+
+msgid "raw band data size: "
+msgstr ""
+
+msgid " bytes"
+msgstr ""
+
+msgid "format: integral"
+msgstr ""
+
+msgid "bytes per colour: "
+msgstr ""
+
+msgid "photosensor diode band type: "
+msgstr ""
+
+msgid "possible physical record padding: "
+msgstr ""
+
+#. Alert user if verbose enabled...
+msgid "heuristics selected format 1 basic metadata parser"
+msgstr ""
+
+#. Alert user if verbose enabled...
+msgid "heuristics selected format 2 basic metadata parser"
+msgstr ""
+
+#. Alert user if verbose enabled...
+msgid "heuristics selected format 3 basic metadata parser"
+msgstr ""
+
+#. Alert user if verbose enabled...
+msgid "heuristics selected format 4 basic metadata parser"
+msgstr ""
+
+#. Alert user if verbose enabled...
+msgid "heuristics selected format 5 basic metadata parser"
+msgstr ""
+
+#. Alert user if verbose enabled...
+msgid "heuristics selected format 6 basic metadata parser"
+msgstr ""
+
+msgid "invalid logical record label while parsing extended metadata"
+msgstr ""
+
+#. Alert user if verbose mode enabled...
+msgid "psa directional vector: "
+msgstr ""
+
+msgid "camera event label: "
+msgstr ""
+
+msgid "bad lander number"
+msgstr ""
+
+#. Be verbose if requested...
+msgid "lander number: "
+msgstr ""
+
+msgid "filtering non-matching lander"
+msgstr ""
+
+#. Set caller hint and return unsupported...
+msgid "monocolour unsupported"
+msgstr ""
+
+#. Set caller hint and return unsupported...
+msgid "unidentifiable broadband"
+msgstr ""
+
+#. Set hint and return unknown...
+msgid "none detected"
+msgstr ""
+
+msgid "filtering non-matching solar day"
+msgstr ""
+
+msgid "filtering non-matching camera event"
+msgstr ""
+
+msgid "Options:\n"
+msgstr ""
+
+msgid ""
+"                              Put reconstructed images into subdirectories\n"
+"                              named after band type class (e.g. Colour).\n"
+msgstr ""
+
+msgid ""
+"                              Put reconstructed images into subdirectories\n"
+"                              named after location taken from.\n"
+msgstr ""
+
+msgid ""
+"                              Put reconstructed images into subdirectories\n"
+"                              named after Martian month taken on.\n"
+msgstr ""
+
+msgid ""
+"                              Put reconstructed images into subdirectories\n"
+"                              numbered by camera event solar day.\n"
+msgstr ""
+
+msgid "                              Don't write anything.\n"
+msgstr ""
+
+msgid "                              Show this help.\n"
+msgstr ""
+
+msgid ""
+"                              Don't stop on corrupt or problematic input "
+"file,\n"
+"                              but continue extraction of other files.\n"
+msgstr ""
+
+msgid "                              Encode output with Adam7 interlacing\n"
+msgstr ""
+
+msgid ""
+"                              Number of threads to run parallelized. Only "
+"one\n"
+"                              if -j is not provided, or auto if threads\n"
+"                              argument not specified.\n"
+msgstr ""
+
+msgid ""
+"                              Look only for the specified matching camera "
+"event\n"
+"                              ID, such as 22A158.\n"
+msgstr ""
+
+msgid ""
+"                              Extract from matching supported diode filter\n"
+"                              classes which are any (default), colour, "
+"infrared,\n"
+"                              sun, or survey.\n"
+msgstr ""
+
+msgid ""
+"                              Extract from specific lander only which are\n"
+"                              either (0, the default), 1, or 2.\n"
+msgstr ""
+
+msgid ""
+"                              Look only for camera events taken on the "
+"specified\n"
+"                              solar day.\n"
+msgstr ""
+
+msgid ""
+"                              Whenever a colour image is recovered, machine\n"
+"                              generate a text file containing various "
+"metadata.\n"
+msgstr ""
+
+msgid ""
+"                              Disable VT/100 ANSI coloured terminal output.\n"
+msgstr ""
+
+msgid ""
+"                              Don't automatically rotate image as needed.\n"
+msgstr ""
+
+msgid ""
+"                              Don't attempt to reconstruct camera events, "
+"just\n"
+"                              dump all available band data as separate "
+"images.\n"
+msgstr ""
+
+msgid "                              Overwrite any existing output files.\n"
+msgstr ""
+
+msgid ""
+"                              Scan subfolders as well if input is a "
+"directory.\n"
+msgstr ""
+
+msgid ""
+"                              Show summary of progress and final results "
+"only.\n"
+msgstr ""
+
+msgid "                              Suppress all warnings and errors.\n"
+msgstr ""
+
+msgid "                              Be verbose\n"
+msgstr ""
+
+msgid ""
+"                              Show version information\n"
+"\n"
+msgstr ""
+
+msgid ""
+"Converts 1970s Viking Lander era VICAR colour images to PNGs. The value of\n"
+"'input' can be either a single VICAR file or a directory containing VICAR "
+"files\n"
+"to attempt reconstruction into the provided output directory.\n"
+"\n"
+msgstr ""
+
+msgid "Report bugs to "
+msgstr ""
+
+msgid ""
+"Copyright (C) 2010-2013 Cartesian Theatre.\n"
+"This is free software; see Copying for copying conditions. There is NO\n"
+"warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+"\n"
+msgstr ""
+
+msgid "Configured with: "
+msgstr ""
+
+msgid "parallelization is not implemented yet, using single thread"
+msgstr ""
+
+msgid "summarize only and verbose modes cannot both be used"
+msgstr ""
+
+msgid " linked against incompatible GNU Ocrad version "
+msgstr ""
+
+msgid "GNU Ocrad needs to be at least 0.21, but got "
+msgstr ""
+
+#. Alert, abort...
+msgid "need input file or directory, see --help"
+msgstr ""
+
+msgid "unknown parameter "
+msgstr ""
+
+msgid "), see --help"
+msgstr ""
