@@ -133,7 +133,7 @@ class LauncherApp(object):
             #  asynchronous messages...
             bus = self._playBin.get_bus()
             bus.add_signal_watch()
-            bus.connect("message", self.onBusMessage)
+            bus.connect("message", self.onGStreamerBusMessage)
 
             # Create the dummy sink for video...
             fakeSink = None
@@ -160,12 +160,11 @@ class LauncherApp(object):
        
         # Set the authors...
         aboutDialog.set_authors([
-            "<a href=\"mailto:kip@thevertigo.com\">Kip Warner</a>"])
+            "<a href=\"http://www.cartesiantheatre.com\">Cartesian Theatre</a>"])
         
         # Set the documenters...
         aboutDialog.set_documenters([
-            "<a href=\"mailto:jtantogo-1@yahoo.com\">Johann Tang</a>",
-            "<a href=\"mailto:kip@thevertigo.com\">Kip Warner</a>"])
+            "<a href=\"mailto:jtantogo-1@yahoo.com\">Johann Tang</a> (man page)"])
         
         # Set artists...
         aboutDialog.set_artists([
@@ -184,11 +183,11 @@ class LauncherApp(object):
 
             # Beta testers...
             aboutDialog.add_credit_section(_("Beta Testers"), [
+                "<a href=\"mailto:adamjb@gmail.com\">Adam Borysiak</a>",
                 "<a href=\"mailto:adam@avaneya.com\">Adam Gornowicz</a>",
                 "<a href=\"mailto:algojervia@gmail.com\">Andreas Åberg</a>",
                 "<a href=\"mailto:me@jesseknudsen.com\">Jesse Knudsen</a>",
-                "<a href=\"mailto:kip@thevertigo.com\">Kip Warner</a>",
-                "<a href=\"mailto:matt@thevertigo.com\">Matthew MacLennan</a>"])
+                "<a href=\"http://www.josephliau.com\">Joseph Liau</a>"])
 
             # Musicians...
             aboutDialog.add_credit_section(_("Musicians"), [
@@ -201,7 +200,7 @@ class LauncherApp(object):
                 "<a href=\"mailto:charles.amadeus@gmail.com\">Chuck Siegal</a>",
                 "<a href=\"http://www.freedesktop.org\">freedesktop.org</a>",
                 "<a href=\"http://freedomincluded.com/\">Freedom Included</a>",
-                "<a href=\"mailto:matt@thevertigo.com\">Matthew MacLennan</a>",
+                "<a href=\"http://www.josephliau.com\">Joseph Liau</a>",
                 "<a href=\"http://pds.nasa.gov/\">NASA Planetary Data System</a>",
                 "Project Bossanova",
                 "<a href=\"mailto:randall@executiv.es\">Randall Ross</a>",
@@ -230,6 +229,7 @@ class LauncherApp(object):
                 "Gtk+",
                 "Nemiver",
                 "Python",
+                "Scribus",
                 "Theora",
                 "Ubuntu",
                 "Vorbis",
@@ -241,6 +241,7 @@ class LauncherApp(object):
                 "<a href=\"mailto:untaintableangel@ubuntu.com\">Anthony Harrington</a> (UK English)",
                 "<a href=\"mailto:bruno9779@gmail.com\">Bruno Santoni</a> (Italian, Spanish)",
                 "<a href=\"https://launchpad.net/~fossfreedom\">fossfreedom</a> (UK English)",
+                "<a href=\"mailto:gfrisani@libero.it\">Gianfranco Frisani</a> (Italian)",
                 "<a href=\"mailto:jtantogo-1@yahoo.com\">Johann Tang</a> (Filipino)",
                 "<a href=\"http://www.josephliau.com\">Joseph Liau</a> (Chinese, Japanese)"])
 
@@ -248,7 +249,7 @@ class LauncherApp(object):
             aboutDialog.add_credit_section(_("Dedications"), [
                 "<a href=\"https://en.wikipedia.org/wiki/Ahmad_Shah_Masoud\">Ahmad Shah Massoud</a> (1953–2001)",
                 "<a href=\"https://en.wikipedia.org/wiki/David_Kelly_%28weapons_expert%29\">David Kelly</a> (1944–2003)",
-                "<a href=\"http://splittingthesky.blogspot.ca/\">Splitting the Sky</a> (1952–2013)"])
+                "<a href=\"http://splittingthesky.blogspot.ca/2013/03/video-corbett-report-remembering.html\">Splitting the Sky</a> (1952–2013)"])
 
         # Otherwise fallback if it is...
         except TypeError:
@@ -267,7 +268,7 @@ class LauncherApp(object):
         aboutDialog.hide()
 
     # GStreamer is trying to tell us something asynchronously...
-    def onBusMessage(self, bus, message):
+    def onGStreamerBusMessage(self, bus, message):
 
         # Stream has finished...
         if message.type == Gst.MessageType.EOS:
@@ -310,14 +311,10 @@ class LauncherApp(object):
         messageDialog.set_default_response(Gtk.ResponseType.NO)
         userResponse = messageDialog.run()
         messageDialog.destroy()
-        
+
         # User requested not to quit, cancel...
         if userResponse != Gtk.ResponseType.YES:
             return
-
-        # Check if the verification thread is still running, and if so, signal
-        #  it to quit and block until it does...
-        self.verificationProgressPageProxy.waitThreadQuit()
 
         # Terminate...
         self.quit()
@@ -325,10 +322,10 @@ class LauncherApp(object):
     # Either close button of summary page clicked or apply button in last page
     #  in flow of type CONFIRM clicked...
     def onCloseEvent(self, assistant, *args):
-        
+
         # For debugging purposes...
         #print("onCloseEvent")
-        
+
         # No threads should be running by this point because at the end of the 
         #  assistant's page flow, so safe to terminate...
         self.quit()
@@ -341,7 +338,7 @@ class LauncherApp(object):
         # For debugging purposes...
         #print("onDeleteEvent...")
         
-        # If the verification thread is currently running, then trigger its
+        # If the disc verification is currently running, then trigger its
         #  abort logic...
         if self.verificationProgressPageProxy.isVerifying():
             stopVerificationButton = self.builder.get_object("stopVerificationButton")
@@ -354,7 +351,7 @@ class LauncherApp(object):
             stopHandbookDownloadButton = self.builder.get_object("stopHandbookDownloadButton")
             stopHandbookDownloadButton.emit("clicked")
 
-        # If the recovery thread is currently running, then trigger its abort
+        # If the recovery process is currently running, then trigger its abort
         #  logic...
         if self.recoveryPageProxy.processID != 0:
             abortRecoveryButton = self.builder.get_object("abortRecoveryButton")

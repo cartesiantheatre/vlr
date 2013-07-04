@@ -6,11 +6,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-06-05 13:08-0700\n"
+"Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
+"POT-Creation-Date: 2013-07-03 22:42-0700\n"
 "PO-Revision-Date: 2013-07-02 09:16+0000\n"
 "Last-Translator: Joe Tang <Unknown>\n"
 "Language-Team: Filipino <fil@li.org>\n"
+"Language: fil\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,66 +19,86 @@ msgstr ""
 "X-Generator: Launchpad (build 16692)\n"
 
 #. Initialize the channel map...
+#: Source/Console.cpp:84
 msgid "error: "
 msgstr "pagkakamali: "
 
+#: Source/Console.cpp:85
 msgid "info: "
 msgstr "info: "
 
+#: Source/Console.cpp:87
 msgid "warning: "
 msgstr "babala: "
 
+#: Source/DBusInterface.cpp:113
 msgid "could not emit 'Notification' signal..."
 msgstr "hindi mailabas ang 'Notification' signal..."
 
+#: Source/DBusInterface.cpp:149
 msgid "could not emit 'Progress' signal..."
 msgstr "hindi mailabas ang 'Progress' signal..."
 
+#: Source/DBusInterface.cpp:195
 #, c-format
 msgid "Method %s.%s is not implemented."
 msgstr "Hindi naipatupad ang method %s.%s."
 
+#: Source/DBusInterface.cpp:223
 msgid "could not register service with session bus..."
 msgstr "hindi marehistro ang service sa session bus"
 
 #. Alert user...
+#: Source/DBusInterface.cpp:261
 msgid "registering on the session bus..."
 msgstr "nagrerehistro sa session bus"
 
+#: Source/DBusInterface.cpp:275
 msgid "could not parse introspection XML"
 msgstr "hindi masuri ang introspection XML"
 
+#: Source/DBusInterface.cpp:289
 msgid "could not connect with the session bus"
 msgstr "hindi kayang kumabit sa session bus"
 
+#: Source/DBusInterface.cpp:325
 msgid "glib main loop quit unexpectedly..."
 msgstr "natapos ng biglaan ang glib main loop"
 
+#: Source/LogicalRecord.cpp:169 Source/VicarImageBand.cpp:861
 msgid "invalid logical record label"
 msgstr "imbalido ang label ng talaang lohikal"
 
+#: Source/LogicalRecord.cpp:204
 msgid "failed to read from input stream"
 msgstr "bigo ang pagbasa sa input stream"
 
+#: Source/Options.cpp:123
 msgid "unsupported diode filter class: "
 msgstr "di-suportadong diode filter class: "
 
+#: Source/Options.cpp:131
 msgid "invalid lander filter"
 msgstr "imbalidong lander filter"
 
+#: Source/ReconstructableImage.cpp:147
 msgid "cannot reconstruct image from unsupported diode band type"
 msgstr "hindi mabuo ang larawan mula sa hindi suportadong diode band type"
 
+#: Source/ReconstructableImage.cpp:167
 msgid "Unreconstructable/"
 msgstr "'Di kayang mabuo/"
 
+#: Source/ReconstructableImage.cpp:187
 msgid "Unknown Location/"
 msgstr "Di-kilalang lugar/"
 
 #. Set the error message and abort...
+#: Source/ReconstructableImage.cpp:216
 msgid "could not create output directory for file"
 msgstr "di-kayang gumawa ng output directory para sa file"
 
+#: Source/ReconstructableImage.cpp:345
 msgid ""
 "output metadata already exists, not overwriting (use --overwrite to override)"
 msgstr ""
@@ -85,78 +106,100 @@ msgstr ""
 "ituloy)"
 
 #. Just give a warning and abort...
+#: Source/ReconstructableImage.cpp:356
 msgid "couldn't save metadata"
 msgstr "hindi ma-save and metadata"
 
+#: Source/ReconstructableImage.cpp:362
 msgid ""
 "The following is a machine generated collection of metadata of each of\n"
-msgstr ""
-"Ang sumusunod ay koleksiyong metadata na binuo ng machine, ng bawat\n"
+msgstr "Ang sumusunod ay koleksiyong metadata na binuo ng machine, ng bawat\n"
 
+#: Source/ReconstructableImage.cpp:363
 msgid "the image bands used to reconstruct a colour image.\n"
 msgstr "mga image bands na ginamit sa pagbuo ng larawang de-kulay\n"
 
+#: Source/ReconstructableImage.cpp:376
 msgid "basic heuristic method: "
 msgstr "basic heuristic method: "
 
+#: Source/ReconstructableImage.cpp:377
 msgid "camera azimuth / elevation: "
 msgstr "camera azimuth / elevation: "
 
+#: Source/ReconstructableImage.cpp:378
 msgid "camera event: "
 msgstr "pangyayaring kamera: "
 
+#: Source/ReconstructableImage.cpp:379
 msgid "camera event solar day: "
 msgstr "pangyayaring kamera araw de-araw: "
 
+#: Source/ReconstructableImage.cpp:380
 msgid "diode band type: "
 msgstr "uri ng diode band: "
 
+#: Source/ReconstructableImage.cpp:381 Source/VicarImageBand.cpp:1312
 msgid "file size: "
 msgstr "laki ng filel: "
 
+#: Source/ReconstructableImage.cpp:382
 msgid "input file: "
 msgstr "input file: "
 
+#: Source/ReconstructableImage.cpp:383
 msgid "magnetic tape: "
 msgstr "magnetic tape: "
 
+#: Source/ReconstructableImage.cpp:384
 msgid "magnetic tape file ordinal: "
 msgstr "magnetic tape file ordinal: "
 
 #. Alert user if verbose mode enabled...
+#: Source/ReconstructableImage.cpp:385 Source/VicarImageBand.cpp:591
 msgid "mean pixel value: "
 msgstr "mean pixel value: "
 
+#: Source/ReconstructableImage.cpp:386
 msgid "month: "
 msgstr "buwan: "
 
+#: Source/ReconstructableImage.cpp:387
 msgid "overlay axis present: "
 msgstr "nahanap na overlay axis: "
 
+#: Source/ReconstructableImage.cpp:388
 msgid "overlay full histogram present: "
 msgstr "nahanap na overlay full histogram "
 
+#: Source/ReconstructableImage.cpp:389 Source/VicarImageBand.cpp:1316
 msgid "physical record size: "
 msgstr "laki ng talaang pisikal "
 
+#: Source/ReconstructableImage.cpp:390
 msgid "physical record padding: "
 msgstr "padding ng talaang pisikal "
 
+#: Source/ReconstructableImage.cpp:391
 msgid "phase offset required: "
 msgstr "nangangailangan ng phase offset "
 
 #. Show user, if requested...
+#: Source/ReconstructableImage.cpp:392 Source/VicarImageBand.cpp:935
 msgid "raw image offset: "
 msgstr "raw image offset: "
 
+#: Source/ReconstructableImage.cpp:488
 msgid "cannot reconstruct, dumped all bands"
 msgstr "hindi mabuo, lahat ng bands ay itinambak"
 
+#: Source/ReconstructableImage.cpp:514 Source/ReconstructableImage.cpp:680
 msgid "output already exists, not overwriting (use --overwrite to override)"
 msgstr ""
 "mayroon nang output, hindi sinusulatan ng bago (gamitin ang --overwrite "
 "upang ma-override)"
 
+#: Source/ReconstructableImage.cpp:548
 msgid ""
 "images for each band present, but no matching set of full histogram variants "
 "available"
@@ -164,6 +207,7 @@ msgstr ""
 "nandyan ang larawan para sa bawat band, ngunit walang pumapares na full "
 "histogram variants"
 
+#: Source/ReconstructableImage.cpp:568
 msgid ""
 "images for each band present, but no matching set of non-overlayed variants "
 "available"
@@ -171,160 +215,208 @@ msgstr ""
 "nandyan ang larawan para sa bawat band, ngunit walang pumapares na non-"
 "overlayed variants"
 
+#: Source/ReconstructableImage.cpp:619
 msgid "image bands not all the same size, may be missing scanlines"
 msgstr ""
 "hindi pare-parehas ang mga image bands, posibleng nagkukulang ng scanlines"
 
+#: Source/VicarImageAssembler.cpp:89 Source/VicarImageAssembler.cpp:128
 msgid "unable to open input directory for indexing "
 msgstr "hindi kayang buksan ang input directory upang ma-index "
 
+#: Source/VicarImageAssembler.cpp:144 Source/VicarImageAssembler.cpp:221
 msgid "could not stat "
 msgstr "hindi makapag stat "
 
 #. Alert user...
+#: Source/VicarImageAssembler.cpp:189
 msgid "indexing mission data, please wait..."
 msgstr "iniindex ang mission data, mag-antay po..."
 
 #. Provide a notification to the Viking Lander Launcher...
+#: Source/VicarImageAssembler.cpp:193
 msgid "Indexing mission data, please wait..."
 msgstr "Iniindex ang mission data, mag-antay po..."
 
+#: Source/VicarImageAssembler.cpp:236
 msgid "no prospective files found"
 msgstr "walang nahanap na prospective file"
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+#: Source/VicarImageAssembler.cpp:245
 msgid "Analyzing mission data, please wait..."
 msgstr "Sinusuri ang mission data, mag-intay po..."
 
+#: Source/VicarImageAssembler.cpp:273
 msgid "studying mission data index of "
 msgstr "pinag-aaralan ang mission data index of "
 
+#: Source/VicarImageAssembler.cpp:295 Source/VicarImageAssembler.cpp:396
+#: Source/VicarImageAssembler.cpp:480
 msgid ", skipping"
 msgstr ", nilalampasan"
 
+#: Source/VicarImageAssembler.cpp:306 Source/VicarImageAssembler.cpp:407
+#: Source/VicarImageAssembler.cpp:491
 msgid " (--ignore-bad-files to skip)"
 msgstr " (--ignore-bad-files upang laktawan)"
 
+#: Source/VicarImageAssembler.cpp:322
 msgid "filtering "
 msgstr "sinasalang "
 
+#: Source/VicarImageAssembler.cpp:324
 msgid " type diode bands (--filter-diode[=type] to change)"
 msgstr " uri ng diode bands (--filter-diode[=type] upang palitan)"
 
+#: Source/VicarImageAssembler.cpp:334
 msgid "camera event doesn't identify itself, cannot index"
-msgstr ""
-"ang kamera ay hindi nagpakilala sa sarili, hindi matuloy ang pag-index"
+msgstr "ang kamera ay hindi nagpakilala sa sarili, hindi matuloy ang pag-index"
 
+#: Source/VicarImageAssembler.cpp:355
 msgid " is a new camera event, indexing"
 msgstr " ay isang bagong pangyayari ng kamera, tuloy ang pag-index"
 
+#: Source/VicarImageAssembler.cpp:376
 msgid " is a known camera event, indexing"
 msgstr " ay isang bagong pangyayari ng kamera, tuloy ang pag-index"
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+#: Source/VicarImageAssembler.cpp:424
 msgid "Attempting forensic mission data recovery..."
 msgstr "Sinusubukan ang pagrecover ng forensic mission data..."
 
+#: Source/VicarImageAssembler.cpp:451
 msgid "attempting reconstruction "
 msgstr "Sinusubukang buuin "
 
+#: Source/VicarImageAssembler.cpp:458
 msgid "dumping components from "
 msgstr "itambak ang mga parte mula sa "
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+#: Source/VicarImageAssembler.cpp:503
 msgid "Recovery completed..."
 msgstr "Natapos na ang recovery"
 
+#: Source/VicarImageAssembler.cpp:513
 msgid "successfully reconstructed "
 msgstr "matagumpay ang pagbuo "
 
+#: Source/VicarImageAssembler.cpp:515
 msgid " unreconstructable components dumped"
 msgstr " itinambak ang mga parteng hindi mabuo"
 
+#: Source/VicarImageAssembler.cpp:522
 msgid "dumped "
 msgstr "itinambak "
 
+#: Source/VicarImageAssembler.cpp:522
 msgid " image components without reconstruction"
 msgstr " image components without reconstruction"
 
+#: Source/VicarImageBand.cpp:282 Source/VicarImageBand.cpp:330
 msgid "image should be rotated 90 counterclockwise"
 msgstr "kailangan ikutin ang larawan ng 90 counterclockwise"
 
+#: Source/VicarImageBand.cpp:291 Source/VicarImageBand.cpp:338
 msgid "image should be rotated 180 counterclockwise"
 msgstr "kailangan ikutin ang larawan ng 180 counterclockwise"
 
+#: Source/VicarImageBand.cpp:300 Source/VicarImageBand.cpp:346
 msgid "image should be rotated 270 counterclockwise"
 msgstr "kailangan ikutin ang larawan ng 270 counterclockwise"
 
+#: Source/VicarImageBand.cpp:309 Source/VicarImageBand.cpp:322
 msgid "image does not need to be rotated"
 msgstr "hindi kailangang ikutin ang larawan"
 
+#: Source/VicarImageBand.cpp:354
 msgid "could not guess image rotation"
 msgstr "hindi matiyak ang pag-ikot sa larawan"
 
+#: Source/VicarImageBand.cpp:387
 msgid "GNU Ocrad failed to initialize"
 msgstr "hindi na-initialize ang GNU Ocrad"
 
 #. Set error message...
+#: Source/VicarImageBand.cpp:423
 msgid "could not set OCR image"
 msgstr "hindi ma-set ang OCR image"
 
 #. Set error message...
+#: Source/VicarImageBand.cpp:440
 msgid "OCR pass failed"
 msgstr "nabigo ang OCR pass"
 
+#: Source/VicarImageBand.cpp:525
 msgid "input was not loaded"
 msgstr "hindi nai-load ang input"
 
+#: Source/VicarImageBand.cpp:532 Source/VicarImageBand.cpp:774
 msgid "could not open input for reading"
 msgstr "hindi mabuksan ang input upang mabasa"
 
+#: Source/VicarImageBand.cpp:536
 msgid "file ended prematurely before raw image"
 msgstr "natapos ng bitin ang file bago sa raw image"
 
+#: Source/VicarImageBand.cpp:565
 msgid "band data extraction i/o error"
 msgstr "band data extraction i/o error"
 
 #. Be verbose...
+#: Source/VicarImageBand.cpp:767
 msgid "loading"
 msgstr "naglo-load"
 
-msgid ""
-"empty file, probably blank magnetic tape or not received back on Earth"
+#: Source/VicarImageBand.cpp:781
+msgid "empty file, probably blank magnetic tape or not received back on Earth"
 msgstr ""
 "file ay walang laman, posibleng blanko ang magnetic tape o hindi natanggap "
 "sa Earth"
 
+#: Source/VicarImageBand.cpp:785
 msgid "too small to be interesting (< 4 KB)"
 msgstr "sobrang liit, hindi kaakit-akit (< 4 KB)"
 
+#: Source/VicarImageBand.cpp:790
 msgid "header is not intact, or not a VICAR file"
 msgstr "hindi buo ang header, o hindi isang Vicar file"
 
+#: Source/VicarImageBand.cpp:792
 msgid "header intact, but requires "
 msgstr "buo ang header, ngunit nangangailangan ng "
 
+#: Source/VicarImageBand.cpp:792
 msgid " byte phase offset"
 msgstr " byte phase offset"
 
+#: Source/VicarImageBand.cpp:796
 msgid "did not originate from a Viking Lander"
 msgstr "hindi nagmula sa isa sa mga Viking Lander"
 
+#: Source/VicarImageBand.cpp:818
 msgid "entering physical record "
 msgstr "pinapasok ang talaang pisikal "
 
+#: Source/VicarImageBand.cpp:820
 msgid " starting at "
 msgstr " nagsisimula sa "
 
+#: Source/VicarImageBand.cpp:837
 msgid "extracting logical record "
 msgstr "kinukuha ang talaang lohikal "
 
+#: Source/VicarImageBand.cpp:839 Source/VicarImageBand.cpp:853
 msgid "/5 starting at "
 msgstr "/5 nagsisimula sa "
 
+#: Source/VicarImageBand.cpp:851
 msgid "bad logical record terminator "
 msgstr "sirang pantapos ng talaang lohikal "
 
+#: Source/VicarImageBand.cpp:859
 msgid ""
 "invalid logical record label possibly from out of phase physical boundary"
 msgstr ""
@@ -333,147 +425,188 @@ msgstr ""
 
 #. It was, so rewind and carry on since there is no
 #. physical record padding...
+#: Source/VicarImageBand.cpp:912
 msgid "tangential physical record boundary detected, ignoring padding"
 msgstr ""
 "may natukoy na pagitang pisikal na tangential, padding ay di-papapansinin"
 
 #. Alert and seek...
+#: Source/VicarImageBand.cpp:921
 msgid "seeking passed "
 msgstr "natapos ang paghahanap "
 
+#: Source/VicarImageBand.cpp:921
 msgid " physical record padding"
 msgstr " padding ng talaang pisikal"
 
+#: Source/VicarImageBand.cpp:929
 msgid "unable to locate last logical record label"
 msgstr "hindi mahanap ang huling label ng talaang lohikal"
 
+#: Source/VicarImageBand.cpp:946
 msgid "file too small to contain claimed payload "
 msgstr "sobrang liit ang file upang maglaman ng claimed payload "
 
+#: Source/VicarImageBand.cpp:1051
 msgid "internal radio/geometric calibration ("
 msgstr "internal radio/geometric calibration ("
 
+#: Source/VicarImageBand.cpp:1057
 msgid "unsupported photosensor diode band type ("
 msgstr "hindi suporta ang photosensor diode band type ("
 
+#: Source/VicarImageBand.cpp:1281
 msgid "exhausted basic metadata parser heuristics"
 msgstr "naubos ang basic metadata parser heuristics"
 
+#: Source/VicarImageBand.cpp:1287
 msgid "unsupported number of image bands"
 msgstr "hindi suportado ang bilang ng image bands"
 
+#: Source/VicarImageBand.cpp:1291
 msgid "expected positive image height"
 msgstr "ang positibong sukat ng taas ng larawan ang hinahanap"
 
+#: Source/VicarImageBand.cpp:1295
 msgid "expected positive image width"
 msgstr "ang positibong sukat ng lapad ng larawan ang hinahanap"
 
 #. Check pixel format is integral...
 #. Definitely integral
 #. Guessing integral
+#: Source/VicarImageBand.cpp:1300
 msgid "unsupported pixel format"
 msgstr "hindi suportado ang pixel format"
 
+#: Source/VicarImageBand.cpp:1304
 msgid "unsupported colour bit depth"
 msgstr "hindi suportado ang color bit depth"
 
 #. If verbosity is set, display basic metadata...
+#: Source/VicarImageBand.cpp:1307
 msgid "basic metadata parser heuristic: "
 msgstr "basic metadata parser heuristic: "
 
+#: Source/VicarImageBand.cpp:1308
 msgid "bands: "
 msgstr "bands: "
 
+#: Source/VicarImageBand.cpp:1309
 msgid "height: "
 msgstr "taas: "
 
+#: Source/VicarImageBand.cpp:1310
 msgid "width: "
 msgstr "lapad: "
 
+#: Source/VicarImageBand.cpp:1311
 msgid "raw band data size: "
 msgstr "sukat-laki ng raw band data: "
 
+#: Source/VicarImageBand.cpp:1311 Source/VicarImageBand.cpp:1312
 msgid " bytes"
 msgstr " bytes"
 
+#: Source/VicarImageBand.cpp:1313
 msgid "format: integral"
 msgstr "format: integral"
 
+#: Source/VicarImageBand.cpp:1314
 msgid "bytes per colour: "
 msgstr "bytes bawat kulay "
 
+#: Source/VicarImageBand.cpp:1315
 msgid "photosensor diode band type: "
 msgstr "uri ng photosensor diode band "
 
+#: Source/VicarImageBand.cpp:1317
 msgid "possible physical record padding: "
 msgstr "posibleng pagpapalaman sa talaang pisikal: "
 
 #. Alert user if verbose enabled...
+#: Source/VicarImageBand.cpp:1344
 msgid "heuristics selected format 1 basic metadata parser"
 msgstr "heuristics selected format 1 basic metadata parser"
 
 #. Alert user if verbose enabled...
+#: Source/VicarImageBand.cpp:1415
 msgid "heuristics selected format 2 basic metadata parser"
 msgstr "heuristics selected format 2 basic metadata parser"
 
 #. Alert user if verbose enabled...
+#: Source/VicarImageBand.cpp:1499
 msgid "heuristics selected format 3 basic metadata parser"
 msgstr "heuristics selected format 3 basic metadata parser"
 
 #. Alert user if verbose enabled...
+#: Source/VicarImageBand.cpp:1567
 msgid "heuristics selected format 4 basic metadata parser"
 msgstr "heuristics selected format 4 basic metadata parser"
 
 #. Alert user if verbose enabled...
+#: Source/VicarImageBand.cpp:1636
 msgid "heuristics selected format 5 basic metadata parser"
 msgstr "heuristics selected format 5 basic metadata parser"
 
 #. Alert user if verbose enabled...
+#: Source/VicarImageBand.cpp:1705
 msgid "heuristics selected format 6 basic metadata parser"
 msgstr "heuristics selected format 6 basic metadata parser"
 
+#: Source/VicarImageBand.cpp:1768
 msgid "invalid logical record label while parsing extended metadata"
-msgstr ""
-"imbalidong label ng talaang lohikal nung pagsuri sa extended metadata"
+msgstr "imbalidong label ng talaang lohikal nung pagsuri sa extended metadata"
 
 #. Alert user if verbose mode enabled...
+#: Source/VicarImageBand.cpp:1789
 msgid "psa directional vector: "
 msgstr "psa directional vector: "
 
+#: Source/VicarImageBand.cpp:1804
 msgid "camera event label: "
 msgstr "label ng pangyayaring kamera "
 
+#: Source/VicarImageBand.cpp:1827
 msgid "bad lander number"
 msgstr "sirang numero ng lander"
 
 #. Be verbose if requested...
+#: Source/VicarImageBand.cpp:1830
 msgid "lander number: "
 msgstr "numero ng lander: "
 
+#: Source/VicarImageBand.cpp:1835
 msgid "filtering non-matching lander"
 msgstr "sinasala ang mga lander na hindi tumutugma"
 
 #. Set caller hint and return unsupported...
+#: Source/VicarImageBand.cpp:1891
 msgid "monocolour unsupported"
 msgstr "di-suportado ang monocolour"
 
 #. Set caller hint and return unsupported...
+#: Source/VicarImageBand.cpp:1899
 msgid "unidentifiable broadband"
 msgstr "di-matukoy na broadband"
 
 #. Set hint and return unknown...
+#: Source/VicarImageBand.cpp:1951
 msgid "none detected"
 msgstr "walang naitukoy"
 
+#: Source/VicarImageBand.cpp:2000
 msgid "filtering non-matching solar day"
 msgstr "sinasala ang di-tumutugma na araw de-araw (solar day)"
 
+#: Source/VicarImageBand.cpp:2005
 msgid "filtering non-matching camera event"
 msgstr "sinasala ang di-tumutugma na pangyayaring kamera"
 
+#: Source/VikingExtractor.cpp:55
 msgid "Options:\n"
 msgstr "Pagpipilian:\n"
 
+#: Source/VikingExtractor.cpp:57
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after band type class (e.g. Colour).\n"
@@ -483,6 +616,7 @@ msgstr ""
 "                              ipinangalan sa klase ng uri ng band (hal. "
 "Kulay).\n"
 
+#: Source/VikingExtractor.cpp:62
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after location taken from.\n"
@@ -491,6 +625,7 @@ msgstr ""
 "subdirectory\n"
 "                              ipinangalan sa kinuhaang lugar\n"
 
+#: Source/VikingExtractor.cpp:66
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after Martian month taken on.\n"
@@ -499,6 +634,7 @@ msgstr ""
 "subdirectory\n"
 "                              Ipinangalan sa buwan (month) na Martian\n"
 
+#: Source/VikingExtractor.cpp:70
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              numbered by camera event solar day.\n"
@@ -508,12 +644,15 @@ msgstr ""
 "                              ibinilang ukol sa araw de-araw ng pangyayaring "
 "kamera\n"
 
+#: Source/VikingExtractor.cpp:74
 msgid "                              Don't write anything.\n"
 msgstr "                              Huwag isulat\n"
 
+#: Source/VikingExtractor.cpp:77
 msgid "                              Show this help.\n"
 msgstr "                              Ipakita ang patnubay na ito.\n"
 
+#: Source/VikingExtractor.cpp:80
 msgid ""
 "                              Don't stop on corrupt or problematic input "
 "file,\n"
@@ -522,9 +661,11 @@ msgstr ""
 "                              Huwag tumigil sa sirang input file\n"
 "                              Subalit ituloy ang paglinang sa ibang file.\n"
 
+#: Source/VikingExtractor.cpp:84
 msgid "                              Encode output with Adam7 interlacing\n"
 msgstr "                              Encode output with Adam7 interlacing\n"
 
+#: Source/VikingExtractor.cpp:87
 msgid ""
 "                              Number of threads to run parallelized. Only "
 "one\n"
@@ -536,6 +677,7 @@ msgstr ""
 "                              kapag walang -j, o auto kapag ang threads\n"
 "                              argument ay hindi tiniyak.\n"
 
+#: Source/VikingExtractor.cpp:92
 msgid ""
 "                              Look only for the specified matching camera "
 "event\n"
@@ -545,6 +687,7 @@ msgstr ""
 "kamera\n"
 "                              ID, tulad ng 22A158.\n"
 
+#: Source/VikingExtractor.cpp:96
 msgid ""
 "                              Extract from matching supported diode filter\n"
 "                              classes which are any (default), colour, "
@@ -556,6 +699,7 @@ msgstr ""
 "infrared,\n"
 "                              sun, or survey.\n"
 
+#: Source/VikingExtractor.cpp:101
 msgid ""
 "                              Extract from specific lander only which are\n"
 "                              either (0, the default), 1, or 2.\n"
@@ -563,6 +707,7 @@ msgstr ""
 "                              Tanging  (0, the default), 1, or 2.\n"
 "                              lamang ang kunin mula sa tiyak na lander.\n"
 
+#: Source/VikingExtractor.cpp:105
 msgid ""
 "                              Look only for camera events taken on the "
 "specified\n"
@@ -572,6 +717,7 @@ msgstr ""
 "tinukoy \n"
 "                              na araw de-araw ang hanapin.\n"
 
+#: Source/VikingExtractor.cpp:109
 msgid ""
 "                              Whenever a colour image is recovered, machine\n"
 "                              generate a text file containing various "
@@ -582,16 +728,19 @@ msgstr ""
 "                              maglabas ng text file na naglalaman ng iba't "
 "ibang metadata\n"
 
+#: Source/VikingExtractor.cpp:113
 msgid ""
 "                              Disable VT/100 ANSI coloured terminal output.\n"
 msgstr ""
 "                              Di-paganahin ang VT/100 ANSI coloured terminal "
 "output.\n"
 
+#: Source/VikingExtractor.cpp:116
 msgid ""
 "                              Don't automatically rotate image as needed.\n"
 msgstr "                              Huwag kusang ikutin ang larawan.\n"
 
+#: Source/VikingExtractor.cpp:119
 msgid ""
 "                              Don't attempt to reconstruct camera events, "
 "just\n"
@@ -603,10 +752,12 @@ msgstr ""
 "                              ibuga lamang bilang hiwa-hiwalay na larawan "
 "ang lahat ng naroroong band data.\n"
 
+#: Source/VikingExtractor.cpp:123
 msgid "                              Overwrite any existing output files.\n"
 msgstr ""
 "                              Tabunan ang mga output file na naroroon na.\n"
 
+#: Source/VikingExtractor.cpp:126
 msgid ""
 "                              Scan subfolders as well if input is a "
 "directory.\n"
@@ -614,6 +765,7 @@ msgstr ""
 "                              Suriin na rin ang mga subfolder kapag ang "
 "input ay isang directory.\n"
 
+#: Source/VikingExtractor.cpp:129
 msgid ""
 "                              Show summary of progress and final results "
 "only.\n"
@@ -621,12 +773,15 @@ msgstr ""
 "                              Ipakita ang buod ng tinrabaho at ang mga "
 "natapos  na resulta.\n"
 
+#: Source/VikingExtractor.cpp:132
 msgid "                              Suppress all warnings and errors.\n"
 msgstr "                              Pigilin ang mga babala at kamalian.\n"
 
+#: Source/VikingExtractor.cpp:135
 msgid "                              Be verbose\n"
 msgstr "                              Maging detalyado\n"
 
+#: Source/VikingExtractor.cpp:138
 msgid ""
 "                              Show version information\n"
 "\n"
@@ -634,6 +789,7 @@ msgstr ""
 "                              Ipakita ang impormasyon ukol sa bersyon\n"
 "\n"
 
+#: Source/VikingExtractor.cpp:141
 msgid ""
 "Converts 1970s Viking Lander era VICAR colour images to PNGs. The value of\n"
 "'input' can be either a single VICAR file or a directory containing VICAR "
@@ -648,9 +804,11 @@ msgstr ""
 "upang tangkahing mabuo sa ibinigay na output directory.\n"
 "\n"
 
+#: Source/VikingExtractor.cpp:146
 msgid "Report bugs to "
 msgstr "Ipaalam ang bugs sa "
 
+#: Source/VikingExtractor.cpp:153
 msgid ""
 "Copyright (C) 2010-2013 Cartesian Theatre.\n"
 "This is free software; see Copying for copying conditions. There is NO\n"
@@ -664,27 +822,35 @@ msgstr ""
 "PARTIKULAR NA LAYUNIN\n"
 "\n"
 
+#: Source/VikingExtractor.cpp:158
 msgid "Configured with: "
 msgstr "Inayos gamit ang: "
 
+#: Source/VikingExtractor.cpp:341
 msgid "parallelization is not implemented yet, using single thread"
 msgstr "hindi pa naipatupad ang parallelization, single thread ang gagamitin"
 
+#: Source/VikingExtractor.cpp:432
 msgid "summarize only and verbose modes cannot both be used"
 msgstr "hindi pwedeng ipagsabay ang buod lamang at detalyadong pamamaraan"
 
+#: Source/VikingExtractor.cpp:444
 msgid " linked against incompatible GNU Ocrad version "
 msgstr " naugnay sa di-bagay na GNU Ocrad version "
 
+#: Source/VikingExtractor.cpp:455
 msgid "GNU Ocrad needs to be at least 0.21, but got "
 msgstr "Pinakamababa na ang 0.21 para sa GNU Ocrad, ngunit ang nakuha ay "
 
 #. Alert, abort...
+#: Source/VikingExtractor.cpp:471
 msgid "need input file or directory, see --help"
 msgstr "nangangailangan ng input file o directory, tingnan --help"
 
+#: Source/VikingExtractor.cpp:484
 msgid "unknown parameter "
 msgstr "di-kilalang parametro "
 
+#: Source/VikingExtractor.cpp:487
 msgid "), see --help"
 msgstr "), see --help"

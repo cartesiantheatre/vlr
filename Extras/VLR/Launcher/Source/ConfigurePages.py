@@ -19,7 +19,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # System imports...
-from gi.repository import Gtk
+from gi.repository import Gtk, GdkPixbuf
 import os
 
 # Assistant proxy page base class...
@@ -119,7 +119,7 @@ class ConfigurePagesProxy(PageProxyBase):
         directorizeSol = self._builder.get_object("directorizeSolCheckButton").get_active()
 
         # Format the example path...
-        #Output/Utopia Planitia/Scorpius/Colour/778/
+        #  e.g. Output/Utopia Planitia/Scorpius/Colour/778/
         annotatedPath = ""
         if directorizeLocation:
             annotatedPath += _("Location/")

@@ -8,7 +8,7 @@ subdir = Translations
 top_builddir = ..
 
 # These options get passed to xgettext.
-XGETTEXT_OPTIONS = --keyword=_ --keyword=N_ --add-comments --no-location --from-code=utf-8
+XGETTEXT_OPTIONS = --keyword=_ --keyword=N_ --add-location --add-comments --from-code=utf-8
 #MSGMERGE_OPTIONS =
 
 # This is the copyright holder that gets inserted into the header of the

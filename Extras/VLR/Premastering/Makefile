@@ -17,39 +17,49 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-UDF                 = Avaneya_Viking_Lander_Remastered.udf
-DVD_9_SIZE          = 8540000000 # Single sided, dual layer, 8.54 billion bytes...
-DISC_SIZE           = DVD_9_SIZE
-PREPARER_ID         = "Cartesian Theatre"
-PUBLISHER_ID        = "Cartesian Theatre"
-VOLUME_ID           = "Avaneya VLR"
-MANIFEST            = ./Manifest
-LAYOUT_OPTIMIZATION = ./LayoutOptimization
-MKUDFFS_PARAMETERS  = --udfrev=0x0201 \
-                      --media-type=dvd \
-                      --blocksize=2048 \
-                      --utf8
-USER_ID             = $(USER)
+# Image metadata...
+PUBLISHER_ID        = "Cartesian Theatre <info@cartesiantheatre.com>"
+PREPARER_ID         = $(PUBLISHER)
+VOLUME_ID           = "AVANEYA_VLR"
 
-# Disable checking for files by these names...
-#.PHONY: all clean check
+# Image file name...
+ISO                 = Avaneya_Viking_Lander_Remastered.iso
+
+# Premastering contents, exclusion, and optimization list...
+INCLUDE_LIST        = Lists/Manifest
+EXCLUDE_LIST        = Lists/Exclude
+OPTIMIZATION_LIST   = Lists/Optimization
+
+# Extractor and launcher source roots...
+EXTRACTOR_DIR       = ../Extractor/
+LAUNCHER_DIR        = ../Launcher/
+
+GENISOIMAGE_PARAMETERS  =           \
+    -copyright Copying              \
+    -graft-points                   \
+    -J                              \
+    -exclude-list $(EXCLUDE_LIST)   \
+    -no-bak                         \
+    -o $(ISO)                       \
+    -path-list $(INCLUDE_LIST)      \
+    -publisher "$(PUBLISHER_ID)"    \
+    -p "$(PREPARER_ID)"             \
+    -r                              \
+    -sort $(OPTIMIZATION_LIST)      \
+    -V "$(VOLUME_ID)"
 
 # Default target is to built the complete ISO...
-all: udf
+all: $(ISO)
 
 # Build the image by coalescing everything needed from various places...
-udf: $(UDF)
-$(UDF): viking-extractor Manifest Makefile
+$(ISO): $(INCLUDE_LIST) $(EXCLUDE_LIST) $(OPTIMIZATION_LIST) Makefile
 	chmod +x -c ../Launcher/Source/autorun.sh
-	#truncate -s $(DISC_SIZE)
-	mkudffs $(MKUDFFS_PARAMETERS) $(UDF)
-	mkdir -vp udfmount/
-	sudo mount -t udf -o loop,user,rw,uid=$(USER_ID) $(UDF) udfmount/
-	touch udfmount/foo
-	sudo umount /dev/loop
 
-# Recurse into viking-extractor's makefile for supported targets...
+# Recurse into viking-extractor's to build it...
 all check viking-extractor:
+	if test -f $(EXTRACTOR_DIR)/configure ; then \
+		$(MAKE) maintainer-clean
+	fi ; \
 	cd ../Extractor && $(MAKE) $@
 
 # Clean up...
@@ -59,5 +69,5 @@ clean:
 
 # Directive to make to let it know that these targets don't generate filesystem 
 #  objects / products and therefore no need to check time stamps...
-.PHONY: all check clean iso
+.PHONY: all clean iso
 

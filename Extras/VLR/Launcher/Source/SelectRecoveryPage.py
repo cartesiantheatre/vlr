@@ -40,3 +40,14 @@ class SelectRecoveryPageProxy(PageProxyBase):
             Gtk.AssistantPageType.CONTENT,
             True)
 
+        # Shortcuts to our widgets...
+        self._recoveryFolder = self._builder.get_object("recoveryFolderChooser")
+
+    # Our page in the assistent is being constructed, but not visible yet...
+    def onPrepare(self):
+
+        # Default to user's desktop, if we can find it...
+        desktop = os.path.join(os.path.expanduser('~'), 'Desktop')
+        if os.path.isdir(desktop):
+            self._recoveryFolder.set_current_folder(desktop)
+

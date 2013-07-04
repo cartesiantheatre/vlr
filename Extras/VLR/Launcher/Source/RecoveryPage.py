@@ -65,7 +65,6 @@ class RecoveryPageProxy(PageProxyBase):
         # Connect the signals...
         self._abortRecoveryButton.connect("clicked", self.onAbortClicked)
         self._terminal.connect("child-exited", self.onChildProcessExit)
-        #self._recoveryPageBox.connect("draw", self.onExposeEvent) # Gtk+v3 'expose-event' -> 'draw'
 
     # Start the recovery process...
     def startRecovery(self):
@@ -245,8 +244,16 @@ class RecoveryPageProxy(PageProxyBase):
 
         # Kill it...
         if self.processID != 0:
-            os.kill(self.processID, signal.SIGKILL)
-            self.processID = 0
+            
+            # Try to kill it...
+            try:
+                os.kill(self.processID, signal.SIGKILL)
+                self.processID = 0
+            
+            # If we get a ProcessLookupError exception, it's probably already
+            #  terminated...
+            except ProcessLookupError as error:
+                pass
 
     # VikingExtractor terminated...
     def onChildProcessExit(self, *junk):
@@ -279,7 +286,7 @@ class RecoveryPageProxy(PageProxyBase):
         else:
 
             # Notify assistant by marking page as complete...
-            self._assistant.set_page_complete(self._recoveryPageBox, True)
+            self._assistant.set_page_complete(self.getPageInGroup(0), True)
 
             # Advance to the next page...
             self._assistant.next_page()

@@ -3,7 +3,24 @@
 #   <https://www.iana.org/assignments/language-subtag-registry>
 #
 
+# English, as spoken in Canada...
 en_CA
+
+# English, as spoken in the UK...
 en_GB
+
+# Filipino...
+fil
+
+# Italian...
+it
+
+# Russian...
 ru
+
+# Ukranian...
+uk
+
+# Chinese, as spoken in Taiwan...
 zh_TW
+

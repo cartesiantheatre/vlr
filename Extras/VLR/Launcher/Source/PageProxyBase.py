@@ -19,12 +19,80 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # System imports...
-from gi.repository import Gtk
-from gi.repository import GdkPixbuf
+from gi.repository import Gtk, Gdk, GdkPixbuf
 import os
+import cairo
 
 # Arguments...
 import LauncherArguments
+
+# A rescalable image that fits the allocation while maintaining its aspect 
+#  ratio...
+class ScalableImage(Gtk.DrawingArea):
+
+    # Constructor...
+    def __init__(self, filename):
+    
+        # Initialize GtkDrawingArea base class...
+        super(ScalableImage, self).__init__()
+        
+        # Load the pixels from the requested file...
+        self._pixelBuffer = GdkPixbuf.Pixbuf.new_from_file(filename)
+
+    # Override the preferred width...
+    def do_get_preferred_width(self):
+        naturalWidth = self._pixelBuffer.get_width()
+        return (0, naturalWidth)
+
+    # Override the preferred height...
+    def do_get_preferred_height(self):
+        naturalHeight = self._pixelBuffer.get_height()
+        return (0, naturalHeight)
+
+    # Note here that the minimum request is set to the natural height of the 
+    #  input pixel buffer. This may not be the desired behavior in all
+    #  circumstances...
+    def do_get_preferred_height_for_width(self, width):
+        preferredHeight = width / self.get_aspect_ratio()
+        return (0, preferredHeight)
+
+    # Prefer a height for width resize mode...
+    def do_get_request_mode(self):
+        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH
+
+    # Get the aspect ratio of the image...
+    def get_aspect_ratio(self):
+        return self._pixelBuffer.get_width() / self._pixelBuffer.get_height()
+
+    # Render the image onto the Cairo context...
+    def do_draw(self, cairoContext):
+        
+        # Get the natural dimensions of the original image...
+        pixelBufferWidth    = self._pixelBuffer.get_width()
+        pixelBufferHeight   = self._pixelBuffer.get_height()
+
+        # Get allocation for drawing area widget in the precision needed...
+        allocation          = self.get_allocation()
+        allocationWidth     = float(allocation.width)
+        allocationHeight    = float(allocation.height)
+
+        # Modify the transformation matrix to rescale the image. When scaling an 
+        #  image, both its height and width are changing. In order to fit the 
+        #  allocated rectangle without clipping, one must figure out which 
+        #  dimension is smallest (normalized to the aspect ratio). For example, 
+        #  if a 200x100 image is allocated 200x50, the allocation is 
+        #  height-limited and the image must be scaled to 100x50. OTOH if 
+        #  allocated 100x100, the image is width-limited and must be scaled to 
+        #  100x50. Thanks Andrew Potter...
+        rescale = min(allocationWidth / pixelBufferWidth, allocationHeight / pixelBufferHeight)
+        cairoContext.scale(rescale, rescale)
+
+        # Reload the pixels into the rendering context and repaint...
+        Gdk.cairo_set_source_pixbuf(cairoContext, self._pixelBuffer, 0.0, 0.0)
+        cairoContext.paint()
+        
+        # Allow the event to propagate further...
+        return False
 
 # Page pages proxy class. Common code for all assistant pages...
 class PageProxyBase(object):
@@ -40,41 +108,14 @@ class PageProxyBase(object):
 
     # Decorate the page with the common features to all assistant pages...
     def decoratePage(self, page):
-        
-        # Load the banner image pixels...
-        self._bannerPixelBuffer = GdkPixbuf.Pixbuf.new_from_file(
-            os.path.join(
-                LauncherArguments.
-                    getArguments().dataRoot, "Banner.png"))
 
-        # Fetch the image dimensions and aspect ratio...
-        self._bannerWidth = self._bannerPixelBuffer.get_width()
-        self._bannerHeight = self._bannerPixelBuffer.get_height()
-        self._bannerAspect = self._bannerWidth / self._bannerHeight
-
-        # Set the image from the pixel buffer, rescaling later...
-        self._bannerImage = Gtk.Image()
-        self._bannerImage.set_from_pixbuf(self._bannerPixelBuffer)
-        self._bannerImage.set_alignment(0.5, 0.0)
-
-        # Put the banner image inside of a viewport...
-        self._viewport = Gtk.Viewport()
-        self._viewport.add(self._bannerImage)
-
-        # ...in turn inside of a scrolled window...
-        self._scrolledWindow = Gtk.ScrolledWindow()
-        self._scrolledWindow.set_policy(
-            Gtk.PolicyType.AUTOMATIC, 
-            Gtk.PolicyType.AUTOMATIC)
-        self._scrolledWindow.add(self._viewport)
-
-        # We need to update the image size every time the page is resized, and 
-        #  consequently, redrawn... (Gtk+ 3 'expose-event' -> 'draw')
-        self._scrolledWindow.connect("draw", self.onBannerImageResize, page)
-
+        # Create a drawing area to render the banner image onto...
+        page._bannerDrawingArea = ScalableImage(
+            os.path.join(LauncherArguments.getArguments().dataRoot, "Banner.png"))
+       
         # Add the image to the top of the GUI...
-        page.pack_start(self._scrolledWindow, False, False, 0)
-        page.reorder_child(self._scrolledWindow, 0)
+        page.pack_start(page._bannerDrawingArea, False, False, 5)
+        page.reorder_child(page._bannerDrawingArea, 0)
 
     # Get the page's absolute index in the assistant...
     def getAbsoluteIndex(self, groupIndex):
@@ -91,31 +132,6 @@ class PageProxyBase(object):
     def onApply(self):
         raise NotImplementedError()
 
-    # We need to update the image size every time the page is resized, and 
-    #  consequently, redrawn...
-    def onBannerImageResize(self, scrolledWindow, event, page):
-
-        # Get the new size of the image widget...
-        allocation = scrolledWindow.get_allocation()
-        
-        # If the requested dimensions are different than what's in the pixel
-        #  buffer, then resize...
-        if self._bannerWidth != allocation.width:
-
-            # Remember new banner dimensions...
-            self._bannerWidth = allocation.width
-            self._bannerHeight = allocation.width / self._bannerAspect
-            
-            # Now rescale it to fit the GUI using the best tradeoff between speed
-            #  and quality...
-            rescaledBannerPixelBuffer = self._bannerPixelBuffer.scale_simple(
-                self._bannerWidth, 
-                self._bannerHeight, 
-                GdkPixbuf.InterpType.BILINEAR)
-            
-            # Update the image in the widget with the rescaled one...
-            self._bannerImage.set_from_pixbuf(rescaledBannerPixelBuffer)
-
     # End of current page. Next page is being constructed but not visible yet.
     #  Give it a chance to prepare if overridden...
     def onPrepare(self):
@@ -128,13 +144,13 @@ class PageProxyBase(object):
         page = self._builder.get_object(objectName)
         assert(page)
         
-        # Add a reference to this proxy handler in the Gtk sizer object...
+        # Add a reference to this base proxy handler in the Gtk sizer object...
         page.pageProxyBase = self
         
         # Decorate the page...
         self.decoratePage(page)
 
-        # Add subscribe page to assistant...
+        # Add page to assistant...
         absoluteIndex = self._assistant.append_page(page)
         
         # Add it to internal list...

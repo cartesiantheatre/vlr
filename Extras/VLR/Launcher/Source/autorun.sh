@@ -625,7 +625,8 @@ Main()
     ZenityProcessID=$!
 
     # Display user's locale...
-    echo "User's locale is ${LANG} (${LANGUAGE})"
+    echo "User's LANG is... ${LANG}"
+    echo "User's LANGUAGE is... ${LANGUAGE}"
 
     # Identify the user's distro...
     IdentifyDistro
@@ -669,18 +670,13 @@ Main()
             echo "python3 $SymbolStatusOk"
             /usr/bin/env python3 "${PythonLauncherMain}" "${Arguments[@]}"
         
-        # ...if that doesn't work, try what's probably an alias for Python 2...
-        elif [ -x "`which python`" ]; then
-            echo "python $SymbolStatusOk"
-            /usr/bin/env python "${PythonLauncherMain}" "${Arguments[@]}"
-        
         # ...and if that still doesn't work, then we're out of luck...
         else
             echo $SymbolStatusFail
             zenity --error \
                 --title="Error" \
                 --window-icon=$Icon \
-                --text="I'm sorry, but I couldn't find your Python runtime."
+                --text="I'm sorry, but I couldn't find your Python 3 runtime."
             exit 1
         fi
 

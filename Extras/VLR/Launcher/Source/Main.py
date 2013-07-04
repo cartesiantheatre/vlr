@@ -47,9 +47,11 @@ if __name__ == '__main__':
     Gdk.threads_init()
 
     # Initialize i18n...
-    gettext.install(
-        "VLR", 
-        os.path.join(LauncherArguments.getArguments().dataRoot, "Translations"))
+    translation = gettext.translation(
+        "vlr", 
+        os.path.join(LauncherArguments.getArguments().dataRoot, "Translations/"),
+        fallback=True)
+    translation.install()
 
     # Start the launcher GUI...
     launcher = LauncherApp()

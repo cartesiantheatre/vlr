@@ -271,10 +271,6 @@ class HandbookPageProxy(PageProxyBase):
             self._stopHandbookDownloadButton.hide()
             self._assistant.set_page_complete(self.getPageInGroup(0), True)
 
-    # Our page in the assistent is being constructed, but not visible yet...
-    def onPrepare(self):
-        pass
-
     # Stop handbook download button pressed...
     def onStopHandbookDownload(self, stopButton):
         self._stopDownload = True

@@ -422,7 +422,7 @@ bool ReconstructableImage::Reconstruct()
     // We haven't dumped any images until we do so directed from in here...
     m_DumpedImagesCount = 0;
 
-    // Colour image... (only all colour bands present)
+    // Colour image reconstruction... (only all colour bands present)
     if(!Options::GetInstance().GetNoReconstruct() &&
        (min3(Reds, Greens, Blues) >= 1) && 
        (Infrareds1 + Infrareds2 + Infrareds3 + Grays == 0))
@@ -443,7 +443,7 @@ bool ReconstructableImage::Reconstruct()
                 m_BlueImageBandList);
     }
 
-    // Grayscale image... (only grayscale image bands)
+    // Grayscale image reconstruction... (only grayscale image bands)
     else if(!Options::GetInstance().GetNoReconstruct() &&
             (Reds + Greens + Blues + Infrareds1 + Infrareds2 + Infrareds3 == 0) &&
             Grays >= 1)
@@ -462,7 +462,7 @@ bool ReconstructableImage::Reconstruct()
             m_GrayImageBandList.back());
     }
 
-    /* Infrared image... (only all infrared bands present)
+    /* Infrared image reconstruction... (only all infrared bands present)
     else if(!Options::GetInstance().GetNoReconstruct() &&
             (Reds + Greens + Blues + Grays == 0) && 
             (min(Infrareds1, Infrareds2, Infrareds3) >= 1))
@@ -482,10 +482,14 @@ bool ReconstructableImage::Reconstruct()
         DumpUnreconstructable(m_Infrared3ImageBandList);
         DumpUnreconstructable(m_GrayImageBandList);
 
-        // This doesn't count as a successful reconstruction since it wasn't reassembled...
+        // This doesn't count as a successful reconstruction since user 
+        //  requested it not be reassembled...
         if(!Options::GetInstance().GetNoReconstruct())
-            SetErrorAndReturnFalse(_("cannot reconstruct, dumped all bands"));
-        return false;
+            SetErrorAndReturnFalse(_("cannot reconstruct, dumped all bands"))
+        
+        // User explicitly requested no reconstruction, so not an error...
+        else
+            return true;
     }
 }
 

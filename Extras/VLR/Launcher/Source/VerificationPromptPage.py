@@ -34,7 +34,6 @@ class VerificationPromptPageProxy(PageProxyBase):
 
         # Initialize...
         super(VerificationPromptPageProxy, self).__init__(launcherApp)
-        self._thread = None
 
         # Find the window widgets...
         self._verificationImage = self._builder.get_object("verificationImage")

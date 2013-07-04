@@ -147,7 +147,7 @@ GrepTest.sh: Makefile.am
 # Checksums to for recovery_test.sh target to check against...
 RecoveryChecksums.md5: Makefile.am
 	@echo '5e37828fe338c8a12ef387ca2bbb2b85  Tests/Recovery/22D180.png' > $@
-	if [[ "$(LANGUAGE)" == "en_CA"* ]]; then \
+	@if [[ "$(LANGUAGE)" == "en_CA"* ]]; then \
 	echo 'b4c641d7b0c30079e73298e05522cae6  Tests/Recovery/22D180.txt' >> $@ ; \
 	fi ;
 
