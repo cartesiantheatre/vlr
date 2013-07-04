@@ -8,53 +8,63 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-06-05 22:20-0700\n"
-"PO-Revision-Date: 2013-06-26 08:56+0000\n"
-"Last-Translator: Yuri Chornoivan <yurchor@gmail.com>\n"
+"POT-Creation-Date: 2013-07-03 16:19-0700\n"
+"PO-Revision-Date: 2013-07-04 02:58+0000\n"
+"Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-27 05:56+0000\n"
-"X-Generator: Launchpad (build 16681)\n"
+"X-Launchpad-Export-Date: 2013-07-04 05:36+0000\n"
+"X-Generator: Launchpad (build 16692)\n"
 "Language: uk\n"
 
 #. Set translators. Note to translators, put your contact info here...
+#: ../../Source/LauncherApp.py:178
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
 "  Avaneya Project Crew https://launchpad.net/~avaneya\n"
+"  Kip Warner https://launchpad.net/~kip\n"
 "  Yuri Chornoivan https://launchpad.net/~yurchor-gmail\n"
 "  yurchor https://launchpad.net/~yurchor-deactivatedaccount"
 
 #. Beta testers...
+#: ../../Source/LauncherApp.py:185
 msgid "Beta Testers"
 msgstr "Бета-тестери"
 
 #. Musicians...
+#: ../../Source/LauncherApp.py:193
 msgid "Musicians"
 msgstr "Музиканти"
 
 #. Shouts and thanks...
+#: ../../Source/LauncherApp.py:198
 msgid "Shouts / Thanks"
 msgstr "Подяки"
 
 #. Studio hardware...
+#: ../../Source/LauncherApp.py:211
 msgid "Studio Hardware"
 msgstr "Студійне обладнання"
 
 #. Studio software...
+#: ../../Source/LauncherApp.py:216
 msgid "Studio Software"
 msgstr "Студійне програмне забезпечення"
 
 #. Set translators...
+#: ../../Source/LauncherApp.py:239
 msgid "Translators"
 msgstr "Перекладачі"
 
 #. Dedications...
+#: ../../Source/LauncherApp.py:249
 msgid "Dedications"
 msgstr "Присвяти"
 
+#: ../../Source/LauncherApp.py:260
 msgid ""
 "\n"
 "\n"
@@ -74,17 +84,21 @@ msgstr ""
 "href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits"
 "\">подяк</a>."
 
+#: ../../Source/LauncherApp.py:282 ../../Source/OpeningVideoWindow.py:153
 msgid "Error:"
 msgstr "Помилка:"
 
+#: ../../Source/LauncherApp.py:310
 msgid "Are you sure you'd like to quit?"
 msgstr "Ви справді бажаєте завершити роботу?"
 
+#: ../../Source/IntroductionPage.py:43
 msgid "Introduction"
 msgstr "Вступ"
 
 #. Break up the introduction text by paragraphs to make it easier for
 #. translators...
+#: ../../Source/IntroductionPage.py:53
 msgid ""
 "Dear User,\n"
 "\n"
@@ -92,6 +106,7 @@ msgstr ""
 "Шановний користувачу,\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:54
 msgid ""
 "The <i>Avaneya: Viking Lander Remastered</i> initiative has an interesting "
 "story behind it, one which began with the <a "
@@ -120,6 +135,7 @@ msgstr ""
 "результатом яких став поточний стан проекту.\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:56
 msgid ""
 "Avaneya will take place in the not too distant future on Mars, predominantly "
 "in a real region known now as <i><a "
@@ -135,6 +151,7 @@ msgstr ""
 "півкулі Червоної планети.\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:58
 msgid ""
 "While designing Avaneya, we realized just how important getting the game "
 "experience right was to us. We needed to replicate the visual environmental "
@@ -154,6 +171,7 @@ msgstr ""
 "наступного його вивчення.\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:60
 msgid ""
 "The closest relevant photographs available at present were taken in a "
 "neighbouring region near <i>Arcadia Planitia</i> called <a "
@@ -172,6 +190,7 @@ msgstr ""
 "дуже подібною до області <i>Рівнини Аркадія</i>.\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:62
 msgid ""
 "In 1976 NASA successfully placed two Viking spacecraft into Martian orbit "
 "after many years of <a "
@@ -192,6 +211,7 @@ msgstr ""
 "<i>Рівнина Утопія</i>.\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:64
 msgid ""
 "The landers were capable of capturing high resolution photographs and other "
 "data from the surface of the planet, buffering data temporarily within "
@@ -213,6 +233,7 @@ msgstr ""
 "забезпеченню вимкнулася комунікаційна антена.\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:66
 msgid ""
 "An <a href=\"http://pds-imaging.jpl.nasa.gov/volumes/viking.html\">online "
 "archive</a> of all of the mission data was released into the public domain. "
@@ -241,6 +262,7 @@ msgstr ""
 "PDS, не надто переймалися архівуванням,»</i> (1 червня 2011 року).\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:68
 msgid ""
 "To find a complete colour photograph is a non-trivial exercise. At the time "
 "of writing, NASA still had <a "
@@ -270,6 +292,7 @@ msgstr ""
 "травня 2011 року).\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:70
 msgid ""
 "We did not know what to do at this point, so we asked NASA if they would "
 "reconsider tackling this problem. They were better qualified and it would "
@@ -308,6 +331,7 @@ msgstr ""
 "2011 року).\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:72
 msgid ""
 "We contemplated undertaking the significant challenge ourselves, but were "
 "very much intimidated. <i>\"The images were created using old hardware and "
@@ -335,6 +359,7 @@ msgstr ""
 "(1 червня 2012 року).\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:74
 msgid ""
 "Needing the archive for our own creative purposes, yet willing to share our "
 "solution with everyone in response to a large degree of public interest, we "
@@ -352,6 +377,7 @@ msgstr ""
 "забезпечення отримало назву the <i>Avaneya: Viking Lander Remastered</i>.\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:76
 msgid ""
 "True, we could have simply provided the recovered images alone, but we knew "
 "that the <i>libre</i> community, hobbyists in particular, would have found "
@@ -377,6 +403,7 @@ msgstr ""
 "мінімізувати свою залежність від сторонніх благодійників.\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:78
 msgid ""
 "Nearly anything else you may wish to know about the Avaneya project you can "
 "find in our project bible, the <i>Avaneya Project Crew Handbook</i>. For "
@@ -396,6 +423,7 @@ msgstr ""
 "інших занять час.\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:80
 msgid ""
 "On behalf of all of us, we would like to extend our gratitude for your "
 "having taken the time to support this project. Avaneya has an exciting "
@@ -407,30 +435,38 @@ msgstr ""
 "велике майбутнє. Ми сподіваємося, що ви будете його частиною.\n"
 "\n"
 
+#: ../../Source/IntroductionPage.py:82
 msgid "\t<b><i>~ Avaneya Project Crew</i></b>\n"
 msgstr "\t<b><i>~ Команда проекту Avaneya</i></b>\n"
 
+#: ../../Source/RecoveryPage.py:56
 msgid "Recovery"
 msgstr "Відновлення"
 
 #. We got the process ID, show it...
+#: ../../Source/RecoveryPage.py:101
 msgid "Spawned process {0}..."
 msgstr "Породжений процес {0}…"
 
 #. Alert user...
+#: ../../Source/RecoveryPage.py:112
 msgid "Waiting for VikingExtractor D-Bus service..."
 msgstr "Очікуємо на службу D-Bus VikingExtractor…"
 
+#: ../../Source/RecoveryPage.py:120
 msgid "Dead session connection handle..."
 msgstr "Обробник розірваного з’єднання сеансу…"
 
 #. Done...
+#: ../../Source/RecoveryPage.py:205
 msgid "ok"
 msgstr "гаразд"
 
+#: ../../Source/RecoveryPage.py:218 ../../Source/RecoveryPage.py:275
 msgid "Error"
 msgstr "Помилка"
 
+#: ../../Source/RecoveryPage.py:220
 msgid ""
 "The VikingExtractor could not be launched. The following location was "
 "attempted:\n"
@@ -442,27 +478,35 @@ msgstr ""
 "\n"
 "{0}"
 
+#: ../../Source/RecoveryPage.py:236
 msgid "Are you sure you'd like to abort the recovery?"
 msgstr "Ви справді хочете перервати відновлення?"
 
+#: ../../Source/RecoveryPage.py:266
 msgid "VikingExtractor terminated with status {0}..."
 msgstr "VikingExtractor перервано зі станом {0}…"
 
+#: ../../Source/RecoveryPage.py:277
 msgid "The recovery process was unsuccessful. ({0})"
 msgstr "Процес відновлення не був успішним. ({0})"
 
+#: ../../Source/SubscribePage.py:46
 msgid "Subscribe to Newsletter"
 msgstr "Підписатися на новини"
 
+#: ../../Source/SubscribePage.py:116
 msgid "You need to fill out the whole form."
 msgstr "Вам слід заповнити всю форму."
 
+#: ../../Source/SubscribePage.py:120
 msgid "Invalid email address."
 msgstr "Некоректна адреса електронної пошти."
 
+#: ../../Source/SubscribePage.py:124
 msgid "Passwords do not match."
 msgstr "Паролі не збігаються."
 
+#: ../../Source/SubscribePage.py:182 ../../Source/HandbookPage.py:235
 msgid ""
 "There was a problem communicating with the remote server. Please try again "
 "later.\n"
@@ -474,34 +518,43 @@ msgstr ""
 "\n"
 "\t{0}"
 
+#: ../../Source/LauncherArguments.py:45
 msgid "Graphical user interface for the Avaneya: Viking Lander Remastered..."
 msgstr "Графічний інтерфейс до Avaneya: переробленому Viking Lander…"
 
+#: ../../Source/LauncherArguments.py:52
 msgid "Override path to user interface data root."
 msgstr ""
 "Перевизначити шлях до кореневого каталогу даних інтерфейсу користувача."
 
+#: ../../Source/LauncherArguments.py:59
 msgid "Override path to Viking lander mission data root."
 msgstr ""
 "Перевизначити шлях до кореневого каталогу з даними завдання посадкового "
 "модуля «Вікінг»."
 
+#: ../../Source/LauncherArguments.py:65
 msgid "Do not show the splash and opening video."
 msgstr "Не показувати вікно вітання та початкове відео."
 
+#: ../../Source/LauncherArguments.py:72
 msgid "Do not play background music."
 msgstr "Не відтворювати фонову музику."
 
+#: ../../Source/LauncherArguments.py:79
 msgid "Display application version."
 msgstr "Показати дані щодо версії програми."
 
+#: ../../Source/LauncherArguments.py:86
 msgid "Override path to VikingExtractor executable."
 msgstr "Перевизначити шлях до виконуваного файла VikingExtractor."
 
 #. Show debugging info...
+#: ../../Source/LauncherArguments.py:97
 msgid "Warning: No executable detected... \"{0}\""
 msgstr "Попередження: не виявлено виконуваного файла… «{0}»"
 
+#: ../../Source/LauncherArguments.py:106
 msgid ""
 "Unfortunately your platform is not yet supported. A required executable was "
 "not detected.\n"
@@ -515,19 +568,12 @@ msgstr ""
 "\tОпераційна система: {0}\n"
 "\tАрхітектура: {1}"
 
+#: ../../Source/VerificationProgressPage.py:53
 msgid "Verification Progress"
 msgstr "Поступ перевірки"
 
-msgid "Verification thread already running, not relaunching..."
-msgstr "Процедуру перевірки вже запущено, не перезапускаємо її…"
-
-msgid "Disc verification was cancelled."
-msgstr "Перевірку диска було скасовано."
-
-#. Alert...
-msgid "Stopping disc verification thread..."
-msgstr "Зупиняємо процедуру перевірки диска…"
-
+#: ../../Source/VerificationProgressPage.py:96
+#: ../../Source/VerificationProgressPage.py:233
 msgid ""
 "I was not able to check a file I require. {0}:\n"
 "\n"
@@ -537,6 +583,7 @@ msgstr ""
 "\n"
 "{1}"
 
+#: ../../Source/VerificationProgressPage.py:151
 msgid ""
 "I could not locate the list of files to verify:\n"
 "\n"
@@ -550,9 +597,7 @@ msgstr ""
 "\n"
 "{1}"
 
-msgid "Launching verification thread..."
-msgstr "Розпочинаємо процедуру перевірки…"
-
+#: ../../Source/VerificationProgressPage.py:256
 msgid ""
 "Your disc might be damaged. It is recommended that you replace it before "
 "continuing. The following file appeared to be corrupt:\n"
@@ -566,106 +611,144 @@ msgstr ""
 "<tt>{0}</tt>\n"
 "\n"
 
+#. Alert user...
+#: ../../Source/VerificationProgressPage.py:286
+msgid "Disc verification was cancelled."
+msgstr "Перевірку диска було скасовано."
+
+#: ../../Source/VerificationProgressPage.py:311
 msgid ""
 "The disc verification completed successfully. Your disc is probably fine."
 msgstr ""
 "Перевірку диска успішно завершено. З вашим диском, ймовірно, усе гаразд."
 
+#: ../../Source/VerificationProgressPage.py:335
 msgid "Disc verification failed."
 msgstr "На диску виявлено помилки."
 
+#: ../../Source/ConfirmPage.py:43
 msgid "Confirmation"
 msgstr "Підтвердження"
 
+#: ../../Source/ConfirmPage.py:82
 msgid "Save to: {0}\n"
 msgstr "Зберегти до: {0}\n"
 
+#: ../../Source/ConfirmPage.py:87
 msgid "Output will be overwritten: {0}\n"
 msgstr "Виведені дані буде перезаписано: {0}\n"
 
 #. Directorize by...
+#: ../../Source/ConfirmPage.py:92
 msgid "Directorize by...\n"
 msgstr "Розподіл за каталогами за…\n"
 
+#: ../../Source/ConfirmPage.py:97
 msgid "\t...diode band class: {0}\n"
 msgstr "\t…класом смуги діодів: {0}\n"
 
+#: ../../Source/ConfirmPage.py:104
 msgid "\t...Martian location: {0}\n"
 msgstr "\t…місцевістю на Марсі: {0}\n"
 
+#: ../../Source/ConfirmPage.py:111
 msgid "\t...Martian month: {0}\n"
 msgstr "\t…марсіанським місяцем: {0}\n"
 
+#: ../../Source/ConfirmPage.py:118
 msgid "\t...mission solar day: {0}\n"
 msgstr "\t…сонячним днем завдання: {0}\n"
 
+#: ../../Source/ConfirmPage.py:125
 msgid "Disable automatic image component orientation: {0}\n"
 msgstr "Вимкнути автоматичне орієнтування компонентів зображення: {0}\n"
 
+#: ../../Source/ConfirmPage.py:132
 msgid "Dump components without reconstruction: {0}\n"
 msgstr "Створити дамп компонентів без відновлення: {0}\n"
 
 #. Filters...
+#: ../../Source/ConfirmPage.py:137
 msgid "Filters...\n"
 msgstr "Фільтри…\n"
 
+#: ../../Source/ConfirmPage.py:149
 msgid "\t...diode band type class: {0}\n"
 msgstr "\t…за класом типу смуги діодів: {0}\n"
 
+#: ../../Source/ConfirmPage.py:163
 msgid "\t...lander: {0}\n"
 msgstr "\t…за посадковим модулем: {0}\n"
 
+#: ../../Source/ConfirmPage.py:169
 msgid "Interlace images: {0}\n"
 msgstr "Черезрядковість зображень: {0}\n"
 
+#: ../../Source/ConfirmPage.py:176
 msgid "Generate metadata: {0}\n"
 msgstr "Створювати метадані: {0}\n"
 
+#: ../../Source/ConfirmPage.py:183
 msgid "Be verbose: {0}\n"
 msgstr "Докладний режим: {0}\n"
 
+#: ../../Source/ConfirmPage.py:190
 msgid "Use multithreading: {0}\n"
 msgstr "Обробка у декілька потоків: {0}\n"
 
+#: ../../Source/ConfirmPage.py:210
 msgid "VikingExtractor arguments: {0}\n"
 msgstr "Параметри VikingExtractor: {0}\n"
 
+#: ../../Source/ConfirmPage.py:220
 msgid "Yes"
 msgstr "Так"
 
+#: ../../Source/ConfirmPage.py:222
 msgid "No"
 msgstr "Ні"
 
+#: ../../Source/FarewellPage.py:46
 msgid "Farewell"
 msgstr "До побачення"
 
+#: ../../Source/SelectRecoveryPage.py:39
 msgid "Select Recovery Folder"
 msgstr "Вкажіть теку відновлення"
 
+#: ../../Source/OpeningVideoWindow.py:33
 msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
 msgstr "Не виявлено GStreamer >= 1.0. Початкове відео не буде показано…"
 
+#: ../../Source/VerificationPromptPage.py:46
 msgid "Verification Prompt"
 msgstr "Запит щодо перевірки"
 
+#: ../../Source/HandbookPage.py:51
 msgid "Download Handbook"
 msgstr "Звантажити підручник"
 
+#: ../../Source/HandbookPage.py:98
 msgid "Please choose a download location..."
 msgstr "Будь ласка, виберіть місце, де буде збережено дані…"
 
+#: ../../Source/HandbookPage.py:142
 msgid "Contacting server, please wait..."
 msgstr "Встановлюємо зв’язок з сервером, зачекайте…"
 
+#: ../../Source/HandbookPage.py:173
 msgid "The download of the handbook was stopped."
 msgstr "Звантаження підручника було зупинено."
 
+#: ../../Source/HandbookPage.py:212
 msgid "The book downloaded successfully. Would you like to open it?"
 msgstr "Підручник успішно отримано. Хочете відкрити його?"
 
+#: ../../Source/Miscellaneous.py:123
 msgid "Warning: NetworkManager service not found..."
 msgstr "Попередження: не виявлено служби NetworkManager…"
 
+#: ../../Source/Miscellaneous.py:141
 msgid ""
 "You need a working internet connection in order to do this. You don't appear "
 "to have one right now."
@@ -673,49 +756,64 @@ msgstr ""
 "Для виконання цього завдання потрібне працездатне інтернет-з’єднання. "
 "Здається, такого з’єднання у вас зараз немає."
 
+#: ../../Source/Miscellaneous.py:170
 msgid "Cannot launch {0}. Platform unknown..."
 msgstr "Не вдалося запустити {0}. Невідома платформа…"
 
+#: ../../Source/Miscellaneous.py:194
 msgid "Cannot explore {0}. Platform unknown..."
 msgstr "Не вдалося вивчити {0}. Невідома платформа…"
 
+#: ../../Source/ConfigurePages.py:40
 msgid "Configure Introduction"
 msgstr "Вступ до налаштовування"
 
+#: ../../Source/ConfigurePages.py:47
 msgid "Configure Layout"
 msgstr "Налаштувати компонування"
 
+#: ../../Source/ConfigurePages.py:54
 msgid "Configure Recovery"
 msgstr "Налаштувати відновлення"
 
+#: ../../Source/ConfigurePages.py:61
 msgid "Configure Filters"
 msgstr "Налаштувати фільтри"
 
+#: ../../Source/ConfigurePages.py:68
 msgid "Configure Advanced"
 msgstr "Додаткове налаштовування"
 
+#: ../../Source/ConfigurePages.py:125
 msgid "Location/"
 msgstr "Місце/"
 
+#: ../../Source/ConfigurePages.py:127
 msgid "Martian Month/"
 msgstr "Марсіанський місяць/"
 
+#: ../../Source/ConfigurePages.py:129
 msgid "Sensor Band Type/"
 msgstr "Тип смуги датчика/"
 
+#: ../../Source/ConfigurePages.py:131
 msgid "Mission Solar Day/"
 msgstr "Сонячний день завдання/"
 
+#: ../../Source/ConfigurePages.py:132
 msgid "Photograph.png"
 msgstr "Фотографія.png"
 
+#: ../Launcher.glade:9
 msgid ""
 "Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>."
 msgstr "© Cartesian Theatre <info@cartesiantheatre.com>, 2010–2013."
 
+#: ../Launcher.glade:11
 msgid "Avaneya Website"
 msgstr "Сайт Avaneya"
 
+#: ../Launcher.glade:79
 msgid ""
 "These options configure some advanced VikingExtractor features. If you are "
 "unsure of any of them, just leave them set at their defaults.\n"
@@ -731,9 +829,11 @@ msgstr ""
 "миші</b> на відповідний пункт і ознайомтеся до додатковою підказкою. "
 "Рекомендуємо вам скористатися типовими значеннями параметрів."
 
+#: ../Launcher.glade:109
 msgid "Use image interlacing"
 msgstr "Використовувати черезрядковість"
 
+#: ../Launcher.glade:114
 msgid ""
 "The recovered images are encoded in a lossless compressed PNG format for "
 "maximum quality and versatility. If you&apos;d like them to use interlacing, "
@@ -752,6 +852,7 @@ msgstr ""
 "більшими, але ними зручніше користуватися у разі завантаження даних за "
 "допомогою з’єднань з низькою пропускною здатністю."
 
+#: ../Launcher.glade:115
 msgid ""
 "The recovered images are encoded in a lossless compressed PNG format for "
 "maximum quality and versatility. If you'd like them to use interlacing, "
@@ -770,9 +871,11 @@ msgstr ""
 "більшими, але ними зручніше користуватися у разі завантаження даних за "
 "допомогою з’єднань з низькою пропускною здатністю."
 
+#: ../Launcher.glade:127
 msgid "Generate metadata"
 msgstr "Створювати метадані"
 
+#: ../Launcher.glade:132 ../Launcher.glade:133
 msgid ""
 "Whenever a colour image is being recovered, this option will write out a "
 "machine generated text file containing a bunch of image metadata, such as "
@@ -786,9 +889,11 @@ msgstr ""
 "зображення, які було використано для відновлення остаточного кольорового "
 "зображення."
 
+#: ../Launcher.glade:145
 msgid "Be verbose"
 msgstr "Докладні повідомлення"
 
+#: ../Launcher.glade:150 ../Launcher.glade:151
 msgid ""
 "If this is enabled, the VikingExtractor will display significantly more "
 "information as it attempts to recover what it can."
@@ -796,9 +901,11 @@ msgstr ""
 "Якщо позначити цей пункт, VikingExtractor показуватиме значно більше даних "
 "щодо своїх спроб відновити зображення."
 
+#: ../Launcher.glade:165
 msgid "Use multithreading"
 msgstr "Використовувати багато потоків обробки"
 
+#: ../Launcher.glade:171
 msgid ""
 "Take advantage of machines with more than one processor by using several "
 "simultaneously. Note that this feature is currently <b>not</b> supported."
@@ -807,6 +914,7 @@ msgstr ""
 "паралельну обробку даних на кожному з них. Зауважте, що у поточній версії "
 "підтримки цієї можливості <b>не передбачено</b>."
 
+#: ../Launcher.glade:172
 msgid ""
 "Take advantage of machines with more than one processor by using several "
 "simultaneously. Note that this feature is currently not supported."
@@ -815,6 +923,7 @@ msgstr ""
 "паралельну обробку даних на кожному з них. Зауважте, що у поточній версії "
 "підтримки цієї можливості не передбачено."
 
+#: ../Launcher.glade:225
 msgid ""
 "These configuration settings allow you to filter which specific types of "
 "data you are interested. If you leave these at their defaults, everything "
@@ -831,6 +940,7 @@ msgstr ""
 "вказівник</b> на його поле і ознайомтеся з підказкою. Рекомендуємо вам "
 "скористатися типовими значеннями параметрів."
 
+#: ../Launcher.glade:273 ../Launcher.glade:274
 msgid ""
 "Extract from matching Viking lander diode filters. These include colour, "
 "infrared, sun, or survey. By default, all diode filters are acceptable."
@@ -840,9 +950,11 @@ msgstr ""
 "діоди або оглядові діоди. Типово, буде використано дані з усіх діодних "
 "фільтрів."
 
+#: ../Launcher.glade:299
 msgid "<b>Diode Filter:</b>"
 msgstr "<b>Діодний фільтр:</b>"
 
+#: ../Launcher.glade:320 ../Launcher.glade:328
 msgid ""
 "Perform an extraction of only images taken by a particular lander. Viking "
 "lander 2 touched down on <i>Utopia Planitia</i> and Viking lander 1 on "
@@ -852,6 +964,7 @@ msgstr ""
 "модулів. Посадковий модуль Viking 2 досяг поверхні на <i>Рівнині Утопія</i>, "
 "посадковий модуль Viking 1 — на <i>Рівнині Хріса</i>."
 
+#: ../Launcher.glade:321 ../Launcher.glade:329
 msgid ""
 "Perform an extraction of only images taken by a particular lander. Viking "
 "lander 2 touched down on Utopia Planitia and Viking lander 1 on Chryse "
@@ -861,9 +974,11 @@ msgstr ""
 "модулів. Посадковий модуль Viking 2 досяг поверхні на Рівнині Утопія, "
 "посадковий модуль Viking 1 — на Рівнині Хріса."
 
+#: ../Launcher.glade:361
 msgid "<b>Lander Filter:</b>"
 msgstr "<b>Фільтр посадкового модуля:</b>"
 
+#: ../Launcher.glade:418
 msgid ""
 "The <b>VikingExtractor</b> has many different configuration options that "
 "control how it recovers images and what it does with them. Over the next few "
@@ -880,6 +995,7 @@ msgstr ""
 "вказівник</b> на його поле і ознайомтеся з підказкою. Рекомендуємо вам "
 "скористатися типовими значеннями параметрів."
 
+#: ../Launcher.glade:479
 msgid ""
 "Let's start with how you'd like the recovered files <b>organized</b> in the "
 "directory you previously selected. If you select more than one method, they "
@@ -896,9 +1012,11 @@ msgstr ""
 "вказівник</b> на його поле і ознайомтеся з підказкою. Рекомендуємо вам "
 "скористатися типовими значеннями параметрів."
 
+#: ../Launcher.glade:509
 msgid "Organize by sensor band type"
 msgstr "Впорядкувати за типом смуги датчика"
 
+#: ../Launcher.glade:514 ../Launcher.glade:515
 msgid ""
 "Organizes the images into subdirectories named after the sensor band type "
 "used on the lander to capture the data, such as Colour or Infrared."
@@ -907,9 +1025,11 @@ msgstr ""
 "смуги датчика, який було використано посадковим модулем для отримання даних, "
 "зокрема «Кольоровий» або «Інфрачервоний»."
 
+#: ../Launcher.glade:527
 msgid "Organize by location on Martian surface"
 msgstr "Впорядкувати за місцем на марсіанській сфері"
 
+#: ../Launcher.glade:532 ../Launcher.glade:533
 msgid ""
 "Organizes the images into subdirectories named after the physical location "
 "on the surface of Mars where they were taken. This will be either Utopia "
@@ -919,9 +1039,11 @@ msgstr ""
 "місцевості на поверхні Марса, де було зроблено знімки. Можливими варіантами "
 "є Рівнина Утопія та Рівнина Хріса."
 
+#: ../Launcher.glade:547
 msgid "Organize by Martian month"
 msgstr "Впорядкувати за марсіанським місяцем"
 
+#: ../Launcher.glade:552 ../Launcher.glade:553
 msgid ""
 "Organizes the images into subdirectories named after the month they were "
 "taken on. The months follow a Martian calendar, such as Gemini, Cancer, Leo, "
@@ -933,9 +1055,11 @@ msgstr ""
 "Близнюки, Рак, Лев, Діва тощо. Докладнішу інформацію викладено у розділі "
 "8.15.4 книги «Avaneya Project Crew Handbook»."
 
+#: ../Launcher.glade:565
 msgid "Organize by mission solar day"
 msgstr "Впорядкувати за сонячним днем завдання"
 
+#: ../Launcher.glade:570 ../Launcher.glade:571
 msgid ""
 "Put reconstructed images into subdirectories numbered after the solar day "
 "they were taken on, offset relative to zero. Solar day zero was the day of a "
@@ -946,9 +1070,11 @@ msgstr ""
 "Нульовим вважається день контакту відповідного посадкового модуля з "
 "поверхнею."
 
+#: ../Launcher.glade:588
 msgid "?"
 msgstr "?"
 
+#: ../Launcher.glade:637
 msgid ""
 "These options control how the VikingExtractor's image recovery works.\n"
 "\n"
@@ -962,9 +1088,11 @@ msgstr ""
 "вказівник</b> на його поле і ознайомтеся з підказкою. Рекомендуємо вам "
 "скористатися типовими значеннями параметрів."
 
+#: ../Launcher.glade:665
 msgid "No automatic rotation"
 msgstr "Без автоматичного обертання"
 
+#: ../Launcher.glade:670 ../Launcher.glade:671
 msgid ""
 "A given fully rendered image in the Viking Lander image archive might be "
 "scattered in different parts across many different files. Sometimes the "
@@ -980,9 +1108,11 @@ msgstr ""
 "збиранням, якщо ви не позначатимете цей пункт. Якщо у цьому немає особливої "
 "потреби, не змінюйте типового значення цього параметра."
 
+#: ../Launcher.glade:683
 msgid "Do not reconstruct"
 msgstr "Не відновлювати"
 
+#: ../Launcher.glade:688 ../Launcher.glade:689
 msgid ""
 "A given fully rendered image in the Viking Lander image archive might be "
 "scattered in different parts across many different files. If this option is "
@@ -999,9 +1129,11 @@ msgstr ""
 "особливої потреби, не змінюйте типового значення цього параметра."
 
 #. This is set at runtime. Don't bother to translate.
+#: ../Launcher.glade:715
 msgid "(set at runtime)"
 msgstr "(встановлюється під час роботи)"
 
+#: ../Launcher.glade:732
 msgid ""
 "The following is a summary of the configuration <b>VikingExtractor</b> will "
 "use for this session. If you would like to change anything, you can go back. "
@@ -1023,6 +1155,7 @@ msgstr ""
 "Viking не стосується зображень, іншу частину занадто пошкоджено, отже "
 "зображення неможливо відновити."
 
+#: ../Launcher.glade:852
 msgid ""
 "Congratulations! The mission data forensic recovery has completed. To "
 "examine everything that you managed to recover, use the button below.\n"
@@ -1032,7 +1165,7 @@ msgid ""
 "This is a great place to learn more about the Avaneya project.\n"
 "\n"
 "On behalf of the Avaneya project crew, we hope that you enjoyed using this "
-"software. If you purchased a copy it, we would like to express our "
+"software. If you purchased a copy of it, we would like to express our "
 "gratitude. Your support is critical to maintaining active and professional "
 "development of the Avaneya project."
 msgstr ""
@@ -1049,12 +1182,15 @@ msgstr ""
 "висловлюємо вам щиру вдячність. Ваша підтримка є дуже важливою для "
 "продовження активного і професійного розвитку проекту Avaneya."
 
+#: ../Launcher.glade:881
 msgid "Explore Recovered Mission Data"
 msgstr "Оглянути відновлені дані завдань"
 
+#: ../Launcher.glade:895
 msgid "Explore Source Code"
 msgstr "Оглянути початковий код"
 
+#: ../Launcher.glade:965
 msgid ""
 "The <i>Avaneya Project Crew Handbook</i> was written to address the needs of "
 "project contributors in our community. Would you like to download the latest "
@@ -1064,12 +1200,15 @@ msgstr ""
 "проекту у межах нашої спільноти. Хочете отримати найсвіжішу версію книги? "
 "Вам знадобиться працездатне інтернет-з’єднання."
 
+#: ../Launcher.glade:982
 msgid "Yes, download the latest copy."
 msgstr "Так, звантажити найсвіжішу копію."
 
+#: ../Launcher.glade:1109
 msgid "???"
 msgstr "???"
 
+#: ../Launcher.glade:1201
 msgid ""
 "This window contains the output from the VikingExtractor process while it "
 "works."
@@ -1077,9 +1216,11 @@ msgstr ""
 "У цьому вікні буде показано дані, виведені процесом VikingExtractor під час "
 "його роботи."
 
+#: ../Launcher.glade:1262
 msgid "Please wait..."
 msgstr "Зачекайте, будь ласка..."
 
+#: ../Launcher.glade:1326
 msgid ""
 "Please select an <b>empty</b> folder below. This folder will be used to save "
 "all of the recoverable images. If the folder is not empty, its contents "
@@ -1090,12 +1231,15 @@ msgstr ""
 "виявиться не порожньою, її вміст буде перезаписано, якщо ви підтвердите цю "
 "дію."
 
+#: ../Launcher.glade:1352
 msgid "Select folder to store recovered images"
 msgstr "Виберіть теку для зберігання відновлених зображень"
 
+#: ../Launcher.glade:1363
 msgid "Overwrite existing output files"
 msgstr "Перезаписати наявні файли виведених даних"
 
+#: ../Launcher.glade:1368 ../Launcher.glade:1369
 msgid ""
 "This will overwrite any existing output files that have the same name as the "
 "data recovered."
@@ -1103,9 +1247,48 @@ msgstr ""
 "Всі наявні файли результатів обробки, які матимуть ті самі назви, що і "
 "відновлені дані, буде перезаписано."
 
+#: ../Launcher.glade:1391
 msgid "Avaneya"
 msgstr "Avaneya"
 
+#: ../Launcher.glade:1449
+msgid ""
+"We have a <b>low volume</b> announcement mailing list that we use to make "
+"press releases and other public announcements. We would love to keep you in "
+"the loop. <i>We will never deliberately pass your information on to a third "
+"party.</i>"
+msgstr ""
+"У нас є список листування для оголошень, кількість повідомлень у якому є "
+"<b>дуже малою</b>. Ми використовуємо цей список для розповсюдження оголошень "
+"для преси та іншої відкритої для громадськості інформації. Ми б хотіли, щоб "
+"ви підписалися на цей список листування. <i>Ми зобов’язуємося не передавати "
+"на власний розсуд ваші дані стороннім особам.</i>"
+
+#: ../Launcher.glade:1461
+msgid "Yes, please subscribe me."
+msgstr "Так, хочу підписатися."
+
+#: ../Launcher.glade:1513
+msgid "<b>Name:</b>"
+msgstr "<b>Ім’я:</b>"
+
+#: ../Launcher.glade:1553
+msgid "<b>Email:</b>"
+msgstr "<b>Ел. пошта:</b>"
+
+#: ../Launcher.glade:1593
+msgid "<b>Password:</b>"
+msgstr "<b>Пароль:</b>"
+
+#: ../Launcher.glade:1633
+msgid "<b>Password again:</b>"
+msgstr "<b>Пароль (ще раз):</b>"
+
+#: ../Launcher.glade:1654
+msgid "Thanks, but I think I'll pass."
+msgstr "Дякую, але не зараз."
+
+#: ../Launcher.glade:1718
 msgid ""
 "Please wait while your mission data's integrity is verified. You can safely "
 "stop this process at any time, if you wish."
@@ -1113,6 +1296,7 @@ msgstr ""
 "Будь ласка, зачекайте, доки комп’ютер перевірить цілісність даних. Якщо "
 "хочете, можете у будь-який момент перервати процес перевірки."
 
+#: ../Launcher.glade:1832
 msgid ""
 "This disc contains a substantial amount of data that the recovery software "
 "will try to examine for recoverable images. Although we have optimized the "
@@ -1133,38 +1317,10 @@ msgstr ""
 "це принаймні один раз, а також якщо у вас з’явилися підозри, що диск "
 "пошкоджено."
 
+#: ../Launcher.glade:1858
 msgid "Perform DVD integrity check"
 msgstr "Виконати перевірку цілісності DVD"
 
+#: ../Launcher.glade:1874
 msgid "Skip DVD integrity check"
 msgstr "Пропустити перевірку цілісності DVD"
-
-msgid ""
-"We have a <b>low volume</b> announcement mailing list that we use to make "
-"press releases and other public announcements. We would love to keep you in "
-"the loop. <i>We will never deliberately pass your information on to a third "
-"party.</i>"
-msgstr ""
-"У нас є список листування для оголошень, кількість повідомлень у якому є "
-"<b>дуже малою</b>. Ми використовуємо цей список для розповсюдження оголошень "
-"для преси та іншої відкритої для громадськості інформації. Ми б хотіли, щоб "
-"ви підписалися на цей список листування. <i>Ми зобов’язуємося не передавати "
-"на власний розсуд ваші дані стороннім особам.</i>"
-
-msgid "Yes, please subscribe me."
-msgstr "Так, хочу підписатися."
-
-msgid "<b>Name:</b>"
-msgstr "<b>Ім’я:</b>"
-
-msgid "<b>Email:</b>"
-msgstr "<b>Ел. пошта:</b>"
-
-msgid "<b>Password:</b>"
-msgstr "<b>Пароль:</b>"
-
-msgid "<b>Password again:</b>"
-msgstr "<b>Пароль (ще раз):</b>"
-
-msgid "Thanks, but I think I'll pass."
-msgstr "Дякую, але не зараз."
