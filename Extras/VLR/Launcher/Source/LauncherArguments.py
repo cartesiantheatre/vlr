@@ -140,7 +140,7 @@ def _getDefaultVikingExtractorPath():
 
     # Construct a path to an appropriate executable...
     extractorPath = os.path.abspath(os.path.join(
-        _getSourceDirectory(), "../Executables/", getOperatingSystem(), 
+        _getSourceDirectory(), "../../Extractor/", getOperatingSystem(), 
         getMachineArchitecture(), executableName))
 
     # Dead. Probably no executable built for this platform. Return nothing 

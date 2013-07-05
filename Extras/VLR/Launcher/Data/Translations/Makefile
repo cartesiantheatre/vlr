@@ -49,6 +49,7 @@ POFILES =       \
     en_CA.po    \
     en_GB.po    \
     it.po       \
+    fil.po      \
     uk.po       \
     ru.po
 

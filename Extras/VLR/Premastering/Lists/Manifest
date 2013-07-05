@@ -1,7 +1,5 @@
 autorun.sh=../Launcher/Source/autorun.sh
-.autoopen=autoopen
-autorun.inf=autorun.inf
+autoopen=XDG/autoopen
+autorun.inf=Woe32/autorun.inf
 Copying=../../../Copying
-Extractor/=../Extractor/viking-extractor
-Launcher/=../Launcher/
-.directory=XDG/avaneya_vlr.directory
+

@@ -107,10 +107,10 @@ FindLauncherMain()
     # Alert user...
     echo -n "Looking for launcher... "
 
-    # Check for Source/Main.py first...
-    if [ -f "$AutostartScriptDirectory/Source/Main.py" ] ; then
-        echo "Source/Main.py " $SymbolStatusOk
-        PythonLauncherMain=$AutostartScriptDirectory/Source/Main.py
+    # Check for Launcher/Source/Main.py first...
+    if [ -f "$AutostartScriptDirectory/Launcher/Source/Main.py" ] ; then
+        echo "Launcher/Source/Main.py " $SymbolStatusOk
+        PythonLauncherMain=$AutostartScriptDirectory/Launcher/Source/Main.py
     
     # Nope. Check in the same directory...
     elif [ -f "$AutostartScriptDirectory/Main.py" ] ; then
