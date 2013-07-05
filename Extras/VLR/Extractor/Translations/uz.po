@@ -7,491 +7,635 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-06-05 13:08-0700\n"
+"POT-Creation-Date: 2013-07-03 22:42-0700\n"
 "PO-Revision-Date: 2013-06-08 11:15+0000\n"
 "Last-Translator: Akmal Xushvaqov <akmalxster@gmail.com>\n"
 "Language-Team: Uzbek <uz@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-09 05:29+0000\n"
-"X-Generator: Launchpad (build 16667)\n"
+"X-Launchpad-Export-Date: 2013-07-05 05:51+0000\n"
+"X-Generator: Launchpad (build 16696)\n"
 
 #. Initialize the channel map...
+#: Source/Console.cpp:84
 msgid "error: "
 msgstr "хато: "
 
+#: Source/Console.cpp:85
 msgid "info: "
 msgstr "маълумот: "
 
+#: Source/Console.cpp:87
 msgid "warning: "
 msgstr "огоҳлантириш: "
 
+#: Source/DBusInterface.cpp:113
 msgid "could not emit 'Notification' signal..."
 msgstr ""
 
+#: Source/DBusInterface.cpp:149
 msgid "could not emit 'Progress' signal..."
 msgstr ""
 
+#: Source/DBusInterface.cpp:195
 #, c-format
 msgid "Method %s.%s is not implemented."
 msgstr ""
 
+#: Source/DBusInterface.cpp:223
 msgid "could not register service with session bus..."
 msgstr ""
 
 #. Alert user...
+#: Source/DBusInterface.cpp:261
 msgid "registering on the session bus..."
 msgstr ""
 
+#: Source/DBusInterface.cpp:275
 msgid "could not parse introspection XML"
 msgstr ""
 
+#: Source/DBusInterface.cpp:289
 msgid "could not connect with the session bus"
 msgstr ""
 
+#: Source/DBusInterface.cpp:325
 msgid "glib main loop quit unexpectedly..."
 msgstr ""
 
+#: Source/LogicalRecord.cpp:169 Source/VicarImageBand.cpp:861
 msgid "invalid logical record label"
 msgstr ""
 
+#: Source/LogicalRecord.cpp:204
 msgid "failed to read from input stream"
 msgstr ""
 
+#: Source/Options.cpp:123
 msgid "unsupported diode filter class: "
 msgstr ""
 
+#: Source/Options.cpp:131
 msgid "invalid lander filter"
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:147
 msgid "cannot reconstruct image from unsupported diode band type"
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:167
 msgid "Unreconstructable/"
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:187
 msgid "Unknown Location/"
 msgstr ""
 
 #. Set the error message and abort...
+#: Source/ReconstructableImage.cpp:216
 msgid "could not create output directory for file"
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:345
 msgid ""
 "output metadata already exists, not overwriting (use --overwrite to override)"
 msgstr ""
 
 #. Just give a warning and abort...
+#: Source/ReconstructableImage.cpp:356
 msgid "couldn't save metadata"
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:362
 msgid ""
 "The following is a machine generated collection of metadata of each of\n"
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:363
 msgid "the image bands used to reconstruct a colour image.\n"
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:376
 msgid "basic heuristic method: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:377
 msgid "camera azimuth / elevation: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:378
 msgid "camera event: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:379
 msgid "camera event solar day: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:380
 msgid "diode band type: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:381 Source/VicarImageBand.cpp:1312
 msgid "file size: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:382
 msgid "input file: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:383
 msgid "magnetic tape: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:384
 msgid "magnetic tape file ordinal: "
 msgstr ""
 
 #. Alert user if verbose mode enabled...
+#: Source/ReconstructableImage.cpp:385 Source/VicarImageBand.cpp:591
 msgid "mean pixel value: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:386
 msgid "month: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:387
 msgid "overlay axis present: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:388
 msgid "overlay full histogram present: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:389 Source/VicarImageBand.cpp:1316
 msgid "physical record size: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:390
 msgid "physical record padding: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:391
 msgid "phase offset required: "
 msgstr ""
 
 #. Show user, if requested...
+#: Source/ReconstructableImage.cpp:392 Source/VicarImageBand.cpp:935
 msgid "raw image offset: "
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:488
 msgid "cannot reconstruct, dumped all bands"
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:514 Source/ReconstructableImage.cpp:680
 msgid "output already exists, not overwriting (use --overwrite to override)"
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:548
 msgid ""
 "images for each band present, but no matching set of full histogram variants "
 "available"
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:568
 msgid ""
 "images for each band present, but no matching set of non-overlayed variants "
 "available"
 msgstr ""
 
+#: Source/ReconstructableImage.cpp:619
 msgid "image bands not all the same size, may be missing scanlines"
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:89 Source/VicarImageAssembler.cpp:128
 msgid "unable to open input directory for indexing "
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:144 Source/VicarImageAssembler.cpp:221
 msgid "could not stat "
 msgstr ""
 
 #. Alert user...
+#: Source/VicarImageAssembler.cpp:189
 msgid "indexing mission data, please wait..."
 msgstr ""
 
 #. Provide a notification to the Viking Lander Launcher...
+#: Source/VicarImageAssembler.cpp:193
 msgid "Indexing mission data, please wait..."
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:236
 msgid "no prospective files found"
 msgstr ""
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+#: Source/VicarImageAssembler.cpp:245
 msgid "Analyzing mission data, please wait..."
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:273
 msgid "studying mission data index of "
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:295 Source/VicarImageAssembler.cpp:396
+#: Source/VicarImageAssembler.cpp:480
 msgid ", skipping"
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:306 Source/VicarImageAssembler.cpp:407
+#: Source/VicarImageAssembler.cpp:491
 msgid " (--ignore-bad-files to skip)"
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:322
 msgid "filtering "
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:324
 msgid " type diode bands (--filter-diode[=type] to change)"
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:334
 msgid "camera event doesn't identify itself, cannot index"
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:355
 msgid " is a new camera event, indexing"
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:376
 msgid " is a known camera event, indexing"
 msgstr ""
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+#: Source/VicarImageAssembler.cpp:424
 msgid "Attempting forensic mission data recovery..."
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:451
 msgid "attempting reconstruction "
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:458
 msgid "dumping components from "
 msgstr ""
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
+#: Source/VicarImageAssembler.cpp:503
 msgid "Recovery completed..."
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:513
 msgid "successfully reconstructed "
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:515
 msgid " unreconstructable components dumped"
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:522
 msgid "dumped "
 msgstr ""
 
+#: Source/VicarImageAssembler.cpp:522
 msgid " image components without reconstruction"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:282 Source/VicarImageBand.cpp:330
 msgid "image should be rotated 90 counterclockwise"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:291 Source/VicarImageBand.cpp:338
 msgid "image should be rotated 180 counterclockwise"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:300 Source/VicarImageBand.cpp:346
 msgid "image should be rotated 270 counterclockwise"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:309 Source/VicarImageBand.cpp:322
 msgid "image does not need to be rotated"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:354
 msgid "could not guess image rotation"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:387
 msgid "GNU Ocrad failed to initialize"
 msgstr ""
 
 #. Set error message...
+#: Source/VicarImageBand.cpp:423
 msgid "could not set OCR image"
 msgstr ""
 
 #. Set error message...
+#: Source/VicarImageBand.cpp:440
 msgid "OCR pass failed"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:525
 msgid "input was not loaded"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:532 Source/VicarImageBand.cpp:774
 msgid "could not open input for reading"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:536
 msgid "file ended prematurely before raw image"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:565
 msgid "band data extraction i/o error"
 msgstr ""
 
 #. Be verbose...
+#: Source/VicarImageBand.cpp:767
 msgid "loading"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:781
 msgid ""
 "empty file, probably blank magnetic tape or not received back on Earth"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:785
 msgid "too small to be interesting (< 4 KB)"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:790
 msgid "header is not intact, or not a VICAR file"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:792
 msgid "header intact, but requires "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:792
 msgid " byte phase offset"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:796
 msgid "did not originate from a Viking Lander"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:818
 msgid "entering physical record "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:820
 msgid " starting at "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:837
 msgid "extracting logical record "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:839 Source/VicarImageBand.cpp:853
 msgid "/5 starting at "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:851
 msgid "bad logical record terminator "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:859
 msgid ""
 "invalid logical record label possibly from out of phase physical boundary"
 msgstr ""
 
 #. It was, so rewind and carry on since there is no
 #. physical record padding...
+#: Source/VicarImageBand.cpp:912
 msgid "tangential physical record boundary detected, ignoring padding"
 msgstr ""
 
 #. Alert and seek...
+#: Source/VicarImageBand.cpp:921
 msgid "seeking passed "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:921
 msgid " physical record padding"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:929
 msgid "unable to locate last logical record label"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:946
 msgid "file too small to contain claimed payload "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1051
 msgid "internal radio/geometric calibration ("
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1057
 msgid "unsupported photosensor diode band type ("
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1281
 msgid "exhausted basic metadata parser heuristics"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1287
 msgid "unsupported number of image bands"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1291
 msgid "expected positive image height"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1295
 msgid "expected positive image width"
 msgstr ""
 
 #. Check pixel format is integral...
 #. Definitely integral
 #. Guessing integral
+#: Source/VicarImageBand.cpp:1300
 msgid "unsupported pixel format"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1304
 msgid "unsupported colour bit depth"
 msgstr ""
 
 #. If verbosity is set, display basic metadata...
+#: Source/VicarImageBand.cpp:1307
 msgid "basic metadata parser heuristic: "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1308
 msgid "bands: "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1309
 msgid "height: "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1310
 msgid "width: "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1311
 msgid "raw band data size: "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1311 Source/VicarImageBand.cpp:1312
 msgid " bytes"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1313
 msgid "format: integral"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1314
 msgid "bytes per colour: "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1315
 msgid "photosensor diode band type: "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1317
 msgid "possible physical record padding: "
 msgstr ""
 
 #. Alert user if verbose enabled...
+#: Source/VicarImageBand.cpp:1344
 msgid "heuristics selected format 1 basic metadata parser"
 msgstr ""
 
 #. Alert user if verbose enabled...
+#: Source/VicarImageBand.cpp:1415
 msgid "heuristics selected format 2 basic metadata parser"
 msgstr ""
 
 #. Alert user if verbose enabled...
+#: Source/VicarImageBand.cpp:1499
 msgid "heuristics selected format 3 basic metadata parser"
 msgstr ""
 
 #. Alert user if verbose enabled...
+#: Source/VicarImageBand.cpp:1567
 msgid "heuristics selected format 4 basic metadata parser"
 msgstr ""
 
 #. Alert user if verbose enabled...
+#: Source/VicarImageBand.cpp:1636
 msgid "heuristics selected format 5 basic metadata parser"
 msgstr ""
 
 #. Alert user if verbose enabled...
+#: Source/VicarImageBand.cpp:1705
 msgid "heuristics selected format 6 basic metadata parser"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1768
 msgid "invalid logical record label while parsing extended metadata"
 msgstr ""
 
 #. Alert user if verbose mode enabled...
+#: Source/VicarImageBand.cpp:1789
 msgid "psa directional vector: "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1804
 msgid "camera event label: "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1827
 msgid "bad lander number"
 msgstr ""
 
 #. Be verbose if requested...
+#: Source/VicarImageBand.cpp:1830
 msgid "lander number: "
 msgstr ""
 
+#: Source/VicarImageBand.cpp:1835
 msgid "filtering non-matching lander"
 msgstr ""
 
 #. Set caller hint and return unsupported...
+#: Source/VicarImageBand.cpp:1891
 msgid "monocolour unsupported"
 msgstr ""
 
 #. Set caller hint and return unsupported...
+#: Source/VicarImageBand.cpp:1899
 msgid "unidentifiable broadband"
 msgstr ""
 
 #. Set hint and return unknown...
+#: Source/VicarImageBand.cpp:1951
 msgid "none detected"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:2000
 msgid "filtering non-matching solar day"
 msgstr ""
 
+#: Source/VicarImageBand.cpp:2005
 msgid "filtering non-matching camera event"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:55
 msgid "Options:\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:57
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after band type class (e.g. Colour).\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:62
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after location taken from.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:66
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after Martian month taken on.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:70
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              numbered by camera event solar day.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:74
 msgid "                              Don't write anything.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:77
 msgid "                              Show this help.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:80
 msgid ""
 "                              Don't stop on corrupt or problematic input "
 "file,\n"
 "                              but continue extraction of other files.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:84
 msgid "                              Encode output with Adam7 interlacing\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:87
 msgid ""
 "                              Number of threads to run parallelized. Only "
 "one\n"
@@ -499,12 +643,14 @@ msgid ""
 "                              argument not specified.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:92
 msgid ""
 "                              Look only for the specified matching camera "
 "event\n"
 "                              ID, such as 22A158.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:96
 msgid ""
 "                              Extract from matching supported diode filter\n"
 "                              classes which are any (default), colour, "
@@ -512,31 +658,37 @@ msgid ""
 "                              sun, or survey.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:101
 msgid ""
 "                              Extract from specific lander only which are\n"
 "                              either (0, the default), 1, or 2.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:105
 msgid ""
 "                              Look only for camera events taken on the "
 "specified\n"
 "                              solar day.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:109
 msgid ""
 "                              Whenever a colour image is recovered, machine\n"
 "                              generate a text file containing various "
 "metadata.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:113
 msgid ""
 "                              Disable VT/100 ANSI coloured terminal output.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:116
 msgid ""
 "                              Don't automatically rotate image as needed.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:119
 msgid ""
 "                              Don't attempt to reconstruct camera events, "
 "just\n"
@@ -544,30 +696,37 @@ msgid ""
 "images.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:123
 msgid "                              Overwrite any existing output files.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:126
 msgid ""
 "                              Scan subfolders as well if input is a "
 "directory.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:129
 msgid ""
 "                              Show summary of progress and final results "
 "only.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:132
 msgid "                              Suppress all warnings and errors.\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:135
 msgid "                              Be verbose\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:138
 msgid ""
 "                              Show version information\n"
 "\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:141
 msgid ""
 "Converts 1970s Viking Lander era VICAR colour images to PNGs. The value of\n"
 "'input' can be either a single VICAR file or a directory containing VICAR "
@@ -576,9 +735,11 @@ msgid ""
 "\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:146
 msgid "Report bugs to "
 msgstr ""
 
+#: Source/VikingExtractor.cpp:153
 msgid ""
 "Copyright (C) 2010-2013 Cartesian Theatre.\n"
 "This is free software; see Copying for copying conditions. There is NO\n"
@@ -586,27 +747,35 @@ msgid ""
 "\n"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:158
 msgid "Configured with: "
 msgstr ""
 
+#: Source/VikingExtractor.cpp:341
 msgid "parallelization is not implemented yet, using single thread"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:432
 msgid "summarize only and verbose modes cannot both be used"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:444
 msgid " linked against incompatible GNU Ocrad version "
 msgstr ""
 
+#: Source/VikingExtractor.cpp:455
 msgid "GNU Ocrad needs to be at least 0.21, but got "
 msgstr ""
 
 #. Alert, abort...
+#: Source/VikingExtractor.cpp:471
 msgid "need input file or directory, see --help"
 msgstr ""
 
+#: Source/VikingExtractor.cpp:484
 msgid "unknown parameter "
 msgstr ""
 
+#: Source/VikingExtractor.cpp:487
 msgid "), see --help"
 msgstr ""
