@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-07-03 22:44-0700\n"
-"PO-Revision-Date: 2013-06-15 13:44+0000\n"
+"PO-Revision-Date: 2013-07-05 12:00+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-07-05 05:51+0000\n"
+"X-Launchpad-Export-Date: 2013-07-06 06:08+0000\n"
 "X-Generator: Launchpad (build 16696)\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -340,7 +340,7 @@ msgstr ""
 
 #: ../../Source/RecoveryPage.py:236
 msgid "Are you sure you'd like to abort the recovery?"
-msgstr ""
+msgstr "¿Está seguro de que quiere interrumpir la recuperación?"
 
 #: ../../Source/RecoveryPage.py:266
 msgid "VikingExtractor terminated with status {0}..."
@@ -373,6 +373,10 @@ msgid ""
 "\n"
 "\t{0}"
 msgstr ""
+"Hubo un problema de comunicación con el servidor remoto. Inténtelo de nuevo "
+"más tarde.\n"
+"\n"
+"\t{0}"
 
 #: ../../Source/LauncherArguments.py:45
 msgid "Graphical user interface for the Avaneya: Viking Lander Remastered..."

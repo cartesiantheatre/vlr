@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-07-03 22:44-0700\n"
-"PO-Revision-Date: 2013-05-28 14:03+0000\n"
+"PO-Revision-Date: 2013-07-05 23:30+0000\n"
 "Last-Translator: Xuacu Saturio <xuacusk8@gmail.com>\n"
 "Language-Team: Asturian <ast@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-07-05 05:51+0000\n"
+"X-Launchpad-Export-Date: 2013-07-06 06:08+0000\n"
 "X-Generator: Launchpad (build 16696)\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -307,21 +307,21 @@ msgstr ""
 
 #: ../../Source/IntroductionPage.py:82
 msgid "\t<b><i>~ Avaneya Project Crew</i></b>\n"
-msgstr ""
+msgstr "\t<b><i>~ Equipu del Proyeutu Avaneya</i></b>\n"
 
 #: ../../Source/RecoveryPage.py:56
 msgid "Recovery"
-msgstr ""
+msgstr "Recuperación"
 
 #. We got the process ID, show it...
 #: ../../Source/RecoveryPage.py:101
 msgid "Spawned process {0}..."
-msgstr ""
+msgstr "Procesu llanzáu {0}..."
 
 #. Alert user...
 #: ../../Source/RecoveryPage.py:112
 msgid "Waiting for VikingExtractor D-Bus service..."
-msgstr ""
+msgstr "Esperando pol serviciu D-Bus VikingExtractor"
 
 #: ../../Source/RecoveryPage.py:120
 msgid "Dead session connection handle..."
@@ -330,11 +330,11 @@ msgstr ""
 #. Done...
 #: ../../Source/RecoveryPage.py:205
 msgid "ok"
-msgstr ""
+msgstr "aceutar"
 
 #: ../../Source/RecoveryPage.py:218 ../../Source/RecoveryPage.py:275
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 #: ../../Source/RecoveryPage.py:220
 msgid ""
@@ -343,34 +343,37 @@ msgid ""
 "\n"
 "{0}"
 msgstr ""
+"El VikingExtractor nun pudo llanzase. Intentóse'l siguiente allugamientu:\n"
+"\n"
+"{0}"
 
 #: ../../Source/RecoveryPage.py:236
 msgid "Are you sure you'd like to abort the recovery?"
-msgstr ""
+msgstr "¿Seguro que quier encaboxar la recuperación?"
 
 #: ../../Source/RecoveryPage.py:266
 msgid "VikingExtractor terminated with status {0}..."
-msgstr ""
+msgstr "VikingExtractor terminó col estáu {0}..."
 
 #: ../../Source/RecoveryPage.py:277
 msgid "The recovery process was unsuccessful. ({0})"
-msgstr ""
+msgstr "El procesu de recuperación nun foi correutu. ({0})"
 
 #: ../../Source/SubscribePage.py:46
 msgid "Subscribe to Newsletter"
-msgstr ""
+msgstr "Suscríbase al Boletín"
 
 #: ../../Source/SubscribePage.py:116
 msgid "You need to fill out the whole form."
-msgstr ""
+msgstr "Necesites rellenar el formulariu completu."
 
 #: ../../Source/SubscribePage.py:120
 msgid "Invalid email address."
-msgstr ""
+msgstr "Direición de corréu inválida."
 
 #: ../../Source/SubscribePage.py:124
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Les contraseñes nun concasen."
 
 #: ../../Source/SubscribePage.py:182 ../../Source/HandbookPage.py:235
 msgid ""
@@ -379,10 +382,14 @@ msgid ""
 "\n"
 "\t{0}"
 msgstr ""
+"Hebo un problema al comunicase col sirvidor remotu. Vuelva a intentalo más "
+"sero.\n"
+"\n"
+"\t{0}"
 
 #: ../../Source/LauncherArguments.py:45
 msgid "Graphical user interface for the Avaneya: Viking Lander Remastered..."
-msgstr ""
+msgstr "Interfaz gráfica d'usuariu pa Avaneya: Viking Lander Remastered..."
 
 #: ../../Source/LauncherArguments.py:52
 msgid "Override path to user interface data root."

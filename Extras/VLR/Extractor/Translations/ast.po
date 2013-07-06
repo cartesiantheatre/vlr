@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-07-03 22:42-0700\n"
-"PO-Revision-Date: 2013-06-14 20:48+0000\n"
+"PO-Revision-Date: 2013-07-05 23:17+0000\n"
 "Last-Translator: Xuacu Saturio <xuacusk8@gmail.com>\n"
 "Language-Team: Asturian <ast@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-07-05 05:51+0000\n"
+"X-Launchpad-Export-Date: 2013-07-06 06:08+0000\n"
 "X-Generator: Launchpad (build 16696)\n"
 
 #. Initialize the channel map...
@@ -167,11 +167,11 @@ msgstr "mes: "
 
 #: Source/ReconstructableImage.cpp:387
 msgid "overlay axis present: "
-msgstr ""
+msgstr "exa de superposición presente: "
 
 #: Source/ReconstructableImage.cpp:388
 msgid "overlay full histogram present: "
-msgstr ""
+msgstr "histograma completu de superposición presente: "
 
 #: Source/ReconstructableImage.cpp:389 Source/VicarImageBand.cpp:1316
 msgid "physical record size: "
@@ -227,7 +227,7 @@ msgstr "nun pue abrise'l direutoriu d'entrada pa facer l'índiz "
 
 #: Source/VicarImageAssembler.cpp:144 Source/VicarImageAssembler.cpp:221
 msgid "could not stat "
-msgstr ""
+msgstr "nun pudo facese stat "
 
 #. Alert user...
 #: Source/VicarImageAssembler.cpp:189
@@ -264,157 +264,159 @@ msgstr " (--ignore-bad-files pa saltalo)"
 
 #: Source/VicarImageAssembler.cpp:322
 msgid "filtering "
-msgstr ""
+msgstr "filtriando "
 
 #: Source/VicarImageAssembler.cpp:324
 msgid " type diode bands (--filter-diode[=type] to change)"
-msgstr ""
+msgstr " bandes de tipu diodu (--filter-diode[=type] pa cambiar)"
 
 #: Source/VicarImageAssembler.cpp:334
 msgid "camera event doesn't identify itself, cannot index"
-msgstr ""
+msgstr "el socesu de cámara nun s'identifica, nun pue facese l'índiz"
 
 #: Source/VicarImageAssembler.cpp:355
 msgid " is a new camera event, indexing"
-msgstr ""
+msgstr " ye un socesu de cámara nuevu, faciendo índiz"
 
 #: Source/VicarImageAssembler.cpp:376
 msgid " is a known camera event, indexing"
-msgstr ""
+msgstr " ye un socesu de cámara conocíu, faciendo índiz"
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 #: Source/VicarImageAssembler.cpp:424
 msgid "Attempting forensic mission data recovery..."
-msgstr ""
+msgstr "Intentando la recuperación forense de los datos de la misión..."
 
 #: Source/VicarImageAssembler.cpp:451
 msgid "attempting reconstruction "
-msgstr ""
+msgstr "intentando la reconstrucción "
 
 #: Source/VicarImageAssembler.cpp:458
 msgid "dumping components from "
-msgstr ""
+msgstr "volcando los componentes dende "
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 #: Source/VicarImageAssembler.cpp:503
 msgid "Recovery completed..."
-msgstr ""
+msgstr "Recuperación completada..."
 
 #: Source/VicarImageAssembler.cpp:513
 msgid "successfully reconstructed "
-msgstr ""
+msgstr "reconstruíu correutamente "
 
 #: Source/VicarImageAssembler.cpp:515
 msgid " unreconstructable components dumped"
-msgstr ""
+msgstr " volcaos los componentes non reconstruibles"
 
 #: Source/VicarImageAssembler.cpp:522
 msgid "dumped "
-msgstr ""
+msgstr "volcao "
 
 #: Source/VicarImageAssembler.cpp:522
 msgid " image components without reconstruction"
-msgstr ""
+msgstr " componentes d'imaxe ensin reconstrucción"
 
 #: Source/VicarImageBand.cpp:282 Source/VicarImageBand.cpp:330
 msgid "image should be rotated 90 counterclockwise"
-msgstr ""
+msgstr "la imaxe tendría de xirase 90º en sentíu antihorariu"
 
 #: Source/VicarImageBand.cpp:291 Source/VicarImageBand.cpp:338
 msgid "image should be rotated 180 counterclockwise"
-msgstr ""
+msgstr "la imaxe tendría de xirase 180º en sentíu antihorariu"
 
 #: Source/VicarImageBand.cpp:300 Source/VicarImageBand.cpp:346
 msgid "image should be rotated 270 counterclockwise"
-msgstr ""
+msgstr "la imaxe tendría de xirase 270º en sentíu antihorariu"
 
 #: Source/VicarImageBand.cpp:309 Source/VicarImageBand.cpp:322
 msgid "image does not need to be rotated"
-msgstr ""
+msgstr "la imaxe nun necesita xirase"
 
 #: Source/VicarImageBand.cpp:354
 msgid "could not guess image rotation"
-msgstr ""
+msgstr "nun pue albidrase'l xiru de la imaxe"
 
 #: Source/VicarImageBand.cpp:387
 msgid "GNU Ocrad failed to initialize"
-msgstr ""
+msgstr "falló l'aniciu de GNU Ocrad"
 
 #. Set error message...
 #: Source/VicarImageBand.cpp:423
 msgid "could not set OCR image"
-msgstr ""
+msgstr "nun pudo afitase la imaxe OCR"
 
 #. Set error message...
 #: Source/VicarImageBand.cpp:440
 msgid "OCR pass failed"
-msgstr ""
+msgstr "falló la pasada d'OCR"
 
 #: Source/VicarImageBand.cpp:525
 msgid "input was not loaded"
-msgstr ""
+msgstr "nun se cargó la entrada"
 
 #: Source/VicarImageBand.cpp:532 Source/VicarImageBand.cpp:774
 msgid "could not open input for reading"
-msgstr ""
+msgstr "nun pudo abrise la entrada pa llectura"
 
 #: Source/VicarImageBand.cpp:536
 msgid "file ended prematurely before raw image"
-msgstr ""
+msgstr "el ficheru acabó prematuramente enantes de la imaxe cruda"
 
 #: Source/VicarImageBand.cpp:565
 msgid "band data extraction i/o error"
-msgstr ""
+msgstr "error d'entrada/salida na estraición de datos de la banda"
 
 #. Be verbose...
 #: Source/VicarImageBand.cpp:767
 msgid "loading"
-msgstr ""
+msgstr "cargando"
 
 #: Source/VicarImageBand.cpp:781
 msgid ""
 "empty file, probably blank magnetic tape or not received back on Earth"
 msgstr ""
+"ficheru baleru, probable cinta magnética en blanco o nun recibíu de vuelta "
+"na Tierra"
 
 #: Source/VicarImageBand.cpp:785
 msgid "too small to be interesting (< 4 KB)"
-msgstr ""
+msgstr "enforma pequeñu pa ser interesante (< 4 KB)"
 
 #: Source/VicarImageBand.cpp:790
 msgid "header is not intact, or not a VICAR file"
-msgstr ""
+msgstr "la testera nun ta intacta, o nun ye un ficheru VICAR"
 
 #: Source/VicarImageBand.cpp:792
 msgid "header intact, but requires "
-msgstr ""
+msgstr "la testera ta intacta, pero necesita "
 
 #: Source/VicarImageBand.cpp:792
 msgid " byte phase offset"
-msgstr ""
+msgstr " desplazamientu de fase de byte"
 
 #: Source/VicarImageBand.cpp:796
 msgid "did not originate from a Viking Lander"
-msgstr ""
+msgstr "nun s'orixinó nun Viking Lander"
 
 #: Source/VicarImageBand.cpp:818
 msgid "entering physical record "
-msgstr ""
+msgstr "introduciendo rexistru físicu "
 
 #: Source/VicarImageBand.cpp:820
 msgid " starting at "
-msgstr ""
+msgstr " principiando en "
 
 #: Source/VicarImageBand.cpp:837
 msgid "extracting logical record "
-msgstr ""
+msgstr "estrayendo rexistru llóxicu "
 
 #: Source/VicarImageBand.cpp:839 Source/VicarImageBand.cpp:853
 msgid "/5 starting at "
-msgstr ""
+msgstr "/5 principiando en "
 
 #: Source/VicarImageBand.cpp:851
 msgid "bad logical record terminator "
-msgstr ""
+msgstr "mal terminador de rexistru llóxicu "
 
 #: Source/VicarImageBand.cpp:859
 msgid ""
