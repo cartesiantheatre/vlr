@@ -201,6 +201,7 @@ class LauncherApp(object):
                 "<a href=\"http://www.freedesktop.org\">freedesktop.org</a>",
                 "<a href=\"http://freedomincluded.com/\">Freedom Included</a>",
                 "<a href=\"http://www.josephliau.com\">Joseph Liau</a>",
+                "<a href=\"http://911blogger.com/\">Justin Keogh</a>",
                 "<a href=\"http://pds.nasa.gov/\">NASA Planetary Data System</a>",
                 "Project Bossanova",
                 "<a href=\"mailto:randall@executiv.es\">Randall Ross</a>",

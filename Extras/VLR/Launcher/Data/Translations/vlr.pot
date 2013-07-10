@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Avaneya: Viking Lander Remastered\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-07 19:15-0700\n"
+"POT-Creation-Date: 2013-07-09 17:58-0700\n"
 "PO-Revision-Date: 2013-05-24 15:42-0700\n"
 "Last-Translator: Kip Warner <kip@thevertigo.com>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
@@ -54,26 +54,26 @@ msgid "Shouts / Thanks"
 msgstr ""
 
 #. Studio hardware...
-#: ../../Source/LauncherApp.py:211
+#: ../../Source/LauncherApp.py:212
 msgid "Studio Hardware"
 msgstr ""
 
 #. Studio software...
-#: ../../Source/LauncherApp.py:216
+#: ../../Source/LauncherApp.py:217
 msgid "Studio Software"
 msgstr ""
 
 #. Set translators...
-#: ../../Source/LauncherApp.py:239
+#: ../../Source/LauncherApp.py:240
 msgid "Translators"
 msgstr ""
 
 #. Dedications...
-#: ../../Source/LauncherApp.py:249
+#: ../../Source/LauncherApp.py:250
 msgid "Dedications"
 msgstr ""
 
-#: ../../Source/LauncherApp.py:260
+#: ../../Source/LauncherApp.py:261
 msgid ""
 "\n"
 "\n"
@@ -83,11 +83,11 @@ msgid ""
 "net/~avaneya/avaneya/trunk/view/head:/Credits\">Credits</a> file."
 msgstr ""
 
-#: ../../Source/LauncherApp.py:282 ../../Source/OpeningVideoWindow.py:153
+#: ../../Source/LauncherApp.py:283 ../../Source/OpeningVideoWindow.py:153
 msgid "Error:"
 msgstr ""
 
-#: ../../Source/LauncherApp.py:310
+#: ../../Source/LauncherApp.py:311
 msgid "Are you sure you'd like to quit?"
 msgstr ""
 
