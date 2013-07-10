@@ -146,7 +146,7 @@ def _getDefaultVikingExtractorPath():
     # Dead. Probably no executable built for this platform. Return nothing 
     #  because this is an error...
     if not os.path.isfile(extractorPath):
-        return None
+        return ""
 
     # Otherwise, return the path to the caller...
     else:
