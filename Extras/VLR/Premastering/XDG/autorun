@@ -24,13 +24,17 @@
 #    ================
 #
 #    This script is automatically run when the volume is mounted, if enabled, as
-#    per XDG's Desktop Application Autostart Specification. The goal is to try
-#    to bootstrap the actual target application by ensuring the user has a sane
-#    execution environment with all of the necessary hard dependencies
-#    (packages) pre-installed. What they don't have, they need to be informed of
-#    in a way that is meaningful on their specific distro to make their life
-#    simple (e.g. Ubuntu Software Centre). These are the runtimes that are
-#    needed:
+#    per XDG's Desktop Application Autostart Specification. It needs to be 
+#    called autorun and not autorun.sh because the latter sometimes results in 
+#    the shell ignoring the shebang line and executing with POSIX enforcing sh
+#    which won't work with a script depending on Bash extensions. 
+#
+#    The purpose of this script is to try to bootstrap the actual target 
+#    application by ensuring the user has a sane execution environment with all
+#    of the necessary hard dependencies (packages) pre-installed. What they 
+#    don't have, they need to be informed of in a way that is meaningful on 
+#    their specific distro to make their life simple (e.g. Ubuntu Software 
+#    Centre). These are the runtimes that are needed:
 #
 #        Hard Dependencies
 #        =================
@@ -60,7 +64,7 @@
     Arguments=( "$@" )
 
     # Icon to use in windows...
-    Icon=XDG/Avaneya.png
+    Icon=Launcher/Data/Icon.png
 
     # Distro name and codename...
     Distro=""
@@ -107,15 +111,15 @@ FindLauncherMain()
     # Alert user...
     echo -n "Looking for launcher... "
 
-    # Check for Launcher/Source/Main.py first...
+    # Check for Launcher/Source/Main.py first... (e.g. on disc)
     if [ -f "$AutostartScriptDirectory/Launcher/Source/Main.py" ] ; then
-        echo "Launcher/Source/Main.py " $SymbolStatusOk
-        PythonLauncherMain=$AutostartScriptDirectory/Launcher/Source/Main.py
-    
-    # Nope. Check in the same directory...
-    elif [ -f "$AutostartScriptDirectory/Main.py" ] ; then
-        echo "Main.py " $SymbolStatusOk
-        PythonLauncherMain=$AutostartScriptDirectory/Main.py
+        PythonLauncherMain="$AutostartScriptDirectory/Launcher/Source/Main.py"
+        echo $PythonLauncherMain $SymbolStatusOk
+
+    # Nope. Check in local source directory... (e.g. local)
+    elif [ -f "$AutostartScriptDirectory/../../Launcher/Source/Main.py" ] ; then
+        PythonLauncherMain="$AutostartScriptDirectory/../../Launcher/Source/Main.py"
+        echo $PythonLauncherMain $SymbolStatusOk
 
     # Couldn't find it anywhere...
     else
@@ -136,8 +140,8 @@ SetVikingExtractorLocaleDirectory()
     echo -n "Checking for local VikingExtractor l10n catalogue... "
 
     # Check within local media...
-    if [ -f "$AutostartScriptDirectory/Extractor/share/locale/en_CA/LC_MESSAGES/viking-extractor.mo" ] ; then
-        VE_LOCALE_DIR="$AutostartScriptDirectory/Extractor/share/locale"
+    if [ -f "$AutostartScriptDirectory/Extractor/locale/en_CA/LC_MESSAGES/viking-extractor.mo" ] ; then
+        VE_LOCALE_DIR="$AutostartScriptDirectory/Extractor/locale"
         echo "$VE_LOCALE_DIR " $SymbolStatusOk
 
     # Guess systems...

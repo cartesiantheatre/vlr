@@ -131,7 +131,7 @@ update-pot:
 	@find $(SRCDIR) -iname "*.py" | xgettext $(GETTEXT_OPTIONS) --language Python --join-existing -f - 
 	sed --in-place messages.po --expression=s/CHARSET/UTF-8/ # CHARSET warning hack
 	@find $(DATADIR) -iname "*.glade" | xgettext $(GETTEXT_OPTIONS) --language Glade --join-existing -f - 
-	msgmerge --lang=en_CA --no-fuzzy-matching $(POTFILE) messages.po > new.pot
+	msgmerge --add-location --lang=en_CA --no-fuzzy-matching $(POTFILE) messages.po > new.pot
 	mv new.pot $(POTFILE)
 	rm messages.po
 

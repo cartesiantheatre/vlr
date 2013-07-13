@@ -119,10 +119,18 @@ class OpeningVideoWindowProxy(object):
         #  video...
         self._videoDrawingArea.realize()
 
-        # Extract the video's dimensions...
+        # Toggle the pause state and block until transition complete...
         self._playBin.set_state(Gst.State.PAUSED)
         self._playBin.get_state(5000000000)
-        videoPad=self._playBin.emit("get-video-pad", 0)
+        
+        # Get the video pad...
+        videoPad = self._playBin.emit("get-video-pad", 0)
+        
+        # Video never loaded...
+        if videoPad is None:
+            return
+
+        # Extract the video's dimensions...        
         videoPadCapabilities=videoPad.get_current_caps()
         (success, videoWidth) = videoPadCapabilities.get_structure(0).get_int("width")
         (success, videoHeight) = videoPadCapabilities.get_structure(0).get_int("height")

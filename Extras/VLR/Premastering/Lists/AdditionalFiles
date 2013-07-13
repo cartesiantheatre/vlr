@@ -1,0 +1,8 @@
+autorun=./XDG/autorun
+autoopen=./XDG/autoopen
+avaneya_vlr.directory=./XDG/avaneya_vlr.directory
+autorun.inf=Woe32/autorun.inf
+Copying=../../../Copying
+Credits=../../../Credits
+Launcher/Mission Data=/home/kip/Projects/Avaneya: Viking Lander Remastered/Mastered/
+Launcher/Data/Opening.mkv=/home/kip/Projects/Avaneya-Private/Artwork/Server/Animations/Logos/Studio/Joe/Revision 02/Opening.mkv
