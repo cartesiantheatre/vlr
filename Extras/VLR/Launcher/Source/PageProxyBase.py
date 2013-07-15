@@ -112,10 +112,13 @@ class PageProxyBase(object):
         # Create a drawing area to render the banner image onto...
         page._bannerDrawingArea = ScalableImage(
             os.path.join(LauncherArguments.getArguments().dataRoot, "Banner.png"))
-       
+
         # Add the image to the top of the GUI...
         page.pack_start(page._bannerDrawingArea, False, False, 5)
         page.reorder_child(page._bannerDrawingArea, 0)
+
+        # Centre its horizontal alignment...
+        page._bannerDrawingArea.set_halign(Gtk.Align.CENTER)
 
     # Get the page's absolute index in the assistant...
     def getAbsoluteIndex(self, groupIndex):

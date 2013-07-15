@@ -100,10 +100,13 @@ class LauncherApp(object):
         self.assistant.connect("prepare", self.onPrepareEvent)
         self.assistant.connect("show", self.onShow)
         
-        # For wider screens, adjust the window size to 3/4 the width...
+        # For wider screens, adjust the window size to 80% the width, and when
+        #  there is enough height, make the window at least 650 pixels high so
+        #  vertical scrollbars probably not visible...
         (monitorWidth, monitorHeight) = getMonitorWithCursorSize()
-        if monitorWidth > 1024:
-            self.assistant.resize_to_geometry(monitorWidth * 0.8, 1)
+        newWidth = max(monitorWidth * 0.8, 1024)
+        newHeight = min(monitorHeight, 650)
+        self.assistant.resize_to_geometry(newWidth, newHeight)
 
         # If the user requested no background music, then disable GStreamer...
         if LauncherArguments.getArguments().noBackgroundMusic:
