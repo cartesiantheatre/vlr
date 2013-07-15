@@ -1,4 +1,4 @@
-# Chinese (Simplified) translation for avaneya
+# Chinese (Traditional) translation for avaneya
 # Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
 # This file is distributed under the same license as the avaneya package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
@@ -6,16 +6,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
 "POT-Creation-Date: 2013-07-03 22:42-0700\n"
-"PO-Revision-Date: 2013-06-16 07:20+0000\n"
-"Last-Translator: Xiaoxing Ye <Unknown>\n"
-"Language-Team: Chinese (Simplified) <zh_CN@li.org>\n"
+"PO-Revision-Date: 2013-06-15 00:49+0000\n"
+"Last-Translator: Po-Chun Huang <Unknown>\n"
+"Language-Team: Chinese (Traditional) <zh_TW@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-07-05 05:51+0000\n"
+"X-Launchpad-Export-Date: 2013-07-15 02:16+0000\n"
 "X-Generator: Launchpad (build 16696)\n"
+"Language: zh_TW\n"
 
 #. Initialize the channel map...
 #: Source/Console.cpp:84
@@ -32,7 +33,7 @@ msgstr "警告： "
 
 #: Source/DBusInterface.cpp:113
 msgid "could not emit 'Notification' signal..."
-msgstr "不能发出'提醒'讯号..."
+msgstr "不能发出'通知'讯号..."
 
 #: Source/DBusInterface.cpp:149
 msgid "could not emit 'Progress' signal..."
@@ -41,588 +42,596 @@ msgstr "不能发出'进度'讯号..."
 #: Source/DBusInterface.cpp:195
 #, c-format
 msgid "Method %s.%s is not implemented."
-msgstr "%s.%s方法没有被实现。"
+msgstr "%s.%s 方法没有被实现。"
 
 #: Source/DBusInterface.cpp:223
 msgid "could not register service with session bus..."
-msgstr "无法注册会话总线服务..."
+msgstr "无法注册会话总线(Session bus)服务..."
 
 #. Alert user...
 #: Source/DBusInterface.cpp:261
 msgid "registering on the session bus..."
-msgstr "会话总线注册中..."
+msgstr "会话总线(Session bus)注册中..."
 
 #: Source/DBusInterface.cpp:275
 msgid "could not parse introspection XML"
-msgstr ""
+msgstr "无法分析introspection XML"
 
 #: Source/DBusInterface.cpp:289
 msgid "could not connect with the session bus"
-msgstr ""
+msgstr "无法与会话总线(Session bus)进行连线"
 
 #: Source/DBusInterface.cpp:325
 msgid "glib main loop quit unexpectedly..."
-msgstr ""
+msgstr "glib 主要的函数回圈意外终止..."
 
 #: Source/LogicalRecord.cpp:169 Source/VicarImageBand.cpp:861
 msgid "invalid logical record label"
-msgstr ""
+msgstr "无效的逻辑纪录标签"
 
 #: Source/LogicalRecord.cpp:204
 msgid "failed to read from input stream"
-msgstr ""
+msgstr "从输入串流读取失败"
 
 #: Source/Options.cpp:123
 msgid "unsupported diode filter class: "
-msgstr ""
+msgstr "未支援二极管筛选类别： "
 
 #: Source/Options.cpp:131
 msgid "invalid lander filter"
-msgstr ""
+msgstr "无效的着陆器筛选器"
 
 #: Source/ReconstructableImage.cpp:147
 msgid "cannot reconstruct image from unsupported diode band type"
-msgstr ""
+msgstr "无法从未支援的二极管带型重建影像"
 
 #: Source/ReconstructableImage.cpp:167
 msgid "Unreconstructable/"
-msgstr ""
+msgstr "无法重建/"
 
 #: Source/ReconstructableImage.cpp:187
 msgid "Unknown Location/"
-msgstr ""
+msgstr "未知的位置/"
 
 #. Set the error message and abort...
 #: Source/ReconstructableImage.cpp:216
 msgid "could not create output directory for file"
-msgstr ""
+msgstr "无法建立输出目录给纪录档"
 
 #: Source/ReconstructableImage.cpp:345
 msgid ""
 "output metadata already exists, not overwriting (use --overwrite to override)"
-msgstr ""
+msgstr "输出的数据已经存在，没有覆盖 (使用 --overwrite去覆写)"
 
 #. Just give a warning and abort...
 #: Source/ReconstructableImage.cpp:356
 msgid "couldn't save metadata"
-msgstr ""
+msgstr "无法储存数据"
 
 #: Source/ReconstructableImage.cpp:362
 msgid ""
 "The following is a machine generated collection of metadata of each of\n"
-msgstr ""
+msgstr "以下是一个机器产生的每个数据集合\n"
 
 #: Source/ReconstructableImage.cpp:363
 msgid "the image bands used to reconstruct a colour image.\n"
-msgstr ""
+msgstr "用于重建一个彩色图像的图像波段。\n"
 
 #: Source/ReconstructableImage.cpp:376
 msgid "basic heuristic method: "
-msgstr ""
+msgstr "基本启发式方法： "
 
 #: Source/ReconstructableImage.cpp:377
 msgid "camera azimuth / elevation: "
-msgstr ""
+msgstr "相机方位角 / 仰角： "
 
 #: Source/ReconstructableImage.cpp:378
 msgid "camera event: "
-msgstr ""
+msgstr "摄像机事件： "
 
 #: Source/ReconstructableImage.cpp:379
 msgid "camera event solar day: "
-msgstr ""
+msgstr "摄像机事件太阳日： "
 
 #: Source/ReconstructableImage.cpp:380
 msgid "diode band type: "
-msgstr ""
+msgstr "二极管带型 "
 
 #: Source/ReconstructableImage.cpp:381 Source/VicarImageBand.cpp:1312
 msgid "file size: "
-msgstr ""
+msgstr "档案大小： "
 
 #: Source/ReconstructableImage.cpp:382
 msgid "input file: "
-msgstr ""
+msgstr "输入档案： "
 
 #: Source/ReconstructableImage.cpp:383
 msgid "magnetic tape: "
-msgstr ""
+msgstr "磁带： "
 
 #: Source/ReconstructableImage.cpp:384
 msgid "magnetic tape file ordinal: "
-msgstr ""
+msgstr "磁带文件序号： "
 
 #. Alert user if verbose mode enabled...
 #: Source/ReconstructableImage.cpp:385 Source/VicarImageBand.cpp:591
 msgid "mean pixel value: "
-msgstr ""
+msgstr "平均像素值： "
 
 #: Source/ReconstructableImage.cpp:386
 msgid "month: "
-msgstr ""
+msgstr "月： "
 
 #: Source/ReconstructableImage.cpp:387
 msgid "overlay axis present: "
-msgstr ""
+msgstr "覆盖当前的坐标轴： "
 
 #: Source/ReconstructableImage.cpp:388
 msgid "overlay full histogram present: "
-msgstr ""
+msgstr "覆盖完全的当前直方图： "
 
 #: Source/ReconstructableImage.cpp:389 Source/VicarImageBand.cpp:1316
 msgid "physical record size: "
-msgstr ""
+msgstr "物理记录大小： "
 
 #: Source/ReconstructableImage.cpp:390
 msgid "physical record padding: "
-msgstr ""
+msgstr "物理纪录填充： "
 
 #: Source/ReconstructableImage.cpp:391
 msgid "phase offset required: "
-msgstr ""
+msgstr "相位偏移要求： "
 
 #. Show user, if requested...
 #: Source/ReconstructableImage.cpp:392 Source/VicarImageBand.cpp:935
 msgid "raw image offset: "
-msgstr ""
+msgstr "原始图像偏移： "
 
 #: Source/ReconstructableImage.cpp:488
 msgid "cannot reconstruct, dumped all bands"
-msgstr ""
+msgstr "不能重建，倾倒了所有波段"
 
 #: Source/ReconstructableImage.cpp:514 Source/ReconstructableImage.cpp:680
 msgid "output already exists, not overwriting (use --overwrite to override)"
-msgstr ""
+msgstr "输出已经存在，无法覆盖 (使用 --overwrite参数进行覆盖)"
 
 #: Source/ReconstructableImage.cpp:548
 msgid ""
 "images for each band present, but no matching set of full histogram variants "
 "available"
-msgstr ""
+msgstr "图像为各自波段的呈现，但是未匹配到完全的且不同的直方图集合"
 
 #: Source/ReconstructableImage.cpp:568
 msgid ""
 "images for each band present, but no matching set of non-overlayed variants "
 "available"
-msgstr ""
+msgstr "图像为各自波段的呈现，但是未匹配到非覆盖的集合"
 
 #: Source/ReconstructableImage.cpp:619
 msgid "image bands not all the same size, may be missing scanlines"
-msgstr ""
+msgstr "图像波段并未相同大小，也许遗失了扫描线"
 
 #: Source/VicarImageAssembler.cpp:89 Source/VicarImageAssembler.cpp:128
 msgid "unable to open input directory for indexing "
-msgstr ""
+msgstr "无法打开输入目录索引 "
 
 #: Source/VicarImageAssembler.cpp:144 Source/VicarImageAssembler.cpp:221
 msgid "could not stat "
-msgstr ""
+msgstr "无法固定 "
 
 #. Alert user...
 #: Source/VicarImageAssembler.cpp:189
 msgid "indexing mission data, please wait..."
-msgstr ""
+msgstr "索引任务数据，请稍候..."
 
 #. Provide a notification to the Viking Lander Launcher...
 #: Source/VicarImageAssembler.cpp:193
 msgid "Indexing mission data, please wait..."
-msgstr ""
+msgstr "索引任务数据，请稍候..."
 
 #: Source/VicarImageAssembler.cpp:236
 msgid "no prospective files found"
-msgstr ""
+msgstr "没有发现预期的文件"
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 #: Source/VicarImageAssembler.cpp:245
 msgid "Analyzing mission data, please wait..."
-msgstr ""
+msgstr "分析任务数据中，请稍候..."
 
 #: Source/VicarImageAssembler.cpp:273
 msgid "studying mission data index of "
-msgstr ""
+msgstr "学习任务数据索引 "
 
 #: Source/VicarImageAssembler.cpp:295 Source/VicarImageAssembler.cpp:396
 #: Source/VicarImageAssembler.cpp:480
 msgid ", skipping"
-msgstr ""
+msgstr ", 跳过"
 
 #: Source/VicarImageAssembler.cpp:306 Source/VicarImageAssembler.cpp:407
 #: Source/VicarImageAssembler.cpp:491
 msgid " (--ignore-bad-files to skip)"
-msgstr ""
+msgstr " (使用 --ignore-bad-files 跳过)"
 
 #: Source/VicarImageAssembler.cpp:322
 msgid "filtering "
-msgstr ""
+msgstr "筛选中 "
 
 #: Source/VicarImageAssembler.cpp:324
 msgid " type diode bands (--filter-diode[=type] to change)"
-msgstr ""
+msgstr " 二极管带类型 (使用 --filter-diode[=type] 去改变)"
 
 #: Source/VicarImageAssembler.cpp:334
 msgid "camera event doesn't identify itself, cannot index"
-msgstr ""
+msgstr "摄像机事件不能辨识自我，无法索引"
 
 #: Source/VicarImageAssembler.cpp:355
 msgid " is a new camera event, indexing"
-msgstr ""
+msgstr " 是一个新的摄像机事件，索引中"
 
 #: Source/VicarImageAssembler.cpp:376
 msgid " is a known camera event, indexing"
-msgstr ""
+msgstr " 是一个已知的摄像机事件，索引中"
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 #: Source/VicarImageAssembler.cpp:424
 msgid "Attempting forensic mission data recovery..."
-msgstr ""
+msgstr "尝试辩论的任务数据恢复..."
 
 #: Source/VicarImageAssembler.cpp:451
 msgid "attempting reconstruction "
-msgstr ""
+msgstr "企图重建中 "
 
 #: Source/VicarImageAssembler.cpp:458
 msgid "dumping components from "
-msgstr ""
+msgstr "倾倒组件中从 "
 
 #. Emit progress over D-Bus to drive the Viking Lander Remastered Launcher...
 #: Source/VicarImageAssembler.cpp:503
 msgid "Recovery completed..."
-msgstr ""
+msgstr "恢复已完成..."
 
 #: Source/VicarImageAssembler.cpp:513
 msgid "successfully reconstructed "
-msgstr ""
+msgstr "重建成功 "
 
 #: Source/VicarImageAssembler.cpp:515
 msgid " unreconstructable components dumped"
-msgstr ""
+msgstr " 无法重建组件"
 
 #: Source/VicarImageAssembler.cpp:522
 msgid "dumped "
-msgstr ""
+msgstr "已倾倒 "
 
 #: Source/VicarImageAssembler.cpp:522
 msgid " image components without reconstruction"
-msgstr ""
+msgstr " 未重建的影像组件"
 
 #: Source/VicarImageBand.cpp:282 Source/VicarImageBand.cpp:330
 msgid "image should be rotated 90 counterclockwise"
-msgstr ""
+msgstr "影像将旋转逆时针方向转90度"
 
 #: Source/VicarImageBand.cpp:291 Source/VicarImageBand.cpp:338
 msgid "image should be rotated 180 counterclockwise"
-msgstr ""
+msgstr "影像将旋转逆时针方向转180度"
 
 #: Source/VicarImageBand.cpp:300 Source/VicarImageBand.cpp:346
 msgid "image should be rotated 270 counterclockwise"
-msgstr ""
+msgstr "影像将旋转逆时针方向转270度"
 
 #: Source/VicarImageBand.cpp:309 Source/VicarImageBand.cpp:322
 msgid "image does not need to be rotated"
-msgstr ""
+msgstr "影像不需要旋转"
 
 #: Source/VicarImageBand.cpp:354
 msgid "could not guess image rotation"
-msgstr ""
+msgstr "无法推测影像旋转"
 
 #: Source/VicarImageBand.cpp:387
 msgid "GNU Ocrad failed to initialize"
-msgstr ""
+msgstr "GNU Ocrad初始化失败"
 
 #. Set error message...
 #: Source/VicarImageBand.cpp:423
 msgid "could not set OCR image"
-msgstr ""
+msgstr "无法设定OCR影像"
 
 #. Set error message...
 #: Source/VicarImageBand.cpp:440
 msgid "OCR pass failed"
-msgstr ""
+msgstr "OCR辨识失败"
 
 #: Source/VicarImageBand.cpp:525
 msgid "input was not loaded"
-msgstr ""
+msgstr "输入的没有被载入"
 
 #: Source/VicarImageBand.cpp:532 Source/VicarImageBand.cpp:774
 msgid "could not open input for reading"
-msgstr ""
+msgstr "无法从读取中开启输入的"
 
 #: Source/VicarImageBand.cpp:536
 msgid "file ended prematurely before raw image"
-msgstr ""
+msgstr "原始图像文件之前过早结束"
 
 #: Source/VicarImageBand.cpp:565
 msgid "band data extraction i/o error"
-msgstr ""
+msgstr "数据读取I/O错误"
 
 #. Be verbose...
 #: Source/VicarImageBand.cpp:767
 msgid "loading"
-msgstr ""
+msgstr "载入中"
 
 #: Source/VicarImageBand.cpp:781
 msgid ""
 "empty file, probably blank magnetic tape or not received back on Earth"
-msgstr ""
+msgstr "空文件，可能是空白的磁带，或没有收到返回地球"
 
 #: Source/VicarImageBand.cpp:785
 msgid "too small to be interesting (< 4 KB)"
-msgstr ""
+msgstr "资料太小 ( < 4KB)"
 
 #: Source/VicarImageBand.cpp:790
 msgid "header is not intact, or not a VICAR file"
-msgstr ""
+msgstr "档案标头不完整，或不是一个VICAR档案"
 
 #: Source/VicarImageBand.cpp:792
 msgid "header intact, but requires "
-msgstr ""
+msgstr "档案标头完整，但是需要 "
 
 #: Source/VicarImageBand.cpp:792
 msgid " byte phase offset"
-msgstr ""
+msgstr " 位元组偏移"
 
 #: Source/VicarImageBand.cpp:796
 msgid "did not originate from a Viking Lander"
-msgstr ""
+msgstr "并非源自于一个维京着陆器"
 
 #: Source/VicarImageBand.cpp:818
 msgid "entering physical record "
-msgstr ""
+msgstr "进入物理记录 "
 
 #: Source/VicarImageBand.cpp:820
 msgid " starting at "
-msgstr ""
+msgstr " 开始于 "
 
 #: Source/VicarImageBand.cpp:837
 msgid "extracting logical record "
-msgstr ""
+msgstr "提取逻辑记录 "
 
 #: Source/VicarImageBand.cpp:839 Source/VicarImageBand.cpp:853
 msgid "/5 starting at "
-msgstr ""
+msgstr "/5 开始于 "
 
 #: Source/VicarImageBand.cpp:851
 msgid "bad logical record terminator "
-msgstr ""
+msgstr "坏的逻辑纪录终结器 "
 
 #: Source/VicarImageBand.cpp:859
 msgid ""
 "invalid logical record label possibly from out of phase physical boundary"
-msgstr ""
+msgstr "失效的逻辑纪录标签，可能来自于超出的物理边界阶段"
 
 #. It was, so rewind and carry on since there is no
 #. physical record padding...
 #: Source/VicarImageBand.cpp:912
 msgid "tangential physical record boundary detected, ignoring padding"
-msgstr ""
+msgstr "切线的物理记录边界检测，忽略填充"
 
 #. Alert and seek...
 #: Source/VicarImageBand.cpp:921
 msgid "seeking passed "
-msgstr ""
+msgstr "寻求通过 "
 
 #: Source/VicarImageBand.cpp:921
 msgid " physical record padding"
-msgstr ""
+msgstr " 物理纪录填充"
 
 #: Source/VicarImageBand.cpp:929
 msgid "unable to locate last logical record label"
-msgstr ""
+msgstr "无法找到最后一个逻辑记录标签"
 
 #: Source/VicarImageBand.cpp:946
 msgid "file too small to contain claimed payload "
-msgstr ""
+msgstr "文件太小，无法包含要求的负载 "
 
 #: Source/VicarImageBand.cpp:1051
 msgid "internal radio/geometric calibration ("
-msgstr ""
+msgstr "内部的无线电/几何校正 ("
 
 #: Source/VicarImageBand.cpp:1057
 msgid "unsupported photosensor diode band type ("
-msgstr ""
+msgstr "不支援的光度感测器二极体频段 ("
 
 #: Source/VicarImageBand.cpp:1281
 msgid "exhausted basic metadata parser heuristics"
-msgstr ""
+msgstr "用尽基本元数据分析器启发式"
 
 #: Source/VicarImageBand.cpp:1287
 msgid "unsupported number of image bands"
-msgstr ""
+msgstr "不支持的图像频带"
 
 #: Source/VicarImageBand.cpp:1291
 msgid "expected positive image height"
-msgstr ""
+msgstr "预期的正面图象高度"
 
 #: Source/VicarImageBand.cpp:1295
 msgid "expected positive image width"
-msgstr ""
+msgstr "预期的正面图象宽度"
 
 #. Check pixel format is integral...
 #. Definitely integral
 #. Guessing integral
 #: Source/VicarImageBand.cpp:1300
 msgid "unsupported pixel format"
-msgstr ""
+msgstr "不支援的像素格式"
 
 #: Source/VicarImageBand.cpp:1304
 msgid "unsupported colour bit depth"
-msgstr ""
+msgstr "不支援的图像颜色深度"
 
 #. If verbosity is set, display basic metadata...
 #: Source/VicarImageBand.cpp:1307
 msgid "basic metadata parser heuristic: "
-msgstr ""
+msgstr "基本元数据解析器启发式： "
 
 #: Source/VicarImageBand.cpp:1308
 msgid "bands: "
-msgstr ""
+msgstr "频带： "
 
 #: Source/VicarImageBand.cpp:1309
 msgid "height: "
-msgstr ""
+msgstr "高： "
 
 #: Source/VicarImageBand.cpp:1310
 msgid "width: "
-msgstr ""
+msgstr "宽： "
 
 #: Source/VicarImageBand.cpp:1311
 msgid "raw band data size: "
-msgstr ""
+msgstr "原始频带资料大小： "
 
 #: Source/VicarImageBand.cpp:1311 Source/VicarImageBand.cpp:1312
 msgid " bytes"
-msgstr ""
+msgstr " 位元组"
 
 #: Source/VicarImageBand.cpp:1313
 msgid "format: integral"
-msgstr ""
+msgstr "格式：整数的"
 
 #: Source/VicarImageBand.cpp:1314
 msgid "bytes per colour: "
-msgstr ""
+msgstr "每一颜色位元组 "
 
 #: Source/VicarImageBand.cpp:1315
 msgid "photosensor diode band type: "
-msgstr ""
+msgstr "光度感测器二极体频段类型： "
 
 #: Source/VicarImageBand.cpp:1317
 msgid "possible physical record padding: "
-msgstr ""
+msgstr "可能的物理纪录填充： "
 
 #. Alert user if verbose enabled...
 #: Source/VicarImageBand.cpp:1344
 msgid "heuristics selected format 1 basic metadata parser"
-msgstr ""
+msgstr "启发式选择的格式一个基本元数据分析器"
 
 #. Alert user if verbose enabled...
 #: Source/VicarImageBand.cpp:1415
 msgid "heuristics selected format 2 basic metadata parser"
-msgstr ""
+msgstr "启发式选择的格式二个基本元数据分析器"
 
 #. Alert user if verbose enabled...
 #: Source/VicarImageBand.cpp:1499
 msgid "heuristics selected format 3 basic metadata parser"
-msgstr ""
+msgstr "启发式选择的格式三个基本元数据分析器"
 
 #. Alert user if verbose enabled...
 #: Source/VicarImageBand.cpp:1567
 msgid "heuristics selected format 4 basic metadata parser"
-msgstr ""
+msgstr "启发式选择的格式四个基本元数据分析器"
 
 #. Alert user if verbose enabled...
 #: Source/VicarImageBand.cpp:1636
 msgid "heuristics selected format 5 basic metadata parser"
-msgstr ""
+msgstr "启发式选择的格式五个基本元数据分析器"
 
 #. Alert user if verbose enabled...
 #: Source/VicarImageBand.cpp:1705
 msgid "heuristics selected format 6 basic metadata parser"
-msgstr ""
+msgstr "启发式选择的格式六个基本元数据分析器"
 
 #: Source/VicarImageBand.cpp:1768
 msgid "invalid logical record label while parsing extended metadata"
-msgstr ""
+msgstr "在分析延伸的元数据时有无效的逻辑记录标签"
 
 #. Alert user if verbose mode enabled...
 #: Source/VicarImageBand.cpp:1789
 msgid "psa directional vector: "
-msgstr ""
+msgstr "PSA方向的向量： "
 
 #: Source/VicarImageBand.cpp:1804
 msgid "camera event label: "
-msgstr ""
+msgstr "摄像机事件的标签： "
 
 #: Source/VicarImageBand.cpp:1827
 msgid "bad lander number"
-msgstr ""
+msgstr "糟糕的着陆器数量"
 
 #. Be verbose if requested...
 #: Source/VicarImageBand.cpp:1830
 msgid "lander number: "
-msgstr ""
+msgstr "着陆器数量： "
 
 #: Source/VicarImageBand.cpp:1835
 msgid "filtering non-matching lander"
-msgstr ""
+msgstr "筛选未符合的着陆器"
 
 #. Set caller hint and return unsupported...
 #: Source/VicarImageBand.cpp:1891
 msgid "monocolour unsupported"
-msgstr ""
+msgstr "不支援单色系"
 
 #. Set caller hint and return unsupported...
 #: Source/VicarImageBand.cpp:1899
 msgid "unidentifiable broadband"
-msgstr ""
+msgstr "无法辨识的宽频带"
 
 #. Set hint and return unknown...
 #: Source/VicarImageBand.cpp:1951
 msgid "none detected"
-msgstr ""
+msgstr "未察觉的"
 
 #: Source/VicarImageBand.cpp:2000
 msgid "filtering non-matching solar day"
-msgstr ""
+msgstr "筛选未符合的太阳日"
 
 #: Source/VicarImageBand.cpp:2005
 msgid "filtering non-matching camera event"
-msgstr ""
+msgstr "筛选未符合的摄影机事件"
 
 #: Source/VikingExtractor.cpp:55
 msgid "Options:\n"
-msgstr ""
+msgstr "选项:\n"
 
 #: Source/VikingExtractor.cpp:57
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after band type class (e.g. Colour).\n"
 msgstr ""
+"                              将重建图像到子目录\n"
+"                              命名后的频带型类的类别 (如颜色)。\n"
 
 #: Source/VikingExtractor.cpp:62
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after location taken from.\n"
 msgstr ""
+"                              将重建图像到子目录\n"
+"                              从命名后的位置抓取。\n"
 
 #: Source/VikingExtractor.cpp:66
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              named after Martian month taken on.\n"
 msgstr ""
+"                              将重建图像到子目录\n"
+"                              命名后火星的一个月后采取的。\n"
 
 #: Source/VikingExtractor.cpp:70
 msgid ""
 "                              Put reconstructed images into subdirectories\n"
 "                              numbered by camera event solar day.\n"
 msgstr ""
+"                              将重建图像到子目录\n"
+"                              依据摄像机事件的太阳日编号。\n"
 
 #: Source/VikingExtractor.cpp:74
 msgid "                              Don't write anything.\n"
-msgstr ""
+msgstr "                              不要写下任何资料。\n"
 
 #: Source/VikingExtractor.cpp:77
 msgid "                              Show this help.\n"
-msgstr ""
+msgstr "                              显示这个帮助。\n"
 
 #: Source/VikingExtractor.cpp:80
 msgid ""
@@ -630,10 +639,12 @@ msgid ""
 "file,\n"
 "                              but continue extraction of other files.\n"
 msgstr ""
+"                              不要停止在损坏或有问题的输入文件，\n"
+"                              但是继续从其他文件取出。\n"
 
 #: Source/VikingExtractor.cpp:84
 msgid "                              Encode output with Adam7 interlacing\n"
-msgstr ""
+msgstr "                              编码输出随着交错的Adam7\n"
 
 #: Source/VikingExtractor.cpp:87
 msgid ""
@@ -642,6 +653,9 @@ msgid ""
 "                              if -j is not provided, or auto if threads\n"
 "                              argument not specified.\n"
 msgstr ""
+"                              多个执行绪去平行执行，只有一个\n"
+"                              如果没有提供 -j 参数，或自动执行绪\n"
+"                              参数未定义。\n"
 
 #: Source/VikingExtractor.cpp:92
 msgid ""
@@ -649,6 +663,8 @@ msgid ""
 "event\n"
 "                              ID, such as 22A158.\n"
 msgstr ""
+"                              只观看已定义且符合摄像机事件\n"
+"                              编号，例如 22A158。\n"
 
 #: Source/VikingExtractor.cpp:96
 msgid ""
@@ -657,12 +673,17 @@ msgid ""
 "infrared,\n"
 "                              sun, or survey.\n"
 msgstr ""
+"                              从符合的支援二极管筛选器中抓取\n"
+"                              类别可以是任何的 (预设)，颜色，红外线，\n"
+"                              阳光，或察勘。\n"
 
 #: Source/VikingExtractor.cpp:101
 msgid ""
 "                              Extract from specific lander only which are\n"
 "                              either (0, the default), 1, or 2.\n"
 msgstr ""
+"                              只从那些特定的著录器抓取\n"
+"                              任一个 (预设0) 1, 或 2。\n"
 
 #: Source/VikingExtractor.cpp:105
 msgid ""
@@ -670,6 +691,8 @@ msgid ""
 "specified\n"
 "                              solar day.\n"
 msgstr ""
+"                              只观看摄像机特定的事件\n"
+"                              太阳日。\n"
 
 #: Source/VikingExtractor.cpp:109
 msgid ""
@@ -677,16 +700,18 @@ msgid ""
 "                              generate a text file containing various "
 "metadata.\n"
 msgstr ""
+"                              无论如何，当一个彩色影像恢复后，机器\n"
+"                              产生一个文字档案且包涵不同的元数据。\n"
 
 #: Source/VikingExtractor.cpp:113
 msgid ""
 "                              Disable VT/100 ANSI coloured terminal output.\n"
-msgstr ""
+msgstr "                              禁用 VT/100 ANSI 颜色终端的输出。\n"
 
 #: Source/VikingExtractor.cpp:116
 msgid ""
 "                              Don't automatically rotate image as needed.\n"
-msgstr ""
+msgstr "                              不要自动的旋转影像。\n"
 
 #: Source/VikingExtractor.cpp:119
 msgid ""
@@ -695,36 +720,40 @@ msgid ""
 "                              dump all available band data as separate "
 "images.\n"
 msgstr ""
+"                              不要企图去重建摄像机事件，只要\n"
+"                              倾倒所有有用的频带资料，且分割影像。\n"
 
 #: Source/VikingExtractor.cpp:123
 msgid "                              Overwrite any existing output files.\n"
-msgstr ""
+msgstr "                              改写任何已经存在的输出档案。\n"
 
 #: Source/VikingExtractor.cpp:126
 msgid ""
 "                              Scan subfolders as well if input is a "
 "directory.\n"
-msgstr ""
+msgstr "                              如果输入是一个目录时请扫瞄子目录。\n"
 
 #: Source/VikingExtractor.cpp:129
 msgid ""
 "                              Show summary of progress and final results "
 "only.\n"
-msgstr ""
+msgstr "                              显示进度而最终结果。\n"
 
 #: Source/VikingExtractor.cpp:132
 msgid "                              Suppress all warnings and errors.\n"
-msgstr ""
+msgstr "                              取消所有警告和错误。\n"
 
 #: Source/VikingExtractor.cpp:135
 msgid "                              Be verbose\n"
-msgstr ""
+msgstr "                              漫长的\n"
 
 #: Source/VikingExtractor.cpp:138
 msgid ""
 "                              Show version information\n"
 "\n"
 msgstr ""
+"                              显示版本资讯\n"
+"\n"
 
 #: Source/VikingExtractor.cpp:141
 msgid ""
@@ -734,10 +763,14 @@ msgid ""
 "to attempt reconstruction into the provided output directory.\n"
 "\n"
 msgstr ""
+"将1970年代维京着陆器时代的VICAR 彩色影像转换为PNG。这个\n"
+"'输入'值可以是一个VICAR档或一个目录里包含着多个VICAR档案\n"
+"试图重建所提供的输出目录。\n"
+"\n"
 
 #: Source/VikingExtractor.cpp:146
 msgid "Report bugs to "
-msgstr ""
+msgstr "回报臭虫 "
 
 #: Source/VikingExtractor.cpp:153
 msgid ""
@@ -746,36 +779,38 @@ msgid ""
 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 "\n"
 msgstr ""
+"版权所有 (C) 2010-2013 Cartesian Theatre。\n"
+"\n"
 
 #: Source/VikingExtractor.cpp:158
 msgid "Configured with: "
-msgstr ""
+msgstr "配置： "
 
 #: Source/VikingExtractor.cpp:341
 msgid "parallelization is not implemented yet, using single thread"
-msgstr ""
+msgstr "并行化尚未实现，使用单独执行绪"
 
 #: Source/VikingExtractor.cpp:432
 msgid "summarize only and verbose modes cannot both be used"
-msgstr ""
+msgstr "总结和详细模式不能同时使用"
 
 #: Source/VikingExtractor.cpp:444
 msgid " linked against incompatible GNU Ocrad version "
-msgstr ""
+msgstr " 连结相反且不相容GNU Ocrad版本 "
 
 #: Source/VikingExtractor.cpp:455
 msgid "GNU Ocrad needs to be at least 0.21, but got "
-msgstr ""
+msgstr "GNU Ocrad 需要最小版本为0.21，但得到 "
 
 #. Alert, abort...
 #: Source/VikingExtractor.cpp:471
 msgid "need input file or directory, see --help"
-msgstr ""
+msgstr "需要输入档案或目录，请观看 --help"
 
 #: Source/VikingExtractor.cpp:484
 msgid "unknown parameter "
-msgstr ""
+msgstr "未知的参数 "
 
 #: Source/VikingExtractor.cpp:487
 msgid "), see --help"
-msgstr ""
+msgstr "), 请观看 --help"
