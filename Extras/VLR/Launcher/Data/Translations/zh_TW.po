@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-07-09 23:59-0700\n"
-"PO-Revision-Date: 2013-07-13 12:05+0000\n"
-"Last-Translator: Yong Jie Huang <yongjie989@gmail.com>\n"
+"PO-Revision-Date: 2013-07-15 12:17+0000\n"
+"Last-Translator: Po-Chun Huang <Unknown>\n"
 "Language-Team: Chinese (Traditional) <zh_TW@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-07-14 05:50+0000\n"
+"X-Launchpad-Export-Date: 2013-07-17 06:57+0000\n"
 "X-Generator: Launchpad (build 16696)\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -508,6 +508,11 @@ msgid ""
 "\n"
 "{1}"
 msgstr ""
+"我無法找到文件列表來驗證：\n"
+"\n"
+"{0}\n"
+"\n"
+"{1}"
 
 #: ../../Source/VerificationProgressPage.py:256
 msgid ""
@@ -592,7 +597,7 @@ msgstr "\t...著陸器：{0}\n"
 
 #: ../../Source/ConfirmPage.py:169
 msgid "Interlace images: {0}\n"
-msgstr ""
+msgstr "交錯掃描影像：{0}\n"
 
 #: ../../Source/ConfirmPage.py:176
 msgid "Generate metadata: {0}\n"
@@ -957,6 +962,11 @@ msgid ""
 "normal because some of the Viking lander data was not actual data or was too "
 "corrupted to be recoverable."
 msgstr ""
+"下列 <b>維京提取器</b> 的組態總結將會在此一階段中使用。如果您想要更改任一選項，請退回上一步。否則，恢復工作將在您點擊 "
+"<i>套用</i>後開始。\n"
+"\n"
+"下一頁將包含<b> 維京提取器，</ "
+"b>工作過程的輸出。如果您看到許多警告，請不要驚慌。這是正常的，因為一些維京著陸器數據沒有實際數據或損壞得太嚴重待恢復。"
 
 #: ../Launcher.glade:852
 msgid ""
@@ -972,6 +982,13 @@ msgid ""
 "gratitude. Your support is critical to maintaining active and professional "
 "development of the Avaneya project."
 msgstr ""
+"恭喜！任務資料鑑證恢復已完成。按下方按紐以檢查您設法恢復的所有東西。\n"
+"\n"
+"我們也建議在您閒暇的時候，可以看看我們的<i>Avaneya 專案全體人員手冊</i>，如果您有下載免費副本的話。這是一個學習有關 Avaneya "
+"專案非常棒的地方。\n"
+"\n"
+"代表 Avaneya 專案全體人員，我們希望您喜歡使用這個軟體。如果您已購買了一份，我們想表達感激之情。您的支持至關重要，是 Avaneya "
+"專案維持積極維護與專業開發的原動力。"
 
 #: ../Launcher.glade:881
 msgid "Explore Recovered Mission Data"
