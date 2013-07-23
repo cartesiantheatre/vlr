@@ -27,11 +27,12 @@ import os
 import subprocess
 import platform
 import sys
+import re
 
 # Privates...
 _applicationName    = "Avaneya: Viking Lander Remastered DVD"
 _versionMajor       = 0
-_versionMinor       = 2
+_versionMinor       = 9
 _versionShortString = "{0}.{1}".format(_versionMajor, _versionMinor)
 _versionLongString  = "{0}, v{1}".format(_applicationName, _versionShortString)
 
@@ -41,11 +42,11 @@ def getMachineArchitecture():
     # Retrieve...
     machineArchitecture = platform.machine()
     assert(machineArchitecture)
-    
+
     # Adapt to Debian's sane nomenclature...
-    if machineArchitecture == "x86_64":
+    if re.search("x86_64|amd64|AMD64", machineArchitecture):
         machineArchitecture = "amd64"
-    elif machineArchitecture == "x86":
+    elif re.search("i[3456789]86|x86|i86pc", machineArchitecture):
         machineArchitecture = "i386"
 
     # Return the machine architecture to the caller...

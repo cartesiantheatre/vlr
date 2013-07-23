@@ -1,5 +1,5 @@
 autorun=./XDG/autorun
-autoopen=./XDG/autoopen
+.autoopen=./XDG/autoopen
 .directory=./XDG/avaneya_vlr.directory
 autorun.inf=Woe32/autorun.inf
 Copying=../../../Copying

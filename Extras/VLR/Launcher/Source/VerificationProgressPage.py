@@ -81,6 +81,16 @@ class VerificationProgressPageProxy(PageProxyBase):
     #  the Gtk+ mailing list seems to either. This callback is invoked when
     #  show() is called on the widget...
     def onMapEvent(self, *dummy):
+
+        # If the verification toggle wasn't selected, skip the page...
+        self._yesToggle = self._builder.get_object("performVerificationCheckRadio")
+        if self._yesToggle.get_active() == False:
+            GObject.idle_add(self.nextPage)
+            return
+
+        # Make sure the page is not marked complete until after the thread
+        #  exits...
+        self._assistant.set_page_complete(self.getPageInGroup(0), False)
         self.startDiscVerification()
 
     # Calculate a file's MD5 checksum...
@@ -174,16 +184,13 @@ class VerificationProgressPageProxy(PageProxyBase):
 
     # Our page in the assistent is being constructed, but not visible yet...
     def onPrepare(self):
+        pass
 
-        # If the verification toggle wasn't selected, skip the page...
-        self._yesToggle = self._builder.get_object("performVerificationCheckRadio")
-        if self._yesToggle.get_active() == False:
-            self._assistant.next_page()
-            return
-
-        # Make sure the page is not marked complete until after the thread
-        #  exits...
-        self._assistant.set_page_complete(self.getPageInGroup(0), False)
+    # Skip to the next page, called as an idle callback because doesn't work
+    #  any other way it seems with some versions of Gtk+ 3...
+    def nextPage(self):
+        self._assistant.next_page()
+        return False
 
     # Check if the verification is already running...
     def isVerifying(self):

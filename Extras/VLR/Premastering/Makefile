@@ -62,35 +62,39 @@ $(ISO): \
   $(INCLUDE_LIST) \
   $(EXCLUDE_LIST) \
   $(OPTIMIZATION_LIST) \
-  vlr \
-  Makefile
-	chmod +x -c XDG/autorun
+  XDG/* \
+  vlr.stamp
+	@chmod +x -c XDG/autorun
 	genisoimage -o $@ $(GENISOIMAGE_PARAMETERS) $(IMAGE_DIR)
 
 # Generate checksum...
 MD5SUM: $(ISO)
-	@echo "Generating $@ for $< ..."
-	md5sum $(ISO) > $@
+	@echo "Generating image checksum. Please wait..."
+	@md5sum $(ISO) > $@
 
 # Check what we can...
 check: $(ISO)
-	isovfy -i $(ISO)
-	md5sum --warn --check MD5SUM
+	@isovfy -i $(ISO)
+	@echo "Verifying image checksum. Please wait..."
+	@md5sum --warn --check MD5SUM
 
 # Clean up...
 clean:
-	-@$(RM) -v $(ISO)
-	cd $(VLR_DIR)/Data/Translations && make clean && INSTALL_DIR=$(IMAGE_DIR)/Launcher/Data/Translations make uninstall-po
+	-@$(RM) -v $(ISO) vlr.stamp MD5SUM
+	cd $(VLR_DIR)/Data/Translations && \
+	make clean && \
+	INSTALL_DIR=$(IMAGE_DIR)/Launcher/Data/Translations make uninstall-po
 
 # Copy the VLR into the image with translations built...
-vlr:
+vlr.stamp: $(VLR_DIR)/Source/*.py
 	@rsync --delete --delete-excluded -avz --exclude-from=$(EXCLUDE_LIST) --progress --partial $(VLR_DIR) $(IMAGE_DIR)/
 	cd $(VLR_DIR)/Data/Translations && make && INSTALL_DIR=$(IMAGE_DIR)/Launcher/Data/Translations make install-po
+	touch vlr.stamp
 
 # Directive to make to let it know that these targets don't generate filesystem 
 #  objects / products and therefore no need to check time stamps...
 .PHONY: \
   all   \
-  clean \
-  vlr
+  check \
+  clean
 

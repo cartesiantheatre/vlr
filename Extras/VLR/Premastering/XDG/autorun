@@ -175,7 +175,7 @@ KillZenity()
     if [ $ZenityProcessID != 0 ]; then
         
         # Send the terminate signal...
-        kill $ZenityProcessID
+        kill $ZenityProcessID 2> /dev/null
         
         # Wait gracefully for it to exit...
         wait $ZenityProcessID 2> /dev/null
@@ -203,7 +203,6 @@ IdentifyDistro()
     if [ -x "`which lsb_release`" ]; then
         Distro=`lsb_release --id --short`
         DistroCodeName=`lsb_release --short --codename`
-	    DistroPackageManager="apt"
 
     # Otherwise fallback to tedious method of checking for distro specific 
     #  signatures in /etc...
@@ -212,30 +211,31 @@ IdentifyDistro()
 	    echo $SymbolStatusFail
 		echo -n "Falling back to checking for distro specific signature in /etc... "
 
-        # RedHat... (e.g. Fedora / CentOS)
-	    if [ -f /etc/redhat-release ] ; then
-		    Distro=`cat /etc/redhat-release |sed s/\ release.*//`
-		    DistroCodeName=`cat /etc/redhat-release | sed s/.*\(// | sed s/\)//`
-		    DistroPackageManager="yum"
-	
-	    # SuSe...
-	    elif [ -f /etc/SuSE-release ] ; then
-		    Distro='SuSe'
-		    DistroCodeName=`cat /etc/SuSE-release | tr "\n" ' '| sed s/VERSION.*//`
-		    DistroPackageManager="zypp"
-
-	    # Mandrake...
-	    elif [ -f /etc/mandrake-release ] ; then
-		    Distro='Mandrake'
-		    DistroCodeName=`cat /etc/mandrake-release | sed s/.*\(// | sed s/\)//`
-		    DistroPackageManager="yum"
+        # Arch...
+	    if [ -f /etc/arch-release ] ; then
+		    Distro='Arch'
+		    DistroCodeName=""
 
         # Debian...
 	    elif [ -f /etc/debian_version ] ; then
 		    Distro=`cat /etc/lsb-release | grep '^DISTRIB_ID' | awk -F=  '{ print $2 }'`
 		    DistroCodeName=`cat /etc/lsb-release | grep '^DISTRIB_CODENAME' | awk -F=  '{ print $2 }'`
-		    DistroPackageManager="apt"
-		
+
+	    # Mandrake...
+	    elif [ -f /etc/mandrake-release ] ; then
+		    Distro='Mandrake'
+		    DistroCodeName=`cat /etc/mandrake-release | sed s/.*\(// | sed s/\)//`
+    
+        # RedHat... (e.g. Fedora)
+	    elif [ -f /etc/redhat-release ] ; then
+		    Distro=`cat /etc/redhat-release |sed s/\ release.*//`
+		    DistroCodeName=`cat /etc/redhat-release | sed s/.*\(// | sed s/\)//`
+	
+	    # SuSe...
+	    elif [ -f /etc/SuSE-release ] ; then
+		    Distro='SuSe'
+		    DistroCodeName=`cat /etc/SuSE-release | tr "\n" ' '| sed s/VERSION.*//`
+
         # Unknown...
 		else
 		    echo $SymbolStatusFail
@@ -246,6 +246,30 @@ IdentifyDistro()
 		    exit 1
 	    fi
     fi
+
+    # Determine which package manager system to use...
+
+        # Apt based...
+        if [ -x "`which apt-get 2>/dev/null`" ]; then
+            DistroPackageManager="apt"
+
+        # Pacman based...
+        elif [ -x "`which pacman 2>/dev/null`" ]; then
+            DistroPackageManager="pacman"
+
+        # Yum based...
+        elif [ -x "`which yum 2>/dev/null`" ]; then
+            DistroPackageManager="yum"
+        
+        # Unknown...
+        else
+            echo ""
+            zenity --error \
+                --title="Avaneya: Viking Lander Remastered" \
+                --window-icon=$Icon \
+                --text="I'm sorry, but your package manager is not supported."
+            exit 1
+        fi
 
     # Lock distro identifiers...
  	readonly Distro
@@ -264,15 +288,16 @@ LockScript()
     # Alert user...
     echo -n "Checking for unique instance... "
 
-    # The noclobber option ensures the redirect will fail if the file the stream
-    #  is being redirected to already exists. This is safe because it is atomic.
-    #  If successful, write our process ID out into our newly created lock...
+    # Try to write lock, or fail if already exists. The noclobber option ensures
+    #  the redirect will fail if the file the stream is being redirected to 
+    #  already exists. This is safe because it is atomic. If successful, write
+    #  our process ID out into our newly created lock...
     if ( set -o noclobber; echo "$$" > "$ProcessIDFile") 2> /dev/null; then
 	    echo $SymbolStatusOk
 	    OwnLock=true
 
     # Lock already exists. Check if still alive...
-    else
+    elif [ -f $ProcessIDFile ] ; then
         
         # Get the existing process ID...
         OtherProcessID="$(cat "${ProcessIDFile}")"
@@ -302,6 +327,12 @@ LockScript()
     	    echo "Process" $OtherProcessID "is existing instance..."
             exit 1
         fi
+
+    # Could neither find an existing lock, nor write a new one. Some RedHat 
+    #  systems and derivatives seem to need to run as a user in 'lock' group...
+    else
+	    echo $SymbolStatusFail
+        echo "Warning: Cannot read / write $ProcessIDFile, loading anyways..."
     fi
 }
 
@@ -321,8 +352,8 @@ PrintBanner()
     echo -e "  PARTICULAR PURPOSE.\n"
 }
 
-# Prepare a Debian based system, such as Ubuntu...
-PrepareDebianBased()
+# Prepare the runtime environment as specific to user's distro...
+InitializeRuntime()
 {
     # Array for a list of packages that's always needed...
     declare -a local PackagesRequired;
@@ -333,39 +364,54 @@ PrepareDebianBased()
         # Note: Do not place commas between packages! Bash treats them as part
         #       of the array element...
 
-        # Ubuntu based...
+        # Arch: Gave up trying to determine dependencies...
+        # [Aa]rch)
+        #    # Note: Rolling release, so no code name...
+        #    PackagesRequired=("gtk3" "libffi" "python-gobject")
+        #    ;;
+
+        # gNewSense: No support. deltah based off of Ubuntu 6.06, but does not 
+        #  even have Python3 available...
+        # gNewSense)
+        #    ;;
+
+        # Ubuntu or official...
         [Uu]buntu)
 
             # Which release?
             case "$DistroCodeName" in
 
-                # Precise...
+                # Precise... (12.04)
                 "precise")
-                    PackagesRequired=("python3-gi")
-                ;;
-                
-                # Quantal...
-                "quantal")
-                    PackagesRequired=("python3-gi")
+                    PackagesRequired=("python3-gi" "python3-cairo" "python3-gi-cairo")
                 ;;
 
-                # Raring...
+                # Quantal... (12.10)
+                "quantal")
+                    PackagesRequired=("python3-gi" "python3-cairo" "python3-gi-cairo" "gir1.2-gst-plugins-base-1.0")
+                ;;
+
+                # Raring... (13.04)
                 "raring")
-                    PackagesRequired=("python3-gi")
+                    PackagesRequired=("python3-gi" "python3-cairo" "python3-gi-cairo" "gir1.2-gst-plugins-base-1.0")
                 ;;
 
                 # Unknown release...
                 *)
                     # Try to guess...
-                    PackagesRequired=("python3-gi")
-                    echo "Warning: Unknown $Distro release ($DistroCodeName)." \
+                    PackagesRequired=("python3-gi" "python3-cairo" "python3-gi-cairo")
+                    echo "Warning: Unknown Ubuntu release ($DistroCodeName)." \
                         "Guessing dependencies..."
                 ;;
 
             esac
             ;;
 
-        # Fedora based...
+        # CentOS: Not supported because Python3 unavailable...
+        # CentOS)
+        #    ;;
+
+        # Fedora or derivative...
         [Ff]edora)
 
             # Which release?
@@ -380,7 +426,7 @@ PrepareDebianBased()
                 *)
                     # Try to guess...
                     PackagesRequired=("python3-gobject")
-                    echo "Warning: Unknown $Distro release ($DistroCodeName)." \
+                    echo "Warning: Unknown Fedora release ($DistroCodeName)." \
                         "Guessing dependencies..."
                 ;;
 
@@ -393,17 +439,16 @@ PrepareDebianBased()
             # Which release?
             case "$DistroCodeName" in
                 
-                # Debian Wheezy. Squeeze doesn't have the latter two needed
-                #  packages...
+                # Debian Wheezy. Squeeze doesn't have the needed dependencies...
                 "wheezy")
-                    PackagesRequired=("python3-gi")
+                    PackagesRequired=("python3-gi" "python3-cairo" "python3-gi-cairo")
                 ;;
 
                 # Unknown release...
                 *)
                     # Try to guess...
-                    PackagesRequired=("python3-gi")
-                    echo "Warning: Unknown $Distro release ($DistroCodeName)." \
+                    PackagesRequired=("python3-gi" "python3-cairo" "python3-gi-cairo")
+                    echo "Warning: Unknown Debian release ($DistroCodeName)." \
                         "Guessing dependencies..."
                 ;;
 
@@ -415,7 +460,7 @@ PrepareDebianBased()
             zenity --error \
                 --title="Avaneya: Viking Lander Remastered" \
                 --window-icon=$Icon \
-                --text="I'm sorry, but your distribution is not supported."
+                --text="I'm sorry, but your distribution $Distro $DistroCodeName is not supported."
             exit 1
             ;;
     esac
@@ -469,7 +514,7 @@ PrepareDebianBased()
         esac
 
         # Eject the media only if we are running off of removable media...
-        EjectRequested=1
+        EjectRequested=true
 
         # Exit with error...
         exit 1
@@ -625,7 +670,7 @@ Main()
             --text="Please wait a moment while the software loads..." \
             --pulsate \
             --auto-close \
-            --no-cancel &
+            --auto-kill &
     ZenityProcessID=$!
 
     # Display user's locale...
@@ -636,28 +681,7 @@ Main()
     IdentifyDistro
 
     # Prepare the runtime environment as specific to user's distro...
-    case "$Distro" in
-
-        # Ubuntu, Debian, or some derivative...
-        [Uu]buntu) ;&
-        [Dd]ebian)
-            PrepareDebianBased
-        ;;
-
-        # Fedora...
-        # [Ff]edora)
-        #    PrepareDebianBased
-        #;;
-        
-        # Unknown distro...
-        *)
-            zenity --error \
-                --title="Error" \
-                --window-icon=$Icon \
-                --text="I'm sorry, but your distribution ${Distro} ${DistroCodeName} is not supported."
-	        exit 1
-            ;;
-    esac
+    InitializeRuntime
 
     # Find the launcher...
     FindLauncherMain
