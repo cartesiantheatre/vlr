@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-07-03 22:42-0700\n"
-"PO-Revision-Date: 2013-07-26 20:29+0000\n"
-"Last-Translator: Hélion du Mas des Bourboux <helion331990@gmail.com>\n"
+"PO-Revision-Date: 2013-07-28 11:24+0000\n"
+"Last-Translator: Nicolas Delvaux <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-07-27 05:18+0000\n"
+"X-Launchpad-Export-Date: 2013-07-29 05:40+0000\n"
 "X-Generator: Launchpad (build 16700)\n"
 
 #. Initialize the channel map...
@@ -78,7 +78,7 @@ msgstr ""
 
 #: Source/Options.cpp:131
 msgid "invalid lander filter"
-msgstr ""
+msgstr "filtre d'atterrisseur invalide"
 
 #: Source/ReconstructableImage.cpp:147
 msgid "cannot reconstruct image from unsupported diode band type"
@@ -165,11 +165,11 @@ msgstr "mois : "
 
 #: Source/ReconstructableImage.cpp:387
 msgid "overlay axis present: "
-msgstr ""
+msgstr "Présence d'axes en superposition : "
 
 #: Source/ReconstructableImage.cpp:388
 msgid "overlay full histogram present: "
-msgstr ""
+msgstr "Présence de l'histogramme en superposition : "
 
 #: Source/ReconstructableImage.cpp:389 Source/VicarImageBand.cpp:1316
 msgid "physical record size: "
@@ -190,7 +190,7 @@ msgstr "Décalage de l'image brute : "
 
 #: Source/ReconstructableImage.cpp:488
 msgid "cannot reconstruct, dumped all bands"
-msgstr ""
+msgstr "Reconstruction impossible, toutes les bandes ont été oubliées"
 
 #: Source/ReconstructableImage.cpp:514 Source/ReconstructableImage.cpp:680
 msgid "output already exists, not overwriting (use --overwrite to override)"
