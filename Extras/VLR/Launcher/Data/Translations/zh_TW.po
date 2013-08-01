@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-07-09 23:59-0700\n"
-"PO-Revision-Date: 2013-07-15 12:17+0000\n"
-"Last-Translator: Po-Chun Huang <Unknown>\n"
+"PO-Revision-Date: 2013-07-31 11:57+0000\n"
+"Last-Translator: Yong Jie Huang <yongjie989@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <zh_TW@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-07-17 06:57+0000\n"
-"X-Generator: Launchpad (build 16696)\n"
+"X-Launchpad-Export-Date: 2013-08-01 05:36+0000\n"
+"X-Generator: Launchpad (build 16718)\n"
 
 #. Set translators. Note to translators, put your contact info here...
 #: ../../Source/LauncherApp.py:178
@@ -556,7 +556,7 @@ msgstr "輸出將會覆寫：{0}\n"
 #. Directorize by...
 #: ../../Source/ConfirmPage.py:92
 msgid "Directorize by...\n"
-msgstr ""
+msgstr "指導者...\n"
 
 #: ../../Source/ConfirmPage.py:97
 msgid "\t...diode band class: {0}\n"
@@ -625,7 +625,7 @@ msgstr "否"
 
 #: ../../Source/FarewellPage.py:46
 msgid "Farewell"
-msgstr ""
+msgstr "再會"
 
 #: ../../Source/SelectRecoveryPage.py:39
 msgid "Select Recovery Folder"
@@ -765,6 +765,8 @@ msgid ""
 "typically slightly larger, but they are useful for streaming on slower "
 "network connections."
 msgstr ""
+"在無損壓縮的PNG格式的最大的質量和多功能性的恢復的圖像進行編碼。如果您想使用交錯，選擇此項。交錯是一個使圖像增量加載的方法，從一個較低的分辨率到較高的。"
+"圖像通常稍大，但它對於串流速度較慢的網絡連接是有幫助的。"
 
 #: ../Launcher.glade:127
 msgid "Generate metadata"
@@ -777,6 +779,7 @@ msgid ""
 "the source magnetic tape, recovery heuristics used, and so on, of each of "
 "the image bands used to reconstruct the final colour image."
 msgstr ""
+"復的彩色圖像，此選項將在一台機器生成的文本文件，其中包含的圖像的元數據，例如源磁帶，回收使用的試探法，等等，用來重建的每個圖像波段最終的彩色圖像。"
 
 #: ../Launcher.glade:145
 msgid "Be verbose"
@@ -786,7 +789,7 @@ msgstr "詳細模式"
 msgid ""
 "If this is enabled, the VikingExtractor will display significantly more "
 "information as it attempts to recover what it can."
-msgstr ""
+msgstr "如果啟用，VikingExtractor將顯示更多信息，試圖去恢復。"
 
 #: ../Launcher.glade:165
 msgid "Use multithreading"
@@ -796,13 +799,13 @@ msgstr "使用多線程"
 msgid ""
 "Take advantage of machines with more than one processor by using several "
 "simultaneously. Note that this feature is currently <b>not</b> supported."
-msgstr ""
+msgstr "利用機器與一個以上的處理器，通過同時使用數個。請注意，這個功能目前<b>不會</b>的支持。"
 
 #: ../Launcher.glade:172
 msgid ""
 "Take advantage of machines with more than one processor by using several "
 "simultaneously. Note that this feature is currently not supported."
-msgstr ""
+msgstr "利用機器與一個以上的處理器，通過同時使用數個。注意，此功能目前不支持。"
 
 #: ../Launcher.glade:225
 msgid ""
@@ -813,12 +816,15 @@ msgid ""
 "If you are unsure about any option, just <b>hover</b> your mouse over it for "
 "an explanation. The default configuration is recommended."
 msgstr ""
+"這些設置允許您篩選特定類型的數據。如果你離開這些，一切都可以恢復其默認值。\n"
+"\n"
+"如果您不確定有關的任何選項，只要<b>按住</b>您的滑鼠指標來得到提示。建議使用默認的配置。"
 
 #: ../Launcher.glade:273 ../Launcher.glade:274
 msgid ""
 "Extract from matching Viking lander diode filters. These include colour, "
 "infrared, sun, or survey. By default, all diode filters are acceptable."
-msgstr ""
+msgstr "從批配中的Viking登陸器二極管過濾器。這些措施包括彩色，紅外，太陽，或調查。默認情況下，所有的二極管過濾器是可以接受的。"
 
 #: ../Launcher.glade:299
 msgid "<b>Diode Filter:</b>"
@@ -830,6 +836,8 @@ msgid ""
 "lander 2 touched down on <i>Utopia Planitia</i> and Viking lander 1 on "
 "<i>Chryse Planitia</i>."
 msgstr ""
+"僅由一個特定的著陸器拍攝的圖像進行提取。Viking登陸器降落在<i>Utopia Planitia</i>和Viking著陸器 1 <i>Chryse "
+"Planitia</i>。"
 
 #: ../Launcher.glade:321 ../Launcher.glade:329
 msgid ""
@@ -837,6 +845,7 @@ msgid ""
 "lander 2 touched down on Utopia Planitia and Viking lander 1 on Chryse "
 "Planitia."
 msgstr ""
+"僅由一個特定的著陸器拍攝的圖像進行提取。Viking著陸器2降落在Utopia Planitia和Viking登陸器1在Chryse Planitia。"
 
 #: ../Launcher.glade:361
 msgid "<b>Lander Filter:</b>"
@@ -851,6 +860,8 @@ msgid ""
 "If you are unsure about any option, just <b>hover</b> your mouse over it for "
 "an explanation. The default configuration is recommended."
 msgstr ""
+"在<b>VikingExtractor</b>有許多不同的配置選項控制如何恢復與他們的圖像和它做了什麼。在接下來的幾個步驟，我們會對其進行配置。\n"
+"如果您不確定有關的任何選項，只是<b>按住</b>您的滑鼠以得到提示。建議使用默認的配置。"
 
 #: ../Launcher.glade:479
 msgid ""
@@ -861,6 +872,8 @@ msgid ""
 "If you are unsure about any option, just <b>hover</b> your mouse over it for "
 "an explanation. The default configuration is recommended."
 msgstr ""
+"讓我們開始你想要恢復的文件<B>組織</b>在目錄中以前選擇的。如果你選擇一個以上的方法，他們將被自動嵌套子文件夾內。\n"
+"如果您不確定有關的任何選項，只要<b>按住</b>您的滑鼠以得到提示。建議使用默認的配置。"
 
 #: ../Launcher.glade:509
 msgid "Organize by sensor band type"
@@ -870,7 +883,7 @@ msgstr "整理依照感測器頻段類型"
 msgid ""
 "Organizes the images into subdirectories named after the sensor band type "
 "used on the lander to capture the data, such as Colour or Infrared."
-msgstr ""
+msgstr "組織這個影像到子目錄，在著陸器上使用捕捉到的數據之後，例如顏色或紅外線。"
 
 #: ../Launcher.glade:527
 msgid "Organize by location on Martian surface"
@@ -881,7 +894,7 @@ msgid ""
 "Organizes the images into subdirectories named after the physical location "
 "on the surface of Mars where they were taken. This will be either Utopia "
 "Planitia or Chryse Planitia."
-msgstr ""
+msgstr "組織這個影像到子目錄，在火星表面上的物理位置。這是任一個Utopia Planitia或Chryse Planitia。"
 
 #: ../Launcher.glade:547
 msgid "Organize by Martian month"
@@ -894,6 +907,8 @@ msgid ""
 "Virgo, and so on. For more information, see section 8.15.4 of the Avaneya "
 "Project Crew Handbook."
 msgstr ""
+"組織這個影像到子目錄，在一個月之後他們可以得到。月份順序為：雙子座，巨蟹座，獅子座，處女座，等等。欲了解更多信息，請參見第8.15.4的Avaneya "
+"Project Crew手冊。"
 
 #: ../Launcher.glade:565
 msgid "Organize by mission solar day"
@@ -905,6 +920,9 @@ msgid ""
 "they were taken on, offset relative to zero. Solar day zero was the day of a "
 "given lander having touched down."
 msgstr ""
+"Put reconstructed images into subdirectories numbered after the solar day "
+"they were taken on, offset relative to zero. Solar day zero was the day of a "
+"given lander having touched down."
 
 #: ../Launcher.glade:588
 msgid "?"
@@ -917,6 +935,9 @@ msgid ""
 "If you are unsure about any option, just <b>hover</b> your mouse over it for "
 "an explanation. The default configuration is recommended."
 msgstr ""
+"這些選項控制如何VikingExtractor的圖像恢復工作。\n"
+"\n"
+"如果您不確定有關的任何選項，只要<b>按住</b>您的滑鼠以得到提示。建議使用默認的配置。"
 
 #: ../Launcher.glade:665
 msgid "No automatic rotation"
@@ -931,6 +952,12 @@ msgid ""
 "right side up before reassembling unless this option is selected. If you "
 "don't know what this is, you should probably leave it set to the default."
 msgstr ""
+"A given fully rendered image in the Viking Lander image archive might be "
+"scattered in different parts across many different files. Sometimes the "
+"parts are not all oriented the same way (rotated differently). The "
+"VikingExtractor's artificial intelligence will attempt to orient them all "
+"right side up before reassembling unless this option is selected. If you "
+"don't know what this is, you should probably leave it set to the default."
 
 #: ../Launcher.glade:683
 msgid "Do not reconstruct"
@@ -945,6 +972,12 @@ msgid ""
 "as separate image files. If you don't know what this is, you should probably "
 "leave it set to the default."
 msgstr ""
+"A given fully rendered image in the Viking Lander image archive might be "
+"scattered in different parts across many different files. If this option is "
+"selected, the VikingExtractor won't attempt to reassemble the images, but "
+"instead it will just extract and dump all constituent components (band data) "
+"as separate image files. If you don't know what this is, you should probably "
+"leave it set to the default."
 
 #. This is set at runtime. Don't bother to translate.
 #: ../Launcher.glade:715
@@ -1098,6 +1131,7 @@ msgid ""
 "corrupted? We recommend that you do this at least once, or if you suspect "
 "that your disc may be damaged."
 msgstr ""
+"該磁碟中包含了大量的數據恢復軟件將嘗試檢查可收回圖像。雖然我們已經優化了數據，它仍然是非常大的，可能要花很長的時間，這取決於您的計算機的速度。"
 
 #: ../Launcher.glade:1858
 msgid "Perform DVD integrity check"
