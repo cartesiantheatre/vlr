@@ -116,14 +116,6 @@ class LauncherApp(object):
         # Prepare background music if GStreamer available...
         if haveGStreamer:
 
-            # Create volume button...
-            self.volumeButton = Gtk.VolumeButton(size=Gtk.IconSize.BUTTON)
-            self.volumeButton.set_orientation(Gtk.Orientation.HORIZONTAL)
-            self.assistant.add_action_widget(self.volumeButton)
-
-            # Connect its signal...
-            self.volumeButton.connect("value-changed", self.onVolumeChanged)
-
             # Initialize GStreamer, if not already...
             Gst.init_check(None)
 
@@ -143,6 +135,14 @@ class LauncherApp(object):
             fakeSink = Gst.ElementFactory.make("fakesink", "fakesink")
             assert(fakeSink)
             self._playBin.set_property("video-sink", fakeSink)
+
+            # Create volume button...
+            self.volumeButton = Gtk.VolumeButton(size=Gtk.IconSize.BUTTON)
+            self.volumeButton.set_orientation(Gtk.Orientation.HORIZONTAL)
+            self.assistant.add_action_widget(self.volumeButton)
+
+            # Connect its signal...
+            self.volumeButton.connect("value-changed", self.onVolumeChanged)
 
         # Construct and show the opening video window, unless user disabled...
         if not LauncherArguments.getArguments().noSplash:

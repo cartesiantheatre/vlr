@@ -50,8 +50,9 @@
 #        =================
 #
 #        * GStreamer 1.0 base plugins as a soft dependency since at time of 
-#          authoring gir1.2-gst-plugins-base-1.0 did not ship pre-installed on 
-#          Ubuntu, up to and including Precise (12.04)
+#          authoring gir1.2-gst-plugins-base-1.0 and gstreamer1.0-plugins-base
+#          did not ship pre-installed on Ubuntu, up to and including Precise 
+#          (12.04)
 #
 
 # Useful constants...
@@ -82,8 +83,12 @@
     SymbolStatusOk="${VT100Bold}${VT100ColourGreen}✓${VT100Reset}"
     SymbolStatusFail="${VT100Bold}${VT100ColourRed}✗${VT100Reset}"
 
-    # The lock file containing the process ID... (FHS 5.9.1)
-    ProcessIDFile="/var/lock/vlr-lock"
+    # The lock file containing the process ID. I had to ignore FHS 5.9.1
+    #  because unfortunately some distros have non-user writable /var/lock, or
+    #  at least require user to be member of some special group, such as "lock"
+    #  or what have you. For now we can write the lock to home directory...
+    #ProcessIDFile="/var/lock/vlr-lock"
+    ProcessIDFile="$HOME/.vlr-lock"
 
     # Complete path to the directory containing this script...
     #AutostartScriptDirectory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -383,23 +388,50 @@ InitializeRuntime()
 
                 # Precise... (12.04)
                 "precise")
-                    PackagesRequired=("python3-gi" "python3-cairo" "python3-gi-cairo")
+                    PackagesRequired=(                  \
+                        "python3-gi"                    \
+                        "python3-cairo"                 \
+                        "python3-gi-cairo")
                 ;;
 
                 # Quantal... (12.10)
                 "quantal")
-                    PackagesRequired=("python3-gi" "python3-cairo" "python3-gi-cairo" "gir1.2-gst-plugins-base-1.0")
+                    PackagesRequired=(                  \
+                        "python3-gi"                    \
+                        "python3-cairo"                 \
+                        "python3-gi-cairo"              \
+                        "gir1.2-gst-plugins-base-1.0"   \
+                        "gir1.2-gtk-3.0"                \
+                        "libgstreamer1.0-0"             \
+                        "gstreamer1.0-plugins-base"     \
+                        "gstreamer1.0-plugins-good")
                 ;;
 
                 # Raring... (13.04)
                 "raring")
-                    PackagesRequired=("python3-gi" "python3-cairo" "python3-gi-cairo" "gir1.2-gst-plugins-base-1.0")
+                    PackagesRequired=(                  \
+                        "python3-gi"                    \
+                        "python3-cairo"                 \
+                        "python3-gi-cairo"              \
+                        "gir1.2-gst-plugins-base-1.0"   \
+                        "gir1.2-gtk-3.0"                \
+                        "libgstreamer1.0-0"             \
+                        "gstreamer1.0-plugins-base"     \
+                        "gstreamer1.0-plugins-good")
                 ;;
 
                 # Unknown release...
                 *)
-                    # Try to guess...
-                    PackagesRequired=("python3-gi" "python3-cairo" "python3-gi-cairo")
+                    # Try to guess in the hopes of forward compatibility...
+                    PackagesRequired=(                  \
+                        "python3-gi"                    \
+                        "python3-cairo"                 \
+                        "python3-gi-cairo"              \
+                        "gir1.2-gst-plugins-base-1.0"   \
+                        "gir1.2-gtk-3.0"                \
+                        "libgstreamer1.0-0"             \
+                        "gstreamer1.0-plugins-base"     \
+                        "gstreamer1.0-plugins-good")
                     echo "Warning: Unknown Ubuntu release ($DistroCodeName)." \
                         "Guessing dependencies..."
                 ;;
@@ -417,15 +449,36 @@ InitializeRuntime()
             # Which release?
             case "$DistroCodeName" in
 
-                # Beefy Miracle...
+                # Beefy Miracle... (18)
                 "Beefy Miracle")
                     PackagesRequired=("python3-gobject")
+                ;;
+
+                # Schrödinger’s Cat... (19)
+                "Schrödinger’s Cat")
+                    PackagesRequired=(                  \
+                        "python3"                       \
+                        "python3-gobject"               \
+                        "python3-cairo"                 \
+                        "gstreamer1-plugins-good"       \
+                        "gstreamer1-plugins-base"       \
+                        "gobject-introspection"         \
+                        "cairo-gobject"                 \
+                        "gstreamer1")
                 ;;
 
                 # Unknown release...
                 *)
                     # Try to guess...
-                    PackagesRequired=("python3-gobject")
+                    PackagesRequired=(                  \
+                        "python3"                       \
+                        "python3-gobject"               \
+                        "python3-cairo"                 \
+                        "gstreamer1-plugins-good"       \
+                        "gstreamer1-plugins-base"       \
+                        "gobject-introspection"         \
+                        "cairo-gobject"                 \
+                        "gstreamer1")
                     echo "Warning: Unknown Fedora release ($DistroCodeName)." \
                         "Guessing dependencies..."
                 ;;
@@ -441,13 +494,19 @@ InitializeRuntime()
                 
                 # Debian Wheezy. Squeeze doesn't have the needed dependencies...
                 "wheezy")
-                    PackagesRequired=("python3-gi" "python3-cairo" "python3-gi-cairo")
+                    PackagesRequired=(      \
+                        "python3-gi"        \
+                        "python3-cairo"     \
+                        "python3-gi-cairo")
                 ;;
 
                 # Unknown release...
                 *)
                     # Try to guess...
-                    PackagesRequired=("python3-gi" "python3-cairo" "python3-gi-cairo")
+                    PackagesRequired=(      \
+                        "python3-gi"        \
+                        "python3-cairo"     \
+                        "python3-gi-cairo")
                     echo "Warning: Unknown Debian release ($DistroCodeName)." \
                         "Guessing dependencies..."
                 ;;
@@ -480,38 +539,13 @@ InitializeRuntime()
         # Print to console missing packages...
         echo "Packages which need to be installed... ${PackagesMissing[*]}"
 
-        # Take appropriate resolution for distro...
-        case "$Distro" in
-        
-            # Ubuntu...
-            [Uu]buntu)
-                
-                # Prompt user for available options...
-                zenity \
-                    --question \
-                    --title="$Title" \
-                    --window-icon=$Icon \
-                    --text="Welcome! This application needs the following additional software. Would you like to install it now?\n\n\t${PackagesMissing[*]}" \
-                    --ok-label="Yes" \
-                    --cancel-label="No"
-
-                # User opted to install the packages...
-                if [ $? == 0 ]; then
-                    software-center ${PackagesMissing[*]}
-                fi
-            ;;
-
-            # Some other distro...
-            *)
-                zenity \
-                    --info \
-                    --title="$Title" \
-                    --window-icon=$Icon \
-                    --text="Welcome! This application needs the following additional software you can install with your operating system's package manager. Once it is installed, just restart the application.\n\n\t${PackagesMissing[*]}" \
-                    --ok-label="Ok"
-            ;;
-            
-        esac
+        # Alert user...
+        zenity \
+            --info \
+            --title="$Title" \
+            --window-icon=$Icon \
+            --text="Welcome! This application needs the following additional software you can install with your operating system's package manager. Once it is installed, just restart the application.\n\n\t${PackagesMissing[*]}" \
+            --ok-label="Ok"
 
         # Eject the media only if we are running off of removable media...
         EjectRequested=true
@@ -590,12 +624,13 @@ CheckRPMInstalled()
 
     # Check if the package is installed...
     echo -n "Checking if $Package is installed... "
-    $OldLanguage=$LANGUAGE
+    OldLanguage=$LANGUAGE
     LANGUAGE="C" yum list installed $Package &> /dev/null
-    $LANGUAGE=$OldLanguage
+    Status=$?
+    LANGUAGE=$OldLanguage
 
     # Installed...
-    if [ $? == 0 ]
+    if [ $Status == 0 ]
     then
         echo -e $SymbolStatusOk
         return 1
@@ -648,6 +683,12 @@ Main()
 {
     # Print banner...
     PrintBanner
+
+    # Make sure we are not being run as root...
+    if [ "$(id -u)" == "0" ]; then
+       echo "This script should not be run as root..." 1>&2
+       exit 1
+    fi
 
     # Lock the script to ensure no other instances are running...
     LockScript

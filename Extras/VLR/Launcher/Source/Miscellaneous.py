@@ -48,6 +48,8 @@ def getMachineArchitecture():
         machineArchitecture = "amd64"
     elif re.search("i[3456789]86|x86|i86pc", machineArchitecture):
         machineArchitecture = "i386"
+    elif re.search("mips64|mipsel", machineArchitecture) and sys.byteorder == "little":
+        machineArchitecture = "mipsel"
 
     # Return the machine architecture to the caller...
     return machineArchitecture

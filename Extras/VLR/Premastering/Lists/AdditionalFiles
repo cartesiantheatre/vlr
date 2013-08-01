@@ -1,9 +1,12 @@
-autorun=./XDG/autorun
 .autoopen=./XDG/autoopen
-.directory=./XDG/avaneya_vlr.directory
-autorun.inf=Woe32/autorun.inf
+AutoRun.inf=./Woe32/AutoRun.inf
+autorun=./XDG/autorun
+ChangeLog=../Extractor/ChangeLog
 Copying=../../../Copying
 Credits=../../../Credits
-Launcher/Mission Data=/home/kip/Projects/Avaneya-Private/Viking Lander Remastered/Mastered/
-Launcher/Data/Opening.mkv=/home/kip/Projects/Avaneya-Private/Artwork/Server/Animations/Logos/Studio/Joe/Revision 02/Opening.mkv
+.directory=./XDG/avaneya_vlr.directory
 Launcher/Data/Music.ogg=/home/kip/Projects/Avaneya-Private/Music/Viking Lander Remastered/Monokle & Galun - Crossed Fingers.ogg
+Launcher/Data/Opening.mkv=/home/kip/Projects/Avaneya-Private/Artwork/Server/Animations/Logos/Studio/Joe/Revision 02/Opening.mkv
+Launcher/Mission Data=/home/kip/Projects/Avaneya-Private/Viking Lander Remastered/Mastered/
+ReadMe=./ReadMe
+Woe32/Woe32Stub.exe=./Woe32/Stub/Woe32Stub.exe

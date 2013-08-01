@@ -1,0 +1,6 @@
+// Includes...
+#include <windows.h>
+
+// Shell's executable icon...
+1 ICON DISCARDABLE "Icon.ico"
+

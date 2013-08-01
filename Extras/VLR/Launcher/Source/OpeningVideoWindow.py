@@ -128,17 +128,27 @@ class OpeningVideoWindowProxy(object):
         self._playBin.get_state(5000000000)
         
         # Get the video pad...
+        videoPad = None
         videoPad = self._playBin.emit("get-video-pad", 0)
         
         # Video never loaded...
         if videoPad is None:
             return
 
-        # Extract the video's dimensions...        
+        # Request video metadata...
+        videoPadCapabilities = None
         videoPadCapabilities=videoPad.get_current_caps()
-        (success, videoWidth) = videoPadCapabilities.get_structure(0).get_int("width")
-        (success, videoHeight) = videoPadCapabilities.get_structure(0).get_int("height")
-        assert(success)
+        
+        # Got video metadata...
+        if videoPadCapabilities:
+            (success, videoWidth) = videoPadCapabilities.get_structure(0).get_int("width")
+            (success, videoHeight) = videoPadCapabilities.get_structure(0).get_int("height")
+            assert(success)
+        
+        # Didn't get video metadata, fallback to guessing dimensions...
+        else:
+            videoWidth  = 1920
+            videoHeight = 1200
 
         # Resize drawing area so video is 3/4 screen width...
         (monitorWidth, monitorHeight) = getMonitorWithCursorSize()

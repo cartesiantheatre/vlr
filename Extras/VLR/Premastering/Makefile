@@ -25,14 +25,17 @@ VOLUME_ID               = "AVANEYA_VLR"
 # Generated image file name...
 ISO                     = Avaneya_Viking_Lander_Remastered.iso
 
-# Image root prefix...
-IMAGE_DIR               = $(abspath ./Image/)
+# Image staging root prefix...
+STAGING_DIR             = $(abspath ./Staging/)
 
 # Extractor location...
 EXTRACTOR_DIR           = $(abspath ../Extractor)
 
 # VLR location...
 VLR_DIR                 = $(abspath ../Launcher)
+
+# Woe32 autorun stub...
+WOE32STUB_DIR           = $(abspath ./Woe32/Stub/)
 
 # Premastering contents, exclusion, and optimization list...
 INCLUDE_LIST            = Lists/AdditionalFiles
@@ -63,9 +66,14 @@ $(ISO): \
   $(EXCLUDE_LIST) \
   $(OPTIMIZATION_LIST) \
   XDG/* \
-  vlr.stamp
+  vlr.stamp \
+  $(WOE32STUB_DIR)/Woe32Stub.exe
 	@chmod +x -c XDG/autorun
-	genisoimage -o $@ $(GENISOIMAGE_PARAMETERS) $(IMAGE_DIR)
+	genisoimage -o $@ $(GENISOIMAGE_PARAMETERS) $(STAGING_DIR)
+
+# Woe32 autorun stub...
+$(WOE32STUB_DIR)/Woe32Stub.exe:
+	cd $(WOE32STUB_DIR)/ && make
 
 # Generate checksum...
 MD5SUM: $(ISO)
@@ -83,12 +91,13 @@ clean:
 	-@$(RM) -v $(ISO) vlr.stamp MD5SUM
 	cd $(VLR_DIR)/Data/Translations && \
 	make clean && \
-	INSTALL_DIR=$(IMAGE_DIR)/Launcher/Data/Translations make uninstall-po
+	INSTALL_DIR=$(STAGING_DIR)/Launcher/Data/Translations make uninstall-po
+	cd $(WOE32STUB_DIR)/ && make clean
 
 # Copy the VLR into the image with translations built...
 vlr.stamp: $(VLR_DIR)/Source/*.py
-	@rsync --delete --delete-excluded -avz --exclude-from=$(EXCLUDE_LIST) --progress --partial $(VLR_DIR) $(IMAGE_DIR)/
-	cd $(VLR_DIR)/Data/Translations && make && INSTALL_DIR=$(IMAGE_DIR)/Launcher/Data/Translations make install-po
+	@rsync --delete --delete-excluded -avz --exclude-from=$(EXCLUDE_LIST) --progress --partial $(VLR_DIR) $(STAGING_DIR)/
+	cd $(VLR_DIR)/Data/Translations && make && INSTALL_DIR=$(STAGING_DIR)/Launcher/Data/Translations make install-po
 	touch vlr.stamp
 
 # Directive to make to let it know that these targets don't generate filesystem 
