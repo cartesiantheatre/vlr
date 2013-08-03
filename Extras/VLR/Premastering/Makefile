@@ -61,12 +61,13 @@ GENISOIMAGE_PARAMETERS  =           \
 all: $(ISO) MD5SUM
 
 # Build the image by coalescing everything needed from various places...
-$(ISO): \
-  $(INCLUDE_LIST) \
-  $(EXCLUDE_LIST) \
-  $(OPTIMIZATION_LIST) \
-  XDG/* \
-  vlr.stamp \
+$(ISO):                 \
+  $(INCLUDE_LIST)       \
+  $(EXCLUDE_LIST)       \
+  $(OPTIMIZATION_LIST)  \
+  XDG/*                 \
+  ve_l10n.stamp         \
+  vlr.stamp             \
   $(WOE32STUB_DIR)/Woe32Stub.exe
 	@chmod +x -c XDG/autorun
 	genisoimage -o $@ $(GENISOIMAGE_PARAMETERS) $(STAGING_DIR)
@@ -80,30 +81,56 @@ MD5SUM: $(ISO)
 	@echo "Generating image checksum. Please wait..."
 	@md5sum $(ISO) > $@
 
-# Check what we can...
+# Check VLR / VE translations that were staged, general iso9660 image structure, 
+#  and finally verify image checksum...
 check: $(ISO)
+	cd $(EXTRACTOR_DIR)/Translations && make installcheck localedir=$(STAGING_DIR)/Extractor/locale
+	cd $(STAGING_DIR)/Launcher/Data/Translations && make check
 	@isovfy -i $(ISO)
 	@echo "Verifying image checksum. Please wait..."
 	@md5sum --warn --check MD5SUM
 
-# Clean up...
-clean:
-	-@$(RM) -v $(ISO) vlr.stamp MD5SUM
-	cd $(VLR_DIR)/Data/Translations && \
-	make clean && \
-	INSTALL_DIR=$(STAGING_DIR)/Launcher/Data/Translations make uninstall-po
-	cd $(WOE32STUB_DIR)/ && make clean
+# Clean up everything...
+clean: ve_l10n.clean vlr.clean
+	-@$(RM) -v $(ISO) MD5SUM
+	cd $(WOE32STUB_DIR)/ && make $@
 
-# Copy the VLR into the image with translations built...
+# Inject VikingExtractor message catalogues into staging area...
+ve_l10n.stamp:
+	cd $(EXTRACTOR_DIR)/Translations && \
+	make update-gmo && \
+	make install localedir=$(STAGING_DIR)/Extractor/locale
+	touch $@
+
+# Inject VLR into staging area, compiling message catalogues in place...
 vlr.stamp: $(VLR_DIR)/Source/*.py
 	@rsync --delete --delete-excluded -avz --exclude-from=$(EXCLUDE_LIST) --progress --partial $(VLR_DIR) $(STAGING_DIR)/
-	cd $(VLR_DIR)/Data/Translations && make && INSTALL_DIR=$(STAGING_DIR)/Launcher/Data/Translations make install-po
-	touch vlr.stamp
+	cd $(VLR_DIR)/Data/Translations && \
+	make update-gmo && \
+	make install-po localedir=$(STAGING_DIR)/Launcher/Data/Translations
+	touch $@
+
+# Clean the above...
+ve_l10n.clean:
+	cd $(EXTRACTOR_DIR)/Translations && \
+	make clean && \
+	make uninstall localedir=$(STAGING_DIR)/Extractor/locale
+	cd $(STAGING_DIR)/Extractor/locale && find . -print -type d -empty -delete
+	-@$(RM) -v ve_l10n.stamp
+
+# Clean the above...
+vlr.clean:
+	cd $(VLR_DIR)/Data/Translations && \
+	make clean && \
+	make uninstall-po localedir=$(STAGING_DIR)/Launcher/Data/Translations
+	-@$(RM) -v vlr.stamp
 
 # Directive to make to let it know that these targets don't generate filesystem 
 #  objects / products and therefore no need to check time stamps...
-.PHONY: \
-  all   \
-  check \
-  clean
+.PHONY:         \
+  all           \
+  check         \
+  clean         \
+  vlr.clean     \
+  ve_l10n.clean
 

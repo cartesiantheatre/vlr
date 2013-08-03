@@ -33,7 +33,7 @@ POTFILE = $(PODIR)/vlr.pot
 
 # Location to install compiled binary message catalogues to. Default, if not
 #  overriden via user environment, to current directory...
-INSTALL_DIR ?= .
+localedir ?= .
 
 # Command to install data...
 INSTALL_DATA = install --mode=644
@@ -51,7 +51,8 @@ POFILES =       \
     it.po       \
     fil.po      \
     uk.po       \
-    ru.po
+    ru.po       \
+    zh_TW.po
 
 # List of all translation catalogues in compiled form...
 GMOFILES=$(POFILES:.po=.gmo)
@@ -101,7 +102,7 @@ install-po: all
 	@for GMOFILE in ${GMOFILES}; do \
 		GMOFILE=`basename $$GMOFILE`; \
 		LANG=`echo $$GMOFILE | sed -e 's/\.gmo//'`; \
-		FINAL_DIR=$(INSTALL_DIR)/$$LANG/LC_MESSAGES; \
+		FINAL_DIR=$(localedir)/$$LANG/LC_MESSAGES; \
 		mkdir -p $$FINAL_DIR; \
 		$(INSTALL_DATA) $$GMOFILE $$FINAL_DIR/$(DOMAIN).mo; \
 		echo "installing $$GMOFILE as $$FINAL_DIR/$(DOMAIN).mo"; \
@@ -112,13 +113,13 @@ uninstall-po:
 	@for GMOFILE in ${GMOFILES}; do \
 		GMOFILE=`basename $$GMOFILE`; \
 		LANG=`echo $$GMOFILE | sed -e 's/\.gmo//'`; \
-		FINAL_DIR=$(INSTALL_DIR)/$$LANG/LC_MESSAGES; \
+		FINAL_DIR=$(localedir)/$$LANG/LC_MESSAGES; \
 		if test -f $$FINAL_DIR/$(DOMAIN).mo ; then \
 			rm -fv $$FINAL_DIR/$(DOMAIN).mo ; \
 	    fi ; \
-	    if test -d $(INSTALL_DIR)/$$LANG/LC_MESSAGES ; then \
-			rmdir $(INSTALL_DIR)/$$LANG/LC_MESSAGES ; \
-			rmdir $(INSTALL_DIR)/$$LANG/ ; \
+	    if test -d $(localedir)/$$LANG/LC_MESSAGES ; then \
+			rmdir $(localedir)/$$LANG/LC_MESSAGES ; \
+			rmdir $(localedir)/$$LANG/ ; \
 		fi ; \
 	done
 

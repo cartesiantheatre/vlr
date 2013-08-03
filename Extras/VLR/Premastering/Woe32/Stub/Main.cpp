@@ -26,7 +26,7 @@
 int APIENTRY WinMain(
     HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-    // Prompt the user...
+    // Prompt the user. Petzold will be pissed...
     const int Status = MessageBox(
         NULL, 
         "So there's good news and bad news. The bad news is that the Avaneya: "

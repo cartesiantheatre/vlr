@@ -128,12 +128,12 @@ FindLauncherMain()
 
     # Couldn't find it anywhere...
     else
-	    echo $SymbolStatusFail
+        echo $SymbolStatusFail
         zenity --error \
             --title="Error" \
             --window-icon=$Icon \
             --text="Unable to find the Viking Lander Remastered application."
-	    exit 1
+        exit 1
     fi
 }
 
@@ -151,7 +151,7 @@ SetVikingExtractorLocaleDirectory()
 
     # Guess systems...
     else
-	    echo $SymbolStatusFail
+        echo $SymbolStatusFail
     fi
 }
 
@@ -194,15 +194,15 @@ IdentifyDistro()
     # Alert user...
     echo -n "Identifying distribution... "
 
-	# Get the operating system family name...
-	local OS=`uname`
-	
-	# Not running GNU...
-	if [ "${OS}" != "Linux" ] ; then
-	    echo $SymbolStatusFail
-		echo "This autostart script is only supported on GNU/Linux..."
-		exit 1
-	fi
+    # Get the operating system family name...
+    local OS=`uname`
+    
+    # Not running GNU...
+    if [ "${OS}" != "Linux" ] ; then
+        echo $SymbolStatusFail
+        echo "This autostart script is only supported on GNU/Linux..."
+        exit 1
+    fi
 
     # If lsb_release is present, this is easy to get distro and code name...
     if [ -x "`which lsb_release`" ]; then
@@ -211,56 +211,56 @@ IdentifyDistro()
 
     # Otherwise fallback to tedious method of checking for distro specific 
     #  signatures in /etc...
-	else
+    else
 
-	    echo $SymbolStatusFail
-		echo -n "Falling back to checking for distro specific signature in /etc... "
+        echo $SymbolStatusFail
+        echo -n "Falling back to checking for distro specific signature in /etc... "
 
         # Arch...
-	    if [ -f /etc/arch-release ] ; then
-		    Distro='Arch'
-		    DistroCodeName=""
+        if [ -f /etc/arch-release ] ; then
+            Distro='Arch'
+            DistroCodeName=""
 
         # Debian...
-	    elif [ -f /etc/debian_version ] ; then
-		    Distro=`cat /etc/lsb-release | grep '^DISTRIB_ID' | awk -F=  '{ print $2 }'`
-		    DistroCodeName=`cat /etc/lsb-release | grep '^DISTRIB_CODENAME' | awk -F=  '{ print $2 }'`
+        elif [ -f /etc/debian_version ] ; then
+            Distro=`cat /etc/lsb-release | grep '^DISTRIB_ID' | awk -F=  '{ print $2 }'`
+            DistroCodeName=`cat /etc/lsb-release | grep '^DISTRIB_CODENAME' | awk -F=  '{ print $2 }'`
 
-	    # Mandrake...
-	    elif [ -f /etc/mandrake-release ] ; then
-		    Distro='Mandrake'
-		    DistroCodeName=`cat /etc/mandrake-release | sed s/.*\(// | sed s/\)//`
+        # Mandrake...
+        elif [ -f /etc/mandrake-release ] ; then
+            Distro='Mandrake'
+            DistroCodeName=`cat /etc/mandrake-release | sed s/.*\(// | sed s/\)//`
     
         # RedHat... (e.g. Fedora)
-	    elif [ -f /etc/redhat-release ] ; then
-		    Distro=`cat /etc/redhat-release |sed s/\ release.*//`
-		    DistroCodeName=`cat /etc/redhat-release | sed s/.*\(// | sed s/\)//`
-	
-	    # SuSe...
-	    elif [ -f /etc/SuSE-release ] ; then
-		    Distro='SuSe'
-		    DistroCodeName=`cat /etc/SuSE-release | tr "\n" ' '| sed s/VERSION.*//`
+        elif [ -f /etc/redhat-release ] ; then
+            Distro=`cat /etc/redhat-release |sed s/\ release.*//`
+            DistroCodeName=`cat /etc/redhat-release | sed s/.*\(// | sed s/\)//`
+    
+        # SuSe...
+        elif [ -f /etc/SuSE-release ] ; then
+            Distro='SuSe'
+            DistroCodeName=`cat /etc/SuSE-release | tr "\n" ' '| sed s/VERSION.*//`
 
         # Unknown...
-		else
-		    echo $SymbolStatusFail
+        else
+            echo $SymbolStatusFail
             zenity --error \
                 --title="Error" \
                 --window-icon=$Icon \
                 --text="You need to install lsb_release before you can use this software. Use your distribution's package manager."
-		    exit 1
-	    fi
+            exit 1
+        fi
     fi
 
     # Determine which package manager system to use...
 
+        # Zypper based...
+        if [ -x "`which zypper 2>/dev/null`" ]; then
+            DistroPackageManager="zypper"
+        
         # Apt based...
-        if [ -x "`which apt-get 2>/dev/null`" ]; then
+        elif [ -x "`which apt-get 2>/dev/null`" ]; then
             DistroPackageManager="apt"
-
-        # Pacman based...
-        elif [ -x "`which pacman 2>/dev/null`" ]; then
-            DistroPackageManager="pacman"
 
         # Yum based...
         elif [ -x "`which yum 2>/dev/null`" ]; then
@@ -277,9 +277,9 @@ IdentifyDistro()
         fi
 
     # Lock distro identifiers...
- 	readonly Distro
- 	readonly DistroCodeName
- 	readonly DistroPackageManager
+    readonly Distro
+    readonly DistroCodeName
+    readonly DistroPackageManager
 
     # Alert user of what we found...
     echo "${Distro} ${DistroCodeName} $SymbolStatusOk"
@@ -298,8 +298,8 @@ LockScript()
     #  already exists. This is safe because it is atomic. If successful, write
     #  our process ID out into our newly created lock...
     if ( set -o noclobber; echo "$$" > "$ProcessIDFile") 2> /dev/null; then
-	    echo $SymbolStatusOk
-	    OwnLock=true
+        echo $SymbolStatusOk
+        OwnLock=true
 
     # Lock already exists. Check if still alive...
     elif [ -f $ProcessIDFile ] ; then
@@ -310,7 +310,7 @@ LockScript()
         # Cat couldn't read the process ID file so other process may be just
         #  about to remove it...
         if [ $? != 0 ]; then
-    	    echo $SymbolStatusFail
+            echo $SymbolStatusFail
             exit 1
         fi        
 
@@ -320,7 +320,7 @@ LockScript()
 
             # Process is gone so assume lock is stale...
             rm -rf "${ProcessIDFile}"
-    	    echo $SymbolStatusFail
+            echo $SymbolStatusFail
             echo "Removed stale lock..."
 
             # Try setting the lock again...
@@ -328,15 +328,15 @@ LockScript()
 
         # The lock is valid because the other process is active...
         else
-    	    echo $SymbolStatusFail
-    	    echo "Process" $OtherProcessID "is existing instance..."
+            echo $SymbolStatusFail
+            echo "Process" $OtherProcessID "is existing instance..."
             exit 1
         fi
 
     # Could neither find an existing lock, nor write a new one. Some RedHat 
     #  systems and derivatives seem to need to run as a user in 'lock' group...
     else
-	    echo $SymbolStatusFail
+        echo $SymbolStatusFail
         echo "Warning: Cannot read / write $ProcessIDFile, loading anyways..."
     fi
 }
@@ -369,55 +369,25 @@ InitializeRuntime()
         # Note: Do not place commas between packages! Bash treats them as part
         #       of the array element...
 
-        # Arch: Gave up trying to determine dependencies...
-        # [Aa]rch)
-        #    # Note: Rolling release, so no code name...
-        #    PackagesRequired=("gtk3" "libffi" "python-gobject")
-        #    ;;
-
-        # gNewSense: No support. deltah based off of Ubuntu 6.06, but does not 
-        #  even have Python3 available...
-        # gNewSense)
-        #    ;;
-
-        # Ubuntu or official...
-        [Uu]buntu)
+        # openSUSE...
+        [Oo]pen[Ss[Uu][Ss][Ee]*)
 
             # Which release?
             case "$DistroCodeName" in
 
-                # Precise... (12.04)
-                "precise")
-                    PackagesRequired=(                  \
-                        "python3-gi"                    \
-                        "python3-cairo"                 \
-                        "python3-gi-cairo")
-                ;;
-
-                # Quantal... (12.10)
-                "quantal")
-                    PackagesRequired=(                  \
-                        "python3-gi"                    \
-                        "python3-cairo"                 \
-                        "python3-gi-cairo"              \
-                        "gir1.2-gst-plugins-base-1.0"   \
-                        "gir1.2-gtk-3.0"                \
-                        "libgstreamer1.0-0"             \
-                        "gstreamer1.0-plugins-base"     \
-                        "gstreamer1.0-plugins-good")
-                ;;
-
-                # Raring... (13.04)
-                "raring")
-                    PackagesRequired=(                  \
-                        "python3-gi"                    \
-                        "python3-cairo"                 \
-                        "python3-gi-cairo"              \
-                        "gir1.2-gst-plugins-base-1.0"   \
-                        "gir1.2-gtk-3.0"                \
-                        "libgstreamer1.0-0"             \
-                        "gstreamer1.0-plugins-base"     \
-                        "gstreamer1.0-plugins-good")
+                # Dartmouth... (12.3)
+                [Dd]artmouth)
+                    PackagesRequired=(              \
+                        "gstreamer-plugins-base"    \
+                        "gstreamer-plugins-good"    \
+                        "libgstreamer-1_0-0"        \
+                        "python3"                   \
+                        "python3-cairo"             \
+                        "python3-gobject"           \
+                        "python3-gobject-cairo"     \
+                        "typelib-1_0-Gst-1_0"       \
+                        "typelib-1_0-Gtk-3_0"       \
+                        "typelib-1_0-Vte-2_90")
                 ;;
 
                 # Unknown release...
@@ -432,16 +402,92 @@ InitializeRuntime()
                         "libgstreamer1.0-0"             \
                         "gstreamer1.0-plugins-base"     \
                         "gstreamer1.0-plugins-good")
-                    echo "Warning: Unknown Ubuntu release ($DistroCodeName)." \
+                    echo "Warning: Unknown openSUSE release ($DistroCodeName)." \
                         "Guessing dependencies..."
                 ;;
 
             esac
             ;;
 
-        # CentOS: Not supported because Python3 unavailable...
-        # CentOS)
-        #    ;;
+        # LinuxMint...
+        [Ll]inux[Mm]int)
+
+            # Which release?
+            case "$DistroCodeName" in
+
+                # Olivia... (15, based on Ubuntu Raring)
+                "olivia")
+                    PackagesRequired=(                  \
+                        "python3"                       \
+                        "python3-gi"                    \
+                        "python3-cairo"                 \
+                        "python3-gi-cairo"              \
+                        "gir1.2-gst-plugins-base-1.0"   \
+                        "gir1.2-gtk-3.0"                \
+                        "libgstreamer1.0-0"             \
+                        "gstreamer1.0-plugins-base"     \
+                        "gstreamer1.0-plugins-good")
+                ;;
+
+                # Unknown release...
+                *)
+                    # Try to guess in the hopes of forward compatibility...
+                    PackagesRequired=(                  \
+                        "python3"                       \
+                        "python3-gi"                    \
+                        "python3-cairo"                 \
+                        "python3-gi-cairo"              \
+                        "gir1.2-gst-plugins-base-1.0"   \
+                        "gir1.2-gtk-3.0"                \
+                        "libgstreamer1.0-0"             \
+                        "gstreamer1.0-plugins-base"     \
+                        "gstreamer1.0-plugins-good")
+                    echo "Warning: Unknown LinuxMint release ($DistroCodeName)." \
+                        "Guessing dependencies..."
+                ;;
+
+            esac
+            ;;
+
+        # Ubuntu or official...
+        [Uu]buntu)
+
+            # Which release?
+            case "$DistroCodeName" in
+
+                # Raring... (13.04)
+                "raring")
+                    PackagesRequired=(                  \
+                        "python3"                       \
+                        "python3-gi"                    \
+                        "python3-cairo"                 \
+                        "python3-gi-cairo"              \
+                        "gir1.2-gst-plugins-base-1.0"   \
+                        "gir1.2-gtk-3.0"                \
+                        "libgstreamer1.0-0"             \
+                        "gstreamer1.0-plugins-base"     \
+                        "gstreamer1.0-plugins-good")
+                ;;
+
+                # Unknown release...
+                *)
+                    # Try to guess in the hopes of forward compatibility...
+                    PackagesRequired=(                  \
+                        "python3"                       \
+                        "python3-gi"                    \
+                        "python3-cairo"                 \
+                        "python3-gi-cairo"              \
+                        "gir1.2-gst-plugins-base-1.0"   \
+                        "gir1.2-gtk-3.0"                \
+                        "libgstreamer1.0-0"             \
+                        "gstreamer1.0-plugins-base"     \
+                        "gstreamer1.0-plugins-good")
+                    echo "Warning: Unknown Ubuntu release ($DistroCodeName)." \
+                        "Guessing dependencies..."
+                ;;
+
+            esac
+            ;;
 
         # Fedora or derivative...
         [Ff]edora)
@@ -495,6 +541,7 @@ InitializeRuntime()
                 # Debian Wheezy. Squeeze doesn't have the needed dependencies...
                 "wheezy")
                     PackagesRequired=(      \
+                        "python3"           \
                         "python3-gi"        \
                         "python3-cairo"     \
                         "python3-gi-cairo")
@@ -504,6 +551,7 @@ InitializeRuntime()
                 *)
                     # Try to guess...
                     PackagesRequired=(      \
+                        "python3"           \
                         "python3-gi"        \
                         "python3-cairo"     \
                         "python3-gi-cairo")
@@ -568,12 +616,17 @@ CheckPackageInstalled()
 
         # Apt based...
         apt)
-            CheckDebInstalled $1
+            CheckDebPackage $1
         ;;
         
         # Yum based...
         yum)
-            CheckRPMInstalled $1
+            CheckRPMPackage $1
+        ;;
+        
+        # Zypper based...
+        zypper)
+            CheckZypperPackage $1
         ;;
 
         # Unknown...
@@ -590,7 +643,7 @@ CheckPackageInstalled()
 # Takes a Debian package name as a single parameter and returns true if it is
 #  installed. Also adds the name of the package if missing to PackagesMissing
 #  global array...
-CheckDebInstalled()
+CheckDebPackage()
 {
     # Get name of package to check as only argument...
     local Package=$1
@@ -617,7 +670,36 @@ CheckDebInstalled()
 # Takes a RPM package name as a single parameter and returns true if it is
 #  installed. Also adds the name of the package if missing to PackagesMissing
 #  global array...
-CheckRPMInstalled()
+CheckZypperPackage()
+{
+    # Get name of package to check as only argument...
+    local Package=$1
+
+    # Check if the package is installed...
+    echo -n "Checking if $Package is installed... "
+    OldLanguage=$LANGUAGE
+    LANGUAGE="C" zypper info $Package 2> /dev/null | grep -i "Installed: Yes" &> /dev/null
+    Status=$?
+    LANGUAGE=$OldLanguage
+
+    # Installed...
+    if [ $Status == 0 ]
+    then
+        echo -e $SymbolStatusOk
+        return 1
+
+    # Not installed...
+    else
+        echo -e $SymbolStatusFail
+        PackagesMissing=("${PackagesMissing[*]}" $Package)
+        return 0
+    fi
+}
+
+# Takes a zypper package name as a single parameter and returns true if it is
+#  installed. Also adds the name of the package if missing to PackagesMissing
+#  global array...
+CheckRPMPackage()
 {
     # Get name of package to check as only argument...
     local Package=$1
@@ -696,10 +778,10 @@ Main()
     # Zenity has come on most GNU distros...
     echo -n "Checking for zenity... "
     if [ ! -x "`which zenity`" ]; then
-	    echo $SymbolStatusFail
-	    exit 1
-	else
-	    echo $SymbolStatusOk
+        echo $SymbolStatusFail
+        exit 1
+    else
+        echo $SymbolStatusOk
         echo "Using zenity `zenity --version`... "
     fi
 
