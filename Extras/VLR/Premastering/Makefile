@@ -79,7 +79,9 @@ $(WOE32STUB_DIR)/Woe32Stub.exe:
 # Generate checksum...
 MD5SUM: $(ISO)
 	@echo "Generating image checksum. Please wait..."
-	@md5sum $(ISO) > $@
+	@#pv --progress -B 8m $(ISO) | md5sum > $@
+	@#@sed 's/-/$(ISO)/g' $@
+	md5sum $(ISO) > $@
 
 # Check VLR / VE translations that were staged, general iso9660 image structure, 
 #  and finally verify image checksum...
