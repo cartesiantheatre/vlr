@@ -58,43 +58,56 @@ GENISOIMAGE_PARAMETERS  =           \
     -V $(VOLUME_ID)
 
 # Default target is to built the complete ISO...
-all: $(ISO) MD5SUM
+all: $(ISO)
 
 # Build the image by coalescing everything needed from various places...
-$(ISO):                 \
-  $(INCLUDE_LIST)       \
-  $(EXCLUDE_LIST)       \
-  $(OPTIMIZATION_LIST)  \
-  XDG/*                 \
-  ve_l10n.stamp         \
-  vlr.stamp             \
+$(ISO):                             \
+  $(INCLUDE_LIST)                   \
+  $(EXCLUDE_LIST)                   \
+  $(OPTIMIZATION_LIST)              \
+  XDG/*                             \
+  ve_l10n.stamp                     \
+  vlr.stamp                         \
   $(WOE32STUB_DIR)/Woe32Stub.exe
 	@chmod +x -c XDG/autorun
 	genisoimage -o $@ $(GENISOIMAGE_PARAMETERS) $(STAGING_DIR)
+	@echo "Preparing injectable MD5 checksum, please wait..."
+	@implantisomd5 $(ISO)
 
 # Woe32 autorun stub...
 $(WOE32STUB_DIR)/Woe32Stub.exe:
 	cd $(WOE32STUB_DIR)/ && make
 
-# Generate checksum...
+# Generate a detached MD5 checksum. Note that this is calculated differently 
+#  than the embedded MD5 checksum because the latter is calculated via isomd5sum
+#  tools which skips the last 15 sectors for compatibility reasons...
 MD5SUM: $(ISO)
-	@echo "Generating image checksum. Please wait..."
+	@echo "Generating detached MD5 image checksum, please wait..."
 	@#pv --progress -B 8m $(ISO) | md5sum > $@
 	@#@sed 's/-/$(ISO)/g' $@
-	md5sum $(ISO) > $@
+	@md5sum $(ISO) > $@
+
+# Generate a digital signature on the detached MD5 checksum...
+MD5SUM.gpg: MD5SUM
+	gpg2 --output $@ --armour --detach-sign $<
 
 # Check VLR / VE translations that were staged, general iso9660 image structure, 
-#  and finally verify image checksum...
-check: $(ISO)
+#  and finally verify detached and embedded image checksums...
+check: $(ISO) MD5SUM.gpg
 	cd $(EXTRACTOR_DIR)/Translations && make installcheck localedir=$(STAGING_DIR)/Extractor/locale
 	cd $(STAGING_DIR)/Launcher/Data/Translations && make check
+	@echo "Verifying general iso9660 structure, please wait..."
 	@isovfy -i $(ISO)
-	@echo "Verifying image checksum. Please wait..."
+	@echo "Verifying detached MD5 image checksum, please wait..."
 	@md5sum --warn --check MD5SUM
+	@echo "Verifying embedded MD5 image checksum, please wait..."
+	@checkisomd5 --verbose $(ISO)
+	@echo "Verifying maintainer's digital signature..."
+	@gpg2 --verify MD5SUM.gpg MD5SUM
 
 # Clean up everything...
 clean: ve_l10n.clean vlr.clean
-	-@$(RM) -v $(ISO) MD5SUM
+	-@$(RM) -v $(ISO) MD5SUM MD5SUM.gpg
 	cd $(WOE32STUB_DIR)/ && make $@
 
 # Inject VikingExtractor message catalogues into staging area...
@@ -125,7 +138,7 @@ vlr.clean:
 	cd $(VLR_DIR)/Data/Translations && \
 	make clean && \
 	make uninstall-po localedir=$(STAGING_DIR)/Launcher/Data/Translations
-	-@$(RM) -v vlr.stamp
+	-@$(RM) -v vlr.stamp 
 
 # Directive to make to let it know that these targets don't generate filesystem 
 #  objects / products and therefore no need to check time stamps...

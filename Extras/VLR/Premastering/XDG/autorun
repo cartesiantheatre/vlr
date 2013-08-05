@@ -430,7 +430,9 @@ InitializeRuntime()
                         "python3-gi-cairo"              \
                         "gir1.2-gst-plugins-base-1.0"   \
                         "gir1.2-gtk-3.0"                \
+                        "gir1.2-vte-2.90"               \
                         "libgstreamer1.0-0"             \
+                        "gstreamer1.0-alsa"             \
                         "gstreamer1.0-plugins-base"     \
                         "gstreamer1.0-plugins-good")
                 ;;
@@ -445,7 +447,9 @@ InitializeRuntime()
                         "python3-gi-cairo"              \
                         "gir1.2-gst-plugins-base-1.0"   \
                         "gir1.2-gtk-3.0"                \
+                        "gir1.2-vte-2.90"               \
                         "libgstreamer1.0-0"             \
+                        "gstreamer1.0-alsa"             \
                         "gstreamer1.0-plugins-base"     \
                         "gstreamer1.0-plugins-good")
                     echo "Warning: Unknown LinuxMint release ($DistroCodeName)." \
@@ -470,7 +474,9 @@ InitializeRuntime()
                         "python3-gi-cairo"              \
                         "gir1.2-gst-plugins-base-1.0"   \
                         "gir1.2-gtk-3.0"                \
+                        "gir1.2-vte-2.90"               \
                         "libgstreamer1.0-0"             \
+                        "gstreamer1.0-alsa"             \
                         "gstreamer1.0-plugins-base"     \
                         "gstreamer1.0-plugins-good")
                 ;;
@@ -485,7 +491,9 @@ InitializeRuntime()
                         "python3-gi-cairo"              \
                         "gir1.2-gst-plugins-base-1.0"   \
                         "gir1.2-gtk-3.0"                \
+                        "gir1.2-vte-2.90"               \
                         "libgstreamer1.0-0"             \
+                        "gstreamer1.0-alsa"             \
                         "gstreamer1.0-plugins-base"     \
                         "gstreamer1.0-plugins-good")
                     echo "Warning: Unknown Ubuntu release ($DistroCodeName)." \
@@ -784,8 +792,16 @@ Main()
     # Zenity has come on most GNU distros...
     echo -n "Checking for zenity... "
     if [ ! -x "`which zenity`" ]; then
-        echo $SymbolStatusFail
+
+        # Request an eject, but only if running off removable media...
+        EjectRequested=true
+        
+        # Alert user...
+        echo $SymbolStatusFail "(install zenity package)"
+        
+        # Bail...
         exit 1
+
     else
         echo $SymbolStatusOk
         echo "Using zenity `zenity --version`... "
