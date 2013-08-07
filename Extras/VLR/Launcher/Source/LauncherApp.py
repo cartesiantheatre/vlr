@@ -69,6 +69,7 @@ class LauncherApp(object):
 
         # Initialize Glade builder...
         self.builder = Gtk.Builder()
+        self.builder.set_translation_domain("vlr") # <https://bugzilla.gnome.org/show_bug.cgi?id=574520#c26>
         self.builder.add_from_file(os.path.join(
             LauncherArguments.getArguments().dataRoot, "Launcher.glade"))
 
@@ -188,6 +189,7 @@ class LauncherApp(object):
             aboutDialog.add_credit_section(_("Beta Testers"), [
                 "<a href=\"mailto:adamjb@gmail.com\">Adam Borysiak</a>",
                 "<a href=\"mailto:adam@avaneya.com\">Adam Gornowicz</a>",
+                "<a href=\"mailto:alishams.hassam@gmail.com\">Alishams Hassam</a>",
                 "<a href=\"mailto:algojervia@gmail.com\">Andreas Åberg</a>",
                 "<a href=\"mailto:me@jesseknudsen.com\">Jesse Knudsen</a>",
                 "<a href=\"http://www.josephliau.com\">Joseph Liau</a>"])

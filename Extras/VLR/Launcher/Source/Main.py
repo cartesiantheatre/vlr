@@ -25,6 +25,7 @@ from gi.repository import GObject, Gdk
 
 # i18n...
 import gettext
+import locale
 _ = gettext.gettext
 
 # Arguments...
@@ -47,11 +48,17 @@ if __name__ == '__main__':
     Gdk.threads_init()
 
     # Initialize i18n...
+    #  Note that we have to do this again for Gtk.Builder:
+    #  <https://bugzilla.gnome.org/show_bug.cgi?id=574520>
+    localeDirectory = os.path.join(
+        LauncherArguments.getArguments().dataRoot, "Translations/")
     translation = gettext.translation(
         "vlr", 
         os.path.join(LauncherArguments.getArguments().dataRoot, "Translations/"),
         fallback=True)
     translation.install()
+    locale.bindtextdomain("vlr", localeDirectory)
+    locale.textdomain("vlr")
 
     # Start the launcher GUI...
     launcher = LauncherApp()

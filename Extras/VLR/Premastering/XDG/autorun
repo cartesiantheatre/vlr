@@ -465,6 +465,22 @@ InitializeRuntime()
             # Which release?
             case "$DistroCodeName" in
 
+                # Quantal... (12.10)
+                "quantal")
+                    PackagesRequired=(                  \
+                        "python3"                       \
+                        "python3-gi"                    \
+                        "python3-cairo"                 \
+                        "python3-gi-cairo"              \
+                        "gir1.2-gst-plugins-base-1.0"   \
+                        "gir1.2-gtk-3.0"                \
+                        "gir1.2-vte-2.90"               \
+                        "libgstreamer1.0-0"             \
+                        "gstreamer1.0-alsa"             \
+                        "gstreamer1.0-plugins-base"     \
+                        "gstreamer1.0-plugins-good")
+                ;;
+
                 # Raring... (13.04)
                 "raring")
                     PackagesRequired=(                  \

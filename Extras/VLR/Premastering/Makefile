@@ -106,7 +106,7 @@ check: $(ISO) MD5SUM.gpg
 	@gpg2 --verify MD5SUM.gpg MD5SUM
 
 # Clean up everything...
-clean: ve_l10n.clean vlr.clean
+clean: vlr.clean ve_l10n.clean
 	-@$(RM) -v $(ISO) MD5SUM MD5SUM.gpg
 	cd $(WOE32STUB_DIR)/ && make $@
 

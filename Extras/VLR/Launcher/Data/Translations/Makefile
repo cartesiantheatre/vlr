@@ -77,8 +77,8 @@ clean:
 #  to sect 10.1.9 of the gettext manual, binary message catalogues actually are
 #  machine portable. Endianness is swapped at runtime with a negligible 
 #  performance penalty... <http://rod.gs/t2o>
-%.gmo:
-	@rm -fv $@
+%.gmo: %.po
+	-@rm -f $@
 	@msgfmt --check --statistics --verbose -o $@ $*.po
 
 # Force an update to the machine dependent message catalogs...
