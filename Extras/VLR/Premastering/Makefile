@@ -88,6 +88,7 @@ MD5SUM: $(ISO)
 	@md5sum $(ISO) > $@
 
 # Generate a digital signature on the detached MD5 checksum...
+sign: MD5SUM.gpg
 MD5SUM.gpg: MD5SUM
 	gpg2 --output $@ --armour --detach-sign $<
 
@@ -146,6 +147,7 @@ vlr.clean:
   all           \
   check         \
   clean         \
+  sign          \
   vlr.clean     \
   ve_l10n.clean
 

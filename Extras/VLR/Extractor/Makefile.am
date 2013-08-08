@@ -89,7 +89,7 @@ dist_pkgdata_DATA = \
 man1_MANS = $(top_builddir)/Manual/viking-extractor.man
 
 # Manually add these things to distribution package when dist target is run...
-EXTRA_DIST = build-aux/config.rpath         \
+EXTRA_DIST =        \
     Tests           \
 	Authors         \
 	ChangeLog       \

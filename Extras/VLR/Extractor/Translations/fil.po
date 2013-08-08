@@ -11,12 +11,12 @@ msgstr ""
 "PO-Revision-Date: 2013-07-05 18:39+0000\n"
 "Last-Translator: Joe Tang <Unknown>\n"
 "Language-Team: Filipino <fil@li.org>\n"
+"Language: fil\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2013-08-08 04:48+0000\n"
 "X-Generator: Launchpad (build 16723)\n"
-"Language: fil\n"
 
 #. Initialize the channel map...
 #: Source/Console.cpp:84
@@ -113,8 +113,7 @@ msgstr "hindi ma-save and metadata"
 #: Source/ReconstructableImage.cpp:362
 msgid ""
 "The following is a machine generated collection of metadata of each of\n"
-msgstr ""
-"Ang sumusunod ay koleksiyong metadata na binuo ng machine, ng bawat\n"
+msgstr "Ang sumusunod ay koleksiyong metadata na binuo ng machine, ng bawat\n"
 
 #: Source/ReconstructableImage.cpp:363
 msgid "the image bands used to reconstruct a colour image.\n"
@@ -272,8 +271,7 @@ msgstr " uri ng diode bands (--filter-diode[=type] upang palitan)"
 
 #: Source/VicarImageAssembler.cpp:334
 msgid "camera event doesn't identify itself, cannot index"
-msgstr ""
-"ang kamera ay hindi nagpakilala sa sarili, hindi matuloy ang pag-index"
+msgstr "ang kamera ay hindi nagpakilala sa sarili, hindi matuloy ang pag-index"
 
 #: Source/VicarImageAssembler.cpp:355
 msgid " is a new camera event, indexing"
@@ -373,8 +371,7 @@ msgid "loading"
 msgstr "naglo-load"
 
 #: Source/VicarImageBand.cpp:781
-msgid ""
-"empty file, probably blank magnetic tape or not received back on Earth"
+msgid "empty file, probably blank magnetic tape or not received back on Earth"
 msgstr ""
 "file ay walang laman, posibleng blanko ang magnetic tape o hindi natanggap "
 "sa Earth"
@@ -558,8 +555,7 @@ msgstr "heuristics selected format 6 basic metadata parser"
 
 #: Source/VicarImageBand.cpp:1768
 msgid "invalid logical record label while parsing extended metadata"
-msgstr ""
-"imbalidong label ng talaang lohikal nung pagsuri sa extended metadata"
+msgstr "imbalidong label ng talaang lohikal nung pagsuri sa extended metadata"
 
 #. Alert user if verbose mode enabled...
 #: Source/VicarImageBand.cpp:1789

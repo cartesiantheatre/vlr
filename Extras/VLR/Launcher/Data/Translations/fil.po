@@ -563,7 +563,10 @@ msgid ""
 "\tMachine Architecture: {1}"
 msgstr ""
 "Sa kamalasan ang iyong plataporma ay di-suportado. Walang nahanap na "
-"kinakailangang napapagana."
+"kinakailangang napapagana.\n"
+"\n"
+"\tOperating System: {0}\n"
+"\tMachine Architecture: {1}"
 
 #: ../../Source/VerificationProgressPage.py:53
 msgid "Verification Progress"
@@ -673,7 +676,7 @@ msgstr "Disable automatic image component orientation: {0}\n"
 #: ../../Source/ConfirmPage.py:132
 #, python-brace-format
 msgid "Dump components without reconstruction: {0}\n"
-msgstr "Itambak ang mga piraso na walang pagbubuong-panibago\n"
+msgstr "Itambak ang mga piraso na walang pagbubuong-panibago {0}\n"
 
 #. Filters...
 #: ../../Source/ConfirmPage.py:137

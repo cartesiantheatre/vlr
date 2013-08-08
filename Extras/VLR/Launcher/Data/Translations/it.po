@@ -514,7 +514,9 @@ msgid ""
 "\t{0}"
 msgstr ""
 "Si è verificato un problema di comunicazione con il server remoto. Ritentare "
-"in un secondo momento."
+"in un secondo momento.\n"
+"\n"
+"\t{0}"
 
 #: ../../Source/LauncherArguments.py:45
 msgid "Graphical user interface for the Avaneya: Viking Lander Remastered..."
