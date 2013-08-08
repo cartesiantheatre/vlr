@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
-"POT-Creation-Date: 2013-07-03 22:42-0700\n"
+"POT-Creation-Date: 2013-08-07 20:35-0700\n"
 "PO-Revision-Date: 2013-06-06 12:05+0000\n"
 "Last-Translator: Anthony Harrington <untaintableangel@ubuntu.com>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
+"Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2013-07-05 05:51+0000\n"
 "X-Generator: Launchpad (build 16696)\n"
-"Language: en_GB\n"
 
 #. Initialize the channel map...
 #: Source/Console.cpp:84
@@ -31,37 +31,37 @@ msgstr "info: "
 msgid "warning: "
 msgstr "warning: "
 
-#: Source/DBusInterface.cpp:113
+#: Source/DBusInterface.cpp:112
 msgid "could not emit 'Notification' signal..."
 msgstr "could not emit 'Notification' signal..."
 
-#: Source/DBusInterface.cpp:149
+#: Source/DBusInterface.cpp:148
 msgid "could not emit 'Progress' signal..."
 msgstr "could not emit 'Progress' signal..."
 
-#: Source/DBusInterface.cpp:195
+#: Source/DBusInterface.cpp:194
 #, c-format
 msgid "Method %s.%s is not implemented."
 msgstr "Method %s.%s is not implemented."
 
-#: Source/DBusInterface.cpp:223
+#: Source/DBusInterface.cpp:222
 msgid "could not register service with session bus..."
 msgstr "could not register service with session bus..."
 
 #. Alert user...
-#: Source/DBusInterface.cpp:261
+#: Source/DBusInterface.cpp:260
 msgid "registering on the session bus..."
 msgstr "registering on the session bus..."
 
-#: Source/DBusInterface.cpp:275
+#: Source/DBusInterface.cpp:274
 msgid "could not parse introspection XML"
 msgstr "could not parse introspection XML"
 
-#: Source/DBusInterface.cpp:289
+#: Source/DBusInterface.cpp:288
 msgid "could not connect with the session bus"
 msgstr "could not connect with the session bus"
 
-#: Source/DBusInterface.cpp:325
+#: Source/DBusInterface.cpp:324
 msgid "glib main loop quit unexpectedly..."
 msgstr "glib main loop quit unexpectedly..."
 
@@ -368,10 +368,8 @@ msgid "loading"
 msgstr "loading"
 
 #: Source/VicarImageBand.cpp:781
-msgid ""
-"empty file, probably blank magnetic tape or not received back on Earth"
-msgstr ""
-"empty file, probably blank magnetic tape or not received back on Earth"
+msgid "empty file, probably blank magnetic tape or not received back on Earth"
+msgstr "empty file, probably blank magnetic tape or not received back on Earth"
 
 #: Source/VicarImageBand.cpp:785
 msgid "too small to be interesting (< 4 KB)"

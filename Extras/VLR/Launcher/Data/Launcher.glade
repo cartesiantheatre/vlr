@@ -862,23 +862,23 @@ This next page will contain the output from the &lt;b&gt;VikingExtractor&lt;/b&g
     <data>
       <row>
         <col id="0" translatable="yes">All diode band types</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">any</col>
+        <col id="1" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">any</col>
       </row>
       <row>
         <col id="0" translatable="yes">Colour</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">colour</col>
+        <col id="1" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">colour</col>
       </row>
       <row>
         <col id="0" translatable="yes">Infrared</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">infrared</col>
+        <col id="1" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">infrared</col>
       </row>
       <row>
         <col id="0" translatable="yes">Sun</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">sun</col>
+        <col id="1" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">sun</col>
       </row>
       <row>
         <col id="0" translatable="yes">Survey</col>
-        <col id="1" translatable="yes" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">survey</col>
+        <col id="1" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">survey</col>
       </row>
     </data>
   </object>
@@ -1238,15 +1238,15 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
     <data>
       <row>
         <col id="0" translatable="yes">Both landers</col>
-        <col id="1" translatable="yes">0</col>
+        <col id="1">0</col>
       </row>
       <row>
         <col id="0" translatable="yes">Viking Lander I (&lt;i&gt;Chryse Planitia&lt;/i&gt;)</col>
-        <col id="1" translatable="yes">1</col>
+        <col id="1">1</col>
       </row>
       <row>
         <col id="0" translatable="yes">Viking Lander II (&lt;i&gt;Utopia Planitia&lt;/i&gt;)</col>
-        <col id="1" translatable="yes">2</col>
+        <col id="1">2</col>
       </row>
     </data>
   </object>
@@ -1532,251 +1532,6 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
       </object>
     </child>
   </object>
-  <object class="GtkBox" id="verificationProgressPageBox">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="orientation">vertical</property>
-    <child>
-      <object class="GtkBox" id="box21">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="vexpand">True</property>
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkScrolledWindow" id="scrolledwindow4">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">never</property>
-            <child>
-              <object class="GtkViewport" id="viewport3">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkBox" id="box31">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="valign">center</property>
-                    <child>
-                      <object class="GtkImage" id="verificationImage">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="pixbuf">Verification.png</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label5">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Please wait while your mission data's integrity is verified. You can safely stop this process at any time, if you wish.</property>
-                        <property name="wrap">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="box7">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkBox" id="hbox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="border_width">20</property>
-                <property name="spacing">7</property>
-                <child>
-                  <object class="GtkProgressBar" id="verificationProgressBar">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="show_text">True</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="stopVerificationButton">
-                    <property name="label">gtk-stop</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="use_stock">True</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
-    </child>
-  </object>
-  <object class="GtkBox" id="verificationPromptPageBox">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="hexpand">True</property>
-    <property name="vexpand">True</property>
-    <property name="orientation">vertical</property>
-    <property name="spacing">8</property>
-    <child>
-      <object class="GtkScrolledWindow" id="scrolledwindow3">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="hscrollbar_policy">never</property>
-        <child>
-          <object class="GtkViewport" id="viewport2">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkBox" id="box14">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="valign">center</property>
-                <property name="vexpand">True</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkBox" id="box12">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="vexpand">True</property>
-                    <child>
-                      <object class="GtkImage" id="image1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">center</property>
-                        <property name="valign">center</property>
-                        <property name="pixbuf">Verification.png</property>
-                        <property name="icon-size">3</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">center</property>
-                        <property name="valign">center</property>
-                        <property name="label" translatable="yes">This disc contains a substantial amount of data that the recovery software will try to examine for recoverable images. Although we have optimized the data, it is still very large and may take a long time depending on the speed of your computer.
-
-Would you like to verify that the data contained on your disc is not corrupted? We recommend that you do this at least once, or if you suspect that your disc may be damaged.</property>
-                        <property name="wrap">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox" id="box5">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="halign">center</property>
-                    <property name="spacing">20</property>
-                    <child>
-                      <object class="GtkRadioButton" id="performVerificationCheckRadio">
-                        <property name="label" translatable="yes">Perform DVD integrity check</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="xalign">0</property>
-                        <property name="active">True</property>
-                        <property name="draw_indicator">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkRadioButton" id="skipVerificationCheckRadio">
-                        <property name="label" translatable="yes">Skip DVD integrity check</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="xalign">0</property>
-                        <property name="draw_indicator">True</property>
-                        <property name="group">performVerificationCheckRadio</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-            </child>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="expand">True</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-  </object>
   <object class="GtkBox" id="subscribePageBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -2059,6 +1814,251 @@ Would you like to verify that the data contained on your disc is not corrupted? 
         <property name="expand">True</property>
         <property name="fill">True</property>
         <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkBox" id="verificationProgressPageBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkBox" id="box21">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="vexpand">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow4">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hscrollbar_policy">never</property>
+            <child>
+              <object class="GtkViewport" id="viewport3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkBox" id="box31">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="valign">center</property>
+                    <child>
+                      <object class="GtkImage" id="verificationImage">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="pixbuf">Verification.png</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label5">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Please wait while your mission data's integrity is verified. You can safely stop this process at any time, if you wish.</property>
+                        <property name="wrap">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box7">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkBox" id="hbox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="border_width">20</property>
+                <property name="spacing">7</property>
+                <child>
+                  <object class="GtkProgressBar" id="verificationProgressBar">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="show_text">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="stopVerificationButton">
+                    <property name="label">gtk-stop</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="use_stock">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkBox" id="verificationPromptPageBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">8</property>
+    <child>
+      <object class="GtkScrolledWindow" id="scrolledwindow3">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="hscrollbar_policy">never</property>
+        <child>
+          <object class="GtkViewport" id="viewport2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkBox" id="box14">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">center</property>
+                <property name="vexpand">True</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkBox" id="box12">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <child>
+                      <object class="GtkImage" id="image1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="pixbuf">Verification.png</property>
+                        <property name="icon-size">3</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="label" translatable="yes">This disc contains a substantial amount of data that the recovery software will try to examine for recoverable images. Although we have optimized the data, it is still very large and may take a long time depending on the speed of your computer.
+
+Would you like to verify that the data contained on your disc is not corrupted? We recommend that you do this at least once, or if you suspect that your disc may be damaged.</property>
+                        <property name="wrap">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="box5">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">center</property>
+                    <property name="spacing">20</property>
+                    <child>
+                      <object class="GtkRadioButton" id="performVerificationCheckRadio">
+                        <property name="label" translatable="yes">Perform DVD integrity check</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="xalign">0</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="skipVerificationCheckRadio">
+                        <property name="label" translatable="yes">Skip DVD integrity check</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="xalign">0</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">performVerificationCheckRadio</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
       </packing>
     </child>
   </object>

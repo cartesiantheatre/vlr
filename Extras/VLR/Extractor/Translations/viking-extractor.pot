@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: viking-extractor 0.9\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
-"POT-Creation-Date: 2013-07-03 22:42-0700\n"
+"POT-Creation-Date: 2013-08-07 20:35-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,37 +30,37 @@ msgstr ""
 msgid "warning: "
 msgstr ""
 
-#: Source/DBusInterface.cpp:113
+#: Source/DBusInterface.cpp:112
 msgid "could not emit 'Notification' signal..."
 msgstr ""
 
-#: Source/DBusInterface.cpp:149
+#: Source/DBusInterface.cpp:148
 msgid "could not emit 'Progress' signal..."
 msgstr ""
 
-#: Source/DBusInterface.cpp:195
+#: Source/DBusInterface.cpp:194
 #, c-format
 msgid "Method %s.%s is not implemented."
 msgstr ""
 
-#: Source/DBusInterface.cpp:223
+#: Source/DBusInterface.cpp:222
 msgid "could not register service with session bus..."
 msgstr ""
 
 #. Alert user...
-#: Source/DBusInterface.cpp:261
+#: Source/DBusInterface.cpp:260
 msgid "registering on the session bus..."
 msgstr ""
 
-#: Source/DBusInterface.cpp:275
+#: Source/DBusInterface.cpp:274
 msgid "could not parse introspection XML"
 msgstr ""
 
-#: Source/DBusInterface.cpp:289
+#: Source/DBusInterface.cpp:288
 msgid "could not connect with the session bus"
 msgstr ""
 
-#: Source/DBusInterface.cpp:325
+#: Source/DBusInterface.cpp:324
 msgid "glib main loop quit unexpectedly..."
 msgstr ""
 

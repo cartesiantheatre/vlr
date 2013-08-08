@@ -1,0 +1,12 @@
+2013-08-07  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* Macros/gettext.m4: Upgrade to gettext-0.18.3.
+	* Macros/iconv.m4: Upgrade to gettext-0.18.3.
+	* Macros/lib-ld.m4: Upgrade to gettext-0.18.3.
+	* Macros/lib-link.m4: Upgrade to gettext-0.18.3.
+	* Macros/lib-prefix.m4: Upgrade to gettext-0.18.3.
+	* Macros/nls.m4: Upgrade to gettext-0.18.3.
+	* Macros/po.m4: Upgrade to gettext-0.18.3.
+	* Macros/progtest.m4: Upgrade to gettext-0.18.3.
+	* Makefile.am (EXTRA_DIST): Add build-aux/config.rpath.
+

@@ -89,7 +89,7 @@ AC_CONFIG_SRCDIR([Source/VikingExtractor.cpp])
         [static=no])
 
 # Initialize i18n from GNU gettext...
-AM_GNU_GETTEXT_VERSION([0.18.1])
+AM_GNU_GETTEXT_VERSION([0.18.3])
 AM_GNU_GETTEXT([external], [need-ngettext])
 
 # Checks for programs needed to build and test VikingExtractor...

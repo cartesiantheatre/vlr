@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2013-08-01 05:36+0000\n"
 "X-Generator: Launchpad (build 16718)\n"
+"Language: zh_TW\n"
 
 #. Set translators. Note to translators, put your contact info here...
 #: ../../Source/LauncherApp.py:178

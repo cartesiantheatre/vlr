@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Avaneya: Viking Lander Remastered\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-06 23:44-0700\n"
+"POT-Creation-Date: 2013-08-07 20:42-0700\n"
 "PO-Revision-Date: 2013-05-24 15:42-0700\n"
 "Last-Translator: Kip Warner <kip@thevertigo.com>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
@@ -298,6 +298,7 @@ msgstr ""
 
 #. We got the process ID, show it...
 #: ../../Source/RecoveryPage.py:101
+#, python-brace-format
 msgid "Spawned process {0}..."
 msgstr ""
 
@@ -320,6 +321,7 @@ msgid "Error"
 msgstr ""
 
 #: ../../Source/RecoveryPage.py:220
+#, python-brace-format
 msgid ""
 "The VikingExtractor could not be launched. The following location was "
 "attempted:\n"
@@ -332,10 +334,12 @@ msgid "Are you sure you'd like to abort the recovery?"
 msgstr ""
 
 #: ../../Source/RecoveryPage.py:266
+#, python-brace-format
 msgid "VikingExtractor terminated with status {0}..."
 msgstr ""
 
 #: ../../Source/RecoveryPage.py:277
+#, python-brace-format
 msgid "The recovery process was unsuccessful. ({0})"
 msgstr ""
 
@@ -356,6 +360,7 @@ msgid "Passwords do not match."
 msgstr ""
 
 #: ../../Source/SubscribePage.py:182 ../../Source/HandbookPage.py:235
+#, python-brace-format
 msgid ""
 "There was a problem communicating with the remote server. Please try again "
 "later.\n"
@@ -393,10 +398,12 @@ msgstr ""
 
 #. Show debugging info...
 #: ../../Source/LauncherArguments.py:97
+#, python-brace-format
 msgid "Warning: No executable detected... \"{0}\""
 msgstr ""
 
 #: ../../Source/LauncherArguments.py:106
+#, python-brace-format
 msgid ""
 "Unfortunately your platform is not yet supported. A required executable was "
 "not detected.\n"
@@ -411,6 +418,7 @@ msgstr ""
 
 #: ../../Source/VerificationProgressPage.py:106
 #: ../../Source/VerificationProgressPage.py:240
+#, python-brace-format
 msgid ""
 "I was not able to check a file I require. {0}:\n"
 "\n"
@@ -418,6 +426,7 @@ msgid ""
 msgstr ""
 
 #: ../../Source/VerificationProgressPage.py:161
+#, python-brace-format
 msgid ""
 "I could not locate the list of files to verify:\n"
 "\n"
@@ -427,6 +436,7 @@ msgid ""
 msgstr ""
 
 #: ../../Source/VerificationProgressPage.py:263
+#, python-brace-format
 msgid ""
 "Your disc might be damaged. It is recommended that you replace it before "
 "continuing. The following file appeared to be corrupt:\n"
@@ -454,10 +464,12 @@ msgid "Confirmation"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:82
+#, python-brace-format
 msgid "Save to: {0}\n"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:87
+#, python-brace-format
 msgid "Output will be overwritten: {0}\n"
 msgstr ""
 
@@ -467,26 +479,32 @@ msgid "Directorize by...\n"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:97
+#, python-brace-format
 msgid "\t...diode band class: {0}\n"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:104
+#, python-brace-format
 msgid "\t...Martian location: {0}\n"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:111
+#, python-brace-format
 msgid "\t...Martian month: {0}\n"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:118
+#, python-brace-format
 msgid "\t...mission solar day: {0}\n"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:125
+#, python-brace-format
 msgid "Disable automatic image component orientation: {0}\n"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:132
+#, python-brace-format
 msgid "Dump components without reconstruction: {0}\n"
 msgstr ""
 
@@ -496,30 +514,37 @@ msgid "Filters...\n"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:149
+#, python-brace-format
 msgid "\t...diode band type class: {0}\n"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:163
+#, python-brace-format
 msgid "\t...lander: {0}\n"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:169
+#, python-brace-format
 msgid "Interlace images: {0}\n"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:176
+#, python-brace-format
 msgid "Generate metadata: {0}\n"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:183
+#, python-brace-format
 msgid "Be verbose: {0}\n"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:190
+#, python-brace-format
 msgid "Use multithreading: {0}\n"
 msgstr ""
 
 #: ../../Source/ConfirmPage.py:210
+#, python-brace-format
 msgid "VikingExtractor arguments: {0}\n"
 msgstr ""
 
@@ -578,10 +603,12 @@ msgid ""
 msgstr ""
 
 #: ../../Source/Miscellaneous.py:173
+#, python-brace-format
 msgid "Cannot launch {0}. Platform unknown..."
 msgstr ""
 
 #: ../../Source/Miscellaneous.py:197
+#, python-brace-format
 msgid "Cannot explore {0}. Platform unknown..."
 msgstr ""
 
@@ -863,6 +890,26 @@ msgid ""
 "corrupted to be recoverable."
 msgstr ""
 
+#: ../Launcher.glade:864
+msgid "All diode band types"
+msgstr ""
+
+#: ../Launcher.glade:868
+msgid "Colour"
+msgstr ""
+
+#: ../Launcher.glade:872
+msgid "Infrared"
+msgstr ""
+
+#: ../Launcher.glade:876
+msgid "Sun"
+msgstr ""
+
+#: ../Launcher.glade:880
+msgid "Survey"
+msgstr ""
+
 #: ../Launcher.glade:939
 msgid ""
 "Congratulations! The mission data forensic recovery has completed. To "
@@ -901,6 +948,18 @@ msgstr ""
 msgid "???"
 msgstr ""
 
+#: ../Launcher.glade:1240
+msgid "Both landers"
+msgstr ""
+
+#: ../Launcher.glade:1244
+msgid "Viking Lander I (<i>Chryse Planitia</i>)"
+msgstr ""
+
+#: ../Launcher.glade:1248
+msgid "Viking Lander II (<i>Utopia Planitia</i>)"
+msgstr ""
+
 #: ../Launcher.glade:1308
 msgid ""
 "This window contains the output from the VikingExtractor process while it "
@@ -936,13 +995,45 @@ msgstr ""
 msgid "Avaneya"
 msgstr ""
 
-#: ../Launcher.glade:1575
+#: ../Launcher.glade:1579
+msgid ""
+"We have a <b>low volume</b> announcement mailing list that we use to make "
+"press releases and other public announcements. We would love to keep you in "
+"the loop. <i>We will never deliberately pass your information on to a third "
+"party.</i>"
+msgstr ""
+
+#: ../Launcher.glade:1591
+msgid "Yes, please subscribe me."
+msgstr ""
+
+#: ../Launcher.glade:1643
+msgid "<b>Name:</b>"
+msgstr ""
+
+#: ../Launcher.glade:1683
+msgid "<b>Email:</b>"
+msgstr ""
+
+#: ../Launcher.glade:1723
+msgid "<b>Password:</b>"
+msgstr ""
+
+#: ../Launcher.glade:1763
+msgid "<b>Password again:</b>"
+msgstr ""
+
+#: ../Launcher.glade:1784
+msgid "Thanks, but I think I'll pass."
+msgstr ""
+
+#: ../Launcher.glade:1860
 msgid ""
 "Please wait while your mission data's integrity is verified. You can safely "
 "stop this process at any time, if you wish."
 msgstr ""
 
-#: ../Launcher.glade:1705
+#: ../Launcher.glade:1990
 msgid ""
 "This disc contains a substantial amount of data that the recovery software "
 "will try to examine for recoverable images. Although we have optimized the "
@@ -954,42 +1045,10 @@ msgid ""
 "that your disc may be damaged."
 msgstr ""
 
-#: ../Launcher.glade:1731
+#: ../Launcher.glade:2016
 msgid "Perform DVD integrity check"
 msgstr ""
 
-#: ../Launcher.glade:1747
+#: ../Launcher.glade:2032
 msgid "Skip DVD integrity check"
-msgstr ""
-
-#: ../Launcher.glade:1824
-msgid ""
-"We have a <b>low volume</b> announcement mailing list that we use to make "
-"press releases and other public announcements. We would love to keep you in "
-"the loop. <i>We will never deliberately pass your information on to a third "
-"party.</i>"
-msgstr ""
-
-#: ../Launcher.glade:1836
-msgid "Yes, please subscribe me."
-msgstr ""
-
-#: ../Launcher.glade:1888
-msgid "<b>Name:</b>"
-msgstr ""
-
-#: ../Launcher.glade:1928
-msgid "<b>Email:</b>"
-msgstr ""
-
-#: ../Launcher.glade:1968
-msgid "<b>Password:</b>"
-msgstr ""
-
-#: ../Launcher.glade:2008
-msgid "<b>Password again:</b>"
-msgstr ""
-
-#: ../Launcher.glade:2029
-msgid "Thanks, but I think I'll pass."
 msgstr ""
