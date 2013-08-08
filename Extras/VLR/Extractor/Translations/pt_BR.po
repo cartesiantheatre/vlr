@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-07-03 22:42-0700\n"
+"POT-Creation-Date: 2013-08-07 20:35-0700\n"
 "PO-Revision-Date: 2013-06-30 15:52+0000\n"
 "Last-Translator: gabriell nascimento <gabriellhrn@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-07-05 05:51+0000\n"
-"X-Generator: Launchpad (build 16696)\n"
+"X-Launchpad-Export-Date: 2013-08-08 04:48+0000\n"
+"X-Generator: Launchpad (build 16723)\n"
 
 #. Initialize the channel map...
 #: Source/Console.cpp:84
@@ -30,37 +30,37 @@ msgstr "informação: "
 msgid "warning: "
 msgstr "aviso: "
 
-#: Source/DBusInterface.cpp:113
+#: Source/DBusInterface.cpp:112
 msgid "could not emit 'Notification' signal..."
 msgstr "não foi possível emitir sinal de 'Notificação'..."
 
-#: Source/DBusInterface.cpp:149
+#: Source/DBusInterface.cpp:148
 msgid "could not emit 'Progress' signal..."
 msgstr "não foi possível emitir sinal de 'Progresso'..."
 
-#: Source/DBusInterface.cpp:195
+#: Source/DBusInterface.cpp:194
 #, c-format
 msgid "Method %s.%s is not implemented."
 msgstr "Método %s.%s não está implementado."
 
-#: Source/DBusInterface.cpp:223
+#: Source/DBusInterface.cpp:222
 msgid "could not register service with session bus..."
 msgstr "não foi possível registrar o serviço com o barramento de sessão..."
 
 #. Alert user...
-#: Source/DBusInterface.cpp:261
+#: Source/DBusInterface.cpp:260
 msgid "registering on the session bus..."
 msgstr "registrando no barramento de sessão..."
 
-#: Source/DBusInterface.cpp:275
+#: Source/DBusInterface.cpp:274
 msgid "could not parse introspection XML"
 msgstr "não foi possível analisar XML de introspecção"
 
-#: Source/DBusInterface.cpp:289
+#: Source/DBusInterface.cpp:288
 msgid "could not connect with the session bus"
 msgstr "não foi possível conectar com o barramento de sessão"
 
-#: Source/DBusInterface.cpp:325
+#: Source/DBusInterface.cpp:324
 msgid "glib main loop quit unexpectedly..."
 msgstr "laço principal do glib saiu inesperadamente"
 

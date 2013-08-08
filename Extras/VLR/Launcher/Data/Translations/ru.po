@@ -7,19 +7,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-07-09 23:59-0700\n"
-"PO-Revision-Date: 2013-07-08 02:47+0000\n"
-"Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
+"POT-Creation-Date: 2013-08-07 20:42-0700\n"
+"PO-Revision-Date: 2013-08-08 03:57+0000\n"
+"Last-Translator: Oleg Koptev <koptev.oleg@gmail.com>\n"
 "Language-Team: RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-07-14 05:50+0000\n"
-"X-Generator: Launchpad (build 16696)\n"
+"X-Launchpad-Export-Date: 2013-08-08 04:48+0000\n"
+"X-Generator: Launchpad (build 16723)\n"
 "Language: ru\n"
 
 #. Set translators. Note to translators, put your contact info here...
-#: ../../Source/LauncherApp.py:178
+#: ../../Source/LauncherApp.py:182
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
@@ -29,41 +29,41 @@ msgstr ""
 "  Oleg Koptev https://launchpad.net/~koptev-oleg"
 
 #. Beta testers...
-#: ../../Source/LauncherApp.py:185
+#: ../../Source/LauncherApp.py:189
 msgid "Beta Testers"
 msgstr "Бета-тестеры"
 
 #. Musicians...
-#: ../../Source/LauncherApp.py:193
+#: ../../Source/LauncherApp.py:198
 msgid "Musicians"
 msgstr "Музыканты"
 
 #. Shouts and thanks...
-#: ../../Source/LauncherApp.py:198
+#: ../../Source/LauncherApp.py:203
 msgid "Shouts / Thanks"
 msgstr "Благодарности"
 
 #. Studio hardware...
-#: ../../Source/LauncherApp.py:212
+#: ../../Source/LauncherApp.py:217
 msgid "Studio Hardware"
 msgstr "Аппаратное обеспечение"
 
 #. Studio software...
-#: ../../Source/LauncherApp.py:217
+#: ../../Source/LauncherApp.py:222
 msgid "Studio Software"
 msgstr "Программное обеспечение"
 
 #. Set translators...
-#: ../../Source/LauncherApp.py:240
+#: ../../Source/LauncherApp.py:245
 msgid "Translators"
 msgstr "Переводчики"
 
 #. Dedications...
-#: ../../Source/LauncherApp.py:250
+#: ../../Source/LauncherApp.py:255
 msgid "Dedications"
 msgstr "Посвящение"
 
-#: ../../Source/LauncherApp.py:261
+#: ../../Source/LauncherApp.py:266
 msgid ""
 "\n"
 "\n"
@@ -81,11 +81,11 @@ msgstr ""
 "href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits"
 "\">Credits</a>."
 
-#: ../../Source/LauncherApp.py:283 ../../Source/OpeningVideoWindow.py:153
+#: ../../Source/LauncherApp.py:288 ../../Source/OpeningVideoWindow.py:175
 msgid "Error:"
 msgstr "Ошибка:"
 
-#: ../../Source/LauncherApp.py:311
+#: ../../Source/LauncherApp.py:316
 msgid "Are you sure you'd like to quit?"
 msgstr "Вы уверены что хотите выйти?"
 
@@ -436,6 +436,7 @@ msgstr "Восстановление"
 
 #. We got the process ID, show it...
 #: ../../Source/RecoveryPage.py:101
+#, python-brace-format
 msgid "Spawned process {0}..."
 msgstr "Порождённый процесс {0}..."
 
@@ -458,6 +459,7 @@ msgid "Error"
 msgstr "Ошибка"
 
 #: ../../Source/RecoveryPage.py:220
+#, python-brace-format
 msgid ""
 "The VikingExtractor could not be launched. The following location was "
 "attempted:\n"
@@ -473,10 +475,12 @@ msgid "Are you sure you'd like to abort the recovery?"
 msgstr "Прекратить восстановление?"
 
 #: ../../Source/RecoveryPage.py:266
+#, python-brace-format
 msgid "VikingExtractor terminated with status {0}..."
 msgstr "VikingExtractor завершён со статусом {0}..."
 
 #: ../../Source/RecoveryPage.py:277
+#, python-brace-format
 msgid "The recovery process was unsuccessful. ({0})"
 msgstr "Процесс восстановления завершился неудачей. ({0})"
 
@@ -497,6 +501,7 @@ msgid "Passwords do not match."
 msgstr "Пароли не совпадают."
 
 #: ../../Source/SubscribePage.py:182 ../../Source/HandbookPage.py:235
+#, python-brace-format
 msgid ""
 "There was a problem communicating with the remote server. Please try again "
 "later.\n"
@@ -541,10 +546,12 @@ msgstr "Изменить путь к исполняемому файлу VikingE
 
 #. Show debugging info...
 #: ../../Source/LauncherArguments.py:97
+#, python-brace-format
 msgid "Warning: No executable detected... \"{0}\""
 msgstr "Предупреждение: не найден исполняемый файл… «{0}»"
 
 #: ../../Source/LauncherArguments.py:106
+#, python-brace-format
 msgid ""
 "Unfortunately your platform is not yet supported. A required executable was "
 "not detected.\n"
@@ -562,8 +569,9 @@ msgstr ""
 msgid "Verification Progress"
 msgstr "Состояние верификации"
 
-#: ../../Source/VerificationProgressPage.py:96
-#: ../../Source/VerificationProgressPage.py:233
+#: ../../Source/VerificationProgressPage.py:106
+#: ../../Source/VerificationProgressPage.py:240
+#, python-brace-format
 msgid ""
 "I was not able to check a file I require. {0}:\n"
 "\n"
@@ -573,7 +581,8 @@ msgstr ""
 "\n"
 "{1}"
 
-#: ../../Source/VerificationProgressPage.py:151
+#: ../../Source/VerificationProgressPage.py:161
+#, python-brace-format
 msgid ""
 "I could not locate the list of files to verify:\n"
 "\n"
@@ -587,7 +596,8 @@ msgstr ""
 "\n"
 "{1}"
 
-#: ../../Source/VerificationProgressPage.py:256
+#: ../../Source/VerificationProgressPage.py:263
+#, python-brace-format
 msgid ""
 "Your disc might be damaged. It is recommended that you replace it before "
 "continuing. The following file appeared to be corrupt:\n"
@@ -602,18 +612,18 @@ msgstr ""
 "\n"
 
 #. Alert user...
-#: ../../Source/VerificationProgressPage.py:286
+#: ../../Source/VerificationProgressPage.py:293
 msgid "Disc verification was cancelled."
 msgstr "Проверка диска была отменена."
 
-#: ../../Source/VerificationProgressPage.py:311
+#: ../../Source/VerificationProgressPage.py:318
 msgid ""
 "The disc verification completed successfully. Your disc is probably fine."
 msgstr ""
 "Процесс проверки диска успешно завершён. Судя по всему, с диском всё в "
 "порядке."
 
-#: ../../Source/VerificationProgressPage.py:335
+#: ../../Source/VerificationProgressPage.py:342
 msgid "Disc verification failed."
 msgstr "Ошибка проверки диска."
 
@@ -622,10 +632,12 @@ msgid "Confirmation"
 msgstr "Подтверждение"
 
 #: ../../Source/ConfirmPage.py:82
+#, python-brace-format
 msgid "Save to: {0}\n"
 msgstr "Сохранить в: {0}\n"
 
 #: ../../Source/ConfirmPage.py:87
+#, python-brace-format
 msgid "Output will be overwritten: {0}\n"
 msgstr "Выходные данные будут перезаписаны: {0}\n"
 
@@ -635,26 +647,32 @@ msgid "Directorize by...\n"
 msgstr "Каталогизировать по...\n"
 
 #: ../../Source/ConfirmPage.py:97
+#, python-brace-format
 msgid "\t...diode band class: {0}\n"
 msgstr "\t...класс полосы пропускания: {0}\n"
 
 #: ../../Source/ConfirmPage.py:104
+#, python-brace-format
 msgid "\t...Martian location: {0}\n"
 msgstr "\t...Местоположению на Марсе: {0}\n"
 
 #: ../../Source/ConfirmPage.py:111
+#, python-brace-format
 msgid "\t...Martian month: {0}\n"
 msgstr "\t...Месяцу Марса: {0}\n"
 
 #: ../../Source/ConfirmPage.py:118
+#, python-brace-format
 msgid "\t...mission solar day: {0}\n"
 msgstr "\t...солнечному дню программы: {0}\n"
 
 #: ../../Source/ConfirmPage.py:125
+#, python-brace-format
 msgid "Disable automatic image component orientation: {0}\n"
 msgstr "Отключить автоориентацию компонентов изображения: {0}\n"
 
 #: ../../Source/ConfirmPage.py:132
+#, python-brace-format
 msgid "Dump components without reconstruction: {0}\n"
 msgstr "Извлекать компоненты без реконструкции: {0}\n"
 
@@ -664,30 +682,37 @@ msgid "Filters...\n"
 msgstr "Фильтры...\n"
 
 #: ../../Source/ConfirmPage.py:149
+#, python-brace-format
 msgid "\t...diode band type class: {0}\n"
 msgstr "\t...тип полосы пропускания: {0}\n"
 
 #: ../../Source/ConfirmPage.py:163
+#, python-brace-format
 msgid "\t...lander: {0}\n"
 msgstr "\t...спускаемый аппарат: {0}\n"
 
 #: ../../Source/ConfirmPage.py:169
+#, python-brace-format
 msgid "Interlace images: {0}\n"
 msgstr "Чередовать изображения: {0}\n"
 
 #: ../../Source/ConfirmPage.py:176
+#, python-brace-format
 msgid "Generate metadata: {0}\n"
 msgstr "Создание метаданных: {0}\n"
 
 #: ../../Source/ConfirmPage.py:183
+#, python-brace-format
 msgid "Be verbose: {0}\n"
 msgstr "Подробный отчёт: {0}\n"
 
 #: ../../Source/ConfirmPage.py:190
+#, python-brace-format
 msgid "Use multithreading: {0}\n"
 msgstr "Использовать многопоточность: {0}\n"
 
 #: ../../Source/ConfirmPage.py:210
+#, python-brace-format
 msgid "VikingExtractor arguments: {0}\n"
 msgstr "Аргументы VikingExtractor: {0}\n"
 
@@ -707,7 +732,7 @@ msgstr "До свидания"
 msgid "Select Recovery Folder"
 msgstr "Выберите папку восстановления"
 
-#: ../../Source/OpeningVideoWindow.py:33
+#: ../../Source/OpeningVideoWindow.py:37
 msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
 msgstr ""
 "Не найден GStreamer версии >= 1.0. Не будет использоваться при открытии "
@@ -737,11 +762,11 @@ msgstr "Загрузка книги была остановлена."
 msgid "The book downloaded successfully. Would you like to open it?"
 msgstr "Книга успешно загружена. Открыть её?"
 
-#: ../../Source/Miscellaneous.py:123
+#: ../../Source/Miscellaneous.py:126
 msgid "Warning: NetworkManager service not found..."
 msgstr "Предупреждение: сервис NetworkManager не найден..."
 
-#: ../../Source/Miscellaneous.py:141
+#: ../../Source/Miscellaneous.py:144
 msgid ""
 "You need a working internet connection in order to do this. You don't appear "
 "to have one right now."
@@ -749,11 +774,13 @@ msgstr ""
 "Для выполнения этого действия требуется рабочее соединение с Интернетом. "
 "Сейчас соединение недоступно."
 
-#: ../../Source/Miscellaneous.py:170
+#: ../../Source/Miscellaneous.py:173
+#, python-brace-format
 msgid "Cannot launch {0}. Platform unknown..."
 msgstr "Невозможно запустить {0}. Неизвестная платформа..."
 
-#: ../../Source/Miscellaneous.py:194
+#: ../../Source/Miscellaneous.py:197
+#, python-brace-format
 msgid "Cannot explore {0}. Platform unknown..."
 msgstr "Невозможно просмотреть {0}. Неизвестная платформа..."
 
@@ -807,7 +834,7 @@ msgstr ""
 msgid "Avaneya Website"
 msgstr "Веб-сайт Avaneya"
 
-#: ../Launcher.glade:79
+#: ../Launcher.glade:88
 msgid ""
 "These options configure some advanced VikingExtractor features. If you are "
 "unsure of any of them, just leave them set at their defaults.\n"
@@ -822,11 +849,11 @@ msgstr ""
 "над её названием. Рекомендуется использовать конфигурацию настроек по "
 "умолчанию."
 
-#: ../Launcher.glade:109
+#: ../Launcher.glade:118
 msgid "Use image interlacing"
 msgstr "Использовать прогрессивную развёртку"
 
-#: ../Launcher.glade:114
+#: ../Launcher.glade:123
 msgid ""
 "The recovered images are encoded in a lossless compressed PNG format for "
 "maximum quality and versatility. If you&apos;d like them to use interlacing, "
@@ -843,7 +870,7 @@ msgstr ""
 "большему. Такие изображения, как правило, имеют немного больший объём, "
 "однако они более удобны для передачи по сетям с медленным соединением."
 
-#: ../Launcher.glade:115
+#: ../Launcher.glade:124
 msgid ""
 "The recovered images are encoded in a lossless compressed PNG format for "
 "maximum quality and versatility. If you'd like them to use interlacing, "
@@ -860,11 +887,11 @@ msgstr ""
 "большему. Такие изображения, как правило, имеют немного больший объём, "
 "однако они более удобны для передачи по сетям с медленным соединением."
 
-#: ../Launcher.glade:127
+#: ../Launcher.glade:136
 msgid "Generate metadata"
 msgstr "Создание метаданных"
 
-#: ../Launcher.glade:132 ../Launcher.glade:133
+#: ../Launcher.glade:141 ../Launcher.glade:142
 msgid ""
 "Whenever a colour image is being recovered, this option will write out a "
 "machine generated text file containing a bunch of image metadata, such as "
@@ -877,11 +904,11 @@ msgstr ""
 "ленте, о способе эвристического восстановления, и т. д. для каждого из "
 "каналов, использованного для восстановления конечного изображения."
 
-#: ../Launcher.glade:145
+#: ../Launcher.glade:154
 msgid "Be verbose"
 msgstr "Подробный вывод"
 
-#: ../Launcher.glade:150 ../Launcher.glade:151
+#: ../Launcher.glade:159 ../Launcher.glade:160
 msgid ""
 "If this is enabled, the VikingExtractor will display significantly more "
 "information as it attempts to recover what it can."
@@ -889,11 +916,11 @@ msgstr ""
 "При активации этой настройки, VikingExtractor будет выводить на экран "
 "намного больше информации о ходе восстановления."
 
-#: ../Launcher.glade:165
+#: ../Launcher.glade:174
 msgid "Use multithreading"
 msgstr "Использовать многопоточность"
 
-#: ../Launcher.glade:171
+#: ../Launcher.glade:180
 msgid ""
 "Take advantage of machines with more than one processor by using several "
 "simultaneously. Note that this feature is currently <b>not</b> supported."
@@ -901,7 +928,7 @@ msgstr ""
 "Используйте преимущества компьютеров с несколькими ядрами/процессорами. "
 "Обратите внимание, в настоящее время эта функция <b>не</b> поддерживается."
 
-#: ../Launcher.glade:172
+#: ../Launcher.glade:181
 msgid ""
 "Take advantage of machines with more than one processor by using several "
 "simultaneously. Note that this feature is currently not supported."
@@ -909,7 +936,7 @@ msgstr ""
 "Используйте преимущества компьютеров с несколькими ядрами/процессорами. "
 "Обратите внимание, в настоящее время эта функция не поддерживается."
 
-#: ../Launcher.glade:225
+#: ../Launcher.glade:247
 msgid ""
 "These configuration settings allow you to filter which specific types of "
 "data you are interested. If you leave these at their defaults, everything "
@@ -926,7 +953,7 @@ msgstr ""
 "<b>наведите</b> на неё курсор мыши, после чего отобразится описание. "
 "Рекомендуется оставить значения по умолчанию."
 
-#: ../Launcher.glade:273 ../Launcher.glade:274
+#: ../Launcher.glade:295 ../Launcher.glade:296
 msgid ""
 "Extract from matching Viking lander diode filters. These include colour, "
 "infrared, sun, or survey. By default, all diode filters are acceptable."
@@ -936,11 +963,11 @@ msgstr ""
 "солнечные или смотровые фильтры. По умолчанию использоваться данные из всех "
 "фильтров."
 
-#: ../Launcher.glade:299
+#: ../Launcher.glade:321
 msgid "<b>Diode Filter:</b>"
 msgstr "<b>Диодный фильтр:</b>"
 
-#: ../Launcher.glade:320 ../Launcher.glade:328
+#: ../Launcher.glade:342 ../Launcher.glade:350
 msgid ""
 "Perform an extraction of only images taken by a particular lander. Viking "
 "lander 2 touched down on <i>Utopia Planitia</i> and Viking lander 1 on "
@@ -950,7 +977,7 @@ msgstr ""
 "Спускаемый модуль Viking 2 приземлился на <i>равнине Утопия</i>, тогда как "
 "Viking 1 коснулся поверхности <i>равнины Хриса</i>."
 
-#: ../Launcher.glade:321 ../Launcher.glade:329
+#: ../Launcher.glade:343 ../Launcher.glade:351
 msgid ""
 "Perform an extraction of only images taken by a particular lander. Viking "
 "lander 2 touched down on Utopia Planitia and Viking lander 1 on Chryse "
@@ -960,11 +987,11 @@ msgstr ""
 "Спускаемый модуль Viking 2 приземлился на равнине Утопия, тогда как Viking 1 "
 "коснулся поверхности равнины Хриса."
 
-#: ../Launcher.glade:361
+#: ../Launcher.glade:383
 msgid "<b>Lander Filter:</b>"
 msgstr "<b>Фильтр посадочного модуля:</b>"
 
-#: ../Launcher.glade:418
+#: ../Launcher.glade:453
 msgid ""
 "The <b>VikingExtractor</b> has many different configuration options that "
 "control how it recovers images and what it does with them. Over the next few "
@@ -981,7 +1008,7 @@ msgstr ""
 "<b>наведите</b> на неё курсор мыши, после чего отобразится описание. "
 "Рекомендуется оставить значения по умолчанию."
 
-#: ../Launcher.glade:479
+#: ../Launcher.glade:527
 msgid ""
 "Let's start with how you'd like the recovered files <b>organized</b> in the "
 "directory you previously selected. If you select more than one method, they "
@@ -998,11 +1025,11 @@ msgstr ""
 "<b>наведите</b> курсор мыши на неё, после чего отобразится описание. "
 "Рекомендуется оставить значения по умолчанию."
 
-#: ../Launcher.glade:509
+#: ../Launcher.glade:557
 msgid "Organize by sensor band type"
 msgstr "Упорядочить по типу полосы датчика"
 
-#: ../Launcher.glade:514 ../Launcher.glade:515
+#: ../Launcher.glade:562 ../Launcher.glade:563
 msgid ""
 "Organizes the images into subdirectories named after the sensor band type "
 "used on the lander to capture the data, such as Colour or Infrared."
@@ -1011,11 +1038,11 @@ msgstr ""
 "полосы датчика, использованного посадочным модулем для получения данных, "
 "например «Цветной» или «Инфракрасный»."
 
-#: ../Launcher.glade:527
+#: ../Launcher.glade:575
 msgid "Organize by location on Martian surface"
 msgstr "Упорядочить по местоположению на поверхности Марса"
 
-#: ../Launcher.glade:532 ../Launcher.glade:533
+#: ../Launcher.glade:580 ../Launcher.glade:581
 msgid ""
 "Organizes the images into subdirectories named after the physical location "
 "on the surface of Mars where they were taken. This will be either Utopia "
@@ -1025,11 +1052,11 @@ msgstr ""
 "географическому местоположению места, где были сделаны снимки. Это будет или "
 "равнина Утопия (Utopia Planitia) или равнина Хриса (Chryse Planitia)."
 
-#: ../Launcher.glade:547
+#: ../Launcher.glade:595
 msgid "Organize by Martian month"
 msgstr "Упорядочить по марсианскому месяцу"
 
-#: ../Launcher.glade:552 ../Launcher.glade:553
+#: ../Launcher.glade:600 ../Launcher.glade:601
 msgid ""
 "Organizes the images into subdirectories named after the month they were "
 "taken on. The months follow a Martian calendar, such as Gemini, Cancer, Leo, "
@@ -1042,11 +1069,11 @@ msgstr ""
 "Leo, Virgo и т. д. Для получения дополнительной информации, обратитесь к "
 "главе 8.15.4 книги «Avaneya Project Crew Handbook»."
 
-#: ../Launcher.glade:565
+#: ../Launcher.glade:613
 msgid "Organize by mission solar day"
 msgstr "Упорядочить по солнечному дню миссии"
 
-#: ../Launcher.glade:570 ../Launcher.glade:571
+#: ../Launcher.glade:618 ../Launcher.glade:619
 msgid ""
 "Put reconstructed images into subdirectories numbered after the solar day "
 "they were taken on, offset relative to zero. Solar day zero was the day of a "
@@ -1057,11 +1084,11 @@ msgstr ""
 "Нулевой день соответствует дню, когда спускаемый модуль коснулся поверхности "
 "планеты."
 
-#: ../Launcher.glade:588
+#: ../Launcher.glade:636
 msgid "?"
 msgstr "?"
 
-#: ../Launcher.glade:637
+#: ../Launcher.glade:698
 msgid ""
 "These options control how the VikingExtractor's image recovery works.\n"
 "\n"
@@ -1075,11 +1102,11 @@ msgstr ""
 "<b>наведите</b> курсор мыши на неё, после чего отобразится описание. "
 "Рекомендуется оставить значения по умолчанию."
 
-#: ../Launcher.glade:665
+#: ../Launcher.glade:726
 msgid "No automatic rotation"
 msgstr "Без автоматического поворота"
 
-#: ../Launcher.glade:670 ../Launcher.glade:671
+#: ../Launcher.glade:731 ../Launcher.glade:732
 msgid ""
 "A given fully rendered image in the Viking Lander image archive might be "
 "scattered in different parts across many different files. Sometimes the "
@@ -1096,11 +1123,11 @@ msgstr ""
 "изображения. Не изменяйте заданное по умолчанию значение без особой на то "
 "необходимости."
 
-#: ../Launcher.glade:683
+#: ../Launcher.glade:744
 msgid "Do not reconstruct"
 msgstr "Не воссоздавать"
 
-#: ../Launcher.glade:688 ../Launcher.glade:689
+#: ../Launcher.glade:749 ../Launcher.glade:750
 msgid ""
 "A given fully rendered image in the Viking Lander image archive might be "
 "scattered in different parts across many different files. If this option is "
@@ -1117,11 +1144,11 @@ msgstr ""
 "заданное по умолчанию значение, без особой на то необходимости."
 
 #. This is set at runtime. Don't bother to translate.
-#: ../Launcher.glade:715
+#: ../Launcher.glade:780
 msgid "(set at runtime)"
 msgstr "(устанавливается во время работы)"
 
-#: ../Launcher.glade:732
+#: ../Launcher.glade:806
 msgid ""
 "The following is a summary of the configuration <b>VikingExtractor</b> will "
 "use for this session. If you would like to change anything, you can go back. "
@@ -1143,7 +1170,27 @@ msgstr ""
 "данных посадочных модулей Viking не является данными как таковыми, либо же "
 "повреждены настолько, что их восстановление не представляется возможным."
 
-#: ../Launcher.glade:852
+#: ../Launcher.glade:864
+msgid "All diode band types"
+msgstr ""
+
+#: ../Launcher.glade:868
+msgid "Colour"
+msgstr ""
+
+#: ../Launcher.glade:872
+msgid "Infrared"
+msgstr ""
+
+#: ../Launcher.glade:876
+msgid "Sun"
+msgstr ""
+
+#: ../Launcher.glade:880
+msgid "Survey"
+msgstr ""
+
+#: ../Launcher.glade:939
 msgid ""
 "Congratulations! The mission data forensic recovery has completed. To "
 "examine everything that you managed to recover, use the button below.\n"
@@ -1169,15 +1216,15 @@ msgstr ""
 "благодарность. Ваша поддерджка чрезвычайно важна для активного и продолжения "
 "профессиональной разработки проекта Avaneya."
 
-#: ../Launcher.glade:881
+#: ../Launcher.glade:968
 msgid "Explore Recovered Mission Data"
 msgstr "Обзор восстановленных данных миссии"
 
-#: ../Launcher.glade:895
+#: ../Launcher.glade:982
 msgid "Explore Source Code"
 msgstr "Ознакомиться с исходным кодом"
 
-#: ../Launcher.glade:965
+#: ../Launcher.glade:1068
 msgid ""
 "The <i>Avaneya Project Crew Handbook</i> was written to address the needs of "
 "project contributors in our community. Would you like to download the latest "
@@ -1187,15 +1234,27 @@ msgstr ""
 "внести свой вклад в развитие проекта. Если вы хотели бы загрузить последнюю "
 "редакцию книги, вам потребуется работающее соединение с Интернетом."
 
-#: ../Launcher.glade:982
+#: ../Launcher.glade:1085
 msgid "Yes, download the latest copy."
 msgstr "Да, загрузить последнюю копию."
 
-#: ../Launcher.glade:1109
+#: ../Launcher.glade:1216
 msgid "???"
 msgstr "???"
 
-#: ../Launcher.glade:1201
+#: ../Launcher.glade:1240
+msgid "Both landers"
+msgstr ""
+
+#: ../Launcher.glade:1244
+msgid "Viking Lander I (<i>Chryse Planitia</i>)"
+msgstr ""
+
+#: ../Launcher.glade:1248
+msgid "Viking Lander II (<i>Utopia Planitia</i>)"
+msgstr ""
+
+#: ../Launcher.glade:1308
 msgid ""
 "This window contains the output from the VikingExtractor process while it "
 "works."
@@ -1203,11 +1262,11 @@ msgstr ""
 "В этом окне будет выводиться информация о ходе процесса, во время работы "
 "VikingExtractor."
 
-#: ../Launcher.glade:1262
+#: ../Launcher.glade:1369
 msgid "Please wait..."
 msgstr "Пожалуйста, подождите..."
 
-#: ../Launcher.glade:1326
+#: ../Launcher.glade:1442
 msgid ""
 "Please select an <b>empty</b> folder below. This folder will be used to save "
 "all of the recoverable images. If the folder is not empty, its contents "
@@ -1217,15 +1276,15 @@ msgstr ""
 "сохранения всех восстанавливаемых изображений. Если папка не будет пустой, "
 "её содержимое будет перезаписано, если вы разрешите это."
 
-#: ../Launcher.glade:1352
+#: ../Launcher.glade:1468
 msgid "Select folder to store recovered images"
 msgstr "Выберите папку для сохранения восстановленных изображений"
 
-#: ../Launcher.glade:1363
+#: ../Launcher.glade:1479
 msgid "Overwrite existing output files"
 msgstr "Перезаписать существующие выходные файлы"
 
-#: ../Launcher.glade:1368 ../Launcher.glade:1369
+#: ../Launcher.glade:1484 ../Launcher.glade:1485
 msgid ""
 "This will overwrite any existing output files that have the same name as the "
 "data recovered."
@@ -1233,11 +1292,11 @@ msgstr ""
 "Это действие перезапишет все существующие выходные файлы с именем, "
 "совпадающим с восстанавливаемыми файлами."
 
-#: ../Launcher.glade:1391
+#: ../Launcher.glade:1511
 msgid "Avaneya"
 msgstr "Avaneya"
 
-#: ../Launcher.glade:1449
+#: ../Launcher.glade:1579
 msgid ""
 "We have a <b>low volume</b> announcement mailing list that we use to make "
 "press releases and other public announcements. We would love to keep you in "
@@ -1248,31 +1307,31 @@ msgstr ""
 "сообщаем другую информацию. Будет здорово, если вы подпишетесь на неё. <i>Мы "
 "никогда не передадим вашу личную информацию третьим лицам.</i>"
 
-#: ../Launcher.glade:1461
+#: ../Launcher.glade:1591
 msgid "Yes, please subscribe me."
 msgstr "Да, подписать меня на рассылку."
 
-#: ../Launcher.glade:1513
+#: ../Launcher.glade:1643
 msgid "<b>Name:</b>"
 msgstr "<b>Имя:</b>"
 
-#: ../Launcher.glade:1553
+#: ../Launcher.glade:1683
 msgid "<b>Email:</b>"
 msgstr "<b>Электронная почта:</b>"
 
-#: ../Launcher.glade:1593
+#: ../Launcher.glade:1723
 msgid "<b>Password:</b>"
 msgstr "<b>Пароль:</b>"
 
-#: ../Launcher.glade:1633
+#: ../Launcher.glade:1763
 msgid "<b>Password again:</b>"
 msgstr "<b>Повторите пароль:</b>"
 
-#: ../Launcher.glade:1654
+#: ../Launcher.glade:1784
 msgid "Thanks, but I think I'll pass."
 msgstr "Спасибо, не надо."
 
-#: ../Launcher.glade:1718
+#: ../Launcher.glade:1860
 msgid ""
 "Please wait while your mission data's integrity is verified. You can safely "
 "stop this process at any time, if you wish."
@@ -1280,7 +1339,7 @@ msgstr ""
 "Подождите, пока идёт проверка целостности данных. Вы можете безопасно "
 "остановить этот процесс в любое время."
 
-#: ../Launcher.glade:1832
+#: ../Launcher.glade:1990
 msgid ""
 "This disc contains a substantial amount of data that the recovery software "
 "will try to examine for recoverable images. Although we have optimized the "
@@ -1300,10 +1359,653 @@ msgstr ""
 "выполнить эту проверку хотя бы один раз, либо в случае, если вы думаете, что "
 "диск мог каким либо образом быть повреждён."
 
-#: ../Launcher.glade:1858
+#: ../Launcher.glade:2016
 msgid "Perform DVD integrity check"
 msgstr "Выполнить проверку целостности DVD"
 
-#: ../Launcher.glade:1874
+#: ../Launcher.glade:2032
 msgid "Skip DVD integrity check"
 msgstr "Пропустить проверку целостности DVD"
+
+#~ msgid "error: "
+#~ msgstr "ошибка: "
+
+#~ msgid "info: "
+#~ msgstr "инфо: "
+
+#~ msgid "warning: "
+#~ msgstr "внимание: "
+
+#~ msgid "could not emit 'Notification' signal..."
+#~ msgstr "не удалось отправить сигнал 'Notification'..."
+
+#~ msgid "could not emit 'Progress' signal..."
+#~ msgstr "не удалось отправить сигнал 'Progress' ..."
+
+#~ msgid "Method %s.%s is not implemented."
+#~ msgstr "Метод %s.%s не реализован."
+
+#~ msgid "could not register service with session bus..."
+#~ msgstr "не удалось зарегистрировать подключение сервиса к шине сессии..."
+
+#~ msgid "registering on the session bus..."
+#~ msgstr "регистрируется подключение к шине сессии..."
+
+#~ msgid "could not parse introspection XML"
+#~ msgstr "не удалось прочитать XML интроспекции"
+
+#~ msgid "could not connect with the session bus"
+#~ msgstr "не удалось подключиться к шине сессии"
+
+#~ msgid "glib main loop quit unexpectedly..."
+#~ msgstr "главный цикл glib неожиданно завершился..."
+
+#~ msgid "invalid logical record label"
+#~ msgstr "неверная метка логической записи"
+
+#~ msgid "failed to read from input stream"
+#~ msgstr "не удалось прочитать входной поток"
+
+#~ msgid "unsupported diode filter class: "
+#~ msgstr "неподдеживаемый фильтр по классу фотодиода: "
+
+#~ msgid "invalid lander filter"
+#~ msgstr "некорректный фильтр по посадочному модулю"
+
+#~ msgid "cannot reconstruct image from unsupported diode band type"
+#~ msgstr ""
+#~ "не удалось восстановить изображение из неподдерживаемого типа диодной полосы"
+
+#~ msgid "Unreconstructable/"
+#~ msgstr "Невосстановимо/"
+
+#~ msgid "Unknown Location/"
+#~ msgstr "Неизвестное положение/"
+
+#~ msgid "could not create output directory for file"
+#~ msgstr "не удалось создать выходной каталог для файла"
+
+#~ msgid ""
+#~ "output metadata already exists, not overwriting (use --overwrite to override)"
+#~ msgstr ""
+#~ "выходные метаданные уже существуют и не будут перезаписаны (используйте --"
+#~ "overwrite чтобы перезаписать)"
+
+#~ msgid "couldn't save metadata"
+#~ msgstr "не удалось сохранить метаданные"
+
+#~ msgid ""
+#~ "The following is a machine generated collection of metadata of each of\n"
+#~ msgstr "Ниже приведён набор машинно-генерируемых метаданных для каждого из\n"
+
+#~ msgid "the image bands used to reconstruct a colour image.\n"
+#~ msgstr "полосы, использованные для восстановления цветного изображения.\n"
+
+#~ msgid "basic heuristic method: "
+#~ msgstr "базовый эвристический метод: "
+
+#~ msgid "camera azimuth / elevation: "
+#~ msgstr "азимут / угол места камеры: "
+
+#~ msgid "camera event: "
+#~ msgstr "событие камеры: "
+
+#~ msgid "camera event solar day: "
+#~ msgstr "событие камеры, солнечные сутки: "
+
+#~ msgid "diode band type: "
+#~ msgstr "тип полосы частот диода: "
+
+#~ msgid "file size: "
+#~ msgstr "размер файла: "
+
+#~ msgid "input file: "
+#~ msgstr "входной файл: "
+
+#~ msgid "magnetic tape: "
+#~ msgstr "магнитная лента: "
+
+#~ msgid "magnetic tape file ordinal: "
+#~ msgstr "порядковый номер файла на магнитной ленте: "
+
+#~ msgid "mean pixel value: "
+#~ msgstr "среднее значение пикселя: "
+
+#~ msgid "month: "
+#~ msgstr "месяц: "
+
+#~ msgid "overlay axis present: "
+#~ msgstr "задана ось наложения: "
+
+#~ msgid "overlay full histogram present: "
+#~ msgstr "задан полная гистограмма наложения: "
+
+#~ msgid "physical record size: "
+#~ msgstr "размер физической записи: "
+
+#~ msgid "physical record padding: "
+#~ msgstr "смещение физической записи: "
+
+#~ msgid "phase offset required: "
+#~ msgstr "необходимо смещение фазы: "
+
+#~ msgid "raw image offset: "
+#~ msgstr "смещение необработанного изображения: "
+
+#~ msgid "cannot reconstruct, dumped all bands"
+#~ msgstr "не удалось восстановить, создан дамп всех полос"
+
+#~ msgid "output already exists, not overwriting (use --overwrite to override)"
+#~ msgstr ""
+#~ "вывод уже существует и не будет перезаписан (используйте --overwrite чтобы "
+#~ "перезаписать)"
+
+#~ msgid ""
+#~ "images for each band present, but no matching set of full histogram variants "
+#~ "available"
+#~ msgstr ""
+#~ "найдены изображения для всех полос, но не найден подходящий набор вариантов "
+#~ "полных гистограмм"
+
+#~ msgid ""
+#~ "images for each band present, but no matching set of non-overlayed variants "
+#~ "available"
+#~ msgstr ""
+#~ "найдены изображения для всех полос, но не найден подходящий набор "
+#~ "неперекрывающихся вариантов"
+
+#~ msgid "image bands not all the same size, may be missing scanlines"
+#~ msgstr ""
+#~ "изображения полос имеют разный размер, возможно пропущены строки развёртки"
+
+#~ msgid "unable to open input directory for indexing "
+#~ msgstr "не удалось открыть входной каталог для индексации "
+
+#~ msgid "could not stat "
+#~ msgstr "ошибка stat "
+
+#~ msgid "indexing mission data, please wait..."
+#~ msgstr "индексируются данные миссии, подождите..."
+
+#~ msgid "Indexing mission data, please wait..."
+#~ msgstr "Индексируются данные миссии, подождите пожалуйста..."
+
+#~ msgid "no prospective files found"
+#~ msgstr "ожидаемые файлы не найдены"
+
+#~ msgid "Analyzing mission data, please wait..."
+#~ msgstr "Анализируются данные миссии, подождите..."
+
+#~ msgid "studying mission data index of "
+#~ msgstr "изучаются данные миссии по индексу "
+
+#~ msgid ", skipping"
+#~ msgstr ", пропущен"
+
+#~ msgid " (--ignore-bad-files to skip)"
+#~ msgstr " (используйте --ignore-bad-files чтобы пропустить)"
+
+#~ msgid "filtering "
+#~ msgstr "фильтруются "
+
+#~ msgid " type diode bands (--filter-diode[=type] to change)"
+#~ msgstr ""
+#~ " тип диодных полос (используйте --filter-diode[=type] чтобы изменить)"
+
+#~ msgid "camera event doesn't identify itself, cannot index"
+#~ msgstr "событие камеры не идентифицировалось, не удалось проиндексировать"
+
+#~ msgid " is a new camera event, indexing"
+#~ msgstr " - новое событие камеры, индексируется"
+
+#~ msgid " is a known camera event, indexing"
+#~ msgstr " - известное событие камеры, индексируется"
+
+#~ msgid "Attempting forensic mission data recovery..."
+#~ msgstr "Попытка аналитического восстановления данных миссии..."
+
+#~ msgid "attempting reconstruction "
+#~ msgstr "попытка восстановления "
+
+#~ msgid "dumping components from "
+#~ msgstr "создаётся дамп компонентов из "
+
+#~ msgid "Recovery completed..."
+#~ msgstr "Восстановление завершено..."
+
+#~ msgid "successfully reconstructed "
+#~ msgstr "успешно восстановлено "
+
+#~ msgid " unreconstructable components dumped"
+#~ msgstr " создан дамп невосстановимых компонентов"
+
+#~ msgid "dumped "
+#~ msgstr "записано в дамп "
+
+#~ msgid " image components without reconstruction"
+#~ msgstr " компоненты изображения без восстановления"
+
+#~ msgid "image should be rotated 90 counterclockwise"
+#~ msgstr ""
+#~ "изображение должно быть повёрнуто на 90 градусов против часовой стрелки"
+
+#~ msgid "image should be rotated 180 counterclockwise"
+#~ msgstr ""
+#~ "изображение должно быть повёрнуто на 180 градусов против часовой стрелки"
+
+#~ msgid "image should be rotated 270 counterclockwise"
+#~ msgstr ""
+#~ "изображение должно быть повёрнуто на 270 градусов против часовой стрелки"
+
+#~ msgid "image does not need to be rotated"
+#~ msgstr "изображение не нуждается в повороте"
+
+#~ msgid "could not guess image rotation"
+#~ msgstr "не удалось определить угол поворота изображения"
+
+#~ msgid "GNU Ocrad failed to initialize"
+#~ msgstr "Не далось инициализировть GNU Ocrad"
+
+#~ msgid "could not set OCR image"
+#~ msgstr "не удалось установить изображение OCR"
+
+#~ msgid "OCR pass failed"
+#~ msgstr "Ошибка оптического распознавания"
+
+#~ msgid "input was not loaded"
+#~ msgstr "входные данные не были загружены"
+
+#~ msgid "could not open input for reading"
+#~ msgstr "не удалось открыть входные данные для чтения"
+
+#~ msgid "file ended prematurely before raw image"
+#~ msgstr "неожиданный конец файла до необработанного изображения"
+
+#~ msgid "band data extraction i/o error"
+#~ msgstr "ошибка ввода/вывода при извлечении данных полосы"
+
+#~ msgid "loading"
+#~ msgstr "загрузка"
+
+#~ msgid ""
+#~ "empty file, probably blank magnetic tape or not received back on Earth"
+#~ msgstr ""
+#~ "пустой файл, возможно чистая магнитная лента или лента не полученная на Земле"
+
+#~ msgid "too small to be interesting (< 4 KB)"
+#~ msgstr "слишком мал, чтобы быть интересным (< 4 КБ)"
+
+#~ msgid "header is not intact, or not a VICAR file"
+#~ msgstr "заголовок повреждён или файл не в формате VICAR"
+
+#~ msgid "header intact, but requires "
+#~ msgstr "заголовок неповреждён, но требуется "
+
+#~ msgid " byte phase offset"
+#~ msgstr " сдвиг байтов"
+
+#~ msgid "did not originate from a Viking Lander"
+#~ msgstr "записан не посадочным модулем Viking"
+
+#~ msgid "entering physical record "
+#~ msgstr "читается физическая запись "
+
+#~ msgid " starting at "
+#~ msgstr " начинающаяся с "
+
+#~ msgid "extracting logical record "
+#~ msgstr "извлекается логическая запись "
+
+#~ msgid "/5 starting at "
+#~ msgstr "/5 начинающаяся с "
+
+#~ msgid "bad logical record terminator "
+#~ msgstr "некорректное завершение логической записи "
+
+#~ msgid ""
+#~ "invalid logical record label possibly from out of phase physical boundary"
+#~ msgstr ""
+#~ "неверная метка логической записи, возможно из-за некорректного значения "
+#~ "физического окончания данных"
+
+#~ msgid "tangential physical record boundary detected, ignoring padding"
+#~ msgstr ""
+#~ "найден не относящийся к записи предел физической записи, выравнивание не "
+#~ "производится"
+
+#~ msgid "seeking passed "
+#~ msgstr "поиск произведён "
+
+#~ msgid " physical record padding"
+#~ msgstr " выравнивание физической записи"
+
+#~ msgid "unable to locate last logical record label"
+#~ msgstr "не удалось найти метку последней логической записи"
+
+#~ msgid "file too small to contain claimed payload "
+#~ msgstr "файл слишком мал, чтобы содержать заявленную информацию "
+
+#~ msgid "internal radio/geometric calibration ("
+#~ msgstr "внутренняя радио/геометрическая калибровка ("
+
+#~ msgid "unsupported photosensor diode band type ("
+#~ msgstr "неподдеживаемый тип полосы частот диода фотосенсора ("
+
+#~ msgid "exhausted basic metadata parser heuristics"
+#~ msgstr "испробованы все эвристики чтения базовых метаданных"
+
+#~ msgid "unsupported number of image bands"
+#~ msgstr "неподдерживаемое количество полос изображения"
+
+#~ msgid "expected positive image height"
+#~ msgstr "ожидалась положительная высота изображения"
+
+#~ msgid "expected positive image width"
+#~ msgstr "ожидалась положительная ширина изображения"
+
+#~ msgid "unsupported pixel format"
+#~ msgstr "неподдерживаемый пиксельный формат"
+
+#~ msgid "unsupported colour bit depth"
+#~ msgstr "неподдерживаемая глубина цвета"
+
+#~ msgid "basic metadata parser heuristic: "
+#~ msgstr "эвристика чтения базовых метаданных: "
+
+#~ msgid "bands: "
+#~ msgstr "полосы частот: "
+
+#~ msgid "height: "
+#~ msgstr "высота: "
+
+#~ msgid "width: "
+#~ msgstr "ширина: "
+
+#~ msgid "raw band data size: "
+#~ msgstr "размер данных необработанной полосы частот: "
+
+#~ msgid " bytes"
+#~ msgstr " байт"
+
+#~ msgid "format: integral"
+#~ msgstr "формат: интегральный"
+
+#~ msgid "bytes per colour: "
+#~ msgstr "байт на цвет: "
+
+#~ msgid "photosensor diode band type: "
+#~ msgstr "тип полосы частот диода фотосенсора: "
+
+#~ msgid "possible physical record padding: "
+#~ msgstr "возможное выравнивание физической записи: "
+
+#~ msgid "heuristics selected format 1 basic metadata parser"
+#~ msgstr "эвристический метод выбрал первый формат чтения метаданных"
+
+#~ msgid "heuristics selected format 2 basic metadata parser"
+#~ msgstr "эвристический метод выбрал второй формат чтения метаданных"
+
+#~ msgid "heuristics selected format 3 basic metadata parser"
+#~ msgstr "эвристический метод выбрал третий формат чтения метаданных"
+
+#~ msgid "heuristics selected format 4 basic metadata parser"
+#~ msgstr "эвристический метод выбрал четвёртый формат чтения метаданных"
+
+#~ msgid "heuristics selected format 5 basic metadata parser"
+#~ msgstr "эвристический метод выбрал пятый формат чтения метаданных"
+
+#~ msgid "heuristics selected format 6 basic metadata parser"
+#~ msgstr "эвристический метод выбрал шестой формат чтения метаданных"
+
+#~ msgid "invalid logical record label while parsing extended metadata"
+#~ msgstr "неверная метка логической записи при чтении расширенных метаданных"
+
+#~ msgid "psa directional vector: "
+#~ msgstr "направленный вектор psa: "
+
+#~ msgid "camera event label: "
+#~ msgstr "метка события камеры: "
+
+#~ msgid "bad lander number"
+#~ msgstr "плохой номер посадочного модуля"
+
+#~ msgid "lander number: "
+#~ msgstr "номер посадочного модуля: "
+
+#~ msgid "filtering non-matching lander"
+#~ msgstr "фильтруется неподходящий посадочный модуль"
+
+#~ msgid "monocolour unsupported"
+#~ msgstr "монохромные изображения не поддерживаются"
+
+#~ msgid "unidentifiable broadband"
+#~ msgstr "неизвестное широковещательное сообщение"
+
+#~ msgid "none detected"
+#~ msgstr "не найдено"
+
+#~ msgid "filtering non-matching solar day"
+#~ msgstr "фильтруются неподходящие солнечные сутки"
+
+#~ msgid "filtering non-matching camera event"
+#~ msgstr "фильтруется неподходящее событие камеры"
+
+#~ msgid "Options:\n"
+#~ msgstr "Настройки:\n"
+
+#~ msgid ""
+#~ "                              Put reconstructed images into subdirectories\n"
+#~ "                              named after band type class (e.g. Colour).\n"
+#~ msgstr ""
+#~ "                              Раскладывает восстановленные изображения в по "
+#~ "подкаталогам,\n"
+#~ "                              названным по классу полосы частот (например, "
+#~ "Colour).\n"
+
+#~ msgid ""
+#~ "                              Put reconstructed images into subdirectories\n"
+#~ "                              named after location taken from.\n"
+#~ msgstr ""
+#~ "                              Раскладывает восстановленные изображения в по "
+#~ "подкаталогам,\n"
+#~ "                              названным по позициям фотографирования.\n"
+
+#~ msgid ""
+#~ "                              Put reconstructed images into subdirectories\n"
+#~ "                              named after Martian month taken on.\n"
+#~ msgstr ""
+#~ "                              Раскладывает восстановленные изображения в по "
+#~ "подкаталогам,\n"
+#~ "                              названным по марсианским месяцам "
+#~ "фотографирования.\n"
+
+#~ msgid ""
+#~ "                              Put reconstructed images into subdirectories\n"
+#~ "                              numbered by camera event solar day.\n"
+#~ msgstr ""
+#~ "                              Раскладывает восстановленные изображения в по "
+#~ "подкаталогам,\n"
+#~ "                              пронумерованным по солнечным суткам событий "
+#~ "камеры.\n"
+
+#~ msgid "                              Don't write anything.\n"
+#~ msgstr "                              Ничего не писать.\n"
+
+#~ msgid "                              Show this help.\n"
+#~ msgstr "                              Выводит эту справку.\n"
+
+#~ msgid ""
+#~ "                              Don't stop on corrupt or problematic input "
+#~ "file,\n"
+#~ "                              but continue extraction of other files.\n"
+#~ msgstr ""
+#~ "                              Не останавливаться на проблемных входных "
+#~ "файлах,\n"
+#~ "                              продолжать читать другие файлы.\n"
+
+#~ msgid "                              Encode output with Adam7 interlacing\n"
+#~ msgstr ""
+#~ "                              Кодировать вывод с помощью алгоритма Adam7\n"
+
+#~ msgid ""
+#~ "                              Number of threads to run parallelized. Only "
+#~ "one\n"
+#~ "                              if -j is not provided, or auto if threads\n"
+#~ "                              argument not specified.\n"
+#~ msgstr ""
+#~ "                              Количество параллельных потоков. Один поток,\n"
+#~ "                              если параметра -j нет; автоматически, если\n"
+#~ "                              параметр не имеет аргументов.\n"
+
+#~ msgid ""
+#~ "                              Look only for the specified matching camera "
+#~ "event\n"
+#~ "                              ID, such as 22A158.\n"
+#~ msgstr ""
+#~ "                              Искать только заданное событие камеры по ID,\n"
+#~ "                              например 22A158.\n"
+
+#~ msgid ""
+#~ "                              Extract from matching supported diode filter\n"
+#~ "                              classes which are any (default), colour, "
+#~ "infrared,\n"
+#~ "                              sun, or survey.\n"
+#~ msgstr ""
+#~ "                              Извлечь из поддерживаемого класса диодного "
+#~ "фильтра:\n"
+#~ "                              any (по умолчанию), colour, infrared,\n"
+#~ "                              sun, или survey.\n"
+
+#~ msgid ""
+#~ "                              Extract from specific lander only which are\n"
+#~ "                              either (0, the default), 1, or 2.\n"
+#~ msgstr ""
+#~ "                              Извлечь из заданного посадочного модуля:\n"
+#~ "                              из любого (0, по умолчанию), 1 или 2.\n"
+
+#~ msgid ""
+#~ "                              Look only for camera events taken on the "
+#~ "specified\n"
+#~ "                              solar day.\n"
+#~ msgstr ""
+#~ "                              Искать только события камеры для заданных\n"
+#~ "                              солнечных суток.\n"
+
+#~ msgid ""
+#~ "                              Whenever a colour image is recovered, machine\n"
+#~ "                              generate a text file containing various "
+#~ "metadata.\n"
+#~ msgstr ""
+#~ "                              Генерировать текстовый файл с метаданными\n"
+#~ "                              каждый раз, когда восстановлено цветное "
+#~ "изображение.\n"
+
+#~ msgid ""
+#~ "                              Disable VT/100 ANSI coloured terminal output.\n"
+#~ msgstr ""
+#~ "                              Отключить цветной вывод на терминал (VT/100 "
+#~ "ANSI).\n"
+
+#~ msgid ""
+#~ "                              Don't automatically rotate image as needed.\n"
+#~ msgstr ""
+#~ "                              Не пытаться автоматически поворачивать "
+#~ "изображения.\n"
+
+#~ msgid ""
+#~ "                              Don't attempt to reconstruct camera events, "
+#~ "just\n"
+#~ "                              dump all available band data as separate "
+#~ "images.\n"
+#~ msgstr ""
+#~ "                              Не пытаться восстановить события камер, только "
+#~ "создать\n"
+#~ "                              дампы всех доступных полос в отдельных "
+#~ "изображениях.\n"
+
+#~ msgid "                              Overwrite any existing output files.\n"
+#~ msgstr ""
+#~ "                              Перезаписать существующие выходные файлы.\n"
+
+#~ msgid ""
+#~ "                              Scan subfolders as well if input is a "
+#~ "directory.\n"
+#~ msgstr ""
+#~ "                              Искать в подкаталогах, если входной файл "
+#~ "является каталогом.\n"
+
+#~ msgid ""
+#~ "                              Show summary of progress and final results "
+#~ "only.\n"
+#~ msgstr ""
+#~ "                              Выводить только индикатор прогресса и "
+#~ "финальные результаты.\n"
+
+#~ msgid "                              Suppress all warnings and errors.\n"
+#~ msgstr "                              Не выводить ошибки и предупреждения.\n"
+
+#~ msgid "                              Be verbose\n"
+#~ msgstr "                              Подробный вывод\n"
+
+#~ msgid ""
+#~ "                              Show version information\n"
+#~ "\n"
+#~ msgstr ""
+#~ "                              Вывести информацию о версии\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Converts 1970s Viking Lander era VICAR colour images to PNGs. The value of\n"
+#~ "'input' can be either a single VICAR file or a directory containing VICAR "
+#~ "files\n"
+#~ "to attempt reconstruction into the provided output directory.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Ковертирует цветные изображения в формате VICAR времён посадочного модуля "
+#~ "Viking в PNG.\n"
+#~ "Значение 'input' может быть отдельным файлом VICAR или каталогом, содержащим "
+#~ "файлы VICAR.\n"
+#~ "Восстановленные изображения записываются в выходной каталог.\n"
+#~ "\n"
+
+#~ msgid "Report bugs to "
+#~ msgstr "Сообщайте об ошибках "
+
+#~ msgid ""
+#~ "Copyright (C) 2010-2013 Cartesian Theatre.\n"
+#~ "This is free software; see Copying for copying conditions. There is NO\n"
+#~ "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Авторские права (C) 2010-2013 Cartesian Theatre.\n"
+#~ "Свободное программное обеспечение; см. файл Copying для получения \n"
+#~ "информации об условиях копирования и распространения. \n"
+#~ "Для этого программного обеспечения не даётся НИКАКИХ гарантий, в том числе\n"
+#~ "гарантий получения коммерческой выгоды или применимости к конкретной "
+#~ "задаче.\n"
+#~ "\n"
+
+#~ msgid "Configured with: "
+#~ msgstr "Заданные настройки: "
+
+#~ msgid "parallelization is not implemented yet, using single thread"
+#~ msgstr ""
+#~ "распараллеливание временно не поддерживается, используется один поток"
+
+#~ msgid "summarize only and verbose modes cannot both be used"
+#~ msgstr "краткий и подробный режимы не могут быть заданы одновременно"
+
+#~ msgid " linked against incompatible GNU Ocrad version "
+#~ msgstr " собрано с несовместимой версией GNU Ocrad "
+
+#~ msgid "GNU Ocrad needs to be at least 0.21, but got "
+#~ msgstr "необходим GNU Ocrad как минимум версии 0.21, однако найден "
+
+#~ msgid "need input file or directory, see --help"
+#~ msgstr "необходимо имя входного файла или каталога, см. --help"
+
+#~ msgid "unknown parameter "
+#~ msgstr "неизвестный параметр "
+
+#~ msgid "), see --help"
+#~ msgstr "), см. --help"

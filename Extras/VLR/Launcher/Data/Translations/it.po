@@ -7,19 +7,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-07-09 23:59-0700\n"
-"PO-Revision-Date: 2013-07-08 02:46+0000\n"
+"POT-Creation-Date: 2013-08-07 20:42-0700\n"
+"PO-Revision-Date: 2013-08-07 10:31+0000\n"
 "Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
 "Language-Team: Italian <it@li.org>\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-07-14 05:50+0000\n"
-"X-Generator: Launchpad (build 16696)\n"
+"X-Launchpad-Export-Date: 2013-08-08 04:48+0000\n"
+"X-Generator: Launchpad (build 16723)\n"
+"Language: it\n"
 
 #. Set translators. Note to translators, put your contact info here...
-#: ../../Source/LauncherApp.py:178
+#: ../../Source/LauncherApp.py:182
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
@@ -29,41 +29,41 @@ msgstr ""
 "  Kip Warner https://launchpad.net/~kip"
 
 #. Beta testers...
-#: ../../Source/LauncherApp.py:185
+#: ../../Source/LauncherApp.py:189
 msgid "Beta Testers"
 msgstr "Collaudatori Beta"
 
 #. Musicians...
-#: ../../Source/LauncherApp.py:193
+#: ../../Source/LauncherApp.py:198
 msgid "Musicians"
 msgstr "Musicisti"
 
 #. Shouts and thanks...
-#: ../../Source/LauncherApp.py:198
+#: ../../Source/LauncherApp.py:203
 msgid "Shouts / Thanks"
 msgstr "Ringraziamenti"
 
 #. Studio hardware...
-#: ../../Source/LauncherApp.py:212
+#: ../../Source/LauncherApp.py:217
 msgid "Studio Hardware"
 msgstr "Studio Hardware"
 
 #. Studio software...
-#: ../../Source/LauncherApp.py:217
+#: ../../Source/LauncherApp.py:222
 msgid "Studio Software"
 msgstr "Studio Software"
 
 #. Set translators...
-#: ../../Source/LauncherApp.py:240
+#: ../../Source/LauncherApp.py:245
 msgid "Translators"
 msgstr "Traduttori"
 
 #. Dedications...
-#: ../../Source/LauncherApp.py:250
+#: ../../Source/LauncherApp.py:255
 msgid "Dedications"
 msgstr "Dediche"
 
-#: ../../Source/LauncherApp.py:261
+#: ../../Source/LauncherApp.py:266
 msgid ""
 "\n"
 "\n"
@@ -82,11 +82,11 @@ msgstr ""
 "href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits"
 "\">Rigraziamenti</a>"
 
-#: ../../Source/LauncherApp.py:283 ../../Source/OpeningVideoWindow.py:153
+#: ../../Source/LauncherApp.py:288 ../../Source/OpeningVideoWindow.py:175
 msgid "Error:"
 msgstr "Errore:"
 
-#: ../../Source/LauncherApp.py:311
+#: ../../Source/LauncherApp.py:316
 msgid "Are you sure you'd like to quit?"
 msgstr "Sei sicuro di voler uscire?"
 
@@ -440,6 +440,7 @@ msgstr "Ripristino"
 
 #. We got the process ID, show it...
 #: ../../Source/RecoveryPage.py:101
+#, python-brace-format
 msgid "Spawned process {0}..."
 msgstr "Generato processo {0}..."
 
@@ -462,6 +463,7 @@ msgid "Error"
 msgstr "Errore"
 
 #: ../../Source/RecoveryPage.py:220
+#, python-brace-format
 msgid ""
 "The VikingExtractor could not be launched. The following location was "
 "attempted:\n"
@@ -478,10 +480,12 @@ msgid "Are you sure you'd like to abort the recovery?"
 msgstr "Si è sicuri di voler interrompere il ripristino?"
 
 #: ../../Source/RecoveryPage.py:266
+#, python-brace-format
 msgid "VikingExtractor terminated with status {0}..."
 msgstr "VikingExtractor completato con stato {0}..."
 
 #: ../../Source/RecoveryPage.py:277
+#, python-brace-format
 msgid "The recovery process was unsuccessful. ({0})"
 msgstr "Il processo di ripristino non ha avuto successo. ({0})"
 
@@ -502,6 +506,7 @@ msgid "Passwords do not match."
 msgstr "Le password non corrispondono."
 
 #: ../../Source/SubscribePage.py:182 ../../Source/HandbookPage.py:235
+#, python-brace-format
 msgid ""
 "There was a problem communicating with the remote server. Please try again "
 "later.\n"
@@ -543,10 +548,12 @@ msgstr "Sovrascrive il percorso dell'eseguibile VikingExtractor."
 
 #. Show debugging info...
 #: ../../Source/LauncherArguments.py:97
+#, python-brace-format
 msgid "Warning: No executable detected... \"{0}\""
 msgstr "Attenzione: Nessun eseguibile individuato... \"{0}\""
 
 #: ../../Source/LauncherArguments.py:106
+#, python-brace-format
 msgid ""
 "Unfortunately your platform is not yet supported. A required executable was "
 "not detected.\n"
@@ -564,8 +571,9 @@ msgstr ""
 msgid "Verification Progress"
 msgstr "Progresso della verifica"
 
-#: ../../Source/VerificationProgressPage.py:96
-#: ../../Source/VerificationProgressPage.py:233
+#: ../../Source/VerificationProgressPage.py:106
+#: ../../Source/VerificationProgressPage.py:240
+#, python-brace-format
 msgid ""
 "I was not able to check a file I require. {0}:\n"
 "\n"
@@ -575,7 +583,8 @@ msgstr ""
 "\n"
 "{1}"
 
-#: ../../Source/VerificationProgressPage.py:151
+#: ../../Source/VerificationProgressPage.py:161
+#, python-brace-format
 msgid ""
 "I could not locate the list of files to verify:\n"
 "\n"
@@ -589,7 +598,8 @@ msgstr ""
 "\n"
 "{1}"
 
-#: ../../Source/VerificationProgressPage.py:256
+#: ../../Source/VerificationProgressPage.py:263
+#, python-brace-format
 msgid ""
 "Your disc might be damaged. It is recommended that you replace it before "
 "continuing. The following file appeared to be corrupt:\n"
@@ -604,18 +614,18 @@ msgstr ""
 "\n"
 
 #. Alert user...
-#: ../../Source/VerificationProgressPage.py:286
+#: ../../Source/VerificationProgressPage.py:293
 msgid "Disc verification was cancelled."
 msgstr "La verifica del disco è stata annullata."
 
-#: ../../Source/VerificationProgressPage.py:311
+#: ../../Source/VerificationProgressPage.py:318
 msgid ""
 "The disc verification completed successfully. Your disc is probably fine."
 msgstr ""
 "La verifica del disco è stata completata con successo: probabilmente il "
 "disco funziona correttamente."
 
-#: ../../Source/VerificationProgressPage.py:335
+#: ../../Source/VerificationProgressPage.py:342
 msgid "Disc verification failed."
 msgstr "Verifica del disco non riuscita."
 
@@ -624,10 +634,12 @@ msgid "Confirmation"
 msgstr "Conferma"
 
 #: ../../Source/ConfirmPage.py:82
+#, python-brace-format
 msgid "Save to: {0}\n"
 msgstr "Salvare in: {0}\n"
 
 #: ../../Source/ConfirmPage.py:87
+#, python-brace-format
 msgid "Output will be overwritten: {0}\n"
 msgstr "L'output verrà sovrascritto: {0}\n"
 
@@ -637,27 +649,33 @@ msgid "Directorize by...\n"
 msgstr "Riordinato in directory da...\n"
 
 #: ../../Source/ConfirmPage.py:97
+#, python-brace-format
 msgid "\t...diode band class: {0}\n"
 msgstr "\t...classe della banda del diodo: {0}\n"
 
 #: ../../Source/ConfirmPage.py:104
+#, python-brace-format
 msgid "\t...Martian location: {0}\n"
 msgstr "\t...Posizione marziana: {0}\n"
 
 #: ../../Source/ConfirmPage.py:111
+#, python-brace-format
 msgid "\t...Martian month: {0}\n"
 msgstr "\t...Mese marziano: {0}\n"
 
 #: ../../Source/ConfirmPage.py:118
+#, python-brace-format
 msgid "\t...mission solar day: {0}\n"
 msgstr "\t...Giorno solare della missione: {0}\n"
 
 #: ../../Source/ConfirmPage.py:125
+#, python-brace-format
 msgid "Disable automatic image component orientation: {0}\n"
 msgstr ""
 "Disabilita l'orientamento automatico dei componenti dell'immagine: {0}\n"
 
 #: ../../Source/ConfirmPage.py:132
+#, python-brace-format
 msgid "Dump components without reconstruction: {0}\n"
 msgstr "Scarta i componenti senza ricostruzione: {0}\n"
 
@@ -667,30 +685,37 @@ msgid "Filters...\n"
 msgstr "Filtri...\n"
 
 #: ../../Source/ConfirmPage.py:149
+#, python-brace-format
 msgid "\t...diode band type class: {0}\n"
 msgstr "\t...Classe del tipo di banda del diodo: {0}\n"
 
 #: ../../Source/ConfirmPage.py:163
+#, python-brace-format
 msgid "\t...lander: {0}\n"
 msgstr "\t...Modulo di atterraggio: {0}\n"
 
 #: ../../Source/ConfirmPage.py:169
+#, python-brace-format
 msgid "Interlace images: {0}\n"
 msgstr "Interlaccia le immagini: {0}\n"
 
 #: ../../Source/ConfirmPage.py:176
+#, python-brace-format
 msgid "Generate metadata: {0}\n"
 msgstr "Genera i metadati: {0}\n"
 
 #: ../../Source/ConfirmPage.py:183
+#, python-brace-format
 msgid "Be verbose: {0}\n"
 msgstr "Messaggi più dettagliati: {0}\n"
 
 #: ../../Source/ConfirmPage.py:190
+#, python-brace-format
 msgid "Use multithreading: {0}\n"
 msgstr "Usa il multithread: {0}\n"
 
 #: ../../Source/ConfirmPage.py:210
+#, python-brace-format
 msgid "VikingExtractor arguments: {0}\n"
 msgstr "Argomenti di VikingExtractor: {0}\n"
 
@@ -710,7 +735,7 @@ msgstr "Arrivederci"
 msgid "Select Recovery Folder"
 msgstr "Seleziona la cartella di ripristino"
 
-#: ../../Source/OpeningVideoWindow.py:33
+#: ../../Source/OpeningVideoWindow.py:37
 msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
 msgstr "GStreamer >= 1.0 non trovato. Non verrà usato per aprire i video..."
 
@@ -738,11 +763,11 @@ msgstr "Lo scarico del manuale è stato fermato."
 msgid "The book downloaded successfully. Would you like to open it?"
 msgstr "Il libro è stato scaricato con successo. Aprirlo?"
 
-#: ../../Source/Miscellaneous.py:123
+#: ../../Source/Miscellaneous.py:126
 msgid "Warning: NetworkManager service not found..."
 msgstr "Attenzione: servizio NetworkManager non trovato..."
 
-#: ../../Source/Miscellaneous.py:141
+#: ../../Source/Miscellaneous.py:144
 msgid ""
 "You need a working internet connection in order to do this. You don't appear "
 "to have one right now."
@@ -750,11 +775,13 @@ msgstr ""
 "È necessaria una connessione funzionante a internet per eseguire questa "
 "operazione. Non sembra sia disponibile in questo momento."
 
-#: ../../Source/Miscellaneous.py:170
+#: ../../Source/Miscellaneous.py:173
+#, python-brace-format
 msgid "Cannot launch {0}. Platform unknown..."
 msgstr "Non è possibile avviare {0}. Piattaforma sconosciuta..."
 
-#: ../../Source/Miscellaneous.py:194
+#: ../../Source/Miscellaneous.py:197
+#, python-brace-format
 msgid "Cannot explore {0}. Platform unknown..."
 msgstr "Non è possibile esplorare {0}. Piattaforma sconosciuta..."
 
@@ -808,7 +835,7 @@ msgstr ""
 msgid "Avaneya Website"
 msgstr "Sito web Avaneya"
 
-#: ../Launcher.glade:79
+#: ../Launcher.glade:88
 msgid ""
 "These options configure some advanced VikingExtractor features. If you are "
 "unsure of any of them, just leave them set at their defaults.\n"
@@ -823,11 +850,11 @@ msgstr ""
 "Se non si è certi di una opzione, basta <b>passare</b> il mouse su di essa "
 "per una spiegazione; si raccomanda di usare la configurazione predefinita."
 
-#: ../Launcher.glade:109
+#: ../Launcher.glade:118
 msgid "Use image interlacing"
 msgstr "Usa l'interlacciamento dell'immagine"
 
-#: ../Launcher.glade:114
+#: ../Launcher.glade:123
 msgid ""
 "The recovered images are encoded in a lossless compressed PNG format for "
 "maximum quality and versatility. If you&apos;d like them to use interlacing, "
@@ -844,7 +871,7 @@ msgstr ""
 "leggermente più grandi, ma sono utili per lo streaming sulle connessioni di "
 "rete più lente."
 
-#: ../Launcher.glade:115
+#: ../Launcher.glade:124
 msgid ""
 "The recovered images are encoded in a lossless compressed PNG format for "
 "maximum quality and versatility. If you'd like them to use interlacing, "
@@ -861,11 +888,11 @@ msgstr ""
 "leggermente più grandi, ma sono utili per lo streaming sulle connessioni di "
 "rete più lente."
 
-#: ../Launcher.glade:127
+#: ../Launcher.glade:136
 msgid "Generate metadata"
 msgstr "Genera i metadati"
 
-#: ../Launcher.glade:132 ../Launcher.glade:133
+#: ../Launcher.glade:141 ../Launcher.glade:142
 msgid ""
 "Whenever a colour image is being recovered, this option will write out a "
 "machine generated text file containing a bunch of image metadata, such as "
@@ -878,11 +905,11 @@ msgstr ""
 "ripristino usata e così via, di ciascuna delle bande di immagine usate per "
 "ricostruire l'immagine finale a colori."
 
-#: ../Launcher.glade:145
+#: ../Launcher.glade:154
 msgid "Be verbose"
 msgstr "Maggiore dettaglio nei messaggi"
 
-#: ../Launcher.glade:150 ../Launcher.glade:151
+#: ../Launcher.glade:159 ../Launcher.glade:160
 msgid ""
 "If this is enabled, the VikingExtractor will display significantly more "
 "information as it attempts to recover what it can."
@@ -891,11 +918,11 @@ msgstr ""
 "significativamente maggiore durante il tentativo di ripristino, quando "
 "possibile."
 
-#: ../Launcher.glade:165
+#: ../Launcher.glade:174
 msgid "Use multithreading"
 msgstr "Usa il multithread"
 
-#: ../Launcher.glade:171
+#: ../Launcher.glade:180
 msgid ""
 "Take advantage of machines with more than one processor by using several "
 "simultaneously. Note that this feature is currently <b>not</b> supported."
@@ -904,7 +931,7 @@ msgstr ""
 "contemporaneamente. Notare che questa caratteristica attualmente <b>non </b> "
 "è supportata."
 
-#: ../Launcher.glade:172
+#: ../Launcher.glade:181
 msgid ""
 "Take advantage of machines with more than one processor by using several "
 "simultaneously. Note that this feature is currently not supported."
@@ -913,7 +940,7 @@ msgstr ""
 "contemporaneamente. Notare che questa caratteristica attualmente non è "
 "supportata."
 
-#: ../Launcher.glade:225
+#: ../Launcher.glade:247
 msgid ""
 "These configuration settings allow you to filter which specific types of "
 "data you are interested. If you leave these at their defaults, everything "
@@ -929,7 +956,7 @@ msgstr ""
 "Se non si è certi di una opzione, basta <b>passare</b> il mouse su di essa "
 "per una spiegazione; si raccomanda di usare la configurazione predefinita."
 
-#: ../Launcher.glade:273 ../Launcher.glade:274
+#: ../Launcher.glade:295 ../Launcher.glade:296
 msgid ""
 "Extract from matching Viking lander diode filters. These include colour, "
 "infrared, sun, or survey. By default, all diode filters are acceptable."
@@ -938,11 +965,11 @@ msgstr ""
 "corrispondenti; include colore, infrarossi, solare o panorama. Per "
 "impostazione predefinita, sono accettabili tutti  i filtri con diodi."
 
-#: ../Launcher.glade:299
+#: ../Launcher.glade:321
 msgid "<b>Diode Filter:</b>"
 msgstr "<b>Filtro con diodi:</b>"
 
-#: ../Launcher.glade:320 ../Launcher.glade:328
+#: ../Launcher.glade:342 ../Launcher.glade:350
 msgid ""
 "Perform an extraction of only images taken by a particular lander. Viking "
 "lander 2 touched down on <i>Utopia Planitia</i> and Viking lander 1 on "
@@ -952,7 +979,7 @@ msgstr ""
 "atterraggio. Quello del Viking 2 atterrò nell'<i>Utopia Planitia</i>, mentre "
 "quello del Viking 1 nella <i>Chryse Planitia</i>."
 
-#: ../Launcher.glade:321 ../Launcher.glade:329
+#: ../Launcher.glade:343 ../Launcher.glade:351
 msgid ""
 "Perform an extraction of only images taken by a particular lander. Viking "
 "lander 2 touched down on Utopia Planitia and Viking lander 1 on Chryse "
@@ -962,11 +989,11 @@ msgstr ""
 "atterraggio. Quello del Viking 2 atterrò nell'Utopia Planitia, mentre quello "
 "del Viking 1 nella Chryse Planitia."
 
-#: ../Launcher.glade:361
+#: ../Launcher.glade:383
 msgid "<b>Lander Filter:</b>"
 msgstr "<b>Filtro del modulo di atterraggio:</b>"
 
-#: ../Launcher.glade:418
+#: ../Launcher.glade:453
 msgid ""
 "The <b>VikingExtractor</b> has many different configuration options that "
 "control how it recovers images and what it does with them. Over the next few "
@@ -982,7 +1009,7 @@ msgstr ""
 "Se non si è certi di una opzione, basta <b>passare</b> il mouse su di essa "
 "per una spiegazione; si raccomanda di usare la configurazione predefinita."
 
-#: ../Launcher.glade:479
+#: ../Launcher.glade:527
 msgid ""
 "Let's start with how you'd like the recovered files <b>organized</b> in the "
 "directory you previously selected. If you select more than one method, they "
@@ -998,11 +1025,11 @@ msgstr ""
 "Se non si è certi di una opzione, basta <b>passare</b> il mouse su di essa "
 "per una spiegazione; si raccomanda di usare la configurazione predefinita."
 
-#: ../Launcher.glade:509
+#: ../Launcher.glade:557
 msgid "Organize by sensor band type"
 msgstr "Organizza in base al tipo di banda del sensore"
 
-#: ../Launcher.glade:514 ../Launcher.glade:515
+#: ../Launcher.glade:562 ../Launcher.glade:563
 msgid ""
 "Organizes the images into subdirectories named after the sensor band type "
 "used on the lander to capture the data, such as Colour or Infrared."
@@ -1011,11 +1038,11 @@ msgstr ""
 "relazione al tipo di banda del sensore usato sul modulo di atterraggio per "
 "acquisire i dati, come Colore o Infrarossi."
 
-#: ../Launcher.glade:527
+#: ../Launcher.glade:575
 msgid "Organize by location on Martian surface"
 msgstr "Organizza in base alla posizione sulla superficie marziana"
 
-#: ../Launcher.glade:532 ../Launcher.glade:533
+#: ../Launcher.glade:580 ../Launcher.glade:581
 msgid ""
 "Organizes the images into subdirectories named after the physical location "
 "on the surface of Mars where they were taken. This will be either Utopia "
@@ -1025,11 +1052,11 @@ msgstr ""
 "relazione alla posizione sulla superficie di Marte dove sono state "
 "acquisite; può essere Utopia Planitia o Chryse Planitia."
 
-#: ../Launcher.glade:547
+#: ../Launcher.glade:595
 msgid "Organize by Martian month"
 msgstr "Organizza in base al mese marziano"
 
-#: ../Launcher.glade:552 ../Launcher.glade:553
+#: ../Launcher.glade:600 ../Launcher.glade:601
 msgid ""
 "Organizes the images into subdirectories named after the month they were "
 "taken on. The months follow a Martian calendar, such as Gemini, Cancer, Leo, "
@@ -1042,11 +1069,11 @@ msgstr ""
 "ulteriori informazioni, consultare la sezione 8.15.4 del Manuale della "
 "Squadra del Progetto Avaneya."
 
-#: ../Launcher.glade:565
+#: ../Launcher.glade:613
 msgid "Organize by mission solar day"
 msgstr "Organizza in base al giorno solare della missione"
 
-#: ../Launcher.glade:570 ../Launcher.glade:571
+#: ../Launcher.glade:618 ../Launcher.glade:619
 msgid ""
 "Put reconstructed images into subdirectories numbered after the solar day "
 "they were taken on, offset relative to zero. Solar day zero was the day of a "
@@ -1056,11 +1083,11 @@ msgstr ""
 "giorno solare in cui sono state acquisite, parametrate allo zero. Il giorno "
 "solare zero è quello in cui un dato modulo è atterrato."
 
-#: ../Launcher.glade:588
+#: ../Launcher.glade:636
 msgid "?"
 msgstr "?"
 
-#: ../Launcher.glade:637
+#: ../Launcher.glade:698
 msgid ""
 "These options control how the VikingExtractor's image recovery works.\n"
 "\n"
@@ -1073,11 +1100,11 @@ msgstr ""
 "Se non si è certi di una opzione, basta <b>passare</b> il mouse su di essa "
 "per una spiegazione; si raccomanda di usare la configurazione predefinita."
 
-#: ../Launcher.glade:665
+#: ../Launcher.glade:726
 msgid "No automatic rotation"
 msgstr "Nessuna rotazione automatica"
 
-#: ../Launcher.glade:670 ../Launcher.glade:671
+#: ../Launcher.glade:731 ../Launcher.glade:732
 msgid ""
 "A given fully rendered image in the Viking Lander image archive might be "
 "scattered in different parts across many different files. Sometimes the "
@@ -1095,11 +1122,11 @@ msgstr ""
 "Nel caso non si comprenda il significato di questa operazione, lasciare le "
 "impostazioni predefinite."
 
-#: ../Launcher.glade:683
+#: ../Launcher.glade:744
 msgid "Do not reconstruct"
 msgstr "Nessuna ricostruzione"
 
-#: ../Launcher.glade:688 ../Launcher.glade:689
+#: ../Launcher.glade:749 ../Launcher.glade:750
 msgid ""
 "A given fully rendered image in the Viking Lander image archive might be "
 "scattered in different parts across many different files. If this option is "
@@ -1117,11 +1144,11 @@ msgstr ""
 "operazione, lasciare le impostazioni predefinite."
 
 #. This is set at runtime. Don't bother to translate.
-#: ../Launcher.glade:715
+#: ../Launcher.glade:780
 msgid "(set at runtime)"
 msgstr "(imposta al tempo di esecuzione)"
 
-#: ../Launcher.glade:732
+#: ../Launcher.glade:806
 msgid ""
 "The following is a summary of the configuration <b>VikingExtractor</b> will "
 "use for this session. If you would like to change anything, you can go back. "
@@ -1143,7 +1170,27 @@ msgstr ""
 "atterraggio dei Viking non sono in effetti dei dati o sono troppo "
 "danneggiati per essere recuperabili."
 
-#: ../Launcher.glade:852
+#: ../Launcher.glade:864
+msgid "All diode band types"
+msgstr ""
+
+#: ../Launcher.glade:868
+msgid "Colour"
+msgstr ""
+
+#: ../Launcher.glade:872
+msgid "Infrared"
+msgstr ""
+
+#: ../Launcher.glade:876
+msgid "Sun"
+msgstr ""
+
+#: ../Launcher.glade:880
+msgid "Survey"
+msgstr ""
+
+#: ../Launcher.glade:939
 msgid ""
 "Congratulations! The mission data forensic recovery has completed. To "
 "examine everything that you managed to recover, use the button below.\n"
@@ -1172,15 +1219,15 @@ msgstr ""
 "degli utenti è essenziale per sostenere uno sviluppo attivo e professionale "
 "del progetto Avaneya."
 
-#: ../Launcher.glade:881
+#: ../Launcher.glade:968
 msgid "Explore Recovered Mission Data"
 msgstr "Esplora i dati della missione ripristinati"
 
-#: ../Launcher.glade:895
+#: ../Launcher.glade:982
 msgid "Explore Source Code"
 msgstr "Esplora il codice sorgente"
 
-#: ../Launcher.glade:965
+#: ../Launcher.glade:1068
 msgid ""
 "The <i>Avaneya Project Crew Handbook</i> was written to address the needs of "
 "project contributors in our community. Would you like to download the latest "
@@ -1191,15 +1238,27 @@ msgstr ""
 "comunità. Scaricare la più recente revisione? Ciò richiede una connessione a "
 "internet funzionante."
 
-#: ../Launcher.glade:982
+#: ../Launcher.glade:1085
 msgid "Yes, download the latest copy."
 msgstr "Si, scaricare la copia più recente."
 
-#: ../Launcher.glade:1109
+#: ../Launcher.glade:1216
 msgid "???"
 msgstr "???"
 
-#: ../Launcher.glade:1201
+#: ../Launcher.glade:1240
+msgid "Both landers"
+msgstr ""
+
+#: ../Launcher.glade:1244
+msgid "Viking Lander I (<i>Chryse Planitia</i>)"
+msgstr ""
+
+#: ../Launcher.glade:1248
+msgid "Viking Lander II (<i>Utopia Planitia</i>)"
+msgstr ""
+
+#: ../Launcher.glade:1308
 msgid ""
 "This window contains the output from the VikingExtractor process while it "
 "works."
@@ -1207,11 +1266,11 @@ msgstr ""
 "Questa finestra contiene l'output del processo del VikingExtractor durante "
 "il suo funzionamento."
 
-#: ../Launcher.glade:1262
+#: ../Launcher.glade:1369
 msgid "Please wait..."
 msgstr "Attendere prego..."
 
-#: ../Launcher.glade:1326
+#: ../Launcher.glade:1442
 msgid ""
 "Please select an <b>empty</b> folder below. This folder will be used to save "
 "all of the recoverable images. If the folder is not empty, its contents "
@@ -1221,15 +1280,15 @@ msgstr ""
 "tutte le immagini ripristinabili. Se la cartella non è vuota, il suo "
 "contenuto sarà sovrascritto  con il consenso dell'utente."
 
-#: ../Launcher.glade:1352
+#: ../Launcher.glade:1468
 msgid "Select folder to store recovered images"
 msgstr "Selezionare una cartella per archiviare le immagini ripristinate."
 
-#: ../Launcher.glade:1363
+#: ../Launcher.glade:1479
 msgid "Overwrite existing output files"
 msgstr "Sovrascrive i file di output esistenti"
 
-#: ../Launcher.glade:1368 ../Launcher.glade:1369
+#: ../Launcher.glade:1484 ../Launcher.glade:1485
 msgid ""
 "This will overwrite any existing output files that have the same name as the "
 "data recovered."
@@ -1237,11 +1296,11 @@ msgstr ""
 "Questa operazione sovrascriverà tutti i file di output esistenti con lo "
 "stesso nome dei dati ripristinati."
 
-#: ../Launcher.glade:1391
+#: ../Launcher.glade:1511
 msgid "Avaneya"
 msgstr "Avaneya"
 
-#: ../Launcher.glade:1449
+#: ../Launcher.glade:1579
 msgid ""
 "We have a <b>low volume</b> announcement mailing list that we use to make "
 "press releases and other public announcements. We would love to keep you in "
@@ -1254,31 +1313,31 @@ msgstr ""
 "informazioni fornite non saranno mai deliberatamente fornite a terze "
 "parti.</i>"
 
-#: ../Launcher.glade:1461
+#: ../Launcher.glade:1591
 msgid "Yes, please subscribe me."
 msgstr "Si accetta."
 
-#: ../Launcher.glade:1513
+#: ../Launcher.glade:1643
 msgid "<b>Name:</b>"
 msgstr "<b>Nome:</b>"
 
-#: ../Launcher.glade:1553
+#: ../Launcher.glade:1683
 msgid "<b>Email:</b>"
 msgstr "<b>Email:</b>"
 
-#: ../Launcher.glade:1593
+#: ../Launcher.glade:1723
 msgid "<b>Password:</b>"
 msgstr "<b>Password:</b>"
 
-#: ../Launcher.glade:1633
+#: ../Launcher.glade:1763
 msgid "<b>Password again:</b>"
 msgstr "<b>Conferma password</b>"
 
-#: ../Launcher.glade:1654
+#: ../Launcher.glade:1784
 msgid "Thanks, but I think I'll pass."
 msgstr "Grazie, ma non si accetta."
 
-#: ../Launcher.glade:1718
+#: ../Launcher.glade:1860
 msgid ""
 "Please wait while your mission data's integrity is verified. You can safely "
 "stop this process at any time, if you wish."
@@ -1286,7 +1345,7 @@ msgstr ""
 "Attendere per la verifica dell'integrità dei dati della missione; è "
 "possibile fermare in sicurezza questo processo in qualsiasi momento."
 
-#: ../Launcher.glade:1832
+#: ../Launcher.glade:1990
 msgid ""
 "This disc contains a substantial amount of data that the recovery software "
 "will try to examine for recoverable images. Although we have optimized the "
@@ -1307,10 +1366,10 @@ msgstr ""
 "raccomanda di eseguire questa operazione almeno una volta o in casi si "
 "sospetti che il disco possa essere danneggiato."
 
-#: ../Launcher.glade:1858
+#: ../Launcher.glade:2016
 msgid "Perform DVD integrity check"
 msgstr "Eseguire il controllo dell'integrità del DVD"
 
-#: ../Launcher.glade:1874
+#: ../Launcher.glade:2032
 msgid "Skip DVD integrity check"
 msgstr "Saltare il controllo dell'integrità del DVD"
