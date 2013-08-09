@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-08-07 20:42-0700\n"
-"PO-Revision-Date: 2013-07-31 11:57+0000\n"
-"Last-Translator: Yong Jie Huang <yongjie989@gmail.com>\n"
+"POT-Creation-Date: 2013-08-07 22:13-0700\n"
+"PO-Revision-Date: 2013-08-08 05:59+0000\n"
+"Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
 "Language-Team: Chinese (Traditional) <zh_TW@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-08 04:48+0000\n"
+"X-Launchpad-Export-Date: 2013-08-09 05:13+0000\n"
 "X-Generator: Launchpad (build 16723)\n"
 "Language: zh_TW\n"
 
@@ -1035,19 +1035,19 @@ msgstr ""
 
 #: ../Launcher.glade:868
 msgid "Colour"
-msgstr ""
+msgstr "顏色"
 
 #: ../Launcher.glade:872
 msgid "Infrared"
-msgstr ""
+msgstr "紅外線"
 
 #: ../Launcher.glade:876
 msgid "Sun"
-msgstr ""
+msgstr "太陽"
 
 #: ../Launcher.glade:880
 msgid "Survey"
-msgstr ""
+msgstr "問卷"
 
 #: ../Launcher.glade:939
 msgid ""
@@ -1100,11 +1100,11 @@ msgstr ""
 
 #: ../Launcher.glade:1244
 msgid "Viking Lander I (<i>Chryse Planitia</i>)"
-msgstr ""
+msgstr "Viking Lander I (<i>Chryse Planitia</i>)"
 
 #: ../Launcher.glade:1248
 msgid "Viking Lander II (<i>Utopia Planitia</i>)"
-msgstr ""
+msgstr "Viking Lander II (<i>Utopia Planitia</i>)"
 
 #: ../Launcher.glade:1308
 msgid ""

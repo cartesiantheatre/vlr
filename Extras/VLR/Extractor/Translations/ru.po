@@ -25,12 +25,12 @@ msgstr ""
 "PO-Revision-Date: 2013-06-26 04:59+0000\n"
 "Last-Translator: Oleg Koptev <koptev.oleg@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-08 04:48+0000\n"
+"X-Launchpad-Export-Date: 2013-08-09 05:13+0000\n"
 "X-Generator: Launchpad (build 16723)\n"
+"Language: ru\n"
 
 #. Initialize the channel map...
 #: Source/Console.cpp:84
@@ -282,7 +282,8 @@ msgstr "фильтруются "
 
 #: Source/VicarImageAssembler.cpp:324
 msgid " type diode bands (--filter-diode[=type] to change)"
-msgstr " тип диодных полос (используйте --filter-diode[=type] чтобы изменить)"
+msgstr ""
+" тип диодных полос (используйте --filter-diode[=type] чтобы изменить)"
 
 #: Source/VicarImageAssembler.cpp:334
 msgid "camera event doesn't identify itself, cannot index"
@@ -389,7 +390,8 @@ msgid "loading"
 msgstr "загрузка"
 
 #: Source/VicarImageBand.cpp:781
-msgid "empty file, probably blank magnetic tape or not received back on Earth"
+msgid ""
+"empty file, probably blank magnetic tape or not received back on Earth"
 msgstr ""
 "пустой файл, возможно чистая магнитная лента или лента не полученная на Земле"
 
@@ -848,7 +850,8 @@ msgstr "Заданные настройки: "
 
 #: Source/VikingExtractor.cpp:341
 msgid "parallelization is not implemented yet, using single thread"
-msgstr "распараллеливание временно не поддерживается, используется один поток"
+msgstr ""
+"распараллеливание временно не поддерживается, используется один поток"
 
 #: Source/VikingExtractor.cpp:432
 msgid "summarize only and verbose modes cannot both be used"

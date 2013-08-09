@@ -11,12 +11,12 @@ msgstr ""
 "PO-Revision-Date: 2013-06-15 00:49+0000\n"
 "Last-Translator: Po-Chun Huang <Unknown>\n"
 "Language-Team: Chinese (Traditional) <zh_TW@li.org>\n"
-"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-08 04:48+0000\n"
+"X-Launchpad-Export-Date: 2013-08-09 05:13+0000\n"
 "X-Generator: Launchpad (build 16723)\n"
+"Language: zh_TW\n"
 
 #. Initialize the channel map...
 #: Source/Console.cpp:84
@@ -362,7 +362,8 @@ msgid "loading"
 msgstr "載入中"
 
 #: Source/VicarImageBand.cpp:781
-msgid "empty file, probably blank magnetic tape or not received back on Earth"
+msgid ""
+"empty file, probably blank magnetic tape or not received back on Earth"
 msgstr "空文件，可能是空白的磁帶，或沒有收到返回地球"
 
 #: Source/VicarImageBand.cpp:785

@@ -11,12 +11,12 @@ msgstr ""
 "PO-Revision-Date: 2013-07-08 02:48+0000\n"
 "Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
 "Language-Team: Italian <it@li.org>\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-08 04:48+0000\n"
+"X-Launchpad-Export-Date: 2013-08-09 05:13+0000\n"
 "X-Generator: Launchpad (build 16723)\n"
+"Language: it\n"
 
 #. Initialize the channel map...
 #: Source/Console.cpp:84
@@ -121,7 +121,8 @@ msgstr ""
 
 #: Source/ReconstructableImage.cpp:363
 msgid "the image bands used to reconstruct a colour image.\n"
-msgstr "le strisce di immagini usate per riconstruire un immagine a colori.\n"
+msgstr ""
+"le strisce di immagini usate per riconstruire un immagine a colori.\n"
 
 #: Source/ReconstructableImage.cpp:376
 msgid "basic heuristic method: "
@@ -275,7 +276,8 @@ msgstr " bande del tipo di diodo (--filter-diode[=type] per modificare)"
 
 #: Source/VicarImageAssembler.cpp:334
 msgid "camera event doesn't identify itself, cannot index"
-msgstr "evento della telecamera non riconosciuto, indicizzazione non possibile"
+msgstr ""
+"evento della telecamera non riconosciuto, indicizzazione non possibile"
 
 #: Source/VicarImageAssembler.cpp:355
 msgid " is a new camera event, indexing"
@@ -375,7 +377,8 @@ msgid "loading"
 msgstr "Caricamento in corso"
 
 #: Source/VicarImageBand.cpp:781
-msgid "empty file, probably blank magnetic tape or not received back on Earth"
+msgid ""
+"empty file, probably blank magnetic tape or not received back on Earth"
 msgstr ""
 "File vuoto, probabilmente a causa di un nastro magnetico vuoto o non "
 "ricevuto sulla Terra"
