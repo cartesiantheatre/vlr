@@ -9,13 +9,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-08-07 22:13-0700\n"
-"PO-Revision-Date: 2013-08-08 06:00+0000\n"
-"Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
+"PO-Revision-Date: 2013-08-19 05:35+0000\n"
+"Last-Translator: Yuri Chornoivan <yurchor@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-09 05:13+0000\n"
+"X-Launchpad-Export-Date: 2013-08-20 05:05+0000\n"
 "X-Generator: Launchpad (build 16723)\n"
 "Language: uk\n"
 
@@ -1184,7 +1184,7 @@ msgstr ""
 
 #: ../Launcher.glade:864
 msgid "All diode band types"
-msgstr ""
+msgstr "Усі типи діодних смуг"
 
 #: ../Launcher.glade:868
 msgid "Colour"
@@ -1200,7 +1200,7 @@ msgstr "Нд"
 
 #: ../Launcher.glade:880
 msgid "Survey"
-msgstr ""
+msgstr "Огляд"
 
 #: ../Launcher.glade:939
 msgid ""
@@ -1257,7 +1257,7 @@ msgstr "???"
 
 #: ../Launcher.glade:1240
 msgid "Both landers"
-msgstr ""
+msgstr "Обидва посадкові модулі"
 
 #: ../Launcher.glade:1244
 msgid "Viking Lander I (<i>Chryse Planitia</i>)"
