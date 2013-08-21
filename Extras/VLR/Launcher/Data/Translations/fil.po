@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-08-07 22:13-0700\n"
-"PO-Revision-Date: 2013-08-08 05:57+0000\n"
-"Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
+"PO-Revision-Date: 2013-08-20 06:06+0000\n"
+"Last-Translator: Joe Tang <Unknown>\n"
 "Language-Team: Filipino <fil@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-09 05:13+0000\n"
-"X-Generator: Launchpad (build 16723)\n"
+"X-Launchpad-Export-Date: 2013-08-21 05:25+0000\n"
+"X-Generator: Launchpad (build 16731)\n"
 "Language: fil\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -60,7 +60,7 @@ msgstr "Tagapagsalin"
 #. Dedications...
 #: ../../Source/LauncherApp.py:255
 msgid "Dedications"
-msgstr "Mga Paghahandog"
+msgstr "Mga Dedikasyon"
 
 #: ../../Source/LauncherApp.py:266
 msgid ""
@@ -1173,15 +1173,15 @@ msgstr ""
 
 #: ../Launcher.glade:864
 msgid "All diode band types"
-msgstr ""
+msgstr "Lahat ng uri ng diode band"
 
 #: ../Launcher.glade:868
 msgid "Colour"
-msgstr ""
+msgstr "Kulay"
 
 #: ../Launcher.glade:872
 msgid "Infrared"
-msgstr ""
+msgstr "Infrared"
 
 #: ../Launcher.glade:876
 msgid "Sun"
@@ -1189,7 +1189,7 @@ msgstr "Araw"
 
 #: ../Launcher.glade:880
 msgid "Survey"
-msgstr ""
+msgstr "Survey"
 
 #: ../Launcher.glade:939
 msgid ""
@@ -1247,7 +1247,7 @@ msgstr "???"
 
 #: ../Launcher.glade:1240
 msgid "Both landers"
-msgstr ""
+msgstr "Dalawang magkapwang lander"
 
 #: ../Launcher.glade:1244
 msgid "Viking Lander I (<i>Chryse Planitia</i>)"
