@@ -77,6 +77,10 @@ class RecoveryPageProxy(PageProxyBase):
         if not self._vikingExtractorBinaryPath:
             self._fatalLaunchError()
 
+        # Show location of executable...
+        self._vikingExtractorBinaryPath = os.path.abspath(self._vikingExtractorBinaryPath)
+        print(_("Launching {0}...".format(self._vikingExtractorBinaryPath)))
+
         # Try to start the VikingExtractor process. First way is with child_pid
         #  provided, but some distros ship buggy version that don't provide it. 
         #  Second way is without it, works, but doesn't provide child_pid...

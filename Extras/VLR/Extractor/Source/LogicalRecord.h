@@ -41,6 +41,15 @@
 // Logical buffer size...
 #define LOGICAL_RECORD_SIZE 72
 
+/*
+
+    Great diagram of how this works here. Wish I had found this back when I had
+    started writing this.
+    
+        <http://archive.stsci.edu/iue/manual/iuesips/section8.html#fig8-4>
+
+*/
+
 // Logical record...
 class LogicalRecord
 {
@@ -97,6 +106,15 @@ class LogicalRecord
 
         // EBCDIC to ASCII table provided by Bob Stout...
         static const uint8_t    ms_EbcdicToAsciiTable[256];
+        
+        // Label sentinal signatures...
+        typedef enum
+        {
+            ContinuationSentinal    = 'C',  /* Continuation code */
+            EndSentinal             = 'L'   /* Can occur in any logical record 
+                                               and marks end of physical 
+                                               record */
+        }LabelSentinalMarker_t;
         
     // Protected data...
     protected:

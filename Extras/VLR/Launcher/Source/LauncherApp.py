@@ -211,6 +211,7 @@ class LauncherApp(object):
                 "Project Bossanova",
                 "<a href=\"mailto:randall@executiv.es\">Randall Ross</a>",
                 "<a href=\"mailto:rms@gnu.org\">Richard Stallman</a>",
+                "<a href=\"http://www.ne.jp/asahi/linux/timecop\">Tim Copperfield</a>",
                 "<a href=\"mailto:vr@oracology.net\">Varun Ramraj</a>"])
 
             # Studio hardware...
@@ -222,9 +223,11 @@ class LauncherApp(object):
             aboutDialog.add_credit_section(_("Studio Software"), [
                 "Bazaar",
                 "Blender",
+                "CDEmu",
                 "D-Feet",
                 "GEdit",
                 "GHex",
+                "GNU Image Manipulation Program",
                 "GNU Image Manipulation Toolkit",
                 "Glade",
                 "GNU Autotools",

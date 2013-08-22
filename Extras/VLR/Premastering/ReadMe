@@ -1,0 +1,234 @@
+=== Table of Contents ================================================
+
+    * Introduction
+
+    * Minimum System Requirements
+
+    * Quick Start
+
+    * Checking Prerequisites
+
+    * Checking Auto-Run
+
+    * Starting via Auto-Run
+
+    * Starting Manually
+    
+    * VikingExtractor Command Line Interface
+
+    * Tested Distributions
+
+    * Support
+
+=== Introduction =====================================================
+
+    We would like to extend our gratitude to you for having taken the 
+    time to support this project in purchasing a copy of the Avaneya: 
+    Viking Lander Remastered DVD. This is critical in sustaining a 
+    project as ever wanting of high quality engineers and artists as 
+    it is in striving to minimize any reliance on charity. 
+
+    We hope that you will enjoy this product. Avaneya has an exciting 
+    future ahead of it. We hope that you will choose to be a part of 
+    it.
+
+    Please visit us on the web at www.avaneya.com.
+
+=== Minimum System Requirements ======================================
+
+    * 32 or 64-bit Processor (i386, amd64, or mipsel) 
+
+    * 600 MB of available Hard Drive Space 
+
+    * 512 MB RAM 
+
+    * DVD Optical Drive 
+
+    * GNU Operating System (one of Ubuntu 12.04.2–13.04; Kubuntu 
+      12.04.2–13.04; Lubuntu 12.10–13.04; Ubuntu Studio 13.04; Xubuntu
+      13.04; Debian 7.0; Fedora 19; Linux Mint 15; or OpenSUSE 12.3)
+
+    * Python 3 
+
+    * Gtk+ 3 
+
+    * freedesktop.org friendly desktop environment (one of Gnome, KDE, 
+      LXDE, MATE, Unity, or Xfce)
+
+    * Keyboard
+
+    * Mouse
+
+    * Internet connectivity recommended
+
+=== Quick Start ======================================================
+
+    If you met the minimum system requirements and auto-run is enabled 
+    in your GNU desktop environment, then just insert the DVD into 
+    your drive and it should start automatically. If it does not, 
+    browse the root of your DVD and run the 'autorun' program 
+    manually. If that doesn't work either, eject the DVD, and keep 
+    reading.
+
+=== Checking Prerequisites ===========================================
+
+    (1) First begin by making sure your system is up to date. If you
+    are using Ubuntu, run the following with a valid internet 
+    connection.
+
+        $ sudo apt-get update
+        $ sudo apt-get upgrade
+
+    (2) The software on the DVD will try to automatically detect what 
+    it needs that might be missing on your system before it can run by 
+    alerting you, but in the event this fails, make sure you have the 
+    following packages installed before inserting the DVD. The exact 
+    names vary from distro to distro, but on Ubuntu Raring (13.04) 
+    they are as follows.
+
+        gir1.2-gst-plugins-base-1.0
+        gir1.2-gtk-3.0
+        gir1.2-vte-2.90
+        gstreamer1.0-alsa
+        gstreamer1.0-plugins-base
+        gstreamer1.0-plugins-good
+        libgstreamer1.0-0
+        python3
+        python3-cairo
+        python3-gi
+        python3-gi-cairo
+        zenity
+
+=== Checking Auto-Run ================================================
+
+    (3) Next ensure that auto-run is enabled in your desktop 
+    environment because sometimes the default setting is to disable 
+    it. How to do this depends on which desktop environment you are 
+    using.
+
+    * Gnome 3
+
+        Applications -> Settings -> Details -> Removable Media
+
+        Make sure the "Software" selector is set to "Autorun Prompt" 
+        and the "Never prompt or start programs on media insertion" is
+        not enabled.
+
+    * KDE 4
+
+        At the time of writing, KDE doesn't appear to have auto-run 
+        functionality implemented. See the section below on Starting 
+        Manually.
+
+    * LDXE
+
+        At the time of writing, LXDE doesn't appear to have auto-run 
+        functionality implemented. See the section below on Starting 
+        Manually.
+
+    * MATE
+
+        Menu -> Control Centre -> File Management -> Media tab.
+
+        Make sure the Software selector is set to "Open Autorun 
+        Prompt" and the "Never prompt or start programs on media 
+        insertion" is not enabled.
+
+    * Unity
+
+        System Settings -> Details -> Removable Media
+
+        Make sure the "Software" selector is set to "Autorun Prompt" 
+        and the "Never prompt or start programs on media insertion" is
+        not enabled.
+
+    * Xfce
+
+        Settings -> Removable Drives and Media -> Storage tab
+
+        Verify that "Auto-run programs on new drives and media", 
+        "Mount removable drives when hot-plugged", and "Mount 
+        removable media when inserted" are all enabled.
+
+    Note that auto-run is never a security risk. Unlike on some legacy 
+    operating systems, *cough*, when properly implemented it will 
+    always prompt the user for confirmation before automatically 
+    starting an application from removable media.
+
+=== Starting via Auto-Run ============================================
+
+    (4) If you didn't already eject the disc, make sure it is now.
+
+    (5) Insert the disc and wait a moment. The software should start
+    automatically. If it does not, see below.
+
+=== Starting Manually ================================================
+
+    (6) Insert the disc.
+
+    (7) You can start the software manually through your desktop 
+    environment's file browser, such as Thunar or Nautilus. Navigate
+    to the root of the disc and double click on the 'autorun' file.
+
+    (8) If still nothing happens, try starting the software manually
+    by opening a terminal and running the following, substituting
+    "path_to_disc_root" for the actual path to the root of the disc on
+    your system.
+
+        $ path_to_disc_root/autorun
+
+    (9) The software should start at this point. If it does not, a
+    reason should be given on the terminal. If you want to skip the
+    distro identification and package prerequisite checks, set the
+    VLR_SKIP_CHECKS environment variable before running autorun.
+
+        $ export VLR_SKIP_CHECKS=1
+        $ ./autorun
+
+    (10) If you still cannot get it to start, see the Support section
+    below.
+
+=== VikingExtractor Command Line Interface ===========================
+
+    If you would prefer to use the VikingExtractor command line 
+    interface directly instead of the graphical user interface, you
+    can access the manual for the former as follows, substituting
+    "path_to_disc_root" for the actual path to the root of the disc on
+    your system.
+
+        $ cd path_to_disc_root
+        $ man Extractor/Manual/viking-extractor.1
+
+=== Tested Distributions =============================================
+
+    * [Distro] [Version] ([Codename], [Desktop Environment], [Architecture])
+
+    * Debian 7.0 (Wheezy, Xfce, mipsel)
+    * Fedora 19 (Schrödinger’s Cat, Gnome 3, i686)
+    * Fedora 19 (Schrödinger’s Cat, Xfce, i686)
+    * Kubuntu 12.04.2 (Precise, KDE, i686)
+    * Kubuntu 13.04 (Raring, KDE, amd64)
+    * Linux Mint 15 (Olivia, Mate, i686)
+    * Lubuntu 12.10 (Quantal, LXDE, i686)
+    * Lubuntu 13.04 (Raring, LXDE, amd64)
+    * openSUSE 12.3 (Dartmouth, KDE, amd64)
+    * Ubuntu 12.04.2 (Precise, Unity, i686)
+    * Ubuntu 12.10 (Quantal, Unity, i686)
+    * Ubuntu 13.04 (Raring, Unity, amd64)
+    * Ubuntu Studio 13.04 (Raring, Xfce, amd64)
+    * Xubuntu 13.04 (Raring, Xfce, amd64)
+
+=== Support ==========================================================
+
+    * Ask us a question or search archived answers...
+        <https://answers.launchpad.net/avaneya>
+
+    * Ask us a question on IRC...
+        #avaneya (freenode)
+
+    * Submit a bug report...
+        <https://bugs.launchpad.net/avaneya>
+
+    * Corporate inquiries...
+        <info@cartesiantheatre.com>
+

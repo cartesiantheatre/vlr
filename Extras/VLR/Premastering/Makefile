@@ -60,7 +60,12 @@ GENISOIMAGE_PARAMETERS  =           \
 # Default target is to built the complete ISO...
 all: $(ISO)
 
-# Build the image by coalescing everything needed from various places...
+# Build the image by coalescing everything needed from various places. End by
+#  injecting a series of MD5 checksums into the image. These are stored in the 
+#  ISO 9660's 'Application Use' area in byte positions 884 to 1395. See section 
+#  8.4.32 of the Standard ECMA-119 - Volume and File Structure of CDROM for 
+#  Information Interchange on how this can be done safely.
+#  <http://www.ecma-international.org/publications/standards/Ecma-119.htm>
 $(ISO):                             \
   $(INCLUDE_LIST)                   \
   $(EXCLUDE_LIST)                   \

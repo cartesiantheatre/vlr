@@ -142,19 +142,25 @@ VicarImageBand::VicarImageBand(
         m_TokenToBandTypeMap["SURVEY"]          = Survey;
         
         // Identifiable, but unsupported broad band diodes...
-        m_TokenToBandTypeMap["BB1"]             = Unknown;
-        m_TokenToBandTypeMap["BB1/S"]           = Unknown;
-        m_TokenToBandTypeMap["BB2"]             = Unknown;
-        m_TokenToBandTypeMap["BB2/S"]           = Unknown;
-        m_TokenToBandTypeMap["BB3"]             = Unknown;
-        m_TokenToBandTypeMap["BB3/S"]           = Unknown;
-        m_TokenToBandTypeMap["BB4"]             = Unknown;
-        m_TokenToBandTypeMap["BB4/S"]           = Unknown;
+        m_TokenToBandTypeMap["BB1"]             = Broadband1;
+        m_TokenToBandTypeMap["BB1/S"]           = Broadband1;
+        m_TokenToBandTypeMap["BB2"]             = Broadband2;
+        m_TokenToBandTypeMap["BB2/S"]           = Broadband2;
+        m_TokenToBandTypeMap["BB3"]             = Broadband3;
+        m_TokenToBandTypeMap["BB3/S"]           = Broadband3;
+        m_TokenToBandTypeMap["BB4"]             = Broadband4;
+        m_TokenToBandTypeMap["BB4/S"]           = Broadband4;
 
     // Initialize the diode band to friendly dictionary...
 
         // Unknown...
         m_BandTypeToFriendlyMap[Unknown]    = "unknown";
+
+        // High resolution broadband...
+        m_BandTypeToFriendlyMap[Broadband1] = "broadband 1";
+        m_BandTypeToFriendlyMap[Broadband2] = "broadband 2";
+        m_BandTypeToFriendlyMap[Broadband3] = "broadband 3";
+        m_BandTypeToFriendlyMap[Broadband4] = "broadband 4";
 
         // Narrow band for colour...
         m_BandTypeToFriendlyMap[Red]        = "red";
@@ -211,7 +217,7 @@ bool VicarImageBand::CheckForHorizontalAxisAndExtractText(
     Rotate(Rotation, RawBandData, RotatedRawBandData);
 
     // Extract the OCR text and check for error...
-    if(!ExtractOCR(RotatedRawBandData, OCRBuffer))
+    if(!ExtractOCR(RotatedRawBandData, OCRBuffer, Rotation))
         return false;
 
     // Look for words we would expect to see if oriented properly...
@@ -240,7 +246,7 @@ bool VicarImageBand::CheckForLargeHistogramAndExtractText(
     Rotate(Rotation, RawBandData, RotatedRawBandData);
 
     // Extract the OCR text and check for error...
-    if(!ExtractOCR(RotatedRawBandData, OCRBuffer))
+    if(!ExtractOCR(RotatedRawBandData, OCRBuffer, Rotation))
         return false;
 
     // Look for words we would expect to see if oriented properly...
@@ -351,7 +357,7 @@ bool VicarImageBand::ExamineImageVisually()
             // No legible text hints found. Probably image without any axis or histogram overlay...
             else
             {
-                Message(Console::Verbose) << _("could not guess image rotation") << endl;
+                Message(Console::Warning) << _("could not guess image rotation") << endl;
                 m_Rotation = None;
                 m_OCRBuffer.clear();
             }
@@ -367,13 +373,30 @@ bool VicarImageBand::ExamineImageVisually()
 
 // Extract OCR within image band data to buffer...
 bool VicarImageBand::ExtractOCR(
-    const RawBandDataType &RawBandData, string &Extracted)
+    const RawBandDataType &RawBandData, 
+    string &Extracted, 
+    const RotationType RotationHint)
 {
     // Check some assumptions...
     assert(!RawBandData.empty());
 
     // Clear the output buffer...
     Extracted.clear();
+
+    // Check if we've already performed this computation...
+    RotationOCRCacheIterator CacheIterator 
+        = m_RotationOCRCache.find(RotationHint);
+
+        // Hit...
+        if(CacheIterator != m_RotationOCRCache.end())
+        {
+            // Alert user...
+            Message(Console::Verbose) << _("annotation cache hit optimization") << endl;
+            
+            // Return the cached result...
+            Extracted = CacheIterator->second;
+            return true;
+        }
 
     // Get the width and height of this raw band data...
     const size_t Height = RawBandData.size();
@@ -393,13 +416,19 @@ bool VicarImageBand::ExtractOCR(
 
         // Space for flattened linear version of the raw band data...
         vector<uint8_t> FlattenedRawBandData;
+        
+        // Preallocate buffer...
+        FlattenedRawBandData.reserve(Width * Height);
+        FlattenedRawBandData.resize(Width * Height);
 
         // Collapse by flattening each row...
         for(size_t Y = 0; Y < Height; ++Y)
         {
             // Flatten each column in this row...
-            for(size_t X = 0; X < Width; ++X)
-                FlattenedRawBandData.push_back(RawBandData.at(Y).at(X));
+            memcpy(
+                &FlattenedRawBandData.at(Y * Width), 
+                &RawBandData.at(Y).front(),
+                Width);
         }
 
         // Get direct address to flattened raw band data vector...
@@ -423,10 +452,10 @@ bool VicarImageBand::ExtractOCR(
         SetErrorAndReturnFalse(_("could not set OCR image"));
     }
 
-    // Algorithm seems to recognize VICAR text overlay better when 
-    //  the original image is re-scaled by a factor of four and 
-    //  the threshhold is at 0.3. We can hardcode these constants
-    //  since the Viking Lander data set isn't going to change...
+    // Algorithm seems to recognize VICAR text overlay better when the original 
+    //  image is re-scaled by a factor of three and the threshhold is at 70. We
+    //  can hardcode these constants since the Viking lander data set isn't 
+    //  going to change...
     OCRAD_scale(LibraryDescriptor, 3);
     OCRAD_set_threshold(LibraryDescriptor, 70);
     
@@ -456,12 +485,15 @@ bool VicarImageBand::ExtractOCR(
         }
     }
 
-    /* Be verbose...
-    Message(Console::Info) 
-        << "optical character recognition found " 
+    // Cache this result...
+    m_RotationOCRCache.insert(
+        CacheIterator, RotationOCRCachePair(RotationHint, Extracted));
+
+    // Be verbose...
+    Message(Console::Verbose) 
         << Extracted.size() 
-        << " characters" 
-        << endl;*/
+        << _(" potential character annotations detected")
+        << endl;
 
     // Cleanup...
     OCRAD_close(LibraryDescriptor);
@@ -513,8 +545,53 @@ string VicarImageBand::GetMonth() const
     else                                    return string("Taurus");
 }
 
+// Get the file size, or -1 on error...
+int VicarImageBand::GetFileSize() const
+{
+    // Open the file...
+    ZZipFileDescriptor FileDescriptor(Open());
+    
+        // Failed...
+        if(!FileDescriptor.IsGood())
+            return -1;
+
+    // Seek to the end and return the size...
+    zzip_seek(FileDescriptor, 0, SEEK_END);
+    return zzip_tell(FileDescriptor);
+}
+
+// Get the input file name only without path...
+string VicarImageBand::GetInputFileNameOnly() const
+{
+    // There should always be a file name already...
+    assert(!m_InputFile.empty());
+    
+    // Make a copy of the complete input file name and path...
+    string FileNameOnly = m_InputFile;
+    
+    // Strip the path so only file name remains...
+    const size_t PathIndex = FileNameOnly.find_last_of("\\/");
+    if(PathIndex != string::npos)
+        FileNameOnly.erase(0, PathIndex + 1);
+
+    // Done...
+    return FileNameOnly;
+}
+
+// Return a friendly human readable location of lander...
+string VicarImageBand::GetLanderLocation() const
+{
+    // Determine base on lander number...
+    switch(m_LanderNumber)
+    {
+        case 1: return string("Chryse Planitia");
+        case 2: return string("Arcadia Planitia");
+        default: return string("?");
+    }
+}
+
 // Get the raw band data transformed if autorotate was enabled. Use 
-//  GetTransformedWidth()/Height() to know adapted dimensions...
+//  GetTransformedWidth() / ...Height() to know adapted dimensions...
 bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData)
 {
     // Clear caller's band data...
@@ -547,21 +624,55 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
     const size_t    SampleRegion_Bottom = (m_OriginalHeight / 3) * 2;
     register size_t SampleRegionSize    = 0;
 
+    // Preallocate the band data buffer since we should know already dimensions
+    //  of image...
+    RawBandData.reserve(m_OriginalHeight);
+
     // Read the whole image, row by row...
     for(size_t Y = 0; Y < m_OriginalHeight; ++Y)
     {
         // The current row...
         vector<uint8_t> CurrentRow;
+        
+        // Preallocate the row...
+        CurrentRow.reserve(m_OriginalWidth);
+        CurrentRow.resize(m_OriginalWidth, 0xff);
 
-        // Read each pixel in this row...
+        // Try to read the whole row in one pass...
+        const size_t BytesRead = 
+            zzip_read(FileDescriptor, &CurrentRow.front(), m_OriginalWidth);
+
+            // Failed...
+            if((BytesRead != m_OriginalWidth) || !FileDescriptor.IsGood())
+                SetErrorAndReturnFalse(_("band data extraction i/o error"));
+
+        // Update mean pixel value...
         for(size_t X = 0; X < m_OriginalWidth; ++X)
         {
             // Extract the current pixel value...
-            uint8_t CurrentByte = 0xff;
-            zzip_read(FileDescriptor, &CurrentByte, sizeof(CurrentByte));
+            const uint8_t CurrentByte = CurrentRow.at(X);
+
+            // Check if within the pixel sample region...
+            if(X >= SampleRegion_Left  && 
+               X <= SampleRegion_Right &&
+               Y >= SampleRegion_Top   &&
+               Y <= SampleRegion_Bottom)
+            {
+                // Add to mean pixel value accumulator...
+                m_MeanPixelValue += CurrentByte;
+                SampleRegionSize++;
+            }
+        }
+
+        /* Read each pixel in this row, byte by byte...
+        for(size_t X = 0; X < m_OriginalWidth; ++X)
+        {
+            // Extract the current pixel value...
+            register uint8_t CurrentByte = 0xff;
 
             // Check for error...
-            if(!FileDescriptor.IsGood())
+            if((zzip_read(FileDescriptor, &CurrentByte, sizeof(CurrentByte)) 
+                    != sizeof(CurrentByte)) || !FileDescriptor.IsGood())
                 SetErrorAndReturnFalse(_("band data extraction i/o error"));
 
             // Check if within the pixel sample region...
@@ -577,7 +688,7 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
 
             // Add to row...
             CurrentRow.push_back(CurrentByte);
-        }
+        }*/
 
         // Add row to list of columns...
         RawBandData.push_back(CurrentRow);
@@ -605,39 +716,6 @@ bool VicarImageBand::GetRawBandData(VicarImageBand::RawBandDataType &RawBandData
 
     // Done...
     return true;
-}
-
-// Get the file size, or -1 on error...
-int VicarImageBand::GetFileSize() const
-{
-    // Open the file...
-    ZZipFileDescriptor FileDescriptor(Open());
-    
-        // Failed...
-        if(!FileDescriptor.IsGood())
-            return -1;
-
-    // Seek to the end and return the size...
-    zzip_seek(FileDescriptor, 0, SEEK_END);
-    return zzip_tell(FileDescriptor);
-}
-
-// Get the input file name only without path...
-string VicarImageBand::GetInputFileNameOnly() const
-{
-    // There should always be a file name already...
-    assert(!m_InputFile.empty());
-    
-    // Make a copy of the complete input file name and path...
-    string FileNameOnly = m_InputFile;
-    
-    // Strip the path so only file name remains...
-    const size_t PathIndex = FileNameOnly.find_last_of("\\/");
-    if(PathIndex != string::npos)
-        FileNameOnly.erase(0, PathIndex + 1);
-
-    // Done...
-    return FileNameOnly;
 }
 
 // Get image height, accounting for transformations like rotation...
@@ -784,8 +862,8 @@ void VicarImageBand::Load()
         else if(FileSize < (4 * 1024))
             SetErrorAndReturn(_("too small to be interesting (< 4 KB)"))
 
-    // Check if the header is at least readable, and if so, retrieve
-    //  phase offset required to decode the file...
+    // Check if the header is at least readable, and if so, retrieve phase 
+    //  offset required to decode the file...
     if(!IsHeaderIntact(m_PhaseOffsetRequired))
         SetErrorAndReturn(_("header is not intact, or not a VICAR file"))
     else if(m_PhaseOffsetRequired > 0)
@@ -819,6 +897,10 @@ void VicarImageBand::Load()
             << PhysicalRecordIndex + 1 
             << _(" starting at ")
             << static_cast<int>(zzip_tell(FileDescriptor)) 
+            << hex 
+                << showbase << " (" 
+                << static_cast<int>(zzip_tell(FileDescriptor)) 
+                << ")" << dec 
             << endl;
 
         // Local offset into the current physical record...
@@ -838,6 +920,10 @@ void VicarImageBand::Load()
                 << LocalLogicalRecordIndex + 1 
                 << _("/5 starting at ")
                 << static_cast<int>(zzip_tell(FileDescriptor)) 
+                << hex 
+                    << showbase << " (" 
+                    << static_cast<int>(zzip_tell(FileDescriptor))
+                    << ")" << dec 
                 << endl;
 
             // Extract a logical record...
@@ -877,10 +963,9 @@ void VicarImageBand::Load()
             // This is the last logical record of all record labels...
             if(Record.IsLastLabel())
             {
-                // Calculate the offset necessary to seek past any 
-                //  remaining logical records in this physical record, 
-                //  along with any padding to the next physical record 
-                //  boundary...
+                // Calculate the offset necessary to seek past any remaining 
+                //  logical records in this physical record, along with any 
+                //  padding to the next physical record boundary...
                 const streamoff RawImageDataRelativeOffset = 
                     ((LOGICAL_RECORD_SIZE * 5) - LocalPhysicalRecordOffset) + 
                     m_PhysicalRecordPadding;
@@ -932,12 +1017,14 @@ void VicarImageBand::Load()
     m_RawImageOffset = zzip_tell(FileDescriptor);
 
     // Show user, if requested...
-    Message(Console::Verbose) << _("raw image offset: ") << m_RawImageOffset << hex << showbase << " (" << m_RawImageOffset<< ")" << dec << endl;
+    Message(Console::Verbose) << _("raw image offset: ") << m_RawImageOffset << hex << showbase << " (" << m_RawImageOffset << ")" << dec << endl;
 
-    // Now we know an absolute lower bound for file size, check...
+    // Calculate an absolute lower bound for file size...
     const int RequiredMinimumSize = 
         m_RawImageOffset + 
         (m_Bands * m_OriginalHeight * m_OriginalWidth * m_BytesPerColour);
+
+    // Check that we are within the previous calculation...
     if(FileSize < RequiredMinimumSize)
     {
         // Compose error message...
@@ -952,11 +1039,29 @@ void VicarImageBand::Load()
         SetErrorAndReturn(ErrorStream.str());
     }
 
-    // Examine image visually to determine things like suggested 
-    //  orientation, optical character recognition, and histogram 
-    //  detection...
-    if(!ExamineImageVisually())
-        return;
+    // Peform additional examination looking for things like histograms or other
+    //  annotations, unless originating from broadband or solar PSAs which 
+    //  didn't appear to contain any...
+    if((m_DiodeBandType != Broadband1) && 
+       (m_DiodeBandType != Broadband2) &&
+       (m_DiodeBandType != Broadband3) && 
+       (m_DiodeBandType != Broadband4) &&
+       (m_DiodeBandType != Sun) &&
+       (m_DiodeBandType != Survey))
+    {
+        // Examine image visually to determine things like suggested 
+        //  orientation, optical character recognition, and histogram 
+        //  detection...
+        if(!ExamineImageVisually())
+        {
+            // Cleanup cache and abort...
+            m_RotationOCRCache.clear();
+            return;
+        }
+    }
+
+    // Cleanup cache...
+    m_RotationOCRCache.clear();
 
     // Loaded ok...
     m_Ok = true;
@@ -990,7 +1095,8 @@ ZZipFileDescriptor VicarImageBand::Open() const
         return ZZipFileDescriptor(m_InputFile.c_str());
 }
 
-// For comparing quality between images of same camera event / band type...
+// For comparing quality between images of same camera event / band type. Think
+//  of these as a series of matching rules...
 bool VicarImageBand::operator<(const VicarImageBand &RightSide) const
 {
     // These should always be true...
@@ -1007,14 +1113,34 @@ bool VicarImageBand::operator<(const VicarImageBand &RightSide) const
     
     // If only one of the images has a full histogram present (which 
     //  implies the presence of an axis as well), the one with it is 
-    //  inferior to the one without, since the one without has more image space...
+    //  inferior to the one without, since the one without has more image 
+    //  space...
     else if(m_FullHistogramPresent != RightSide.m_FullHistogramPresent)
         return m_FullHistogramPresent;
 
     // If neither has an axis nor full histogram, or both do, the one
-    //  that is brighter is the one we consider better...
-    else
+    //  that is brighter is the one we consider better, but only when not 
+    //  dealing with survey and solar PSA...
+    else if((m_DiodeBandType != Broadband1) &&
+        (m_DiodeBandType != Broadband2) && 
+        (m_DiodeBandType != Broadband3) && 
+        (m_DiodeBandType != Broadband4) &&  
+        (m_DiodeBandType != Survey) && 
+        (m_DiodeBandType != Sun))
         return (m_MeanPixelValue < RightSide.m_MeanPixelValue);
+
+    // If the PSA is broadband, survey, or solar, pick the one that is better...
+    else
+    {
+        // If they both cover the same number of pixels, select the one that is
+        //  brighter...
+        if(GetTotalOriginalPixelSpace() == RightSide.GetTotalOriginalPixelSpace())
+            return (m_MeanPixelValue < RightSide.m_MeanPixelValue);
+        
+        // Otherwise select the one that covers a greater pixel area...
+        else
+            return (GetTotalOriginalPixelSpace() < RightSide.GetTotalOriginalPixelSpace());
+    }
 
     /*
     else
@@ -1280,6 +1406,9 @@ void VicarImageBand::ParseBasicMetadata(ZZipFileDescriptor &FileDescriptor)
         else
             SetErrorAndReturn(_("exhausted basic metadata parser heuristics"))
 
+    if(m_DiodeBandType == Sun && m_OriginalWidth == 512)
+        m_OriginalWidth += 2;
+
     // Perform sanity check on basic metadata...
 
         // Check bands...
@@ -1287,12 +1416,12 @@ void VicarImageBand::ParseBasicMetadata(ZZipFileDescriptor &FileDescriptor)
             SetErrorAndReturn(_("unsupported number of image bands"))
 
         // Check height...
-        if(m_OriginalHeight <= 0)
-            SetErrorAndReturn(_("expected positive image height"))
+        if(m_OriginalHeight <= 0 || m_OriginalHeight >= 99999)
+            SetErrorAndReturn(_("corrupt image height"))
 
         // Check width...
-        if(m_OriginalWidth <= 0)
-            SetErrorAndReturn(_("expected positive image width"))
+        if(m_OriginalWidth <= 0 || m_OriginalWidth >= 99999)
+            SetErrorAndReturn(_("corrupt image width"))
 
         // Check pixel format is integral...
         if(m_PixelFormat != 'I' && /* Definitely integral */
@@ -1715,12 +1844,12 @@ void VicarImageBand::ParseBasicMetadataImplementation_Format6(
     const size_t HeightLength = Token.length();
     m_OriginalHeight = atoi(Token.c_str());
 
-    // Next token is the height, width, and height again coallesced...
+    // Next token is the width, height, and width again coallesced...
     Tokenizer >> Token;
     
-    // The width we can calculate because it follows immediately after height...
-    Token.copy(Buffer, Token.length() - HeightLength, HeightLength);
-    Buffer[Token.length() - HeightLength] = '\x0';
+    // The height we can calculate because it is flanked by the width...
+    Token.copy(Buffer, (Token.length() - HeightLength) / 2, 0);
+    Buffer[(Token.length() - HeightLength) / 2] = '\x0';
     m_OriginalWidth = atoi(Buffer);
 
     // Calculate the physical record size which is either 5 logical 
@@ -1827,7 +1956,9 @@ void VicarImageBand::ParseExtendedMetadata(
                     Message(Console::Warning) << _("bad lander number") << endl;
 
                 // Be verbose if requested...
-                Message(Console::Verbose) << _("lander number: ") << m_CameraEventLabel << endl;
+                Message(Console::Verbose) 
+                    << _("lander number: ") << m_LanderNumber 
+                    << " (" << GetLanderLocation() << ")" << endl;
 
                 // Check for matching lander number, if user filtered...
                 if(Options::GetInstance().GetFilterLander() != 0 &&
@@ -1846,7 +1977,8 @@ void VicarImageBand::ParseExtendedMetadata(
 //  returning Unknown if couldn't detect it or unsupported. The parameter can be
 //  used for callee to store for caller the token that probably denotes an 
 //  unsupported diode type...
-VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(string &DiodeBandTypeHint) const
+VicarImageBand::PSADiode VicarImageBand::ProbeDiodeBandType(
+    string &DiodeBandTypeHint) const
 {
     // Open the file...
     ZZipFileDescriptor FileDescriptor(Open());

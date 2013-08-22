@@ -157,11 +157,11 @@ bool LogicalRecord::IsLastLabel() const
     switch(m_Buffer[LOGICAL_RECORD_SIZE - 1])
     {
         // No...
-        case 'C':
+        case ContinuationSentinal: /* Continued next logical label record. */
             return false;
         
         // Yes...
-        case 'L':
+        case EndSentinal: /* End log logical label record. */
             return true;
 
         // Not a valid label...
@@ -173,20 +173,24 @@ bool LogicalRecord::IsLastLabel() const
 // Is this a valid label?
 bool LogicalRecord::IsValidLabel() const
 {
-    // It should only contain printable characters past the first two bytes...
+    /* It should only contain printable characters past the first two bytes...
     for(size_t Index = 2; Index < LOGICAL_RECORD_SIZE; ++Index)
     {
-        // Binary junk found, probably not a valid label record...
-        if(!isprint(m_Buffer[Index]))
+        // Binary junk found, defined as non-printable character. This can be
+        //  core garbage that was in memory when the tape was written out.
+        //  Probably not a valid label record. We make an exception for null 
+        //  bytes which some label records seem to contain which can be flanked 
+        //  by spaces...
+        if(!isprint(m_Buffer[Index]) && (m_Buffer[Index] != '\x0'))
             return false;
-    }
+    }*/
 
     // Check for delimeter...
     switch(m_Buffer[LOGICAL_RECORD_SIZE - 1])
     {
         // Yes...
-        case 'C':
-        case 'L':
+        case ContinuationSentinal: /* Continued next logical label record. */
+        case EndSentinal: /* End log logical label record. */
             return true;
         
         // No...
@@ -205,7 +209,15 @@ void LogicalRecord::operator<<(ZZipFileDescriptor &FileDescriptor)
 
     // Decode...
     for(size_t Index = 0; Index < LOGICAL_RECORD_SIZE; ++Index)
+    {
+        // Convert from EBCDIC to ASCII encoding...
         m_Buffer[Index] = EbcdicToAscii(m_Buffer[Index]);
+        
+        // Silently scrub null bytes that shouldn't be there, possibly due to
+        //  tape rot...
+        if(m_Buffer[Index] == '\x0')
+            m_Buffer[Index] = ' ';
+    }
 }
 
 // Index operator...

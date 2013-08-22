@@ -2,7 +2,7 @@
     VikingExtractor, to recover images from Viking Lander operations.
     Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>.
 
-    Public discussion on IRC available at #avaneya (irc.freenode.net) 
+    Public discussion on IRC available at #avaneya (irc.freenode.net)
     or on the mailing list <avaneya@lists.avaneya.com>.
 
     This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 
     // Provided by Autoconf...
     #include <config.h>
-    
+
     // Our headers...
     #include "VicarImageAssembler.h"
     #include "Console.h"
@@ -34,7 +34,7 @@
 
     // zziplib...
     #include <zzip/zzip.h>
-    
+
     // System headers...
     #include <cassert>
     #include <iostream>
@@ -43,6 +43,7 @@
     #include <sys/stat.h>
     #include <cerrno>
     #include <fnmatch.h>
+    #include <sstream>
 
 // Using the standard namespace...
 using namespace std;
@@ -75,6 +76,20 @@ void VicarImageAssembler::AddProspectiveFile(const string &InputFile)
 {
     // Add to the list of prospective files to examine later...
     m_ProspectiveFiles.push_back(InputFile);
+
+#ifdef USE_DBUS_INTERFACE
+
+    // Format a notification to the Viking Lander Launcher...
+    stringstream FormattedMessage;
+    FormattedMessage
+        << _("Indexing mission data, please wait...") 
+        << m_ProspectiveFiles.size();
+
+    // Emit message...
+    DBusInterface::GetInstance().EmitNotificationSignal(FormattedMessage.str());
+
+#endif
+
 }
 
 // Index archive contents into list of prospective files, or throw an error...
@@ -108,7 +123,7 @@ void VicarImageAssembler::IndexArchive(const string &InputArchiveFile)
     zzip_closedir(Directory);
 }
 
-// Generate input file list from the input directory, or throw an 
+// Generate input file list from the input directory, or throw an
 //  error... (recursive)
 void VicarImageAssembler::IndexDirectory(const string &InputDirectory)
 {
@@ -146,7 +161,7 @@ void VicarImageAssembler::IndexDirectory(const string &InputDirectory)
         // It's a file, index it...
         if(S_ISREG(FileAttributes.st_mode))
             IndexFile(CurrentEntry);
-        
+
         // Directory. Recurse...
         else if(S_ISDIR(FileAttributes.st_mode))
             IndexDirectory(CurrentEntry);
@@ -168,7 +183,7 @@ void VicarImageAssembler::IndexFile(const string &InputFile)
         AddProspectiveFile(InputFile);
 }
 
-// Reconstruct all possible images found of either the input 
+// Reconstruct all possible images found of either the input
 //  file or a directory into the output directory...
 void VicarImageAssembler::Reconstruct()
 {
@@ -179,7 +194,7 @@ void VicarImageAssembler::Reconstruct()
     try
     {
 #ifdef USE_DBUS_INTERFACE
-        // If remote start was enabled, block until D-Bus Ready signal received 
+        // If remote start was enabled, block until D-Bus Ready signal received
         //  or throws an exception...
         if(Options::GetInstance().GetRemoteStart())
             DBusInterface::GetInstance().WaitRemoteStart();
@@ -187,13 +202,13 @@ void VicarImageAssembler::Reconstruct()
 
         // Alert user...
         Message(Console::Summary) << _("indexing mission data, please wait...") << endl;
-        
+
 #ifdef USE_DBUS_INTERFACE
         // Provide a notification to the Viking Lander Launcher...
         DBusInterface::GetInstance().EmitNotificationSignal(_("Indexing mission data, please wait..."));
 #endif
 
-        // If summarize only mode is enabled, mute current file name, and all 
+        // If summarize only mode is enabled, mute current file name, and all
         //  channels, except summarize...
         if(Options::GetInstance().GetSummarizeOnly())
         {
@@ -202,7 +217,7 @@ void VicarImageAssembler::Reconstruct()
             Console::GetInstance().SetChannelEnabled(Console::Info, false);
             Console::GetInstance().SetChannelEnabled(Console::Warning, false);
         }
-        
+
         // If suppress mode is enabled, disable warnings and errors...
         if(Options::GetInstance().GetSuppress())
         {
@@ -223,7 +238,7 @@ void VicarImageAssembler::Reconstruct()
             // Yes, just index a file...
             if(S_ISREG(FileAttributes.st_mode))
                 IndexFile(m_InputFileOrRootDirectory);
-            
+
             // Directory...
             else if(S_ISDIR(FileAttributes.st_mode))
                 IndexDirectory(m_InputFileOrRootDirectory);
@@ -232,7 +247,7 @@ void VicarImageAssembler::Reconstruct()
         if(m_ProspectiveFiles.empty())
         {
             // Alert...
-            Message(Console::Summary) 
+            Message(Console::Summary)
                 << _("no prospective files found")
                 << endl;
 
@@ -269,17 +284,17 @@ void VicarImageAssembler::Reconstruct()
             // Update summary, if enabled...
             if(Options::GetInstance().GetSummarizeOnly())
             {
-                Message(Console::Summary) 
+                Message(Console::Summary)
                     << "\r" << _("studying mission data index of ")
-                    << ProspectiveFilesExamined << "/" << TotalProspectiveFiles 
+                    << ProspectiveFilesExamined << "/" << TotalProspectiveFiles
                     << " (" << PercentageExamined << " %)";
             }
 
-            // Otherwise update console so it knows what current file we are 
+            // Otherwise update console so it knows what current file we are
             //  working with...
             else
                 Console::GetInstance().SetCurrentFileName(ImageBand.GetInputFileNameOnly());
-            
+
             // Attempt to load the file...
             ImageBand.Load();
 
@@ -291,17 +306,17 @@ void VicarImageAssembler::Reconstruct()
                     {
                         // Alert and skip...
                         Message(Console::Warning)
-                            << ImageBand.GetErrorMessage() 
+                            << ImageBand.GetErrorMessage()
                             << _(", skipping")
                             << endl;
                         continue;
                     }
-                    
+
                     // Otherwise raise an error...
                     else
                     {
                         // Alert and abort...
-                        ErrorMessage = 
+                        ErrorMessage =
                             ImageBand.GetErrorMessage() +
                             string(_(" (--ignore-bad-files to skip)"));
                         throw ErrorMessage;
@@ -309,16 +324,16 @@ void VicarImageAssembler::Reconstruct()
                 }
 
             // Get user selected diode band filter set...
-            const Options::FilterDiodeBandSet &DiodeBandSet = 
+            const Options::FilterDiodeBandSet &DiodeBandSet =
                 Options::GetInstance().GetFilterDiodeBandSet();
 
             // Not part of the diode filter set...
-            if(!DiodeBandSet.empty() && 
-               (DiodeBandSet.find(ImageBand.GetDiodeBandType()) == 
+            if(!DiodeBandSet.empty() &&
+               (DiodeBandSet.find(ImageBand.GetDiodeBandType()) ==
                 DiodeBandSet.end()))
             {
                 // Alert, skip...
-                Message(Console::Info) 
+                Message(Console::Info)
                     << _("filtering ")
                     << ImageBand.GetDiodeBandTypeFriendlyString()
                     << _(" type diode bands (--filter-diode[=type] to change)")
@@ -335,12 +350,12 @@ void VicarImageAssembler::Reconstruct()
                     << endl;
                 continue;
             }
-            
+
             // Get the camera event label...
             const string CameraEventLabel = ImageBand.GetCameraEventLabel();
 
             // Check if a reconstructable object already exists for this event...
-            CameraEventDictionaryIterator EventIterator = 
+            CameraEventDictionaryIterator EventIterator =
                 m_CameraEventDictionary.find(CameraEventLabel);
 
                 // Place for the reconstructable image object...
@@ -357,11 +372,11 @@ void VicarImageAssembler::Reconstruct()
 
                     // Construct a new reconstructable image...
                     Reconstructable = new ReconstructableImage(
-                        m_OutputRootDirectory, 
+                        m_OutputRootDirectory,
                         CameraEventLabel);
 
                     // Insert the reconstructable image into the event dictionary.
-                    //  We use the previous failed find iterator as a possible 
+                    //  We use the previous failed find iterator as a possible
                     //  amortized constant performance optimization...
                     m_CameraEventDictionary.insert(EventIterator,
                         CameraEventDictionaryPair(CameraEventLabel, Reconstructable));
@@ -392,17 +407,17 @@ void VicarImageAssembler::Reconstruct()
                 {
                     // Alert and skip...
                     Message(Console::Warning)
-                        << Reconstructable->GetErrorMessage() 
+                        << Reconstructable->GetErrorMessage()
                         << _(", skipping")
                         << endl;
                     continue;
                 }
-                
+
                 // Otherwise raise an error...
                 else
                 {
                     // Alert and abort...
-                    ErrorMessage = 
+                    ErrorMessage =
                         Reconstructable->GetErrorMessage() +
                         string(_(" (--ignore-bad-files to skip)"));
                     throw ErrorMessage;
@@ -433,8 +448,8 @@ void VicarImageAssembler::Reconstruct()
           ++AttemptedReconstruction;
 
             // Calculate recovery progress...
-            const double RecoveryProgress = 
-                static_cast<double>(AttemptedReconstruction) / 
+            const double RecoveryProgress =
+                static_cast<double>(AttemptedReconstruction) /
                 m_CameraEventDictionary.size() * 100.0;
 
 #ifdef USE_DBUS_INTERFACE
@@ -447,14 +462,14 @@ void VicarImageAssembler::Reconstruct()
             {
                 // Trying to reconstruct...
                 if(!Options::GetInstance().GetNoReconstruct())
-                    Message(Console::Summary) 
+                    Message(Console::Summary)
                         << "\r" << _("attempting reconstruction ")
                         << AttemptedReconstruction << "/" << m_CameraEventDictionary.size()
                         << " (" << RecoveryProgress << " %)";
-                
+
                 // Just dumping components...
                 else
-                    Message(Console::Summary) 
+                    Message(Console::Summary)
                         << "\r" << _("dumping components from ")
                         << AttemptedReconstruction << "/" << m_CameraEventDictionary.size()
                         << " (" << RecoveryProgress << " %)";
@@ -467,7 +482,7 @@ void VicarImageAssembler::Reconstruct()
             // Reconstruct the image object and check for error...
             if(!Reconstructable->Reconstruct())
             {
-                // Since the image wasn't reconstructed successfully, 
+                // Since the image wasn't reconstructed successfully,
                 //  this is the number of component images that were dumped...
                 DumpedImages += Reconstructable->GetDumpedImagesCount();
 
@@ -476,7 +491,7 @@ void VicarImageAssembler::Reconstruct()
                 {
                     // Alert and skip...
                     Message(Console::Warning)
-                        << Reconstructable->GetErrorMessage() 
+                        << Reconstructable->GetErrorMessage()
                         << _(", skipping")
                         << endl;
                     continue;
@@ -486,7 +501,7 @@ void VicarImageAssembler::Reconstruct()
                 else
                 {
                     // Alert and abort...
-                    ErrorMessage = 
+                    ErrorMessage =
                         Reconstructable->GetErrorMessage() +
                         string(_(" (--ignore-bad-files to skip)"));
                     throw ErrorMessage;
@@ -508,16 +523,16 @@ void VicarImageAssembler::Reconstruct()
         {
             // We were trying to reconstruct...
             if(!Options::GetInstance().GetNoReconstruct())
-                Message(Console::Summary) 
+                Message(Console::Summary)
                     << endl
                     << _("successfully reconstructed ")
                     << SuccessfullyReconstructed << "/" << m_CameraEventDictionary.size()
                     << ", " << DumpedImages << _(" unreconstructable components dumped")
                     << endl;
-            
+
             // We were not trying to reconstruct...
             else
-                Message(Console::Summary) 
+                Message(Console::Summary)
                     << endl
                     << _("dumped ") << DumpedImages << _(" image components without reconstruction")
                     << endl;
@@ -530,7 +545,7 @@ void VicarImageAssembler::Reconstruct()
             // Update summary, if enabled, beginning with new line since last was \r only...
             if(Options::GetInstance().GetSummarizeOnly())
                 Message(Console::Summary) << AssemblerErrorMessage << endl;
-            
+
             // Reset assembler state...
             Reset();
 
@@ -551,9 +566,9 @@ void VicarImageAssembler::Reset()
       ++Iterator)
     {
         // Deconstruct the reconstructable image object...
-        delete Iterator->second;        
+        delete Iterator->second;
     }
-    
+
     // Cleanup dangling pointers...
     m_CameraEventDictionary.clear();
 }
@@ -564,4 +579,3 @@ VicarImageAssembler::~VicarImageAssembler()
     // Cleanup assembler...
     Reset();
 }
-

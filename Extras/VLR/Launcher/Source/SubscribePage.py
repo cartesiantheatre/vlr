@@ -129,7 +129,8 @@ class SubscribePageProxy(PageProxyBase):
                 "fullname": fullName,
                 "pw": password,
                 "pw-conf": passwordAgain,
-                "digest": 0
+                "digest": 0,
+                "user-agent": getLongVersionString()
             }
             
             # Convert to JSON data...

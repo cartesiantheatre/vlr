@@ -865,6 +865,10 @@ This next page will contain the output from the &lt;b&gt;VikingExtractor&lt;/b&g
         <col id="1" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">any</col>
       </row>
       <row>
+        <col id="0" translatable="yes" context="Broadband as in signal range, not network connectivity.">Broadband</col>
+        <col id="1">broadband</col>
+      </row>
+      <row>
         <col id="0" translatable="yes">Colour</col>
         <col id="1" comments="Do not translate. This is a parameter for the VikingExtractor command line interface.">colour</col>
       </row>
@@ -1311,6 +1315,7 @@ On behalf of the Avaneya project crew, we hope that you enjoyed using this softw
                     <property name="hscroll_policy">natural</property>
                     <property name="vadjustment">recoveryTerminalAdjustment</property>
                     <property name="vscroll_policy">natural</property>
+                    <property name="background_image_pixbuf">Background.png</property>
                     <property name="background_saturation">1</property>
                     <property name="background_tint_color">#00000fa0ffff</property>
                     <property name="cursor_blink_mode">on</property>

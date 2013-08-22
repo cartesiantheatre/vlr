@@ -32,7 +32,7 @@ import re
 # Privates...
 _applicationName    = "Avaneya: Viking Lander Remastered DVD"
 _versionMajor       = 0
-_versionMinor       = 9
+_versionMinor       = 93
 _versionShortString = "{0}.{1}".format(_versionMajor, _versionMinor)
 _versionLongString  = "{0}, v{1}".format(_applicationName, _versionShortString)
 

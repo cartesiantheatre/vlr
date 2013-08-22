@@ -146,7 +146,7 @@ SetVikingExtractorLocaleDirectory()
 
     # Check within local media...
     if [ -f "$AutostartScriptDirectory/Extractor/locale/en_CA/LC_MESSAGES/viking-extractor.mo" ] ; then
-        VE_LOCALE_DIR="$AutostartScriptDirectory/Extractor/locale"
+        export VE_LOCALE_DIR="$AutostartScriptDirectory/Extractor/locale"
         echo "$VE_LOCALE_DIR " $SymbolStatusOk
 
     # Guess systems...
@@ -464,6 +464,17 @@ InitializeRuntime()
 
             # Which release?
             case "$DistroCodeName" in
+
+                # Precise... (12.04.2)
+                "precise")
+                    PackagesRequired=(                  \
+                        "python3"                       \
+                        "python3-gi"                    \
+                        "python3-cairo"                 \
+                        "python3-gi-cairo"              \
+                        "gir1.2-gtk-3.0"                \
+                        "gir1.2-vte-2.90")
+                ;;
 
                 # Quantal... (12.10)
                 "quantal")

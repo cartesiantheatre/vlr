@@ -1,12 +1,62 @@
+2013-08-21  Kip Warner  <kip@thevertigo.com>
+
+    * LogicalRecord.cpp (operator<<): Scrub unexpected null bytes, possibly from 
+      bit rot.
+    * configure.ac (AC_INIT): Version bump to 0.93.
+    * VikingExtractor.cpp (main): Unhandled exceptions which ought to have been 
+      handled.
+
+2013-08-20  Kip Warner  <kip@thevertigo.com>
+
+    * VicarImageBand.cpp (GetRawBandData): Optimized by roughly 15.4 % with 
+      preallocated buffers and reading larger pixel blocks per pass.
+    * Makefile.am (check): Don't ever recycle artifacts when running test suite
+      in case previous results are fine, even though newer executable crashed 
+      during testing.
+    * VicarImageBand.cpp (ExtractOCR): Optimized by roughly 9.3 % with faster
+      flattening of pixel buffer.
+    * VicarImageBand.cpp (ExtractOCR): Optimized by roughly 23.3 % with caching.
+    * VicarImageAssembler.cpp (AddProspectiveFile): Give more user feedback over
+      dbus while indexing files on media.
+    * VicarImageBand.cpp (Load): Don't perform orientation detection on any PSA 
+      band types that don't need it. Immeasurable performance increase.
+    * Options.cpp (SetFilterDiodeClass): Allow filtering based on broadband PSA.
+
+2013-08-19  Kip Warner  <kip@thevertigo.com>
+
+    * VicarImageBand.cpp (GetRawBandData): Fixed wrong check for failed i/o.
+    * VicarImageBand.cpp (ParseBasicMetadata): Verify original width / height 
+      are sane.
+
+2013-08-18  Kip Warner  <kip@thevertigo.com>
+
+    * VicarImageBand.cpp (ParseExtendedMetadata): Use GetLanderLocation.
+    * LogicalRecord.cpp (IsValidLabel): More noise tolerant.
+
+2013-08-14  Kip Warner  <kip@thevertigo.com>
+
+    * VicarImageBand.cpp (ParseExtendedMetadata): Fixed camera event ID printed
+      when user expected lander number.
+    * VicarImageBand.cpp (ExamineImageVisually): When cannot guess image 
+      orientation correctly, issue alert as warning, not through verbose 
+      message channel.
+
+2013-08-13  Kip Warner  <kip@thevertigo.com>
+
+    * configure.ac: Bumped version from 0.9 to 0.91.
+    * Source/VicarImageBand.cpp: Show offsets also in hexadecimal.
+    * Source/ReconstructableImage.cpp (ReconstructColourImage): More robust
+      handling of matching colour band sets with differing dimensions.
+
 2013-08-07  gettextize  <bug-gnu-gettext@gnu.org>
 
-	* Macros/gettext.m4: Upgrade to gettext-0.18.3.
-	* Macros/iconv.m4: Upgrade to gettext-0.18.3.
-	* Macros/lib-ld.m4: Upgrade to gettext-0.18.3.
-	* Macros/lib-link.m4: Upgrade to gettext-0.18.3.
-	* Macros/lib-prefix.m4: Upgrade to gettext-0.18.3.
-	* Macros/nls.m4: Upgrade to gettext-0.18.3.
-	* Macros/po.m4: Upgrade to gettext-0.18.3.
-	* Macros/progtest.m4: Upgrade to gettext-0.18.3.
-	* Makefile.am (EXTRA_DIST): Add build-aux/config.rpath.
+    * Macros/gettext.m4: Upgrade to gettext-0.18.3.
+    * Macros/iconv.m4: Upgrade to gettext-0.18.3.
+    * Macros/lib-ld.m4: Upgrade to gettext-0.18.3.
+    * Macros/lib-link.m4: Upgrade to gettext-0.18.3.
+    * Macros/lib-prefix.m4: Upgrade to gettext-0.18.3.
+    * Macros/nls.m4: Upgrade to gettext-0.18.3.
+    * Macros/po.m4: Upgrade to gettext-0.18.3.
+    * Macros/progtest.m4: Upgrade to gettext-0.18.3.
+    * Makefile.am (EXTRA_DIST): Add build-aux/config.rpath.
 

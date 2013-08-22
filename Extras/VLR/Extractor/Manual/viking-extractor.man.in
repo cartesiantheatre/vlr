@@ -1,15 +1,15 @@
-.TH @PACKAGE@ 1 "April 2013" "Version @PACKAGE_VERSION@"
+.TH @PACKAGE@ 1 "August 2013" "Version @PACKAGE_VERSION@"
 .SH NAME
 viking-extractor - Recovers images from Viking Lander operations
 
 .SH SYNOPSIS
 .B viking-extractor 
-[\fIOPTION\fR] input [output]
+[\fIOPTIONS\fR] input [output]
 
 .SH DESCRIPTION
 Converts 1970s Viking Lander era VICAR colour images to PNGs. The value of 'input' can be either a single VICAR file or a directory containing VICAR files to attempt reconstruction into the provided output directory.
 
-For some background information on why this tool was written, see the chapter \fIViking Lander Remastered\fR in the \fBAvaneya Project Crew Handbook\fR.
+For some background information on why this tool was written, see the chapter \fBViking Lander Remastered\fR in the \fBAvaneya Project Crew Handbook\fR.
 
 .SH OPTIONS
 .TP
@@ -46,7 +46,7 @@ Encode output with Adam7 interlacing.
 
 .TP 
 \fB\-j\fR, \fB\--jobs[=threads]\fR
-Number of threads to run parallelized. Only one if -j is not provided, or auto if threads argument is not specified. At present, this feature is not implemented.
+Number of threads to run parallelized. Only one if -j is not provided, or auto if threads argument is not specified. At present, this feature is \fBnot\fR implemented.
 
 .TP 
 \fB\--filter-camera-event[=id]\fR
@@ -54,7 +54,7 @@ Look only for the specified matching camera event ID, such as 22A158.
 
 .TP 
 \fB\--filter-diode[=type]\fR
-Extract from matching supported diode filter classes which are any (default), colour, infrared, sun, or survey.
+Extract from matching supported diode filter classes which are any (default), broadband, colour, infrared, sun, or survey.
 
 .TP 
 \fB\--filter-lander=#\fR
@@ -105,7 +105,7 @@ Be verbose.
 Show version information.
 
 .SH AUTHOR
-Joe Tang <jtantogo-1@yahoo.com> and Kip Warner <kip@thevertigo.com> were the authors of this manual and the @PACKAGE@ tool respectively. See Credits for other project contributors.
+Joe Tang <jtantogo-1@yahoo.com> of Ubuntu Vancouver was the primary author of this manual. See \fBCredits\fR for other contributors to the @PACKAGE@ tool.
 
 .SH REPORTING BUGS
 Report @PACKAGE_STRING@ bugs to \fI@PACKAGE_BUGREPORT@\fR
@@ -114,9 +114,14 @@ Report @PACKAGE_STRING@ bugs to \fI@PACKAGE_BUGREPORT@\fR
 Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>. This is free software; see Copying for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 .SH SEE ALSO
-\fIhttps://www.avaneya.com/\fR
+\fIhttps://www.avaneya.com\fR
 .br
-\fIhttps://launchpad.net/avaneya/\fR
+
+\fIhttps://launchpad.net/avaneya\fR
 .br
-\fBavaneya\fR(1)
+
+\fIhttps://blueprints.launchpad.net/avaneya/+spec/avaneya-project-crew-handbook\fR
+.br
+
+.\"\fBavaneya\fR(1)
 

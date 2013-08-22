@@ -144,7 +144,7 @@ GrepTest.sh: Makefile.am
 	@echo './viking-extractor --version | grep -q ".*Cartesian Theatre."' > $@
 	@chmod +x $@
 
-# Checksums to for recovery_test.sh target to check against...
+# Checksums for RecoveryTest.sh target to check against...
 RecoveryChecksums.md5: Makefile.am
 	@echo '5e37828fe338c8a12ef387ca2bbb2b85  Tests/Recovery/22D180.png' > $@
 	@if [[ "$(LANGUAGE)" == "en_CA"* ]]; then \
@@ -156,6 +156,9 @@ RecoveryChecksums.md5: Makefile.am
 if USE_DBUS_INTERFACE
 RecoveryTest.sh: RecoveryChecksums.md5 Makefile.am
 	@echo '' > $@
+	@echo '# Remove previous artifacts we check against in case of crash during test run...' >> $@
+	@echo 'rm -f Tests/Recovery/22D180.png Tests/Recovery/22D180.txt' >> $@
+	@echo '' >> $@
 	@echo '# Launch the viking extractor and capture process ID...' >> $@
 	@echo './viking-extractor $(RECOVERY_TEST_ARGUMENTS) $(top_srcdir)/Tests/Recovery/ Tests/Recovery/ &' >> $@
 	@echo 'VE_PID=$$!' >> $@
@@ -187,7 +190,8 @@ RecoveryTest.sh: RecoveryChecksums.md5 Makefile.am
 #  d-bus invocation...
 else
 RecoveryTest.sh: RecoveryChecksums.md5 Makefile.am
-	@echo './viking-extractor $(RECOVERY_TEST_ARGUMENTS) $(top_srcdir)/Tests/Recovery/ Tests/Recovery/' > $@
+	@echo 'rm -f Tests/Recovery/22D180.png Tests/Recovery/22D180.txt' > $@
+	@echo './viking-extractor $(RECOVERY_TEST_ARGUMENTS) $(top_srcdir)/Tests/Recovery/ Tests/Recovery/' >> $@
 	@echo '$(MD5SUM) --warn --check $<' >> $@
 	@chmod +x $@
 

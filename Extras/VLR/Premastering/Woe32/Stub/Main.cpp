@@ -29,21 +29,25 @@ int APIENTRY WinMain(
     // Prompt the user. Petzold will be pissed...
     const int Status = MessageBox(
         NULL, 
-        "So there's good news and bad news. The bad news is that the Avaneya: "
-        "Viking Lander Remastered software is not supported on legacy operating "
-        "systems like Windows and OS X.\n\n"
-        
-        "But don't despair! The good news, however, is that upgrading to one "
-        "that does is simple. Ubuntu is an alternative to proprietary operating "
-        "systems like Windows and OS X. Built upon the freedom respecting GNU "
-        "operating system, it is virus and malware free, safe, secure, costs "
-        "nothing to download and use, is professionally supported, and already "
-        "adopted worldwide by millions. Best of all, you won't need to worry "
-        "about getting swindled anymore by those wretched monopolists in "
-        "Redmond or peddlers of rotten cryolite fruit.\n\n"
+        "So there's good news and bad news. The bad news is that the\n"
+        "Avaneya: Viking Lander Remastered software is not supported on\n"
+        "legacy operating systems like Windows and OS X.\n\n"
 
-        "If you would like to be taken to the Ubuntu homepage to learn more "
-        "about this contraband knowledge, press Ok now.",
+        "But don't despair! The good news, however, is that upgrading to\n"
+        "one that does is simple. Ubuntu is an alternative to proprietary\n"
+        "operating systems like Windows and OS X. Built upon the freedom\n"
+        "respecting GNU operating system, it is virus and malware free,\n"
+        "safe, secure, costs nothing to download and use, is professionally\n"
+        "supported, and already adopted worldwide by millions.\n\n"
+        
+        "No need to worry about switching cold turkey either. If Ubuntu is\n"
+        "installed, you can choose when your computer starts to either boot\n"
+        "into Ubuntu or Windows. But best of all, you won't need to worry\n"
+        "about getting swindled anymore by Redmond's wretched\n"
+        "monopolists or Cupertino's cryolite fruit.\n\n"
+
+        "If you would like to be taken to the Ubuntu homepage to learn\n"
+        "more about this contraband knowledge, press Ok now.",
         "Warning: Legacy Operating System", 
         MB_OKCANCEL | MB_ICONWARNING);
 

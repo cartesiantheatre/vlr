@@ -58,7 +58,8 @@ Options::Options()
         m_GenerateMetadata(false),
         m_SummarizeOnly(false)
 {
-
+    // Set the default diode filter class to any...
+    SetFilterDiodeClass("any");
 }
 
 // Set the camera event filter...
@@ -84,13 +85,33 @@ void Options::SetFilterDiodeClass(const string &DiodeClass)
         m_FilterDiodeBandSet.insert(VicarImageBand::Blue);
         m_FilterDiodeBandSet.insert(VicarImageBand::Green);
         m_FilterDiodeBandSet.insert(VicarImageBand::Red);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Broadband1);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Broadband2);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Broadband3);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Broadband4);
         m_FilterDiodeBandSet.insert(VicarImageBand::Infrared1);
         m_FilterDiodeBandSet.insert(VicarImageBand::Infrared2);
         m_FilterDiodeBandSet.insert(VicarImageBand::Infrared3);
+    /*
+        Note: For the time being, disabling solar band type unless explicitly 
+        selected. Every label header record examined appears corrupt. Can be 
+        manually overridden, however, with --filter-diode=sun switch.
+
         m_FilterDiodeBandSet.insert(VicarImageBand::Sun);
+    */
+
         m_FilterDiodeBandSet.insert(VicarImageBand::Survey);
     }
-    
+
+    // Broadband...
+    else if(DiodeClass == "broadband")
+    {
+        m_FilterDiodeBandSet.insert(VicarImageBand::Broadband1);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Broadband2);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Broadband3);
+        m_FilterDiodeBandSet.insert(VicarImageBand::Broadband4);
+    }
+
     // Colour band...
     else if(DiodeClass == "colour")
     {

@@ -94,6 +94,15 @@ void ReconstructableImage::AddImageBand(const VicarImageBand &ImageBand)
     // Add to the appropriate band type list...
     switch(ImageBand.GetDiodeBandType())
     {
+        // Broadband...
+        case VicarImageBand::Broadband1:
+        case VicarImageBand::Broadband2:
+        case VicarImageBand::Broadband3:
+        case VicarImageBand::Broadband4:
+            m_GrayImageBandList.push_back(ImageBand);
+            m_BandTypeClass = "Broadband"; /* TODO: Do different broadband diodes need different directories? */
+            break;
+
         // Red...
         case VicarImageBand::Red: 
             m_RedImageBandList.push_back(ImageBand);
@@ -111,7 +120,7 @@ void ReconstructableImage::AddImageBand(const VicarImageBand &ImageBand)
             m_BlueImageBandList.push_back(ImageBand);
             m_BandTypeClass = "Colour";
             break;
-        
+
         // Infrared 1...
         case VicarImageBand::Infrared1:
             m_Infrared1ImageBandList.push_back(ImageBand);
@@ -262,8 +271,9 @@ bool ReconstructableImage::DumpUnreconstructable(ImageBandListType &ImageBandLis
             << "_"
             << Iterator - ImageBandList.begin();
 
-        // Create the path to the file...
-        const string FullDirectory = CreateOutputFileName(true, "png", UnreconstructableName.str());
+        // Create the directory to contain all grayscale image bands...
+        const string FullDirectory = CreateOutputFileName(
+            true, "png", UnreconstructableName.str());
         
         // Dump the single channel as grayscale...
         if(ReconstructGrayscaleImage(FullDirectory, ImageBand))
@@ -427,8 +437,8 @@ bool ReconstructableImage::Reconstruct()
        (min3(Reds, Greens, Blues) >= 1) && 
        (Infrareds1 + Infrareds2 + Infrareds3 + Grays == 0))
     {
-        // Create full path to output file and create containing 
-        // directory, if necessary...
+        // Create full path to output file and create containing directory, if
+        //  necessary...
         const string OutputFileName = CreateOutputFileName(false, "png");
 
             // Failed...
@@ -613,14 +623,25 @@ bool ReconstructableImage::ReconstructColourImage(
             const size_t BlueWidth  = BestBlueImageBand.GetTransformedWidth();
             const size_t BlueHeight = BestBlueImageBand.GetTransformedHeight();
 
-    // If the widths don't match or the heights don't match, we have a problem...
-    if((min3(RedWidth, GreenWidth, BlueWidth) != max3(RedWidth, GreenWidth, BlueWidth)) ||
-       (min3(RedHeight, GreenHeight, BlueHeight) != max3(RedHeight, GreenHeight, BlueHeight)))
-        SetErrorAndReturnFalse(_("image bands not all the same size, may be missing scanlines"));
+    // Prepare to check that all of the widths match and same with all of the 
+    //  heights...
+    const size_t MinimumWidth   = min3(RedWidth, GreenWidth, BlueWidth);
+    const size_t MaximumWidth   = max3(RedWidth, GreenWidth, BlueWidth);
+    const size_t MinimumHeight  = min3(RedHeight, GreenHeight, BlueHeight);
+    const size_t MaximumHeight  = max3(RedHeight, GreenHeight, BlueHeight);
 
-    // Get the final image width and height...
-    const size_t Width  = RedWidth;
-    const size_t Height = RedHeight;
+    // If the widths don't match or the heights don't match, issue a warning...
+    if((MinimumWidth != MaximumWidth) || (MinimumHeight != MaximumHeight))
+        Message(Console::Warning) 
+            << _("image bands not all the same size, may be missing scanlines") 
+            << " [" << MinimumWidth << ", " << MaximumWidth << "] x "
+            << "[" << MinimumHeight << ", " << MaximumHeight << "]" << endl;
+
+    // Get the final image width and height, using the smallest dimension of 
+    //  each channel in the event that they aren't exactly the same to avoid a 
+    //  buffer overrun...
+    const size_t Width  = min3(RedWidth, GreenWidth, BlueWidth);
+    const size_t Height = min3(RedHeight, GreenHeight, BlueHeight);
 
     // Allocate png storage...
     png::image<png::rgb_pixel> PngImage(Width, Height);

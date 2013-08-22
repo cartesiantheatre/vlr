@@ -1,8 +1,8 @@
 /*
     VikingExtractor, to recover images from Viking Lander operations.
     Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>.
-    
-    Public discussion on IRC available at #avaneya (irc.freenode.net) 
+
+    Public discussion on IRC available at #avaneya (irc.freenode.net)
     or on the mailing list <avaneya@lists.avaneya.com>.
 
     This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@
     // Our headers...
     #include "LogicalRecord.h"
     #include "ZZipFileDescriptor.h"
-    
+
     // System headers...
     #include <cassert>
     #include <fstream>
@@ -53,29 +53,35 @@ class VicarImageBand
 {
     // Public types...
     public:
-    
+
         // Lander's diode in the photosensor array...
         typedef enum
         {
-            // Not known... (e.g. or could be just not read)
+            // Not known... (e.g. or could be just not supported / detected)
             Unknown = 0,
+
+            // High resolution broadband diodes with in-focus distances of 1.9, 
+            //  3.7, 4.5, and 13.3 metres respectively...
+            Broadband1,
+            Broadband2,
+            Broadband3,
+            Broadband4,
 
             // Narrow band low resolution colour diodes...
             Blue,
             Green,
             Red,
 
-            // Narrow band low resolution infrared diodes. These 
-            //  deteriorated slowly due to neutron radiation from the 
-            //  RTG...
+            // Narrow band low resolution infrared diodes. These deteriorated
+            //  slowly due to neutron radiation from the RTG...
             Infrared1,
             Infrared2,
             Infrared3,
 
-            // Narrow band low resolution sun diode...
+            // Narrow band low resolution Sun diode, not amplified...
             Sun,
 
-            // Survey diode...
+            // Low resolution survey diode...
             Survey
 
         }PSADiode;
@@ -87,6 +93,7 @@ class VicarImageBand
             Rotate90,   /* Angles expressed in degrees and counterclockwise */
             Rotate180,
             Rotate270
+
         }RotationType;
 
         // Token to band type map and pair types...
@@ -99,6 +106,11 @@ class VicarImageBand
 
         // Raw image band data, each nested vector is a row containing column data...
         typedef std::vector< std::vector<uint8_t> >     RawBandDataType;
+
+        // Band data rotation hint to OCR cache map...
+        typedef std::map<RotationType, std::string>     RotationOCRCacheType;
+        typedef RotationOCRCacheType::iterator          RotationOCRCacheIterator;
+        typedef std::pair<RotationType, std::string>    RotationOCRCachePair;
 
     // Public methods...
     public:
@@ -113,7 +125,7 @@ class VicarImageBand
         int GetBasicMetadataParserHeuristic() const { return m_BasicMetadataParserHeuristic; }
 
         // Get the camera event label with and without the solar day...
-        const std::string &GetCameraEventLabel() const { return m_CameraEventLabel; } 
+        const std::string &GetCameraEventLabel() const { return m_CameraEventLabel; }
         const std::string &GetCameraEventLabelNoSol() const { return m_CameraEventLabelNoSol; }
 
         // Get the diode band type...
@@ -129,13 +141,16 @@ class VicarImageBand
         size_t GetFileOrdinalOnMagneticTape() const { return m_FileOrdinalOnMagneticTape; }
 
         // Get the file size, or -1 on error...
-        int GetFileSize() const; 
+        int GetFileSize() const;
 
         // Get the input file name with full path...
         const std::string &GetInputFileName() const { return m_InputFile; }
 
         // Get the input file name only without path...
-        std::string GetInputFileNameOnly() const; 
+        std::string GetInputFileNameOnly() const;
+
+        // Return a friendly human readable location of lander...
+        std::string GetLanderLocation() const;
 
         // Get the lander number, or zero if unknown...
         size_t GetLanderNumber() const { return m_LanderNumber; }
@@ -145,95 +160,106 @@ class VicarImageBand
 
         // Get the mean pixel value of the inner rectangle...
         float GetMeanPixelValue() const { return m_MeanPixelValue; }
-        
+
         // Get the Martian month of this camera event...
         std::string GetMonth() const;
 
-        // Get the OCR buffer...        
+        // Get the OCR buffer...
         const std::string &GetOCRBuffer() const { return m_OCRBuffer; }
 
         // Get original image width and height, not accounting for rotation...
-        size_t GetOriginalHeight() const { return m_OriginalHeight; } 
+        size_t GetOriginalHeight() const { return m_OriginalHeight; }
         size_t GetOriginalWidth() const { return m_OriginalWidth; }
 
         // Sometimes the records are out of phase due to being preceeded with VAX/VMS prefix bytes. This is the offset required to decode file...
         size_t GetPhaseOffsetRequired() const { return m_PhaseOffsetRequired; }
 
         // Get size of a physical record and padding...
-        size_t GetPhysicalRecordPadding() const { return m_PhysicalRecordPadding; } 
+        size_t GetPhysicalRecordPadding() const { return m_PhysicalRecordPadding; }
         size_t GetPhysicalRecordSize() const { return m_PhysicalRecordSize; }
 
         // Get the raw band data transformed if autorotate was enabled. Use GetTransformedWidth()/Height() to know adapted dimensions...
-        bool GetRawBandData(VicarImageBand::RawBandDataType &RawBandData); 
+        bool GetRawBandData(VicarImageBand::RawBandDataType &RawBandData);
 
         // Get the raw image offset...
         size_t GetRawImageOffset() const { return m_RawImageOffset; }
 
         // Get the solar day the image was taken on...
-        size_t GetSolarDay() const { return m_SolarDay; } 
+        size_t GetSolarDay() const { return m_SolarDay; }
+
+        // Get the total original pixel space... (original width x height)
+        size_t GetTotalOriginalPixelSpace() const { return (GetOriginalWidth() * GetOriginalHeight()); }
 
         // Get image height and width, accounting for transformations like rotation...
-        size_t GetTransformedHeight() const; 
+        size_t GetTransformedHeight() const;
         size_t GetTransformedWidth() const;
 
         // Check if the image has an axis overlay present only, but no full histogram...
-        bool IsAxisOnlyPresent() const { return (m_AxisPresent && !m_FullHistogramPresent); } 
+        bool IsAxisOnlyPresent() const { return (m_AxisPresent && !m_FullHistogramPresent); }
 
         // Check if the image has an axis overlay present...
-        bool IsAxisPresent() const { return m_AxisPresent; } 
+        bool IsAxisPresent() const { return m_AxisPresent; }
 
         // Check if the file came with a camera event label...
-        bool IsCameraEventLabelPresent() const { assert(m_Ok); return !m_CameraEventLabel.empty(); } 
-        
+        bool IsCameraEventLabelPresent() const { assert(m_Ok); return !m_CameraEventLabel.empty(); }
+
         // Check if an error is present...
-        bool IsError() const { return !m_ErrorMessage.empty(); } 
-        
+        bool IsError() const { return !m_ErrorMessage.empty(); }
+
         // Check if a full histogram legend is present...
-        bool IsFullHistogramPresent() const { return m_FullHistogramPresent; } 
-        
+        bool IsFullHistogramPresent() const { return m_FullHistogramPresent; }
+
         // Is the file accessible and the header ok?
-        bool IsOk() const { return m_Ok; } 
-        
+        bool IsOk() const { return m_Ok; }
+
         // Load as much of the file as possible, setting error on failure...
-        void Load(); 
-        
+        void Load();
+
         // For comparing quality between images of the same camera event and same band type...
-        bool operator<(const VicarImageBand &RightSide) const; 
+        bool operator<(const VicarImageBand &RightSide) const;
+
+        // Perform a deep probe on the file to check for the photosensor diode
+        //  band type, returning Unknown if couldn't detect it or unsupported.
+        //  The parameter can be used for callee to store for caller the token
+        //  that probably denotes an unsupported diode type...
+        PSADiode ProbeDiodeBandType(std::string &DiodeBandTypeHint) const;
 
     // Protected methods...
     protected:
 
-        // Check if the raw band image data, rotated as requested, 
-        //  contains text usually found in an image with azimuth / 
+        // Check if the raw band image data, rotated as requested,
+        //  contains text usually found in an image with azimuth /
         //  elevation axes oriented properly. If so, return true
         //  and store extracted text in buffer...
         bool CheckForHorizontalAxisAndExtractText(
-            const RawBandDataType &RawBandData, 
-            const RotationType Rotation, 
+            const RawBandDataType &RawBandData,
+            const RotationType Rotation,
             std::string &OCRBuffer);
 
-        // Check if the raw band image data, rotated as requested, 
-        //  contains text usually found in an image with with a large 
-        //  histogram present. If so, return true and store extracted 
+        // Check if the raw band image data, rotated as requested,
+        //  contains text usually found in an image with with a large
+        //  histogram present. If so, return true and store extracted
         //  text in buffer...
         bool CheckForLargeHistogramAndExtractText(
-            const RawBandDataType &RawBandData, 
-            const RotationType Rotation, 
+            const RawBandDataType &RawBandData,
+            const RotationType Rotation,
             std::string &OCRBuffer);
 
-        // Examine image visually to determine things like suggested 
-        //  orientation, optical character recognition, and histogram 
+        // Examine image visually to determine things like suggested
+        //  orientation, optical character recognition, and histogram
         //  detection, or set an error...
         bool ExamineImageVisually();
 
         // Extract OCR within image band data to buffer...
         bool ExtractOCR(
-            const RawBandDataType &RawBandData, std::string &Extracted);
+            const RawBandDataType &RawBandData,
+            std::string &Extracted,
+            const RotationType RotationHint);
 
         // Get the photosensor diode band type from VICAR token... (e.g. "RED/T")
         PSADiode GetDiodeBandTypeFromVicarToken(const std::string &DiodeBandTypeToken) const;
 
-        // Check if the header is at least readable, and if so, phase offset 
+        // Check if the header is at least readable, and if so, phase offset
         //  required to decode file...
         bool IsHeaderIntact(size_t &PhaseOffsetRequired) const;
 
@@ -243,12 +269,12 @@ class VicarImageBand
         // Check ifthis is actually from the Viking Lander EDR...
         bool IsVikingLanderOrigin() const;
 
-        // Get a file stream to access the raw file. Returned handle tests as 
+        // Get a file stream to access the raw file. Returned handle tests as
         //  false if error...
         ZZipFileDescriptor Open() const;
 
-        // Parse basic metadata. Calls one of the implementations below based on its 
-        //  formatting. Basic metadata includes bands, dimensions, pixel format, 
+        // Parse basic metadata. Calls one of the implementations below based on its
+        //  formatting. Basic metadata includes bands, dimensions, pixel format,
         //  bytes per colour, photosensor diode band type, etc...
         void ParseBasicMetadata(ZZipFileDescriptor &FileDescriptor);
         void ParseBasicMetadataImplementation_Format1(const LogicalRecord &HeaderRecord);
@@ -264,13 +290,7 @@ class VicarImageBand
             const LogicalRecord &Record,
             const size_t LocalLogicalRecordIndexHint);
 
-        // Perform a deep probe on the file to check for the photosensor diode
-        //  band type, returning Unknown if couldn't detect it or unsupported.
-        //  The parameter can be used for callee to store for caller the token
-        //  that probably denotes an unsupported diode type...
-        PSADiode ProbeDiodeBandType(std::string &DiodeBandTypeHint) const;
-
-        // Set the camera event label, along with the solar day and camera 
+        // Set the camera event label, along with the solar day and camera
         //  event identifier without the solar day...
         void SetCameraEventLabel(const std::string &CameraEventLabel);
 
@@ -282,23 +302,23 @@ class VicarImageBand
 
         // Mirror the band data from left to right...
         static void MirrorLeftRight(
-            const RawBandDataType &RawBandData, 
+            const RawBandDataType &RawBandData,
             RawBandDataType &TransformedRawBandData);
 
         // Mirror the top and bottom...
         static void MirrorTopBottom(
-            const RawBandDataType &RawBandData, 
+            const RawBandDataType &RawBandData,
             RawBandDataType &TransformedRawBandData);
 
         // Mirror diagonaly...
         static void MirrorDiagonal(
-            const RawBandDataType &RawBandData, 
+            const RawBandDataType &RawBandData,
             VicarImageBand::RawBandDataType &TransformedRawBandData);
 
         // Rotate image band data as requested...
         static void Rotate(
-            const RotationType Rotation, 
-            const RawBandDataType &RawBandData, 
+            const RotationType Rotation,
+            const RawBandDataType &RawBandData,
             RawBandDataType &TransformedRawBandData);
 
     // Protected data...
@@ -321,13 +341,13 @@ class VicarImageBand
 
         // Bytes per pixel...
         int                     m_BytesPerColour;
-        
+
         // Camera event label...
         std::string             m_CameraEventLabel;
 
         // Camera event identifier without solar day...
         std::string             m_CameraEventLabelNoSol;
-        
+
         // Band type...
         PSADiode                m_DiodeBandType;
 
@@ -349,7 +369,7 @@ class VicarImageBand
         // Magnetic tape number this originated on...
         size_t                  m_MagneticTapeNumber;
 
-        // Pixel mean value of centre rectange which is 1/3 length and 
+        // Pixel mean value of centre rectange which is 1/3 length and
         //  width of image. We do this to prevent sampling from outside
         //  in the image overlay and histogram region...
         float                   m_MeanPixelValue;
@@ -364,8 +384,8 @@ class VicarImageBand
         size_t                  m_OriginalHeight;
         size_t                  m_OriginalWidth;
 
-        // Sometimes the records are out of phase due to being preceeded 
-        //  with VAX/VMS prefix bytes. This is the offset required to 
+        // Sometimes the records are out of phase due to being preceeded
+        //  with VAX/VMS prefix bytes. This is the offset required to
         //  decode file...
         size_t                  m_PhaseOffsetRequired;
 
@@ -382,17 +402,19 @@ class VicarImageBand
         // Counterclockwise rotation to orient image properly which is
         //  always 0, 90, 180, or 270...
         RotationType            m_Rotation;
-        
+
+        // Cache to loop up previous OCR results for a given rotation...
+        RotationOCRCacheType    m_RotationOCRCache;
+
         // Saved labels buffer...
         std::string             m_SavedLabelsBuffer;
 
         // Solar day image was taken on...
         size_t                  m_SolarDay;
-        
+
         // Token to band type map...
         TokenToBandTypeMap      m_TokenToBandTypeMap;
 };
 
 // Multiple include protection...
 #endif
-
