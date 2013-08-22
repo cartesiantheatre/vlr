@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
-"POT-Creation-Date: 2013-08-21 23:40-0700\n"
+"POT-Creation-Date: 2013-08-22 00:12-0700\n"
 "PO-Revision-Date: 2013-06-06 12:05+0000\n"
 "Last-Translator: Anthony Harrington <untaintableangel@ubuntu.com>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
@@ -332,6 +332,11 @@ msgstr "image does not need to be rotated"
 msgid "could not guess image rotation"
 msgstr "could not guess image rotation"
 
+#. Alert user...
+#: Source/VicarImageBand.cpp:394
+msgid "annotation cache hit optimization"
+msgstr ""
+
 #: Source/VicarImageBand.cpp:410
 msgid "GNU Ocrad failed to initialize"
 msgstr "GNU Ocrad failed to initialise"
@@ -345,6 +350,10 @@ msgstr "could not set OCR image"
 #: Source/VicarImageBand.cpp:469
 msgid "OCR pass failed"
 msgstr "OCR pass failed"
+
+#: Source/VicarImageBand.cpp:495
+msgid " potential character annotations detected"
+msgstr ""
 
 #: Source/VicarImageBand.cpp:602
 msgid "input was not loaded"

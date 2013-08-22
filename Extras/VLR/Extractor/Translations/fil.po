@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
-"POT-Creation-Date: 2013-08-21 23:40-0700\n"
+"POT-Creation-Date: 2013-08-22 00:12-0700\n"
 "PO-Revision-Date: 2013-07-05 18:39+0000\n"
 "Last-Translator: Joe Tang <Unknown>\n"
 "Language-Team: Filipino <fil@li.org>\n"
@@ -335,6 +335,11 @@ msgstr "hindi kailangang ikutin ang larawan"
 msgid "could not guess image rotation"
 msgstr "hindi matiyak ang pag-ikot sa larawan"
 
+#. Alert user...
+#: Source/VicarImageBand.cpp:394
+msgid "annotation cache hit optimization"
+msgstr ""
+
 #: Source/VicarImageBand.cpp:410
 msgid "GNU Ocrad failed to initialize"
 msgstr "hindi na-initialize ang GNU Ocrad"
@@ -348,6 +353,10 @@ msgstr "hindi ma-set ang OCR image"
 #: Source/VicarImageBand.cpp:469
 msgid "OCR pass failed"
 msgstr "nabigo ang OCR pass"
+
+#: Source/VicarImageBand.cpp:495
+msgid " potential character annotations detected"
+msgstr ""
 
 #: Source/VicarImageBand.cpp:602
 msgid "input was not loaded"

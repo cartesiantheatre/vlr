@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
-"POT-Creation-Date: 2013-08-21 23:40-0700\n"
+"POT-Creation-Date: 2013-08-22 00:12-0700\n"
 "PO-Revision-Date: 2013-06-07 09:47+0000\n"
 "Last-Translator: yurchor <Unknown>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -339,6 +339,11 @@ msgstr "у обертанні зображення немає потреби"
 msgid "could not guess image rotation"
 msgstr "не вдалося визначити кут обертання зображення"
 
+#. Alert user...
+#: Source/VicarImageBand.cpp:394
+msgid "annotation cache hit optimization"
+msgstr ""
+
 #: Source/VicarImageBand.cpp:410
 msgid "GNU Ocrad failed to initialize"
 msgstr "Не вдалося ініціалізувати GNU Ocrad"
@@ -352,6 +357,10 @@ msgstr "не вдалося встановити зображення для р�
 #: Source/VicarImageBand.cpp:469
 msgid "OCR pass failed"
 msgstr "помилка під час розпізнавання символів"
+
+#: Source/VicarImageBand.cpp:495
+msgid " potential character annotations detected"
+msgstr ""
 
 #: Source/VicarImageBand.cpp:602
 msgid "input was not loaded"

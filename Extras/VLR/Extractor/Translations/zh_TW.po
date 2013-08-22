@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
-"POT-Creation-Date: 2013-08-21 23:40-0700\n"
+"POT-Creation-Date: 2013-08-22 00:12-0700\n"
 "PO-Revision-Date: 2013-06-15 00:49+0000\n"
 "Last-Translator: Po-Chun Huang <Unknown>\n"
 "Language-Team: Chinese (Traditional) <zh_TW@li.org>\n"
@@ -326,6 +326,11 @@ msgstr "影像不需要旋轉"
 msgid "could not guess image rotation"
 msgstr "無法推測影像旋轉"
 
+#. Alert user...
+#: Source/VicarImageBand.cpp:394
+msgid "annotation cache hit optimization"
+msgstr ""
+
 #: Source/VicarImageBand.cpp:410
 msgid "GNU Ocrad failed to initialize"
 msgstr "GNU Ocrad初始化失敗"
@@ -339,6 +344,10 @@ msgstr "無法設定OCR影像"
 #: Source/VicarImageBand.cpp:469
 msgid "OCR pass failed"
 msgstr "OCR辨識失敗"
+
+#: Source/VicarImageBand.cpp:495
+msgid " potential character annotations detected"
+msgstr ""
 
 #: Source/VicarImageBand.cpp:602
 msgid "input was not loaded"

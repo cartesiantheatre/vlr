@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: viking-extractor 0.5\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
-"POT-Creation-Date: 2013-08-21 23:40-0700\n"
+"POT-Creation-Date: 2013-08-22 00:12-0700\n"
 "PO-Revision-Date: 2013-06-26 04:59+0000\n"
 "Last-Translator: Oleg Koptev <koptev.oleg@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -353,6 +353,11 @@ msgstr "изображение не нуждается в повороте"
 msgid "could not guess image rotation"
 msgstr "не удалось определить угол поворота изображения"
 
+#. Alert user...
+#: Source/VicarImageBand.cpp:394
+msgid "annotation cache hit optimization"
+msgstr ""
+
 #: Source/VicarImageBand.cpp:410
 msgid "GNU Ocrad failed to initialize"
 msgstr "Не далось инициализировть GNU Ocrad"
@@ -366,6 +371,10 @@ msgstr "не удалось установить изображение OCR"
 #: Source/VicarImageBand.cpp:469
 msgid "OCR pass failed"
 msgstr "Ошибка оптического распознавания"
+
+#: Source/VicarImageBand.cpp:495
+msgid " potential character annotations detected"
+msgstr ""
 
 #: Source/VicarImageBand.cpp:602
 msgid "input was not loaded"
