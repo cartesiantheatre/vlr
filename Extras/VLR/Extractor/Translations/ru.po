@@ -25,12 +25,12 @@ msgstr ""
 "PO-Revision-Date: 2013-06-26 04:59+0000\n"
 "Last-Translator: Oleg Koptev <koptev.oleg@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-09 05:13+0000\n"
-"X-Generator: Launchpad (build 16723)\n"
+"X-Launchpad-Export-Date: 2013-08-23 05:16+0000\n"
+"X-Generator: Launchpad (build 16737)\n"
+"Language: ru\n"
 
 #. Initialize the channel map...
 #: Source/Console.cpp:84
@@ -282,7 +282,8 @@ msgstr "фильтруются "
 
 #: Source/VicarImageAssembler.cpp:339
 msgid " type diode bands (--filter-diode[=type] to change)"
-msgstr " тип диодных полос (используйте --filter-diode[=type] чтобы изменить)"
+msgstr ""
+" тип диодных полос (используйте --filter-diode[=type] чтобы изменить)"
 
 #: Source/VicarImageAssembler.cpp:349
 msgid "camera event doesn't identify itself, cannot index"
@@ -398,7 +399,8 @@ msgid "loading"
 msgstr "загрузка"
 
 #: Source/VicarImageBand.cpp:859
-msgid "empty file, probably blank magnetic tape or not received back on Earth"
+msgid ""
+"empty file, probably blank magnetic tape or not received back on Earth"
 msgstr ""
 "пустой файл, возможно чистая магнитная лента или лента не полученная на Земле"
 
@@ -491,14 +493,12 @@ msgid "unsupported number of image bands"
 msgstr "неподдерживаемое количество полос изображения"
 
 #: Source/VicarImageBand.cpp:1420
-#, fuzzy
 msgid "corrupt image height"
-msgstr "ожидалась положительная высота изображения"
+msgstr ""
 
 #: Source/VicarImageBand.cpp:1424
-#, fuzzy
 msgid "corrupt image width"
-msgstr "ожидалась положительная ширина изображения"
+msgstr ""
 
 #. Check pixel format is integral...
 #. Definitely integral
@@ -717,16 +717,11 @@ msgstr ""
 "                              например 22A158.\n"
 
 #: Source/VikingExtractor.cpp:96
-#, fuzzy
 msgid ""
 "                              Extract from matching supported diode filter\n"
 "                              classes which are any (default), broadband,\n"
 "                              colour, infrared, sun, or survey.\n"
 msgstr ""
-"                              Извлечь из поддерживаемого класса диодного "
-"фильтра:\n"
-"                              any (по умолчанию), colour, infrared,\n"
-"                              sun, или survey.\n"
 
 #: Source/VikingExtractor.cpp:101
 msgid ""
@@ -858,7 +853,8 @@ msgstr "Заданные настройки: "
 
 #: Source/VikingExtractor.cpp:344
 msgid "parallelization is not implemented yet, using single thread"
-msgstr "распараллеливание временно не поддерживается, используется один поток"
+msgstr ""
+"распараллеливание временно не поддерживается, используется один поток"
 
 #: Source/VikingExtractor.cpp:446
 msgid "summarize only and verbose modes cannot both be used"

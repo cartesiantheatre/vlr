@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-08-07 22:13-0700\n"
+"POT-Creation-Date: 2013-08-22 00:23-0700\n"
 "PO-Revision-Date: 2013-08-08 05:54+0000\n"
 "Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
 "Language-Team: RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-09 05:13+0000\n"
-"X-Generator: Launchpad (build 16723)\n"
+"X-Launchpad-Export-Date: 2013-08-23 05:17+0000\n"
+"X-Generator: Launchpad (build 16737)\n"
 "Language: ru\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -23,6 +23,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Aleksey Vorona https://launchpad.net/~voronaam\n"
 "  Andrey Olykainen https://launchpad.net/~andrey.olykainen\n"
 "  Avaneya Project Crew https://launchpad.net/~avaneya\n"
 "  Kip Warner https://launchpad.net/~kip\n"
@@ -44,26 +45,26 @@ msgid "Shouts / Thanks"
 msgstr "Благодарности"
 
 #. Studio hardware...
-#: ../../Source/LauncherApp.py:217
+#: ../../Source/LauncherApp.py:218
 msgid "Studio Hardware"
 msgstr "Аппаратное обеспечение"
 
 #. Studio software...
-#: ../../Source/LauncherApp.py:222
+#: ../../Source/LauncherApp.py:223
 msgid "Studio Software"
 msgstr "Программное обеспечение"
 
 #. Set translators...
-#: ../../Source/LauncherApp.py:245
+#: ../../Source/LauncherApp.py:248
 msgid "Translators"
 msgstr "Переводчики"
 
 #. Dedications...
-#: ../../Source/LauncherApp.py:255
+#: ../../Source/LauncherApp.py:258
 msgid "Dedications"
 msgstr "Посвящение"
 
-#: ../../Source/LauncherApp.py:266
+#: ../../Source/LauncherApp.py:269
 msgid ""
 "\n"
 "\n"
@@ -81,11 +82,11 @@ msgstr ""
 "href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits"
 "\">Credits</a>."
 
-#: ../../Source/LauncherApp.py:288 ../../Source/OpeningVideoWindow.py:175
+#: ../../Source/LauncherApp.py:291 ../../Source/OpeningVideoWindow.py:175
 msgid "Error:"
 msgstr "Ошибка:"
 
-#: ../../Source/LauncherApp.py:316
+#: ../../Source/LauncherApp.py:319
 msgid "Are you sure you'd like to quit?"
 msgstr "Вы уверены что хотите выйти?"
 
@@ -434,31 +435,36 @@ msgstr "\t<b><i>~ Команда проекта Avaneya</i></b>\n"
 msgid "Recovery"
 msgstr "Восстановление"
 
+#: ../../Source/RecoveryPage.py:82
+#, python-brace-format
+msgid "Launching {0}..."
+msgstr ""
+
 #. We got the process ID, show it...
-#: ../../Source/RecoveryPage.py:101
+#: ../../Source/RecoveryPage.py:105
 #, python-brace-format
 msgid "Spawned process {0}..."
 msgstr "Порождённый процесс {0}..."
 
 #. Alert user...
-#: ../../Source/RecoveryPage.py:112
+#: ../../Source/RecoveryPage.py:116
 msgid "Waiting for VikingExtractor D-Bus service..."
 msgstr "Ожидание службы D-Bus для VikingExtractor"
 
-#: ../../Source/RecoveryPage.py:120
+#: ../../Source/RecoveryPage.py:124
 msgid "Dead session connection handle..."
 msgstr "Дескриптор соединения «мёртвой» сессии..."
 
 #. Done...
-#: ../../Source/RecoveryPage.py:205
+#: ../../Source/RecoveryPage.py:209
 msgid "ok"
 msgstr "ok"
 
-#: ../../Source/RecoveryPage.py:218 ../../Source/RecoveryPage.py:275
+#: ../../Source/RecoveryPage.py:222 ../../Source/RecoveryPage.py:279
 msgid "Error"
 msgstr "Ошибка"
 
-#: ../../Source/RecoveryPage.py:220
+#: ../../Source/RecoveryPage.py:224
 #, python-brace-format
 msgid ""
 "The VikingExtractor could not be launched. The following location was "
@@ -470,16 +476,16 @@ msgstr ""
 "\n"
 "{0}"
 
-#: ../../Source/RecoveryPage.py:236
+#: ../../Source/RecoveryPage.py:240
 msgid "Are you sure you'd like to abort the recovery?"
 msgstr "Прекратить восстановление?"
 
-#: ../../Source/RecoveryPage.py:266
+#: ../../Source/RecoveryPage.py:270
 #, python-brace-format
 msgid "VikingExtractor terminated with status {0}..."
 msgstr "VikingExtractor завершён со статусом {0}..."
 
-#: ../../Source/RecoveryPage.py:277
+#: ../../Source/RecoveryPage.py:281
 #, python-brace-format
 msgid "The recovery process was unsuccessful. ({0})"
 msgstr "Процесс восстановления завершился неудачей. ({0})"
@@ -500,7 +506,7 @@ msgstr "Недопустимый адрес электронной почты."
 msgid "Passwords do not match."
 msgstr "Пароли не совпадают."
 
-#: ../../Source/SubscribePage.py:182 ../../Source/HandbookPage.py:235
+#: ../../Source/SubscribePage.py:183 ../../Source/HandbookPage.py:235
 #, python-brace-format
 msgid ""
 "There was a problem communicating with the remote server. Please try again "
@@ -1175,22 +1181,27 @@ msgid "All diode band types"
 msgstr ""
 
 #: ../Launcher.glade:868
+msgctxt "Broadband as in signal range, not network connectivity."
+msgid "Broadband"
+msgstr ""
+
+#: ../Launcher.glade:872
 msgid "Colour"
 msgstr "Цвет"
 
-#: ../Launcher.glade:872
+#: ../Launcher.glade:876
 msgid "Infrared"
 msgstr "Инфракрасный"
 
-#: ../Launcher.glade:876
+#: ../Launcher.glade:880
 msgid "Sun"
 msgstr ""
 
-#: ../Launcher.glade:880
+#: ../Launcher.glade:884
 msgid "Survey"
 msgstr "Опрос"
 
-#: ../Launcher.glade:939
+#: ../Launcher.glade:943
 msgid ""
 "Congratulations! The mission data forensic recovery has completed. To "
 "examine everything that you managed to recover, use the button below.\n"
@@ -1216,15 +1227,15 @@ msgstr ""
 "благодарность. Ваша поддерджка чрезвычайно важна для активного и продолжения "
 "профессиональной разработки проекта Avaneya."
 
-#: ../Launcher.glade:968
+#: ../Launcher.glade:972
 msgid "Explore Recovered Mission Data"
 msgstr "Обзор восстановленных данных миссии"
 
-#: ../Launcher.glade:982
+#: ../Launcher.glade:986
 msgid "Explore Source Code"
 msgstr "Ознакомиться с исходным кодом"
 
-#: ../Launcher.glade:1068
+#: ../Launcher.glade:1072
 msgid ""
 "The <i>Avaneya Project Crew Handbook</i> was written to address the needs of "
 "project contributors in our community. Would you like to download the latest "
@@ -1234,27 +1245,27 @@ msgstr ""
 "внести свой вклад в развитие проекта. Если вы хотели бы загрузить последнюю "
 "редакцию книги, вам потребуется работающее соединение с Интернетом."
 
-#: ../Launcher.glade:1085
+#: ../Launcher.glade:1089
 msgid "Yes, download the latest copy."
 msgstr "Да, загрузить последнюю копию."
 
-#: ../Launcher.glade:1216
+#: ../Launcher.glade:1220
 msgid "???"
 msgstr "???"
 
-#: ../Launcher.glade:1240
+#: ../Launcher.glade:1244
 msgid "Both landers"
 msgstr ""
 
-#: ../Launcher.glade:1244
+#: ../Launcher.glade:1248
 msgid "Viking Lander I (<i>Chryse Planitia</i>)"
 msgstr "Viking Lander I (<i>Chryse Planitia</i>)"
 
-#: ../Launcher.glade:1248
+#: ../Launcher.glade:1252
 msgid "Viking Lander II (<i>Utopia Planitia</i>)"
 msgstr "Viking Lander II (<i>Utopia Planitia</i>)"
 
-#: ../Launcher.glade:1308
+#: ../Launcher.glade:1312
 msgid ""
 "This window contains the output from the VikingExtractor process while it "
 "works."
@@ -1262,11 +1273,11 @@ msgstr ""
 "В этом окне будет выводиться информация о ходе процесса, во время работы "
 "VikingExtractor."
 
-#: ../Launcher.glade:1369
+#: ../Launcher.glade:1374
 msgid "Please wait..."
 msgstr "Пожалуйста, подождите..."
 
-#: ../Launcher.glade:1442
+#: ../Launcher.glade:1447
 msgid ""
 "Please select an <b>empty</b> folder below. This folder will be used to save "
 "all of the recoverable images. If the folder is not empty, its contents "
@@ -1276,15 +1287,15 @@ msgstr ""
 "сохранения всех восстанавливаемых изображений. Если папка не будет пустой, "
 "её содержимое будет перезаписано, если вы разрешите это."
 
-#: ../Launcher.glade:1468
+#: ../Launcher.glade:1473
 msgid "Select folder to store recovered images"
 msgstr "Выберите папку для сохранения восстановленных изображений"
 
-#: ../Launcher.glade:1479
+#: ../Launcher.glade:1484
 msgid "Overwrite existing output files"
 msgstr "Перезаписать существующие выходные файлы"
 
-#: ../Launcher.glade:1484 ../Launcher.glade:1485
+#: ../Launcher.glade:1489 ../Launcher.glade:1490
 msgid ""
 "This will overwrite any existing output files that have the same name as the "
 "data recovered."
@@ -1292,11 +1303,11 @@ msgstr ""
 "Это действие перезапишет все существующие выходные файлы с именем, "
 "совпадающим с восстанавливаемыми файлами."
 
-#: ../Launcher.glade:1511
+#: ../Launcher.glade:1516
 msgid "Avaneya"
 msgstr "Avaneya"
 
-#: ../Launcher.glade:1579
+#: ../Launcher.glade:1584
 msgid ""
 "We have a <b>low volume</b> announcement mailing list that we use to make "
 "press releases and other public announcements. We would love to keep you in "
@@ -1307,31 +1318,31 @@ msgstr ""
 "сообщаем другую информацию. Будет здорово, если вы подпишетесь на неё. <i>Мы "
 "никогда не передадим вашу личную информацию третьим лицам.</i>"
 
-#: ../Launcher.glade:1591
+#: ../Launcher.glade:1596
 msgid "Yes, please subscribe me."
 msgstr "Да, подписать меня на рассылку."
 
-#: ../Launcher.glade:1643
+#: ../Launcher.glade:1648
 msgid "<b>Name:</b>"
 msgstr "<b>Имя:</b>"
 
-#: ../Launcher.glade:1683
+#: ../Launcher.glade:1688
 msgid "<b>Email:</b>"
 msgstr "<b>Электронная почта:</b>"
 
-#: ../Launcher.glade:1723
+#: ../Launcher.glade:1728
 msgid "<b>Password:</b>"
 msgstr "<b>Пароль:</b>"
 
-#: ../Launcher.glade:1763
+#: ../Launcher.glade:1768
 msgid "<b>Password again:</b>"
 msgstr "<b>Повторите пароль:</b>"
 
-#: ../Launcher.glade:1784
+#: ../Launcher.glade:1789
 msgid "Thanks, but I think I'll pass."
 msgstr "Спасибо, не надо."
 
-#: ../Launcher.glade:1860
+#: ../Launcher.glade:1865
 msgid ""
 "Please wait while your mission data's integrity is verified. You can safely "
 "stop this process at any time, if you wish."
@@ -1339,7 +1350,7 @@ msgstr ""
 "Подождите, пока идёт проверка целостности данных. Вы можете безопасно "
 "остановить этот процесс в любое время."
 
-#: ../Launcher.glade:1990
+#: ../Launcher.glade:1995
 msgid ""
 "This disc contains a substantial amount of data that the recovery software "
 "will try to examine for recoverable images. Although we have optimized the "
@@ -1359,10 +1370,10 @@ msgstr ""
 "выполнить эту проверку хотя бы один раз, либо в случае, если вы думаете, что "
 "диск мог каким либо образом быть повреждён."
 
-#: ../Launcher.glade:2016
+#: ../Launcher.glade:2021
 msgid "Perform DVD integrity check"
 msgstr "Выполнить проверку целостности DVD"
 
-#: ../Launcher.glade:2032
+#: ../Launcher.glade:2037
 msgid "Skip DVD integrity check"
 msgstr "Пропустить проверку целостности DVD"

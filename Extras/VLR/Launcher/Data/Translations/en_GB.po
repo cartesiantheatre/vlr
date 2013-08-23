@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-08-07 22:13-0700\n"
-"PO-Revision-Date: 2013-08-08 04:03+0000\n"
+"POT-Creation-Date: 2013-08-22 00:23-0700\n"
+"PO-Revision-Date: 2013-08-22 22:54+0000\n"
 "Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-09 05:13+0000\n"
-"X-Generator: Launchpad (build 16723)\n"
+"X-Launchpad-Export-Date: 2013-08-23 05:17+0000\n"
+"X-Generator: Launchpad (build 16737)\n"
 "Language: en_UK\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -43,26 +43,26 @@ msgid "Shouts / Thanks"
 msgstr "Shouts / Thanks"
 
 #. Studio hardware...
-#: ../../Source/LauncherApp.py:217
+#: ../../Source/LauncherApp.py:218
 msgid "Studio Hardware"
 msgstr "Studio Hardware"
 
 #. Studio software...
-#: ../../Source/LauncherApp.py:222
+#: ../../Source/LauncherApp.py:223
 msgid "Studio Software"
 msgstr "Studio Software"
 
 #. Set translators...
-#: ../../Source/LauncherApp.py:245
+#: ../../Source/LauncherApp.py:248
 msgid "Translators"
 msgstr "Translators"
 
 #. Dedications...
-#: ../../Source/LauncherApp.py:255
+#: ../../Source/LauncherApp.py:258
 msgid "Dedications"
 msgstr "Dedications"
 
-#: ../../Source/LauncherApp.py:266
+#: ../../Source/LauncherApp.py:269
 msgid ""
 "\n"
 "\n"
@@ -80,11 +80,11 @@ msgstr ""
 "href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits"
 "\">Credits</a> file."
 
-#: ../../Source/LauncherApp.py:288 ../../Source/OpeningVideoWindow.py:175
+#: ../../Source/LauncherApp.py:291 ../../Source/OpeningVideoWindow.py:175
 msgid "Error:"
 msgstr "Error:"
 
-#: ../../Source/LauncherApp.py:316
+#: ../../Source/LauncherApp.py:319
 msgid "Are you sure you'd like to quit?"
 msgstr "Are you sure you'd like to quit?"
 
@@ -428,31 +428,36 @@ msgstr "\t<b><i>~ Avaneya Project Crew</i></b>\n"
 msgid "Recovery"
 msgstr "Recovery"
 
+#: ../../Source/RecoveryPage.py:82
+#, python-brace-format
+msgid "Launching {0}..."
+msgstr "Launching {0}..."
+
 #. We got the process ID, show it...
-#: ../../Source/RecoveryPage.py:101
+#: ../../Source/RecoveryPage.py:105
 #, python-brace-format
 msgid "Spawned process {0}..."
 msgstr "Spawned process {0}..."
 
 #. Alert user...
-#: ../../Source/RecoveryPage.py:112
+#: ../../Source/RecoveryPage.py:116
 msgid "Waiting for VikingExtractor D-Bus service..."
 msgstr "Waiting for VikingExtractor D-Bus service..."
 
-#: ../../Source/RecoveryPage.py:120
+#: ../../Source/RecoveryPage.py:124
 msgid "Dead session connection handle..."
 msgstr "Dead session connection handle..."
 
 #. Done...
-#: ../../Source/RecoveryPage.py:205
+#: ../../Source/RecoveryPage.py:209
 msgid "ok"
 msgstr "ok"
 
-#: ../../Source/RecoveryPage.py:218 ../../Source/RecoveryPage.py:275
+#: ../../Source/RecoveryPage.py:222 ../../Source/RecoveryPage.py:279
 msgid "Error"
 msgstr "Error"
 
-#: ../../Source/RecoveryPage.py:220
+#: ../../Source/RecoveryPage.py:224
 #, python-brace-format
 msgid ""
 "The VikingExtractor could not be launched. The following location was "
@@ -465,16 +470,16 @@ msgstr ""
 "\n"
 "{0}"
 
-#: ../../Source/RecoveryPage.py:236
+#: ../../Source/RecoveryPage.py:240
 msgid "Are you sure you'd like to abort the recovery?"
 msgstr "Are you sure you'd like to abort the recovery?"
 
-#: ../../Source/RecoveryPage.py:266
+#: ../../Source/RecoveryPage.py:270
 #, python-brace-format
 msgid "VikingExtractor terminated with status {0}..."
 msgstr "VikingExtractor terminated with status {0}..."
 
-#: ../../Source/RecoveryPage.py:277
+#: ../../Source/RecoveryPage.py:281
 #, python-brace-format
 msgid "The recovery process was unsuccessful. ({0})"
 msgstr "The recovery process was unsuccessful. ({0})"
@@ -495,7 +500,7 @@ msgstr "Invalid e-mail address."
 msgid "Passwords do not match."
 msgstr "Passwords do not match."
 
-#: ../../Source/SubscribePage.py:182 ../../Source/HandbookPage.py:235
+#: ../../Source/SubscribePage.py:183 ../../Source/HandbookPage.py:235
 #, python-brace-format
 msgid ""
 "There was a problem communicating with the remote server. Please try again "
@@ -1148,22 +1153,27 @@ msgid "All diode band types"
 msgstr "All diode band types"
 
 #: ../Launcher.glade:868
+msgctxt "Broadband as in signal range, not network connectivity."
+msgid "Broadband"
+msgstr "Broadband"
+
+#: ../Launcher.glade:872
 msgid "Colour"
 msgstr "Colour"
 
-#: ../Launcher.glade:872
+#: ../Launcher.glade:876
 msgid "Infrared"
 msgstr "Infrared"
 
-#: ../Launcher.glade:876
+#: ../Launcher.glade:880
 msgid "Sun"
 msgstr "Sun"
 
-#: ../Launcher.glade:880
+#: ../Launcher.glade:884
 msgid "Survey"
 msgstr "Survey"
 
-#: ../Launcher.glade:939
+#: ../Launcher.glade:943
 msgid ""
 "Congratulations! The mission data forensic recovery has completed. To "
 "examine everything that you managed to recover, use the button below.\n"
@@ -1189,15 +1199,15 @@ msgstr ""
 "gratitude. Your support is critical to maintaining active and professional "
 "development of the Avaneya project."
 
-#: ../Launcher.glade:968
+#: ../Launcher.glade:972
 msgid "Explore Recovered Mission Data"
 msgstr "Explore Recovered Mission Data"
 
-#: ../Launcher.glade:982
+#: ../Launcher.glade:986
 msgid "Explore Source Code"
 msgstr "Explore Source Code"
 
-#: ../Launcher.glade:1068
+#: ../Launcher.glade:1072
 msgid ""
 "The <i>Avaneya Project Crew Handbook</i> was written to address the needs of "
 "project contributors in our community. Would you like to download the latest "
@@ -1207,27 +1217,27 @@ msgstr ""
 "project contributors in our community. Would you like to download the latest "
 "revision? This requires a working internet connection."
 
-#: ../Launcher.glade:1085
+#: ../Launcher.glade:1089
 msgid "Yes, download the latest copy."
 msgstr "Yes, download the latest copy."
 
-#: ../Launcher.glade:1216
+#: ../Launcher.glade:1220
 msgid "???"
 msgstr "???"
 
-#: ../Launcher.glade:1240
+#: ../Launcher.glade:1244
 msgid "Both landers"
 msgstr "Both landers"
 
-#: ../Launcher.glade:1244
+#: ../Launcher.glade:1248
 msgid "Viking Lander I (<i>Chryse Planitia</i>)"
 msgstr "Viking Lander I (<i>Chryse Planitia</i>)"
 
-#: ../Launcher.glade:1248
+#: ../Launcher.glade:1252
 msgid "Viking Lander II (<i>Utopia Planitia</i>)"
 msgstr "Viking Lander II (<i>Utopia Planitia</i>)"
 
-#: ../Launcher.glade:1308
+#: ../Launcher.glade:1312
 msgid ""
 "This window contains the output from the VikingExtractor process while it "
 "works."
@@ -1235,11 +1245,11 @@ msgstr ""
 "This window contains the output from the VikingExtractor process while it "
 "works."
 
-#: ../Launcher.glade:1369
+#: ../Launcher.glade:1374
 msgid "Please wait..."
 msgstr "Please wait..."
 
-#: ../Launcher.glade:1442
+#: ../Launcher.glade:1447
 msgid ""
 "Please select an <b>empty</b> folder below. This folder will be used to save "
 "all of the recoverable images. If the folder is not empty, its contents "
@@ -1249,15 +1259,15 @@ msgstr ""
 "all of the recoverable images. If the folder is not empty, its contents "
 "could be overwritten if you allow it."
 
-#: ../Launcher.glade:1468
+#: ../Launcher.glade:1473
 msgid "Select folder to store recovered images"
 msgstr "Select folder to store recovered images"
 
-#: ../Launcher.glade:1479
+#: ../Launcher.glade:1484
 msgid "Overwrite existing output files"
 msgstr "Overwrite existing output files"
 
-#: ../Launcher.glade:1484 ../Launcher.glade:1485
+#: ../Launcher.glade:1489 ../Launcher.glade:1490
 msgid ""
 "This will overwrite any existing output files that have the same name as the "
 "data recovered."
@@ -1265,11 +1275,11 @@ msgstr ""
 "This will overwrite any existing output files that have the same name as the "
 "data recovered."
 
-#: ../Launcher.glade:1511
+#: ../Launcher.glade:1516
 msgid "Avaneya"
 msgstr "Avaneya"
 
-#: ../Launcher.glade:1579
+#: ../Launcher.glade:1584
 msgid ""
 "We have a <b>low volume</b> announcement mailing list that we use to make "
 "press releases and other public announcements. We would love to keep you in "
@@ -1281,31 +1291,31 @@ msgstr ""
 "the loop. <i>We will never deliberately pass your information on to a third "
 "party.</i>"
 
-#: ../Launcher.glade:1591
+#: ../Launcher.glade:1596
 msgid "Yes, please subscribe me."
 msgstr "Yes, please subscribe me."
 
-#: ../Launcher.glade:1643
+#: ../Launcher.glade:1648
 msgid "<b>Name:</b>"
 msgstr "<b>Name:</b>"
 
-#: ../Launcher.glade:1683
+#: ../Launcher.glade:1688
 msgid "<b>Email:</b>"
 msgstr "<b>E-mail:</b>"
 
-#: ../Launcher.glade:1723
+#: ../Launcher.glade:1728
 msgid "<b>Password:</b>"
 msgstr "<b>Password:</b>"
 
-#: ../Launcher.glade:1763
+#: ../Launcher.glade:1768
 msgid "<b>Password again:</b>"
 msgstr "<b>Password again:</b>"
 
-#: ../Launcher.glade:1784
+#: ../Launcher.glade:1789
 msgid "Thanks, but I think I'll pass."
 msgstr "Thanks, but I think I'll pass."
 
-#: ../Launcher.glade:1860
+#: ../Launcher.glade:1865
 msgid ""
 "Please wait while your mission data's integrity is verified. You can safely "
 "stop this process at any time, if you wish."
@@ -1313,7 +1323,7 @@ msgstr ""
 "Please wait while your mission data's integrity is verified. You can safely "
 "stop this process at any time, if you wish."
 
-#: ../Launcher.glade:1990
+#: ../Launcher.glade:1995
 msgid ""
 "This disc contains a substantial amount of data that the recovery software "
 "will try to examine for recoverable images. Although we have optimized the "
@@ -1333,10 +1343,10 @@ msgstr ""
 "corrupted? We recommend that you do this at least once, or if you suspect "
 "that your disc may be damaged."
 
-#: ../Launcher.glade:2016
+#: ../Launcher.glade:2021
 msgid "Perform DVD integrity check"
 msgstr "Perform DVD integrity check"
 
-#: ../Launcher.glade:2032
+#: ../Launcher.glade:2037
 msgid "Skip DVD integrity check"
 msgstr "Skip DVD integrity check"

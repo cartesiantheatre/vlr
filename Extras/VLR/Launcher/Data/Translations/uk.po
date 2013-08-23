@@ -8,15 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-08-07 22:13-0700\n"
+"POT-Creation-Date: 2013-08-22 00:23-0700\n"
 "PO-Revision-Date: 2013-08-19 05:35+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-20 05:05+0000\n"
-"X-Generator: Launchpad (build 16723)\n"
+"X-Launchpad-Export-Date: 2013-08-23 05:17+0000\n"
+"X-Generator: Launchpad (build 16737)\n"
 "Language: uk\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -45,26 +45,26 @@ msgid "Shouts / Thanks"
 msgstr "Подяки"
 
 #. Studio hardware...
-#: ../../Source/LauncherApp.py:217
+#: ../../Source/LauncherApp.py:218
 msgid "Studio Hardware"
 msgstr "Студійне обладнання"
 
 #. Studio software...
-#: ../../Source/LauncherApp.py:222
+#: ../../Source/LauncherApp.py:223
 msgid "Studio Software"
 msgstr "Студійне програмне забезпечення"
 
 #. Set translators...
-#: ../../Source/LauncherApp.py:245
+#: ../../Source/LauncherApp.py:248
 msgid "Translators"
 msgstr "Перекладачі"
 
 #. Dedications...
-#: ../../Source/LauncherApp.py:255
+#: ../../Source/LauncherApp.py:258
 msgid "Dedications"
 msgstr "Присвяти"
 
-#: ../../Source/LauncherApp.py:266
+#: ../../Source/LauncherApp.py:269
 msgid ""
 "\n"
 "\n"
@@ -84,11 +84,11 @@ msgstr ""
 "href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits"
 "\">подяк</a>."
 
-#: ../../Source/LauncherApp.py:288 ../../Source/OpeningVideoWindow.py:175
+#: ../../Source/LauncherApp.py:291 ../../Source/OpeningVideoWindow.py:175
 msgid "Error:"
 msgstr "Помилка:"
 
-#: ../../Source/LauncherApp.py:316
+#: ../../Source/LauncherApp.py:319
 msgid "Are you sure you'd like to quit?"
 msgstr "Ви справді бажаєте завершити роботу?"
 
@@ -443,31 +443,36 @@ msgstr "\t<b><i>~ Команда проекту Avaneya</i></b>\n"
 msgid "Recovery"
 msgstr "Відновлення"
 
+#: ../../Source/RecoveryPage.py:82
+#, python-brace-format
+msgid "Launching {0}..."
+msgstr ""
+
 #. We got the process ID, show it...
-#: ../../Source/RecoveryPage.py:101
+#: ../../Source/RecoveryPage.py:105
 #, python-brace-format
 msgid "Spawned process {0}..."
 msgstr "Породжений процес {0}…"
 
 #. Alert user...
-#: ../../Source/RecoveryPage.py:112
+#: ../../Source/RecoveryPage.py:116
 msgid "Waiting for VikingExtractor D-Bus service..."
 msgstr "Очікуємо на службу D-Bus VikingExtractor…"
 
-#: ../../Source/RecoveryPage.py:120
+#: ../../Source/RecoveryPage.py:124
 msgid "Dead session connection handle..."
 msgstr "Обробник розірваного з’єднання сеансу…"
 
 #. Done...
-#: ../../Source/RecoveryPage.py:205
+#: ../../Source/RecoveryPage.py:209
 msgid "ok"
 msgstr "гаразд"
 
-#: ../../Source/RecoveryPage.py:218 ../../Source/RecoveryPage.py:275
+#: ../../Source/RecoveryPage.py:222 ../../Source/RecoveryPage.py:279
 msgid "Error"
 msgstr "Помилка"
 
-#: ../../Source/RecoveryPage.py:220
+#: ../../Source/RecoveryPage.py:224
 #, python-brace-format
 msgid ""
 "The VikingExtractor could not be launched. The following location was "
@@ -480,16 +485,16 @@ msgstr ""
 "\n"
 "{0}"
 
-#: ../../Source/RecoveryPage.py:236
+#: ../../Source/RecoveryPage.py:240
 msgid "Are you sure you'd like to abort the recovery?"
 msgstr "Ви справді хочете перервати відновлення?"
 
-#: ../../Source/RecoveryPage.py:266
+#: ../../Source/RecoveryPage.py:270
 #, python-brace-format
 msgid "VikingExtractor terminated with status {0}..."
 msgstr "VikingExtractor перервано зі станом {0}…"
 
-#: ../../Source/RecoveryPage.py:277
+#: ../../Source/RecoveryPage.py:281
 #, python-brace-format
 msgid "The recovery process was unsuccessful. ({0})"
 msgstr "Процес відновлення не був успішним. ({0})"
@@ -510,7 +515,7 @@ msgstr "Некоректна адреса електронної пошти."
 msgid "Passwords do not match."
 msgstr "Паролі не збігаються."
 
-#: ../../Source/SubscribePage.py:182 ../../Source/HandbookPage.py:235
+#: ../../Source/SubscribePage.py:183 ../../Source/HandbookPage.py:235
 #, python-brace-format
 msgid ""
 "There was a problem communicating with the remote server. Please try again "
@@ -1187,22 +1192,27 @@ msgid "All diode band types"
 msgstr "Усі типи діодних смуг"
 
 #: ../Launcher.glade:868
+msgctxt "Broadband as in signal range, not network connectivity."
+msgid "Broadband"
+msgstr ""
+
+#: ../Launcher.glade:872
 msgid "Colour"
 msgstr "Колір"
 
-#: ../Launcher.glade:872
+#: ../Launcher.glade:876
 msgid "Infrared"
 msgstr "Інфрачервоний"
 
-#: ../Launcher.glade:876
+#: ../Launcher.glade:880
 msgid "Sun"
 msgstr "Нд"
 
-#: ../Launcher.glade:880
+#: ../Launcher.glade:884
 msgid "Survey"
 msgstr "Огляд"
 
-#: ../Launcher.glade:939
+#: ../Launcher.glade:943
 msgid ""
 "Congratulations! The mission data forensic recovery has completed. To "
 "examine everything that you managed to recover, use the button below.\n"
@@ -1229,15 +1239,15 @@ msgstr ""
 "висловлюємо вам щиру вдячність. Ваша підтримка є дуже важливою для "
 "продовження активного і професійного розвитку проекту Avaneya."
 
-#: ../Launcher.glade:968
+#: ../Launcher.glade:972
 msgid "Explore Recovered Mission Data"
 msgstr "Оглянути відновлені дані завдань"
 
-#: ../Launcher.glade:982
+#: ../Launcher.glade:986
 msgid "Explore Source Code"
 msgstr "Оглянути початковий код"
 
-#: ../Launcher.glade:1068
+#: ../Launcher.glade:1072
 msgid ""
 "The <i>Avaneya Project Crew Handbook</i> was written to address the needs of "
 "project contributors in our community. Would you like to download the latest "
@@ -1247,27 +1257,27 @@ msgstr ""
 "проекту у межах нашої спільноти. Хочете отримати найсвіжішу версію книги? "
 "Вам знадобиться працездатне інтернет-з’єднання."
 
-#: ../Launcher.glade:1085
+#: ../Launcher.glade:1089
 msgid "Yes, download the latest copy."
 msgstr "Так, звантажити найсвіжішу копію."
 
-#: ../Launcher.glade:1216
+#: ../Launcher.glade:1220
 msgid "???"
 msgstr "???"
 
-#: ../Launcher.glade:1240
+#: ../Launcher.glade:1244
 msgid "Both landers"
 msgstr "Обидва посадкові модулі"
 
-#: ../Launcher.glade:1244
+#: ../Launcher.glade:1248
 msgid "Viking Lander I (<i>Chryse Planitia</i>)"
 msgstr "Viking Lander I (<i>Chryse Planitia</i>)"
 
-#: ../Launcher.glade:1248
+#: ../Launcher.glade:1252
 msgid "Viking Lander II (<i>Utopia Planitia</i>)"
 msgstr "Viking Lander II (<i>Utopia Planitia</i>)"
 
-#: ../Launcher.glade:1308
+#: ../Launcher.glade:1312
 msgid ""
 "This window contains the output from the VikingExtractor process while it "
 "works."
@@ -1275,11 +1285,11 @@ msgstr ""
 "У цьому вікні буде показано дані, виведені процесом VikingExtractor під час "
 "його роботи."
 
-#: ../Launcher.glade:1369
+#: ../Launcher.glade:1374
 msgid "Please wait..."
 msgstr "Зачекайте, будь ласка..."
 
-#: ../Launcher.glade:1442
+#: ../Launcher.glade:1447
 msgid ""
 "Please select an <b>empty</b> folder below. This folder will be used to save "
 "all of the recoverable images. If the folder is not empty, its contents "
@@ -1290,15 +1300,15 @@ msgstr ""
 "виявиться не порожньою, її вміст буде перезаписано, якщо ви підтвердите цю "
 "дію."
 
-#: ../Launcher.glade:1468
+#: ../Launcher.glade:1473
 msgid "Select folder to store recovered images"
 msgstr "Виберіть теку для зберігання відновлених зображень"
 
-#: ../Launcher.glade:1479
+#: ../Launcher.glade:1484
 msgid "Overwrite existing output files"
 msgstr "Перезаписати наявні файли виведених даних"
 
-#: ../Launcher.glade:1484 ../Launcher.glade:1485
+#: ../Launcher.glade:1489 ../Launcher.glade:1490
 msgid ""
 "This will overwrite any existing output files that have the same name as the "
 "data recovered."
@@ -1306,11 +1316,11 @@ msgstr ""
 "Всі наявні файли результатів обробки, які матимуть ті самі назви, що і "
 "відновлені дані, буде перезаписано."
 
-#: ../Launcher.glade:1511
+#: ../Launcher.glade:1516
 msgid "Avaneya"
 msgstr "Avaneya"
 
-#: ../Launcher.glade:1579
+#: ../Launcher.glade:1584
 msgid ""
 "We have a <b>low volume</b> announcement mailing list that we use to make "
 "press releases and other public announcements. We would love to keep you in "
@@ -1323,31 +1333,31 @@ msgstr ""
 "ви підписалися на цей список листування. <i>Ми зобов’язуємося не передавати "
 "на власний розсуд ваші дані стороннім особам.</i>"
 
-#: ../Launcher.glade:1591
+#: ../Launcher.glade:1596
 msgid "Yes, please subscribe me."
 msgstr "Так, хочу підписатися."
 
-#: ../Launcher.glade:1643
+#: ../Launcher.glade:1648
 msgid "<b>Name:</b>"
 msgstr "<b>Ім’я:</b>"
 
-#: ../Launcher.glade:1683
+#: ../Launcher.glade:1688
 msgid "<b>Email:</b>"
 msgstr "<b>Ел. пошта:</b>"
 
-#: ../Launcher.glade:1723
+#: ../Launcher.glade:1728
 msgid "<b>Password:</b>"
 msgstr "<b>Пароль:</b>"
 
-#: ../Launcher.glade:1763
+#: ../Launcher.glade:1768
 msgid "<b>Password again:</b>"
 msgstr "<b>Пароль (ще раз):</b>"
 
-#: ../Launcher.glade:1784
+#: ../Launcher.glade:1789
 msgid "Thanks, but I think I'll pass."
 msgstr "Дякую, але не зараз."
 
-#: ../Launcher.glade:1860
+#: ../Launcher.glade:1865
 msgid ""
 "Please wait while your mission data's integrity is verified. You can safely "
 "stop this process at any time, if you wish."
@@ -1355,7 +1365,7 @@ msgstr ""
 "Будь ласка, зачекайте, доки комп’ютер перевірить цілісність даних. Якщо "
 "хочете, можете у будь-який момент перервати процес перевірки."
 
-#: ../Launcher.glade:1990
+#: ../Launcher.glade:1995
 msgid ""
 "This disc contains a substantial amount of data that the recovery software "
 "will try to examine for recoverable images. Although we have optimized the "
@@ -1376,10 +1386,10 @@ msgstr ""
 "це принаймні один раз, а також якщо у вас з’явилися підозри, що диск "
 "пошкоджено."
 
-#: ../Launcher.glade:2016
+#: ../Launcher.glade:2021
 msgid "Perform DVD integrity check"
 msgstr "Виконати перевірку цілісності DVD"
 
-#: ../Launcher.glade:2032
+#: ../Launcher.glade:2037
 msgid "Skip DVD integrity check"
 msgstr "Пропустити перевірку цілісності DVD"

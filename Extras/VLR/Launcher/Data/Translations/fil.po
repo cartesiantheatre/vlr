@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-08-07 22:13-0700\n"
+"POT-Creation-Date: 2013-08-22 00:23-0700\n"
 "PO-Revision-Date: 2013-08-20 06:06+0000\n"
 "Last-Translator: Joe Tang <Unknown>\n"
 "Language-Team: Filipino <fil@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-21 05:25+0000\n"
-"X-Generator: Launchpad (build 16731)\n"
+"X-Launchpad-Export-Date: 2013-08-23 05:17+0000\n"
+"X-Generator: Launchpad (build 16737)\n"
 "Language: fil\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -43,26 +43,26 @@ msgid "Shouts / Thanks"
 msgstr "Mga Sigaw / Pasasalamat"
 
 #. Studio hardware...
-#: ../../Source/LauncherApp.py:217
+#: ../../Source/LauncherApp.py:218
 msgid "Studio Hardware"
 msgstr "Studio Hardware"
 
 #. Studio software...
-#: ../../Source/LauncherApp.py:222
+#: ../../Source/LauncherApp.py:223
 msgid "Studio Software"
 msgstr "Studio Software"
 
 #. Set translators...
-#: ../../Source/LauncherApp.py:245
+#: ../../Source/LauncherApp.py:248
 msgid "Translators"
 msgstr "Tagapagsalin"
 
 #. Dedications...
-#: ../../Source/LauncherApp.py:255
+#: ../../Source/LauncherApp.py:258
 msgid "Dedications"
 msgstr "Mga Dedikasyon"
 
-#: ../../Source/LauncherApp.py:266
+#: ../../Source/LauncherApp.py:269
 msgid ""
 "\n"
 "\n"
@@ -81,11 +81,11 @@ msgstr ""
 "href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits"
 "\">Credits</a> file."
 
-#: ../../Source/LauncherApp.py:288 ../../Source/OpeningVideoWindow.py:175
+#: ../../Source/LauncherApp.py:291 ../../Source/OpeningVideoWindow.py:175
 msgid "Error:"
 msgstr "Pagkakamali:"
 
-#: ../../Source/LauncherApp.py:316
+#: ../../Source/LauncherApp.py:319
 msgid "Are you sure you'd like to quit?"
 msgstr "Sigurado ka sa paghinto?"
 
@@ -438,31 +438,36 @@ msgstr "\t<b><i>~Pangkat ng Proyektong Avaneya</i></b>\n"
 msgid "Recovery"
 msgstr "Panumbalik"
 
+#: ../../Source/RecoveryPage.py:82
+#, python-brace-format
+msgid "Launching {0}..."
+msgstr ""
+
 #. We got the process ID, show it...
-#: ../../Source/RecoveryPage.py:101
+#: ../../Source/RecoveryPage.py:105
 #, python-brace-format
 msgid "Spawned process {0}..."
 msgstr "Spawned process {0}..."
 
 #. Alert user...
-#: ../../Source/RecoveryPage.py:112
+#: ../../Source/RecoveryPage.py:116
 msgid "Waiting for VikingExtractor D-Bus service..."
 msgstr "Hinihintay ang VikingExtractor D-Bus service..."
 
-#: ../../Source/RecoveryPage.py:120
+#: ../../Source/RecoveryPage.py:124
 msgid "Dead session connection handle..."
 msgstr "Patay na ang session connection handle..."
 
 #. Done...
-#: ../../Source/RecoveryPage.py:205
+#: ../../Source/RecoveryPage.py:209
 msgid "ok"
 msgstr "ok"
 
-#: ../../Source/RecoveryPage.py:218 ../../Source/RecoveryPage.py:275
+#: ../../Source/RecoveryPage.py:222 ../../Source/RecoveryPage.py:279
 msgid "Error"
 msgstr "Pagkakamali"
 
-#: ../../Source/RecoveryPage.py:220
+#: ../../Source/RecoveryPage.py:224
 #, python-brace-format
 msgid ""
 "The VikingExtractor could not be launched. The following location was "
@@ -475,16 +480,16 @@ msgstr ""
 "\n"
 "{0}"
 
-#: ../../Source/RecoveryPage.py:236
+#: ../../Source/RecoveryPage.py:240
 msgid "Are you sure you'd like to abort the recovery?"
 msgstr "Sigurado ka bang susukuan na ang panumbalik-wasto?"
 
-#: ../../Source/RecoveryPage.py:266
+#: ../../Source/RecoveryPage.py:270
 #, python-brace-format
 msgid "VikingExtractor terminated with status {0}..."
 msgstr "Natapos ang VikingExtractor na may status na {0}..."
 
-#: ../../Source/RecoveryPage.py:277
+#: ../../Source/RecoveryPage.py:281
 #, python-brace-format
 msgid "The recovery process was unsuccessful. ({0})"
 msgstr "Ang prosesong panumbalik-wasto ay di-matagumpay. ({0})"
@@ -505,7 +510,7 @@ msgstr "Imbalidong email address."
 msgid "Passwords do not match."
 msgstr "Hindi pumapares ang mga password."
 
-#: ../../Source/SubscribePage.py:182 ../../Source/HandbookPage.py:235
+#: ../../Source/SubscribePage.py:183 ../../Source/HandbookPage.py:235
 #, python-brace-format
 msgid ""
 "There was a problem communicating with the remote server. Please try again "
@@ -1176,22 +1181,27 @@ msgid "All diode band types"
 msgstr "Lahat ng uri ng diode band"
 
 #: ../Launcher.glade:868
+msgctxt "Broadband as in signal range, not network connectivity."
+msgid "Broadband"
+msgstr ""
+
+#: ../Launcher.glade:872
 msgid "Colour"
 msgstr "Kulay"
 
-#: ../Launcher.glade:872
+#: ../Launcher.glade:876
 msgid "Infrared"
 msgstr "Infrared"
 
-#: ../Launcher.glade:876
+#: ../Launcher.glade:880
 msgid "Sun"
 msgstr "Araw"
 
-#: ../Launcher.glade:880
+#: ../Launcher.glade:884
 msgid "Survey"
 msgstr "Survey"
 
-#: ../Launcher.glade:939
+#: ../Launcher.glade:943
 msgid ""
 "Congratulations! The mission data forensic recovery has completed. To "
 "examine everything that you managed to recover, use the button below.\n"
@@ -1218,15 +1228,15 @@ msgstr ""
 "naming magpasalamat. Ang suporta mo ay napaka-importante sa pagpapatuloy ng "
 "isang aktibo at propesyonal na pagpapabuti ng Avaneya project."
 
-#: ../Launcher.glade:968
+#: ../Launcher.glade:972
 msgid "Explore Recovered Mission Data"
 msgstr "Siyasatin ang Napanumbalik-wasto na Data ng Misyon"
 
-#: ../Launcher.glade:982
+#: ../Launcher.glade:986
 msgid "Explore Source Code"
 msgstr "Siyasatin Ang Source Code"
 
-#: ../Launcher.glade:1068
+#: ../Launcher.glade:1072
 msgid ""
 "The <i>Avaneya Project Crew Handbook</i> was written to address the needs of "
 "project contributors in our community. Would you like to download the latest "
@@ -1237,27 +1247,27 @@ msgstr ""
 "pamayanan. Gusto mo bang ikargang-pabalik ang pinakabagong rebisyon? "
 "Kinakailangan nito ng isang gumaganang koneksyon sa internet."
 
-#: ../Launcher.glade:1085
+#: ../Launcher.glade:1089
 msgid "Yes, download the latest copy."
 msgstr "Sige, ikargang-pabalik ang pinakabagong kopya."
 
-#: ../Launcher.glade:1216
+#: ../Launcher.glade:1220
 msgid "???"
 msgstr "???"
 
-#: ../Launcher.glade:1240
+#: ../Launcher.glade:1244
 msgid "Both landers"
 msgstr "Dalawang magkapwang lander"
 
-#: ../Launcher.glade:1244
+#: ../Launcher.glade:1248
 msgid "Viking Lander I (<i>Chryse Planitia</i>)"
 msgstr "Viking Lander I (<i>Chryse Planitia</i>)"
 
-#: ../Launcher.glade:1248
+#: ../Launcher.glade:1252
 msgid "Viking Lander II (<i>Utopia Planitia</i>)"
 msgstr "Viking Lander II (<i>Utopia Planitia</i>)"
 
-#: ../Launcher.glade:1308
+#: ../Launcher.glade:1312
 msgid ""
 "This window contains the output from the VikingExtractor process while it "
 "works."
@@ -1265,11 +1275,11 @@ msgstr ""
 "Ang bintanang ito ang maglalaman ng nilabas na gawain mula sa gawaing "
 "VikingExtractor habang gumagana ito."
 
-#: ../Launcher.glade:1369
+#: ../Launcher.glade:1374
 msgid "Please wait..."
 msgstr "Maghintay po..."
 
-#: ../Launcher.glade:1442
+#: ../Launcher.glade:1447
 msgid ""
 "Please select an <b>empty</b> folder below. This folder will be used to save "
 "all of the recoverable images. If the folder is not empty, its contents "
@@ -1279,16 +1289,16 @@ msgstr ""
 "magagamit upang mai-save ang lahat ng mababawi na larawan.  Kapag may laman "
 "ang folder, ang mga laman ay pwedeng matabunan kung pinayagan mo."
 
-#: ../Launcher.glade:1468
+#: ../Launcher.glade:1473
 msgid "Select folder to store recovered images"
 msgstr ""
 "Piliin ang folder upang pagtatabihan ng napanumbalik-wasto na mga larawan"
 
-#: ../Launcher.glade:1479
+#: ../Launcher.glade:1484
 msgid "Overwrite existing output files"
 msgstr "Tabunan ang lumang output files"
 
-#: ../Launcher.glade:1484 ../Launcher.glade:1485
+#: ../Launcher.glade:1489 ../Launcher.glade:1490
 msgid ""
 "This will overwrite any existing output files that have the same name as the "
 "data recovered."
@@ -1296,11 +1306,11 @@ msgstr ""
 "Tatabunan nito ang kahit anong lumang output file na may kaparehas na "
 "pangalan sa napanumbalik-wastong data."
 
-#: ../Launcher.glade:1511
+#: ../Launcher.glade:1516
 msgid "Avaneya"
 msgstr "Avaneya"
 
-#: ../Launcher.glade:1579
+#: ../Launcher.glade:1584
 msgid ""
 "We have a <b>low volume</b> announcement mailing list that we use to make "
 "press releases and other public announcements. We would love to keep you in "
@@ -1311,31 +1321,31 @@ msgstr ""
 "namin upang magbigay ng balita at iba pang pampublikong ulat. Ninanais namin "
 "na balitaan kayo sa mga pagbabago.</i>"
 
-#: ../Launcher.glade:1591
+#: ../Launcher.glade:1596
 msgid "Yes, please subscribe me."
 msgstr "Sige, paki-sali naman ako."
 
-#: ../Launcher.glade:1643
+#: ../Launcher.glade:1648
 msgid "<b>Name:</b>"
 msgstr "<b>Pangalan:</b>"
 
-#: ../Launcher.glade:1683
+#: ../Launcher.glade:1688
 msgid "<b>Email:</b>"
 msgstr "<b>Email:</b>"
 
-#: ../Launcher.glade:1723
+#: ../Launcher.glade:1728
 msgid "<b>Password:</b>"
 msgstr "<b>Salitang Lihim:</b>"
 
-#: ../Launcher.glade:1763
+#: ../Launcher.glade:1768
 msgid "<b>Password again:</b>"
 msgstr "<b>Salitang Lihim:</b>"
 
-#: ../Launcher.glade:1784
+#: ../Launcher.glade:1789
 msgid "Thanks, but I think I'll pass."
 msgstr "Salamat, pero huwag na."
 
-#: ../Launcher.glade:1860
+#: ../Launcher.glade:1865
 msgid ""
 "Please wait while your mission data's integrity is verified. You can safely "
 "stop this process at any time, if you wish."
@@ -1343,7 +1353,7 @@ msgstr ""
 "Maghintay lang po ng sandali habang pinaninigurado ang mission data. Kapag "
 "ginusto mo, pwedeng ligtas na itigil ang prosesong ito."
 
-#: ../Launcher.glade:1990
+#: ../Launcher.glade:1995
 msgid ""
 "This disc contains a substantial amount of data that the recovery software "
 "will try to examine for recoverable images. Although we have optimized the "
@@ -1363,10 +1373,10 @@ msgstr ""
 "Inirerekomenda namin na gawin mo ito ng kahit isang beses, kung hinala mong "
 "may sira ang disc."
 
-#: ../Launcher.glade:2016
+#: ../Launcher.glade:2021
 msgid "Perform DVD integrity check"
 msgstr "Isagawa ang paninigurado sa DVD"
 
-#: ../Launcher.glade:2032
+#: ../Launcher.glade:2037
 msgid "Skip DVD integrity check"
 msgstr "Laktawan ang paninigurado sa DVD"

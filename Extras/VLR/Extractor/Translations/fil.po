@@ -11,12 +11,12 @@ msgstr ""
 "PO-Revision-Date: 2013-07-05 18:39+0000\n"
 "Last-Translator: Joe Tang <Unknown>\n"
 "Language-Team: Filipino <fil@li.org>\n"
-"Language: fil\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-09 05:13+0000\n"
-"X-Generator: Launchpad (build 16723)\n"
+"X-Launchpad-Export-Date: 2013-08-23 05:17+0000\n"
+"X-Generator: Launchpad (build 16737)\n"
+"Language: fil\n"
 
 #. Initialize the channel map...
 #: Source/Console.cpp:84
@@ -113,7 +113,8 @@ msgstr "hindi ma-save and metadata"
 #: Source/ReconstructableImage.cpp:372
 msgid ""
 "The following is a machine generated collection of metadata of each of\n"
-msgstr "Ang sumusunod ay koleksiyong metadata na binuo ng machine, ng bawat\n"
+msgstr ""
+"Ang sumusunod ay koleksiyong metadata na binuo ng machine, ng bawat\n"
 
 #: Source/ReconstructableImage.cpp:373
 msgid "the image bands used to reconstruct a colour image.\n"
@@ -271,7 +272,8 @@ msgstr " uri ng diode bands (--filter-diode[=type] upang palitan)"
 
 #: Source/VicarImageAssembler.cpp:349
 msgid "camera event doesn't identify itself, cannot index"
-msgstr "ang kamera ay hindi nagpakilala sa sarili, hindi matuloy ang pag-index"
+msgstr ""
+"ang kamera ay hindi nagpakilala sa sarili, hindi matuloy ang pag-index"
 
 #: Source/VicarImageAssembler.cpp:370
 msgid " is a new camera event, indexing"
@@ -380,7 +382,8 @@ msgid "loading"
 msgstr "naglo-load"
 
 #: Source/VicarImageBand.cpp:859
-msgid "empty file, probably blank magnetic tape or not received back on Earth"
+msgid ""
+"empty file, probably blank magnetic tape or not received back on Earth"
 msgstr ""
 "file ay walang laman, posibleng blanko ang magnetic tape o hindi natanggap "
 "sa Earth"
@@ -473,14 +476,12 @@ msgid "unsupported number of image bands"
 msgstr "hindi suportado ang bilang ng image bands"
 
 #: Source/VicarImageBand.cpp:1420
-#, fuzzy
 msgid "corrupt image height"
-msgstr "ang positibong sukat ng taas ng larawan ang hinahanap"
+msgstr ""
 
 #: Source/VicarImageBand.cpp:1424
-#, fuzzy
 msgid "corrupt image width"
-msgstr "ang positibong sukat ng lapad ng larawan ang hinahanap"
+msgstr ""
 
 #. Check pixel format is integral...
 #. Definitely integral
@@ -566,7 +567,8 @@ msgstr "heuristics selected format 6 basic metadata parser"
 
 #: Source/VicarImageBand.cpp:1897
 msgid "invalid logical record label while parsing extended metadata"
-msgstr "imbalidong label ng talaang lohikal nung pagsuri sa extended metadata"
+msgstr ""
+"imbalidong label ng talaang lohikal nung pagsuri sa extended metadata"
 
 #. Alert user if verbose mode enabled...
 #: Source/VicarImageBand.cpp:1918
@@ -698,16 +700,11 @@ msgstr ""
 "                              ID, tulad ng 22A158.\n"
 
 #: Source/VikingExtractor.cpp:96
-#, fuzzy
 msgid ""
 "                              Extract from matching supported diode filter\n"
 "                              classes which are any (default), broadband,\n"
 "                              colour, infrared, sun, or survey.\n"
 msgstr ""
-"                              Extract from matching supported diode filter\n"
-"                              classes which are any (default), colour, "
-"infrared,\n"
-"                              sun, or survey.\n"
 
 #: Source/VikingExtractor.cpp:101
 msgid ""

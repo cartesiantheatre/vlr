@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
 "POT-Creation-Date: 2013-08-22 00:12-0700\n"
-"PO-Revision-Date: 2013-05-25 04:17+0000\n"
+"PO-Revision-Date: 2013-08-22 22:53+0000\n"
 "Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
-"Language: en_CA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-09 05:13+0000\n"
-"X-Generator: Launchpad (build 16723)\n"
+"X-Launchpad-Export-Date: 2013-08-23 05:17+0000\n"
+"X-Generator: Launchpad (build 16737)\n"
+"Language: en_CA\n"
 
 #. Initialize the channel map...
 #: Source/Console.cpp:84
@@ -335,7 +335,7 @@ msgstr "could not guess image rotation"
 #. Alert user...
 #: Source/VicarImageBand.cpp:394
 msgid "annotation cache hit optimization"
-msgstr ""
+msgstr "annotation cache hit optimization"
 
 #: Source/VicarImageBand.cpp:410
 msgid "GNU Ocrad failed to initialize"
@@ -353,7 +353,7 @@ msgstr "OCR pass failed"
 
 #: Source/VicarImageBand.cpp:495
 msgid " potential character annotations detected"
-msgstr ""
+msgstr " potential character annotations detected"
 
 #: Source/VicarImageBand.cpp:602
 msgid "input was not loaded"
@@ -377,8 +377,10 @@ msgid "loading"
 msgstr "loading"
 
 #: Source/VicarImageBand.cpp:859
-msgid "empty file, probably blank magnetic tape or not received back on Earth"
-msgstr "empty file, probably blank magnetic tape or not received back on Earth"
+msgid ""
+"empty file, probably blank magnetic tape or not received back on Earth"
+msgstr ""
+"empty file, probably blank magnetic tape or not received back on Earth"
 
 #: Source/VicarImageBand.cpp:863
 msgid "too small to be interesting (< 4 KB)"
@@ -466,14 +468,12 @@ msgid "unsupported number of image bands"
 msgstr "unsupported number of image bands"
 
 #: Source/VicarImageBand.cpp:1420
-#, fuzzy
 msgid "corrupt image height"
-msgstr "expected positive image height"
+msgstr "corrupt image height"
 
 #: Source/VicarImageBand.cpp:1424
-#, fuzzy
 msgid "corrupt image width"
-msgstr "expected positive image width"
+msgstr "corrupt image width"
 
 #. Check pixel format is integral...
 #. Definitely integral
@@ -686,16 +686,14 @@ msgstr ""
 "                              ID, such as 22A158.\n"
 
 #: Source/VikingExtractor.cpp:96
-#, fuzzy
 msgid ""
 "                              Extract from matching supported diode filter\n"
 "                              classes which are any (default), broadband,\n"
 "                              colour, infrared, sun, or survey.\n"
 msgstr ""
 "                              Extract from matching supported diode filter\n"
-"                              classes which are any (default), colour, "
-"infrared,\n"
-"                              sun, or survey.\n"
+"                              classes which are any (default), broadband,\n"
+"                              colour, infrared, sun, or survey.\n"
 
 #: Source/VikingExtractor.cpp:101
 msgid ""

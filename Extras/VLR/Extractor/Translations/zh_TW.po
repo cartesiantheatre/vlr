@@ -11,12 +11,12 @@ msgstr ""
 "PO-Revision-Date: 2013-06-15 00:49+0000\n"
 "Last-Translator: Po-Chun Huang <Unknown>\n"
 "Language-Team: Chinese (Traditional) <zh_TW@li.org>\n"
-"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-09 05:13+0000\n"
-"X-Generator: Launchpad (build 16723)\n"
+"X-Launchpad-Export-Date: 2013-08-23 05:17+0000\n"
+"X-Generator: Launchpad (build 16737)\n"
+"Language: zh_TW\n"
 
 #. Initialize the channel map...
 #: Source/Console.cpp:84
@@ -371,7 +371,8 @@ msgid "loading"
 msgstr "載入中"
 
 #: Source/VicarImageBand.cpp:859
-msgid "empty file, probably blank magnetic tape or not received back on Earth"
+msgid ""
+"empty file, probably blank magnetic tape or not received back on Earth"
 msgstr "空文件，可能是空白的磁帶，或沒有收到返回地球"
 
 #: Source/VicarImageBand.cpp:863
@@ -459,14 +460,12 @@ msgid "unsupported number of image bands"
 msgstr "不支持的圖像頻帶"
 
 #: Source/VicarImageBand.cpp:1420
-#, fuzzy
 msgid "corrupt image height"
-msgstr "預期的正面圖象高度"
+msgstr ""
 
 #: Source/VicarImageBand.cpp:1424
-#, fuzzy
 msgid "corrupt image width"
-msgstr "預期的正面圖象寬度"
+msgstr ""
 
 #. Check pixel format is integral...
 #. Definitely integral
@@ -676,15 +675,11 @@ msgstr ""
 "                              編號，例如 22A158。\n"
 
 #: Source/VikingExtractor.cpp:96
-#, fuzzy
 msgid ""
 "                              Extract from matching supported diode filter\n"
 "                              classes which are any (default), broadband,\n"
 "                              colour, infrared, sun, or survey.\n"
 msgstr ""
-"                              從符合的支援二極管篩選器中抓取\n"
-"                              類別可以是任何的 (預設)，顏色，紅外線，\n"
-"                              陽光，或察勘。\n"
 
 #: Source/VikingExtractor.cpp:101
 msgid ""
