@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
 "POT-Creation-Date: 2013-08-22 00:12-0700\n"
-"PO-Revision-Date: 2013-06-07 09:47+0000\n"
-"Last-Translator: yurchor <Unknown>\n"
+"PO-Revision-Date: 2013-08-23 05:26+0000\n"
+"Last-Translator: Yuri Chornoivan <yurchor@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-23 05:17+0000\n"
-"X-Generator: Launchpad (build 16737)\n"
+"X-Launchpad-Export-Date: 2013-08-24 05:12+0000\n"
+"X-Generator: Launchpad (build 16738)\n"
 "Language: uk\n"
 
 #. Initialize the channel map...
@@ -342,7 +342,7 @@ msgstr "не вдалося визначити кут обертання зоб�
 #. Alert user...
 #: Source/VicarImageBand.cpp:394
 msgid "annotation cache hit optimization"
-msgstr ""
+msgstr "оптимізація кешу анотацій"
 
 #: Source/VicarImageBand.cpp:410
 msgid "GNU Ocrad failed to initialize"
@@ -360,7 +360,7 @@ msgstr "помилка під час розпізнавання символів
 
 #: Source/VicarImageBand.cpp:495
 msgid " potential character annotations detected"
-msgstr ""
+msgstr " виявлено потенційні символьні анотації"
 
 #: Source/VicarImageBand.cpp:602
 msgid "input was not loaded"
@@ -477,11 +477,11 @@ msgstr "непідтримувана кількість смуг зображе�
 
 #: Source/VicarImageBand.cpp:1420
 msgid "corrupt image height"
-msgstr ""
+msgstr "пошкоджені дані щодо висоти зображення"
 
 #: Source/VicarImageBand.cpp:1424
 msgid "corrupt image width"
-msgstr ""
+msgstr "пошкоджені дані щодо ширини зображення"
 
 #. Check pixel format is integral...
 #. Definitely integral
@@ -710,6 +710,13 @@ msgid ""
 "                              classes which are any (default), broadband,\n"
 "                              colour, infrared, sun, or survey.\n"
 msgstr ""
+"                              Видобути дані з відповідних підтримуваних\n"
+"                              класів діодних фільтрів: any (усіх, типово),\n"
+"                              broadband (широкосмугового), colour "
+"(кольорового),\n"
+"                              infrared (інфрачервоного), sun (сонячного) "
+"або\n"
+"                              survey (оглядового).\n"
 
 #: Source/VikingExtractor.cpp:101
 msgid ""

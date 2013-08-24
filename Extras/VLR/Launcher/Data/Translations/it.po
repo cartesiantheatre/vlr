@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-08-22 00:23-0700\n"
+"POT-Creation-Date: 2013-08-23 17:18-0700\n"
 "PO-Revision-Date: 2013-08-08 05:56+0000\n"
 "Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-23 05:17+0000\n"
-"X-Generator: Launchpad (build 16737)\n"
+"X-Launchpad-Export-Date: 2013-08-24 05:12+0000\n"
+"X-Generator: Launchpad (build 16738)\n"
 "Language: it\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -53,17 +53,12 @@ msgstr "Studio Hardware"
 msgid "Studio Software"
 msgstr "Studio Software"
 
-#. Set translators...
-#: ../../Source/LauncherApp.py:248
-msgid "Translators"
-msgstr "Traduttori"
-
 #. Dedications...
-#: ../../Source/LauncherApp.py:258
+#: ../../Source/LauncherApp.py:248
 msgid "Dedications"
 msgstr "Dediche"
 
-#: ../../Source/LauncherApp.py:269
+#: ../../Source/LauncherApp.py:259
 msgid ""
 "\n"
 "\n"
@@ -82,11 +77,11 @@ msgstr ""
 "href=\"https://bazaar.launchpad.net/~avaneya/avaneya/trunk/view/head:/Credits"
 "\">Rigraziamenti</a>"
 
-#: ../../Source/LauncherApp.py:291 ../../Source/OpeningVideoWindow.py:175
+#: ../../Source/LauncherApp.py:281 ../../Source/OpeningVideoWindow.py:175
 msgid "Error:"
 msgstr "Errore:"
 
-#: ../../Source/LauncherApp.py:319
+#: ../../Source/LauncherApp.py:309
 msgid "Are you sure you'd like to quit?"
 msgstr "Sei sicuro di voler uscire?"
 
@@ -770,11 +765,11 @@ msgstr "Lo scarico del manuale è stato fermato."
 msgid "The book downloaded successfully. Would you like to open it?"
 msgstr "Il libro è stato scaricato con successo. Aprirlo?"
 
-#: ../../Source/Miscellaneous.py:126
+#: ../../Source/Miscellaneous.py:127
 msgid "Warning: NetworkManager service not found..."
 msgstr "Attenzione: servizio NetworkManager non trovato..."
 
-#: ../../Source/Miscellaneous.py:144
+#: ../../Source/Miscellaneous.py:145
 msgid ""
 "You need a working internet connection in order to do this. You don't appear "
 "to have one right now."
@@ -782,12 +777,12 @@ msgstr ""
 "È necessaria una connessione funzionante a internet per eseguire questa "
 "operazione. Non sembra sia disponibile in questo momento."
 
-#: ../../Source/Miscellaneous.py:173
+#: ../../Source/Miscellaneous.py:174
 #, python-brace-format
 msgid "Cannot launch {0}. Platform unknown..."
 msgstr "Non è possibile avviare {0}. Piattaforma sconosciuta..."
 
-#: ../../Source/Miscellaneous.py:197
+#: ../../Source/Miscellaneous.py:198
 #, python-brace-format
 msgid "Cannot explore {0}. Platform unknown..."
 msgstr "Non è possibile esplorare {0}. Piattaforma sconosciuta..."
@@ -1385,3 +1380,6 @@ msgstr "Eseguire il controllo dell'integrità del DVD"
 #: ../Launcher.glade:2037
 msgid "Skip DVD integrity check"
 msgstr "Saltare il controllo dell'integrità del DVD"
+
+#~ msgid "Translators"
+#~ msgstr "Traduttori"
