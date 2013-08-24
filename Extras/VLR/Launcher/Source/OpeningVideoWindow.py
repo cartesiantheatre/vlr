@@ -51,9 +51,6 @@ import LauncherArguments
 from SplashWindow import SplashWindowProxy
 from Miscellaneous import *
 
-# System modules...
-import sys
-
 # Opening video window proxy class...
 class OpeningVideoWindowProxy(object):
 
@@ -116,7 +113,7 @@ class OpeningVideoWindowProxy(object):
                 "Opening.mkv"))
 
         # Set the volume...
-        self._playBin.set_property("volume", 1.0)
+        self._playBin.set_property("volume", 0.6)
 
         # Force our realize callback to be invoked so we can capture the 
         #  drawing area's window handle which we need before playing back the

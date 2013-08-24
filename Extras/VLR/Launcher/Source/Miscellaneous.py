@@ -29,12 +29,9 @@ import platform
 import sys
 import re
 
-# Privates...
-_applicationName    = "Avaneya: Viking Lander Remastered DVD"
+# Version info...
 _versionMajor       = 0
 _versionMinor       = 93
-_versionShortString = "{0}.{1}".format(_versionMajor, _versionMinor)
-_versionLongString  = "{0}, v{1}".format(_applicationName, _versionShortString)
 
 # Get the machine architecture...
 def getMachineArchitecture():
@@ -87,9 +84,19 @@ def getOperatingSystem():
     return operatingSystem
 
 # Get the application name and version...
-def getApplicationName(): return _applicationName
-def getLongVersionString(): return _versionLongString
-def getShortVersionString(): return _versionShortString
+def getApplicationName(): 
+    return "Avaneya: Viking Lander Remastered DVD"
+
+# Get application name, version, and architecture...
+def getLongVersionString(): 
+    return "{0}, v{1} ({2})".format(
+        getApplicationName(), 
+        getShortVersionString(), 
+        getMachineArchitecture())
+
+# Just get the version number...
+def getShortVersionString(): 
+    return "{0}.{1}".format(_versionMajor, _versionMinor)
 
 # Check network connectivity to the internet and alert user if caller requests 
 #  if no connection available...

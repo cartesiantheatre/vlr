@@ -152,7 +152,9 @@ RecoveryChecksums.md5: Makefile.am
 	fi ;
 
 # If D-Bus interface was enabled through Autoconf, then include testing of d-bus 
-#  functionality when verifying checksums of recovered sample mission data...
+#  functionality when verifying checksums of recovered sample mission data. For
+#  headless systems needing a dbus session, see...
+#       <http://lists.freedesktop.org/archives/dbus/2009-September/011746.html>
 if USE_DBUS_INTERFACE
 RecoveryTest.sh: RecoveryChecksums.md5 Makefile.am
 	@echo '' > $@

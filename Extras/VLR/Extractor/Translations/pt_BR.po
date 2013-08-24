@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2013-08-23 05:17+0000\n"
 "X-Generator: Launchpad (build 16737)\n"
+"Language: pt_BR\n"
 
 #. Initialize the channel map...
 #: Source/Console.cpp:84

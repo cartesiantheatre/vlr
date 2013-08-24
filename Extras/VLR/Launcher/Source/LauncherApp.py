@@ -244,16 +244,6 @@ class LauncherApp(object):
                 "Vorbis",
                 "Xfce"])
 
-            # Set translators...
-            aboutDialog.add_credit_section(_("Translators"), [
-                "<a href=\"mailto:voronaam@gmail.com\">Aleksey Vorona</a> (Russian)",
-                "<a href=\"mailto:untaintableangel@ubuntu.com\">Anthony Harrington</a> (UK English)",
-                "<a href=\"mailto:bruno9779@gmail.com\">Bruno Santoni</a> (Italian, Spanish)",
-                "<a href=\"https://launchpad.net/~fossfreedom\">fossfreedom</a> (UK English)",
-                "<a href=\"mailto:gfrisani@libero.it\">Gianfranco Frisani</a> (Italian)",
-                "<a href=\"mailto:jtantogo-1@yahoo.com\">Johann Tang</a> (Filipino)",
-                "<a href=\"http://www.josephliau.com\">Joseph Liau</a> (Chinese, Japanese)"])
-
             # Dedications...
             aboutDialog.add_credit_section(_("Dedications"), [
                 "<a href=\"https://en.wikipedia.org/wiki/Ahmad_Shah_Masoud\">Ahmad Shah Massoud</a> (1953–2001)",
@@ -394,8 +384,8 @@ class LauncherApp(object):
             self._playBin.set_property("uri", musicPath)
             self._playBin.set_state(Gst.State.PLAYING)
 
-            # Set the music volume to full...
-            self.volumeButton.set_value(1.0)
+            # Set the music volume to 60 %...
+            self.volumeButton.set_value(0.6)
 
         # GStreamer not available...
         else:

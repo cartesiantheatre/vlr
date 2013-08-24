@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Avaneya: Viking Lander Remastered\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-22 00:23-0700\n"
+"POT-Creation-Date: 2013-08-23 17:18-0700\n"
 "PO-Revision-Date: 2013-05-24 15:42-0700\n"
 "Last-Translator: Kip Warner <kip@thevertigo.com>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
@@ -63,17 +63,12 @@ msgstr ""
 msgid "Studio Software"
 msgstr ""
 
-#. Set translators...
-#: ../../Source/LauncherApp.py:248
-msgid "Translators"
-msgstr ""
-
 #. Dedications...
-#: ../../Source/LauncherApp.py:258
+#: ../../Source/LauncherApp.py:248
 msgid "Dedications"
 msgstr ""
 
-#: ../../Source/LauncherApp.py:269
+#: ../../Source/LauncherApp.py:259
 msgid ""
 "\n"
 "\n"
@@ -83,11 +78,11 @@ msgid ""
 "net/~avaneya/avaneya/trunk/view/head:/Credits\">Credits</a> file."
 msgstr ""
 
-#: ../../Source/LauncherApp.py:291 ../../Source/OpeningVideoWindow.py:175
+#: ../../Source/LauncherApp.py:281 ../../Source/OpeningVideoWindow.py:175
 msgid "Error:"
 msgstr ""
 
-#: ../../Source/LauncherApp.py:319
+#: ../../Source/LauncherApp.py:309
 msgid "Are you sure you'd like to quit?"
 msgstr ""
 
@@ -597,22 +592,22 @@ msgstr ""
 msgid "The book downloaded successfully. Would you like to open it?"
 msgstr ""
 
-#: ../../Source/Miscellaneous.py:126
+#: ../../Source/Miscellaneous.py:127
 msgid "Warning: NetworkManager service not found..."
 msgstr ""
 
-#: ../../Source/Miscellaneous.py:144
+#: ../../Source/Miscellaneous.py:145
 msgid ""
 "You need a working internet connection in order to do this. You don't appear "
 "to have one right now."
 msgstr ""
 
-#: ../../Source/Miscellaneous.py:173
+#: ../../Source/Miscellaneous.py:174
 #, python-brace-format
 msgid "Cannot launch {0}. Platform unknown..."
 msgstr ""
 
-#: ../../Source/Miscellaneous.py:197
+#: ../../Source/Miscellaneous.py:198
 #, python-brace-format
 msgid "Cannot explore {0}. Platform unknown..."
 msgstr ""

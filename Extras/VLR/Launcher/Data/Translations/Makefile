@@ -48,10 +48,13 @@ GETTEXT_OPTIONS = --add-comments --add-location --from-code=utf-8
 POFILES =       \
     en_CA.po    \
     en_GB.po    \
+    fil.po      \
+    fr.po       \
     it.po       \
     fil.po      \
     uk.po       \
     ru.po       \
+    zh_CN.po    \
     zh_TW.po
 
 # List of all translation catalogues in compiled form...

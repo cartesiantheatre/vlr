@@ -1,7 +1,7 @@
 [autorun] 
 open=Woe32/Woe32Stub.exe 
 icon=Woe32/Woe32Stub.exe,0
-label=Avaneya: Viking Lander Remastered DVD
+label=Avaneya:Viking Lander Remastered
 
 [Content]
 MusicFiles=false
