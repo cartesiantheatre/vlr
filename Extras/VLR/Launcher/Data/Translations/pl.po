@@ -14,7 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-24 05:12+0000\n"
+"X-Launchpad-Export-Date: 2013-08-25 05:10+0000\n"
 "X-Generator: Launchpad (build 16738)\n"
 "Language: pl\n"
 
@@ -1103,6 +1103,3 @@ msgstr ""
 #: ../Launcher.glade:2037
 msgid "Skip DVD integrity check"
 msgstr ""
-
-#~ msgid "Translators"
-#~ msgstr "Tłumacze"
