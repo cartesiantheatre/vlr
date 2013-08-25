@@ -77,9 +77,9 @@ class ConfirmPageProxy(PageProxyBase):
         confirmTextBuffer.set_text("")
 
         # Recovery folder...
-        recoveryFolder = self._builder.get_object("recoveryFolderChooser").get_filename()
+        self.recoveryFolder = self._builder.get_object("recoveryFolderChooser").get_filename()
         confirmTextBuffer.insert(confirmTextBuffer.get_end_iter(), 
-            _("Save to: {0}\n").format(recoveryFolder))
+            _("Save to: {0}\n").format(self.recoveryFolder))
 
         # Overwrite...
         active = self._builder.get_object("overwriteOutputCheckButton").get_active()
@@ -202,7 +202,7 @@ class ConfirmPageProxy(PageProxyBase):
             LauncherArguments.getArguments().missionDataRoot)
 
         # Location of output...
-        self._commandLineInterface.append(recoveryFolder)
+        self._commandLineInterface.append(self.recoveryFolder)
         
         # Display the full command line in the confirmation summary window...
         commandLine = " ".join(self._commandLineInterface)

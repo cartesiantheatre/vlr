@@ -151,9 +151,9 @@
         removable media when inserted" are all enabled.
 
     Note that auto-run is never a security risk. Unlike on some legacy 
-    operating systems, *cough*, when properly implemented it will 
+    operating systems, *cough*, when properly implemented, it will 
     always prompt the user for confirmation before automatically 
-    starting an application from removable media.
+    starting any application from removable media.
 
 === Starting via Auto-Run ============================================
 
@@ -178,7 +178,7 @@
         $ path_to_disc_root/autorun
 
     (9) The software should start at this point. If it does not, a
-    reason should be given on the terminal. If you want to skip the
+    reason should be given on the terminal. If you wish to skip the
     distro identification and package prerequisite checks, set the
     VLR_SKIP_CHECKS environment variable before running autorun.
 
@@ -201,7 +201,7 @@
 
 === Tested Distributions =============================================
 
-    * [Distro] [Version] ([Codename], [Desktop Environment], [Architecture])
+    * [Distro] [Version] ([Codename], [Desktop], [Architecture])
 
     * Debian 7.0 (Wheezy, Xfce, mipsel)
     * Fedora 19 (Schrödinger’s Cat, Gnome 3, i686)
