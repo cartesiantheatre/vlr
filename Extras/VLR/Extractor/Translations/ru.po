@@ -22,14 +22,14 @@ msgstr ""
 "Project-Id-Version: viking-extractor 0.5\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
 "POT-Creation-Date: 2013-08-22 00:12-0700\n"
-"PO-Revision-Date: 2013-06-26 04:59+0000\n"
-"Last-Translator: Oleg Koptev <koptev.oleg@gmail.com>\n"
+"PO-Revision-Date: 2013-08-27 05:29+0000\n"
+"Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-23 05:16+0000\n"
-"X-Generator: Launchpad (build 16737)\n"
+"X-Launchpad-Export-Date: 2013-08-28 05:12+0000\n"
+"X-Generator: Launchpad (build 16738)\n"
 "Language: ru\n"
 
 #. Initialize the channel map...
@@ -357,7 +357,7 @@ msgstr "не удалось определить угол поворота из�
 #. Alert user...
 #: Source/VicarImageBand.cpp:394
 msgid "annotation cache hit optimization"
-msgstr ""
+msgstr "Аннотация кэш оптимизации"
 
 #: Source/VicarImageBand.cpp:410
 msgid "GNU Ocrad failed to initialize"
@@ -375,7 +375,7 @@ msgstr "Ошибка оптического распознавания"
 
 #: Source/VicarImageBand.cpp:495
 msgid " potential character annotations detected"
-msgstr ""
+msgstr " потенциальный характер аннотации обнаружен"
 
 #: Source/VicarImageBand.cpp:602
 msgid "input was not loaded"
@@ -494,11 +494,11 @@ msgstr "неподдерживаемое количество полос изо�
 
 #: Source/VicarImageBand.cpp:1420
 msgid "corrupt image height"
-msgstr ""
+msgstr "Высота коррумпированных изображения"
 
 #: Source/VicarImageBand.cpp:1424
 msgid "corrupt image width"
-msgstr ""
+msgstr "Ширина коррумпированных изображения"
 
 #. Check pixel format is integral...
 #. Definitely integral
@@ -722,6 +722,10 @@ msgid ""
 "                              classes which are any (default), broadband,\n"
 "                              colour, infrared, sun, or survey.\n"
 msgstr ""
+"                              Экстракт из сопоставления поддерживает\n"
+"                              диод фильтр классы, являющиеся (по \n"
+"                              умолчанию), широкополосный, окрасы,\n"
+"                              инфракрасный, солнце или опрос.\n"
 
 #: Source/VikingExtractor.cpp:101
 msgid ""
