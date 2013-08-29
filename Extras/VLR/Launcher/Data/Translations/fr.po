@@ -130,7 +130,7 @@ msgstr ""
 "du <a href=\"https://www.gnu.org/gnu/gnu-users-never-heard-of-"
 "gnu.html\">système d'exploitation GNU</a>. Ce système d'exploitation a été "
 "rendu populaire au travers de ses nombreuses distributions, comme <a "
-"href=\"http://www.ubuntu-fr.org\">Ubuntu</a>.\n"
+"href=\"http://www.ubuntu-fr.org\">Ubuntu</a>. "
 "Bien que ce jeu soit encore au début de son développement, il ne faut pas "
 "croire pour autant qu'il n'est pas en chantier depuis de nombreuses années, "
 "années qui ont permis de créer entre autre ce que vous avez sous les yeux en "
@@ -663,7 +663,7 @@ msgstr "\t…Emplacement sur Mars : {0}\n"
 #: ../../Source/ConfirmPage.py:111
 #, python-brace-format
 msgid "\t...Martian month: {0}\n"
-msgstr "\t[tab…Mois martien : {0}\n"
+msgstr "\t…Mois martien : {0}\n"
 
 #: ../../Source/ConfirmPage.py:118
 #, python-brace-format
@@ -947,6 +947,7 @@ msgstr ""
 "Ces paramètres de configuration vous permette de filtrer spécifiquement les "
 "types de données qui vous intéressent. Si vous les laissez par défaut, tout "
 "ce qui pourra être récupéré le sera.\n"
+"\n"
 "Si vous n'êtes pas sûr d'une option, passez simplement votre souris au-"
 "dessus d'elle pour une explication. La configuration par défaut est "
 "recommandée."

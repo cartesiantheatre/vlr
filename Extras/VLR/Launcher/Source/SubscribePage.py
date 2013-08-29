@@ -150,8 +150,8 @@ class SubscribePageProxy(PageProxyBase):
                 headers)
 
             # Submit the actual POST request...
-            urlStream = urllib.request.urlopen(request, timeout=10)
-            
+            urlStream = urllib.request.urlopen(request, timeout=60)
+
             # This should always be a code 200, and if not, an exception should
             #  have been thrown...
             assert(urlStream.getcode() == 200)
@@ -191,6 +191,10 @@ class SubscribePageProxy(PageProxyBase):
 
         # Data entry or urllib error...
         except (OSError, IOError) as exception:
+
+            # Some debugging help...
+            print("Exception of type \"{0}\"".format(type(exception)))
+            print("Exception string \"{0}\"".format(exception.strerror))
 
             # Alert user...
             messageDialog = Gtk.MessageDialog(
