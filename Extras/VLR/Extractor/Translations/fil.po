@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
 "POT-Creation-Date: 2013-08-22 00:12-0700\n"
-"PO-Revision-Date: 2013-08-27 02:03+0000\n"
+"PO-Revision-Date: 2013-09-01 14:08+0000\n"
 "Last-Translator: Joe Tang <Unknown>\n"
 "Language-Team: Filipino <fil@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-28 05:12+0000\n"
-"X-Generator: Launchpad (build 16738)\n"
+"X-Launchpad-Export-Date: 2013-09-02 05:19+0000\n"
+"X-Generator: Launchpad (build 16750)\n"
 "Language: fil\n"
 
 #. Initialize the channel map...
@@ -340,7 +340,7 @@ msgstr "hindi matiyak ang pag-ikot sa larawan"
 #. Alert user...
 #: Source/VicarImageBand.cpp:394
 msgid "annotation cache hit optimization"
-msgstr ""
+msgstr "pagpapainam ng annotation cache hit"
 
 #: Source/VicarImageBand.cpp:410
 msgid "GNU Ocrad failed to initialize"
@@ -358,7 +358,7 @@ msgstr "nabigo ang OCR pass"
 
 #: Source/VicarImageBand.cpp:495
 msgid " potential character annotations detected"
-msgstr ""
+msgstr " may nahanap na potential character annotation"
 
 #: Source/VicarImageBand.cpp:602
 msgid "input was not loaded"

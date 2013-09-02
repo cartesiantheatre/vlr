@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-08-23 17:18-0700\n"
-"PO-Revision-Date: 2013-08-20 06:06+0000\n"
+"PO-Revision-Date: 2013-09-01 14:11+0000\n"
 "Last-Translator: Joe Tang <Unknown>\n"
 "Language-Team: Filipino <fil@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-08-25 05:10+0000\n"
-"X-Generator: Launchpad (build 16738)\n"
+"X-Launchpad-Export-Date: 2013-09-02 05:19+0000\n"
+"X-Generator: Launchpad (build 16750)\n"
 "Language: fil\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -436,7 +436,7 @@ msgstr "Panumbalik"
 #: ../../Source/RecoveryPage.py:82
 #, python-brace-format
 msgid "Launching {0}..."
-msgstr ""
+msgstr "Paglulunsad {0}"
 
 #. We got the process ID, show it...
 #: ../../Source/RecoveryPage.py:105
@@ -1178,7 +1178,7 @@ msgstr "Lahat ng uri ng diode band"
 #: ../Launcher.glade:868
 msgctxt "Broadband as in signal range, not network connectivity."
 msgid "Broadband"
-msgstr ""
+msgstr "Brodband"
 
 #: ../Launcher.glade:872
 msgid "Colour"
