@@ -23,7 +23,7 @@
     AresEngine, VikingExtractor, shaders, Lua scripts, build 
     environment scripts, and any other relevant executable data are 
     copyright (C) 2010-2013 Cartesian Theatre under the terms of the 
-    GNU General Public License version 3.
+    GNU General Public License version 3 or later.
 
     The Solnet server, build environment scripts, and any other 
     relevant executable data are copyright (C) 2010-2013, Cartesian 
