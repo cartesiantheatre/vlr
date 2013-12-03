@@ -1,14 +1,8 @@
 VikingExtractor
 ===============
 
-    VikingExtractor is a tool to recover mission data imager from Viking lander 
-    operations. It can converts 1970s Viking lander era VICAR colour images to 
-    PNGs. 
-
-    For some background information on why this tool was written, see the 
-    chapter 'Viking Lander Remastered' in our Avaneya Project Crew Handbook:
-
-      <https://blueprints.launchpad.net/avaneya/+spec/avaneya-project-crew-handbook>
+    VikingExtractor is a tool to recover mission data images from Viking lander 
+    operations.
 
     For generic installation instructions, see Install.
 
