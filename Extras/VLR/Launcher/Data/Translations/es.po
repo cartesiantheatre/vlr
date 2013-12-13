@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-08-23 17:18-0700\n"
-"PO-Revision-Date: 2013-12-11 12:43+0000\n"
+"PO-Revision-Date: 2013-12-12 05:56+0000\n"
 "Last-Translator: Adolfo Jayme <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-12-12 05:30+0000\n"
+"X-Launchpad-Export-Date: 2013-12-13 06:06+0000\n"
 "X-Generator: Launchpad (build 16869)\n"
 "Language: es\n"
 
@@ -353,7 +353,7 @@ msgstr "VikingExtractor finalizó con el estado {0}…"
 #: ../../Source/RecoveryPage.py:281
 #, python-brace-format
 msgid "The recovery process was unsuccessful. ({0})"
-msgstr ""
+msgstr "El proceso de recuperación fue infructuoso. ({0})"
 
 #: ../../Source/SubscribePage.py:46
 msgid "Subscribe to Newsletter"
@@ -427,6 +427,11 @@ msgid ""
 "\tOperating System: {0}\n"
 "\tMachine Architecture: {1}"
 msgstr ""
+"Desafortunadamente su plataforma no es compatible todavía. No se detectó un "
+"ejecutable requerido.\n"
+"\n"
+"\tSistema operativo: {0}\n"
+"\tArquitectura del equipo: {1}"
 
 #: ../../Source/VerificationProgressPage.py:53
 msgid "Verification Progress"
@@ -469,7 +474,7 @@ msgstr ""
 #. Alert user...
 #: ../../Source/VerificationProgressPage.py:293
 msgid "Disc verification was cancelled."
-msgstr ""
+msgstr "Se canceló la comprobación del disco."
 
 #: ../../Source/VerificationProgressPage.py:318
 msgid ""
@@ -478,7 +483,7 @@ msgstr ""
 
 #: ../../Source/VerificationProgressPage.py:342
 msgid "Disc verification failed."
-msgstr ""
+msgstr "Falló la comprobación del disco."
 
 #: ../../Source/ConfirmPage.py:43
 msgid "Confirmation"
@@ -507,12 +512,12 @@ msgstr ""
 #: ../../Source/ConfirmPage.py:104
 #, python-brace-format
 msgid "\t...Martian location: {0}\n"
-msgstr ""
+msgstr "\t… ubicación marciana: {0}\n"
 
 #: ../../Source/ConfirmPage.py:111
 #, python-brace-format
 msgid "\t...Martian month: {0}\n"
-msgstr ""
+msgstr "\t… mes marciano: {0}\n"
 
 #: ../../Source/ConfirmPage.py:118
 #, python-brace-format
@@ -655,11 +660,11 @@ msgstr ""
 
 #: ../../Source/ConfigurePages.py:125
 msgid "Location/"
-msgstr ""
+msgstr "Ubicación/"
 
 #: ../../Source/ConfigurePages.py:127
 msgid "Martian Month/"
-msgstr ""
+msgstr "Mes marciano/"
 
 #: ../../Source/ConfigurePages.py:129
 msgid "Sensor Band Type/"
