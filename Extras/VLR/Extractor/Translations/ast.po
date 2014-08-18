@@ -14,8 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-07-28 06:23+0000\n"
-"X-Generator: Launchpad (build 17131)\n"
+"X-Launchpad-Export-Date: 2014-08-18 06:24+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 "Language: ast\n"
 
 #. Initialize the channel map...
@@ -762,7 +762,7 @@ msgstr ""
 
 #: Source/VikingExtractor.cpp:153
 msgid ""
-"Copyright (C) 2010-2014 Cartesian Theatre.\n"
+"Copyright (C) 2010-2013 Cartesian Theatre.\n"
 "This is free software; see Copying for copying conditions. There is NO\n"
 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 "\n"
