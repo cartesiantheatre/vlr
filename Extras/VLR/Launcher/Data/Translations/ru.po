@@ -828,9 +828,9 @@ msgstr "Photograph.png"
 
 #: ../Launcher.glade:9
 msgid ""
-"Copyright (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>."
+"Copyright (C) 2010-2014 Cartesian Theatre <info@cartesiantheatre.com>."
 msgstr ""
-"Авторские права (C) 2010-2013 Cartesian Theatre <info@cartesiantheatre.com>."
+"Авторские права (C) 2010-2014 Cartesian Theatre <info@cartesiantheatre.com>."
 
 #: ../Launcher.glade:11
 msgid "Avaneya Website"
