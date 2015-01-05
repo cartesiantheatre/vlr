@@ -9,13 +9,13 @@ msgstr ""
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-08-23 17:18-0700\n"
 "PO-Revision-Date: 2013-08-23 05:36+0000\n"
-"Last-Translator: Jānis-Marks Gailis <jm-gailis@fai-vianet.fr>\n"
+"Last-Translator: Jānis Marks Gailis <jm-gailis@fai-vianet.fr>\n"
 "Language-Team: Latvian <lv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-30 06:43+0000\n"
-"X-Generator: Launchpad (build 17196)\n"
+"X-Launchpad-Export-Date: 2015-01-05 06:27+0000\n"
+"X-Generator: Launchpad (build 17286)\n"
 "Language: lv\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -23,7 +23,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Jānis-Marks Gailis https://launchpad.net/~jeanmarc-gailis"
+"  Jānis Marks Gailis https://launchpad.net/~jeanmarc-gailis"
 
 #. Beta testers...
 #: ../../Source/LauncherApp.py:189
