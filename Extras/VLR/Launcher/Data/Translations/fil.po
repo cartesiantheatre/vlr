@@ -8,15 +8,32 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-08-23 17:18-0700\n"
-"PO-Revision-Date: 2014-09-10 00:36+0000\n"
+"PO-Revision-Date: 2015-02-15 17:42+0000\n"
 "Last-Translator: Joe Tang <Unknown>\n"
 "Language-Team: Filipino <fil@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-02-01 06:17+0000\n"
-"X-Generator: Launchpad (build 17306)\n"
+"X-Launchpad-Export-Date: 2015-02-16 06:30+0000\n"
+"X-Generator: Launchpad (build 17341)\n"
 "Language: fil\n"
+
+#: ../../Source/ConfirmPage.py:220
+msgid "Yes"
+msgstr "Oo"
+
+#: ../../Source/ConfirmPage.py:222
+msgid "No"
+msgstr "Huwag"
+
+#: ../../Source/SelectRecoveryPage.py:39
+msgid "Select Recovery Folder"
+msgstr "Piliin ang Folder Para sa Pagwawasto"
+
+#: ../../Source/OpeningVideoWindow.py:37
+msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
+msgstr ""
+"Walang GStreamer >= 1.0. Hindi gagamitin para sa pagbukas ng video..."
 
 #. Set translators. Note to translators, put your contact info here...
 #: ../../Source/LauncherApp.py:182
@@ -25,7 +42,8 @@ msgstr ""
 "Launchpad Contributions:\n"
 "  Avaneya Project Crew https://launchpad.net/~avaneya\n"
 "  Joe Tang https://launchpad.net/~jtantogo-1\n"
-"  Kip Warner https://launchpad.net/~kip"
+"  Kip Warner https://launchpad.net/~kip\n"
+"  Ueliton https://launchpad.net/~ueli-ton"
 
 #. Beta testers...
 #: ../../Source/LauncherApp.py:189
@@ -718,26 +736,9 @@ msgstr "Gamitin ang multithreading: {0}\n"
 msgid "VikingExtractor arguments: {0}\n"
 msgstr "VikingExtractor arguments: {0}\n"
 
-#: ../../Source/ConfirmPage.py:220
-msgid "Yes"
-msgstr "Oo"
-
-#: ../../Source/ConfirmPage.py:222
-msgid "No"
-msgstr "Huwag"
-
 #: ../../Source/FarewellPage.py:46
 msgid "Farewell"
 msgstr "Paalam"
-
-#: ../../Source/SelectRecoveryPage.py:39
-msgid "Select Recovery Folder"
-msgstr "Piliin ang Folder Para sa Pagwawasto"
-
-#: ../../Source/OpeningVideoWindow.py:37
-msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
-msgstr ""
-"Walang GStreamer >= 1.0. Hindi gagamitin para sa pagbukas ng video..."
 
 #: ../../Source/VerificationPromptPage.py:46
 msgid "Verification Prompt"
