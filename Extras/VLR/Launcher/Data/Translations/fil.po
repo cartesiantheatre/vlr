@@ -8,32 +8,15 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-08-23 17:18-0700\n"
-"PO-Revision-Date: 2015-02-15 17:42+0000\n"
-"Last-Translator: Joe Tang <Unknown>\n"
+"PO-Revision-Date: 2015-02-16 21:16+0000\n"
+"Last-Translator: Avaneya Project Crew <Unknown>\n"
 "Language-Team: Filipino <fil@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-02-16 06:30+0000\n"
+"X-Launchpad-Export-Date: 2015-02-17 06:07+0000\n"
 "X-Generator: Launchpad (build 17341)\n"
 "Language: fil\n"
-
-#: ../../Source/ConfirmPage.py:220
-msgid "Yes"
-msgstr "Oo"
-
-#: ../../Source/ConfirmPage.py:222
-msgid "No"
-msgstr "Huwag"
-
-#: ../../Source/SelectRecoveryPage.py:39
-msgid "Select Recovery Folder"
-msgstr "Piliin ang Folder Para sa Pagwawasto"
-
-#: ../../Source/OpeningVideoWindow.py:37
-msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
-msgstr ""
-"Walang GStreamer >= 1.0. Hindi gagamitin para sa pagbukas ng video..."
 
 #. Set translators. Note to translators, put your contact info here...
 #: ../../Source/LauncherApp.py:182
@@ -736,29 +719,46 @@ msgstr "Gamitin ang multithreading: {0}\n"
 msgid "VikingExtractor arguments: {0}\n"
 msgstr "VikingExtractor arguments: {0}\n"
 
+#: ../../Source/ConfirmPage.py:220
+msgid "Yes"
+msgstr "Oo"
+
+#: ../../Source/ConfirmPage.py:222
+msgid "No"
+msgstr "Huwag"
+
 #: ../../Source/FarewellPage.py:46
 msgid "Farewell"
 msgstr "Paalam"
 
+#: ../../Source/SelectRecoveryPage.py:39
+msgid "Select Recovery Folder"
+msgstr "Piliin ang Folder Para sa Pagwawasto"
+
+#: ../../Source/OpeningVideoWindow.py:37
+msgid "GStreamer >= 1.0 not found. Will not use for opening video..."
+msgstr ""
+"Walang GStreamer >= 1.0. Hindi gagamitin para sa pagbukas ng video..."
+
 #: ../../Source/VerificationPromptPage.py:46
 msgid "Verification Prompt"
-msgstr "Paniguradong Pagtanong"
+msgstr "Pag-verify Prompt"
 
 #: ../../Source/HandbookPage.py:51
 msgid "Download Handbook"
-msgstr "Ikargang-pabalik (Download) ang Librong De-kamay"
+msgstr "I-download ang Handbook"
 
 #: ../../Source/HandbookPage.py:98
 msgid "Please choose a download location..."
-msgstr "Piliin po ang lokasyon ng pagkakargang-pabalik (download)..."
+msgstr "Mangyaring pumili ng isang lokasyon sa pag-download ..."
 
 #: ../../Source/HandbookPage.py:142
 msgid "Contacting server, please wait..."
-msgstr "Inaabot ang server, mag-intay ng sandali..."
+msgstr "Kumokonekta sa server, mangyaring maghintay ..."
 
 #: ../../Source/HandbookPage.py:173
 msgid "The download of the handbook was stopped."
-msgstr "Natigil ang pagkargang-pabalik sa librong de-kamay."
+msgstr "Ang pag-download ng mga manu-manong ang ay tumigil."
 
 #: ../../Source/HandbookPage.py:212
 msgid "The book downloaded successfully. Would you like to open it?"
