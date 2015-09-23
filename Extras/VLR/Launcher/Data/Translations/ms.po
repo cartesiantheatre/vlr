@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-08-23 17:18-0700\n"
-"PO-Revision-Date: 2014-09-10 12:31+0000\n"
-"Last-Translator: Avaneya Project Crew <Unknown>\n"
+"PO-Revision-Date: 2015-09-22 07:40+0000\n"
+"Last-Translator: abuyop <Unknown>\n"
 "Language-Team: Malay <ms@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-27 05:30+0000\n"
-"X-Generator: Launchpad (build 17690)\n"
+"X-Launchpad-Export-Date: 2015-09-23 05:57+0000\n"
+"X-Generator: Launchpad (build 17749)\n"
 "Language: ms\n"
 
 #. Set translators. Note to translators, put your contact info here...
@@ -309,7 +309,7 @@ msgstr "Penemuan"
 #: ../../Source/RecoveryPage.py:82
 #, python-brace-format
 msgid "Launching {0}..."
-msgstr ""
+msgstr "Melancarkan {0}..."
 
 #. We got the process ID, show it...
 #: ../../Source/RecoveryPage.py:105
@@ -1016,24 +1016,24 @@ msgstr ""
 
 #: ../Launcher.glade:864
 msgid "All diode band types"
-msgstr ""
+msgstr "Semua jenis jalur diod"
 
 #: ../Launcher.glade:868
 msgctxt "Broadband as in signal range, not network connectivity."
 msgid "Broadband"
-msgstr ""
+msgstr "Jalur Lebar"
 
 #: ../Launcher.glade:872
 msgid "Colour"
-msgstr ""
+msgstr "Warna"
 
 #: ../Launcher.glade:876
 msgid "Infrared"
-msgstr ""
+msgstr "Terinfra Merah"
 
 #: ../Launcher.glade:880
 msgid "Sun"
-msgstr ""
+msgstr "Matahari"
 
 #: ../Launcher.glade:884
 msgid "Survey"
