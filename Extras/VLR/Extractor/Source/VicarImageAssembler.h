@@ -29,7 +29,7 @@
     #include "Options.h"
     #include "VicarImageBand.h"
     #include "ReconstructableImage.h"
-    
+
     // System headers...
     #include <ostream>
     #include <vector>
@@ -100,11 +100,11 @@ class VicarImageAssembler
 
         // Input file or directory...
         std::string                         m_InputFileOrRootDirectory;
-        
+
         // List of all potential files to examine...
         std::vector<std::string>            m_ProspectiveFiles;
         std::vector<ArchivedFileNameType>   m_ProspectiveArchivedFiles;
-        
+
         // Output root directory...
         std::string                         m_OutputRootDirectory;
 };

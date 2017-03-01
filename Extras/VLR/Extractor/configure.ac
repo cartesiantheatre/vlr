@@ -24,7 +24,7 @@
 AC_PREREQ([2.67])
 
 # Copyright notice...
-AC_COPYRIGHT([Copyright (C) 2010-2014 Cartesian Theatre <info@cartesiantheatre.com>.])
+AC_COPYRIGHT([Copyright (C) 2010-2017 Cartesian Theatre™ <info@cartesiantheatre.com>.])
 
 # Initialize Autoconf...
 AC_INIT(
@@ -51,7 +51,7 @@ AC_DEFINE_UNQUOTED(
 
     # Setup flags...
     AM_INIT_AUTOMAKE([color-tests dist-lzip no-dist-gzip silent-rules \
-         subdir-objects -Wall -Werror foreign])
+         subdir-objects tar-pax -Wall -Werror foreign])
 
     # Set by default to use silent build rules...
     AM_SILENT_RULES([yes])
@@ -215,9 +215,9 @@ AC_LANG([C++])
 
         # Check for C header and static library...
         if test "$static" = yes; then
-            PKG_CHECK_MODULES_STATIC([libpng], [libpng12], [have_png=yes], [have_png=no])
+            PKG_CHECK_MODULES_STATIC([libpng], [libpng16], [have_png=yes], [have_png=no])
         else
-            PKG_CHECK_MODULES([libpng], [libpng12], [have_png=yes], [have_png=no])
+            PKG_CHECK_MODULES([libpng], [libpng16], [have_png=yes], [have_png=no])
         fi
         if test "x${have_png}" = xno; then
             AC_MSG_ERROR([libpng runtime library is required, but was not detected...])

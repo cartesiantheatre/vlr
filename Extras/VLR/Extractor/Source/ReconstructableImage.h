@@ -1,7 +1,7 @@
 /*
     VikingExtractor, to recover images from Viking Lander operations.
     Copyright (C) 2010-2014 Cartesian Theatre <info@cartesiantheatre.com>.
-    
+
     Public discussion on IRC available at #avaneya (irc.freenode.net) 
     or on the mailing list <avaneya@lists.avaneya.com>.
 
@@ -66,7 +66,7 @@ class ReconstructableImage
         // Was an error set?
         bool IsError() const
             { return !m_ErrorMessage.empty(); }
-        
+
         // Extract the image out as a PNG, or return false if failed...
         bool Reconstruct();
 

@@ -130,14 +130,6 @@ force-update-gmo: check-gettext
 	find Translations/ -type f -name "*.po" -execdir touch {} \;
 	cd Translations && $(MAKE) $(AM_MAKEFLAGS) update-gmo
 
-# Force a rebuild of the machine dependent message catalog for a specific 
-#  language...
-force-update-gmo-%: check-gettext
-	@language=`echo $@ | sed s/force-update-gmo-//` ; \
-	if test ! -f Translations/$$language.po ; then echo "file Translations/$$language.po does not exist" ; exit 1 ; fi ; \
-	touch Translations/$$language.po ; \
-	cd Translations && $(MAKE) $(AM_MAKEFLAGS) update-gmo
-
 # Rule to create the viking-extractor test script. Just tests to make sure it 
 #  compiled and linked correctly...
 GrepTest.sh: Makefile.am

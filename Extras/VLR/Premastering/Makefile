@@ -142,8 +142,8 @@ ve_l10n.clean:
 # Clean the above...
 vlr.clean:
 	cd $(VLR_DIR)/Data/Translations && \
-	make clean && \
-	make uninstall-po localedir=$(STAGING_DIR)/Launcher/Data/Translations
+	make clean
+	-@$(RM) -Rfv $(STAGING_DIR)/Launcher
 	-@$(RM) -v vlr.stamp 
 
 # Directive to make to let it know that these targets don't generate filesystem 

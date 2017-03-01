@@ -128,8 +128,8 @@ void VicarImageAssembler::IndexArchive(const string &InputArchiveFile)
 void VicarImageAssembler::IndexDirectory(const string &InputDirectory)
 {
     // Variables...
-    DIR            *Directory       = NULL;
-    struct dirent  *DirectoryEntry  = NULL;
+    DIR            *Directory       = nullptr;
+    struct dirent  *DirectoryEntry  = nullptr;
 
     // Make an editable copy of the original input directory...
     string NewInputDirectory = InputDirectory;

@@ -19,8 +19,8 @@
 
 # Makefile to generate a Woe32 executable stub...
 
-CPP         = i586-mingw32msvc-g++
-RC          = i586-mingw32msvc-windres
+CPP         = i686-w64-mingw32-g++
+RC          = i686-w64-mingw32-windres
 OBJ         = Main.o \
               Resources.o
 LIBS        = 

@@ -71,7 +71,7 @@ AC_DEFUN([AC_CHECK_OCRAD],
             AC_MSG_RESULT([no])
             AC_MSG_ERROR([GNU OCRAD library is too old... (need >= $1)])
         ])
-    
+
     # Done with the C++ compiler for this test...
     AC_LANG_POP([C++])
 ])
