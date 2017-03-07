@@ -1,5 +1,5 @@
 #    VikingExtractor, to recover images from Viking Lander operations.
-#    Copyright (C) 2010-2014 Cartesian Theatre <info@cartesiantheatre.com>.
+#    Copyright (C) 2010-2017 Cartesian Theatre™ <info@cartesiantheatre.com>.
 #
 #    Public discussion on IRC available at #avaneya (irc.freenode.net)
 #    or on the mailing list <avaneya@lists.avaneya.com>.
@@ -838,12 +838,12 @@ msgstr "Сообщайте об ошибках "
 
 #: Source/VikingExtractor.cpp:153
 msgid ""
-"Copyright (C) 2010-2014 Cartesian Theatre.\n"
+"Copyright (C) 2010-2017 Cartesian Theatre™.\n"
 "This is free software; see Copying for copying conditions. There is NO\n"
 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 "\n"
 msgstr ""
-"Авторские права (C) 2010-2014 Cartesian Theatre.\n"
+"Авторские права (C) 2010-2017 Cartesian Theatre™.\n"
 "Свободное программное обеспечение; см. файл Copying для получения \n"
 "информации об условиях копирования и распространения. \n"
 "Для этого программного обеспечения не даётся НИКАКИХ гарантий, в том числе\n"

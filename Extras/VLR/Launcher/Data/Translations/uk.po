@@ -833,7 +833,7 @@ msgstr "Фотографія.png"
 
 #: ../Launcher.glade:9
 msgid ""
-"Copyright (C) 2010-2014 Cartesian Theatre <info@cartesiantheatre.com>."
+"Copyright (C) 2010-2017 Cartesian Theatre™ <info@cartesiantheatre.com>."
 msgstr "© Cartesian Theatre <info@cartesiantheatre.com>, 2010–2013."
 
 #: ../Launcher.glade:11
