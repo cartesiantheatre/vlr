@@ -14,5 +14,6 @@ compressed archive and combine with uncompressed files.
 
 The 'check' target will compare your sample recovery's machine generated 
 metadata and the actual reconstructed image generated against a previous known 
-to be successful sample run on the same input data. 
+to be successful sample run on the same input data. The assumed ground truths
+the results are validated against are 22D180.{png,txt}.good.
 

@@ -2,7 +2,7 @@
 AutoRun.inf=./Woe32/AutoRun.inf
 autorun=./XDG/autorun
 ChangeLog=../Extractor/ChangeLog
-Copying=../../../Copying
+Copying=../Copying
 .directory=./XDG/avaneya_vlr.directory
 Extractor/Manual/viking-extractor.1=../Extractor/Manual/viking-extractor.man
 Launcher/Data/Music.ogg=/home/kip/Projects/Avaneya-Private/Audio/Viking Lander Remastered/Monokle & Galun - Crossed Fingers.ogg

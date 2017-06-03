@@ -1,0 +1,60 @@
+The following is a machine generated collection of metadata of each of
+the image bands used to reconstruct a colour image.
+
+basic heuristic method: 1
+camera azimuth / elevation: AZIMUTH 115.0/135.0  ELEVATION -30(-60.66/  0.66)
+camera event: 22D180
+camera event solar day: 233
+diode band type: red
+file size: 677416
+input file: vl_1422.003
+magnetic tape: 1422
+magnetic tape file ordinal: 3
+mean pixel value: 51.3625
+month: Aquarius
+overlay axis present: 1
+overlay full histogram present: 1
+physical record size: 586
+physical record padding: 226
+phase offset required: 0
+raw image offset: 2344
+
+
+basic heuristic method: 1
+camera azimuth / elevation: AZIMUTH 115.0/135.0  ELEVATION -30(-60.66/  0.66)
+camera event: 22D180
+camera event solar day: 233
+diode band type: green
+file size: 677416
+input file: vl_1422.002
+magnetic tape: 1422
+magnetic tape file ordinal: 2
+mean pixel value: 31.9015
+month: Aquarius
+overlay axis present: 1
+overlay full histogram present: 1
+physical record size: 586
+physical record padding: 226
+phase offset required: 0
+raw image offset: 2344
+
+
+basic heuristic method: 1
+camera azimuth / elevation: AZIMUTH 115.0/135.0  ELEVATION -30(-60.66/  0.66)
+camera event: 22D180
+camera event solar day: 233
+diode band type: blue
+file size: 677416
+input file: vl_1422.001
+magnetic tape: 1422
+magnetic tape file ordinal: 1
+mean pixel value: 22.0046
+month: Aquarius
+overlay axis present: 1
+overlay full histogram present: 1
+physical record size: 586
+physical record padding: 226
+phase offset required: 0
+raw image offset: 2344
+
+
