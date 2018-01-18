@@ -1,5 +1,5 @@
 # VikingExtractor, to recover images from Viking Lander operations.
-# Copyright (C) 2010-2017 Cartesian Theatre™ <info@cartesiantheatre.com>.
+# Copyright (C) 2010-2018 Cartesian Theatre™ <info@cartesiantheatre.com>.
 #
 # Public discussion on IRC available at #avaneya (irc.freenode.net) or on the
 # mailing list <avaneya@lists.avaneya.com>.
@@ -24,7 +24,7 @@
 AC_PREREQ([2.67])
 
 # Copyright notice...
-AC_COPYRIGHT([Copyright (C) 2010-2017 Cartesian Theatre™ <info@cartesiantheatre.com>.])
+AC_COPYRIGHT([Copyright (C) 2010-2018 Cartesian Theatre™ <info@cartesiantheatre.com>.])
 
 # Initialize Autoconf...
 AC_INIT(

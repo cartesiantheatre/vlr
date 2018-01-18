@@ -1,7 +1,7 @@
 dnl ocrad.m4
 dnl
 dnl    M4 macros for OCRAD related tasks.
-dnl    Copyright (C) 2010-2017 Cartesian Theatre™ <info@cartesiantheatre.com>.
+dnl    Copyright (C) 2010-2018 Cartesian Theatre™ <info@cartesiantheatre.com>.
 dnl    
 dnl    Public discussion on IRC available at #avaneya (irc.freenode.net) 
 dnl    or on the mailing list <avaneya@lists.avaneya.com>.

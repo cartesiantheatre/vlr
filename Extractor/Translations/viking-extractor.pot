@@ -747,7 +747,7 @@ msgstr ""
 
 #: Source/VikingExtractor.cpp:153
 msgid ""
-"Copyright (C) 2010-2017 Cartesian Theatre™.\n"
+"Copyright (C) 2010-2018 Cartesian Theatre™.\n"
 "This is free software; see Copying for copying conditions. There is NO\n"
 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 "\n"

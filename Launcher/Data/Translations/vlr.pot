@@ -1,6 +1,6 @@
 #
 #    VikingExtractor, to recover images from Viking Lander operations.
-#    Copyright (C) 2010-2017 Cartesian Theatre™ <info@cartesiantheatre.com>.
+#    Copyright (C) 2010-2018 Cartesian Theatre™ <info@cartesiantheatre.com>.
 #    
 #    Public discussion on IRC available at #avaneya (irc.freenode.net) 
 #    or on the mailing list <avaneya@lists.avaneya.com>.
@@ -653,7 +653,7 @@ msgid "Photograph.png"
 msgstr ""
 
 #: ../Launcher.glade:9
-msgid "Copyright (C) 2010-2017 Cartesian Theatre™ <info@cartesiantheatre.com>."
+msgid "Copyright (C) 2010-2018 Cartesian Theatre™ <info@cartesiantheatre.com>."
 msgstr ""
 
 #: ../Launcher.glade:11

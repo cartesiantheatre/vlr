@@ -6,7 +6,7 @@
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="type_hint">dialog</property>
-    <property name="copyright" translatable="yes">Copyright (C) 2010-2017 Cartesian Theatre™ &lt;info@cartesiantheatre.com&gt;.</property>
+    <property name="copyright" translatable="yes">Copyright (C) 2010-2018 Cartesian Theatre™ &lt;info@cartesiantheatre.com&gt;.</property>
     <property name="website">http://www.avaneya.com</property>
     <property name="website_label" translatable="yes">Avaneya Website</property>
     <property name="authors"/>

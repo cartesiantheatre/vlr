@@ -111,7 +111,7 @@ Joe Tang <jtantogo-1@yahoo.com> of Ubuntu Vancouver was the primary author of th
 Report @PACKAGE_STRING@ bugs to \fI@PACKAGE_BUGREPORT@\fR
 
 .SH COPYRIGHT
-Copyright (C) 2010-2017 Cartesian Theatre™ <info@cartesiantheatre.com>. This is free software; see Copying for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Copyright (C) 2010-2018 Cartesian Theatre™ <info@cartesiantheatre.com>. This is free software; see Copying for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 .SH SEE ALSO
 \fIhttps://www.avaneya.com\fR

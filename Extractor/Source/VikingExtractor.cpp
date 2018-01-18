@@ -1,6 +1,6 @@
 /*
     VikingExtractor, to recover images from Viking Lander operations.
-    Copyright (C) 2010-2017 Cartesian Theatre™ <info@cartesiantheatre.com>.
+    Copyright (C) 2010-2018 Cartesian Theatre™ <info@cartesiantheatre.com>.
 
     Public discussion on IRC available at #avaneya (irc.freenode.net)
     or on the mailing list <avaneya@lists.avaneya.com>.
@@ -151,7 +151,7 @@ void ShowVersion()
 {
     cout << "VikingExtractor " VIKING_EXTRACTOR_VERSION << " (GNU Ocrad " << OCRAD_version() << ")" << endl
          << _("\
-Copyright (C) 2010-2017 Cartesian Theatre™.\n\
+Copyright (C) 2010-2018 Cartesian Theatre™.\n\
 This is free software; see Copying for copying conditions. There is NO\n\
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n");
 
