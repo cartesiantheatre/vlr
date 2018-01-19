@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
-"POT-Creation-Date: 2013-08-22 00:12-0700\n"
+"POT-Creation-Date: 2018-01-18 20:21-0800\n"
 "PO-Revision-Date: 2017-03-07 17:51+0000\n"
 "Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
 "Language-Team: Italian <it@li.org>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2017-04-17 06:13+0000\n"
 "X-Generator: Launchpad (build 18354)\n"
-"Language: it\n"
 
 #. Initialize the channel map...
 #: Source/Console.cpp:84
@@ -121,8 +121,7 @@ msgstr ""
 
 #: Source/ReconstructableImage.cpp:373
 msgid "the image bands used to reconstruct a colour image.\n"
-msgstr ""
-"le strisce di immagini usate per riconstruire un immagine a colori.\n"
+msgstr "le strisce di immagini usate per riconstruire un immagine a colori.\n"
 
 #: Source/ReconstructableImage.cpp:386
 msgid "basic heuristic method: "
@@ -276,8 +275,7 @@ msgstr " bande del tipo di diodo (--filter-diode[=type] per modificare)"
 
 #: Source/VicarImageAssembler.cpp:349
 msgid "camera event doesn't identify itself, cannot index"
-msgstr ""
-"evento della telecamera non riconosciuto, indicizzazione non possibile"
+msgstr "evento della telecamera non riconosciuto, indicizzazione non possibile"
 
 #: Source/VicarImageAssembler.cpp:370
 msgid " is a new camera event, indexing"
@@ -386,8 +384,7 @@ msgid "loading"
 msgstr "Caricamento in corso"
 
 #: Source/VicarImageBand.cpp:859
-msgid ""
-"empty file, probably blank magnetic tape or not received back on Earth"
+msgid "empty file, probably blank magnetic tape or not received back on Earth"
 msgstr ""
 "File vuoto, probabilmente a causa di un nastro magnetico vuoto o non "
 "ricevuto sulla Terra"
@@ -838,8 +835,9 @@ msgid "Report bugs to "
 msgstr "Segnala i bug a "
 
 #: Source/VikingExtractor.cpp:153
+#, fuzzy
 msgid ""
-"Copyright (C) 2010-2017 Cartesian Theatre™.\n"
+"Copyright (C) 2010-2018 Cartesian Theatre™.\n"
 "This is free software; see Copying for copying conditions. There is NO\n"
 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 "\n"

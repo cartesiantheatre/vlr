@@ -6,17 +6,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: avaneya\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-08-22 00:12-0700\n"
+"Report-Msgid-Bugs-To: https://bugs.launchpad.net/avaneya\n"
+"POT-Creation-Date: 2018-01-18 20:21-0800\n"
 "PO-Revision-Date: 2017-03-07 17:06+0000\n"
 "Last-Translator: Kip Warner <Kip@TheVertigo.com>\n"
 "Language-Team: Chinese (Simplified) <zh_CN@li.org>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2017-04-17 06:13+0000\n"
 "X-Generator: Launchpad (build 18354)\n"
-"Language: zh_CN\n"
 
 #. Initialize the channel map...
 #: Source/Console.cpp:84
@@ -371,8 +371,7 @@ msgid "loading"
 msgstr "载入中"
 
 #: Source/VicarImageBand.cpp:859
-msgid ""
-"empty file, probably blank magnetic tape or not received back on Earth"
+msgid "empty file, probably blank magnetic tape or not received back on Earth"
 msgstr "空文件，可能是空白的磁带，或没有收到返回地球"
 
 #: Source/VicarImageBand.cpp:863
@@ -777,8 +776,9 @@ msgid "Report bugs to "
 msgstr "回报臭虫 "
 
 #: Source/VikingExtractor.cpp:153
+#, fuzzy
 msgid ""
-"Copyright (C) 2010-2017 Cartesian Theatre™.\n"
+"Copyright (C) 2010-2018 Cartesian Theatre™.\n"
 "This is free software; see Copying for copying conditions. There is NO\n"
 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 "\n"

@@ -272,7 +272,7 @@ int main(int ArgumentCount, char *Arguments[])
                 case 0:
                 {
                     /* If this option set a flag, do nothing else now. */
-                    if(CommandLineLongOptions[OptionIndex].flag != false)
+                    if(CommandLineLongOptions[OptionIndex].flag)
                         break;
 
                     /*cout << "option " << CommandLineLongOptions[OptionIndex].name;
