@@ -2,16 +2,9 @@ VikingExtractor
 ===============
 
     VikingExtractor is a tool to recover mission data images from Viking lander 
-    operations. This is a low level tool for advanced users that can also work 
-    under an easy to use point-and-click graphical user interface intended for
-    the layman provided on our Avaneya: Viking Lander Remastered DVD available 
-    below.
-    
-        <https://www.avaneya.com/#!/content/store/vlr.html>
+    operations. It was developed by Cartesian Theatre. The technology is cited
+    by NASA's JPL:
+
+        <https://pds-imaging.jpl.nasa.gov/software/#Viking>
 
     For generic compilation instructions, see Install. 
-    
-    Visit us on the web at:
-
-        <https://www.avaneya.com>
-
